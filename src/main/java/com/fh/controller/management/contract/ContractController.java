@@ -57,7 +57,6 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		System.out.println("123");
 		pd.put("CONTRACT_ID", this.get32UUID());	//主键
 		contractService.save(pd);
 		mv.addObject("msg","success");
