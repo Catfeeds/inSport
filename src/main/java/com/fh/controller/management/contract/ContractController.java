@@ -6,35 +6,30 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
+import com.fh.service.management.classify.ClassifyManager;
+import com.fh.service.management.contractpicture.ContractPictureManager;
+import com.fh.util.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.Page;
-import com.fh.util.AppUtil;
-import com.fh.util.ObjectExcelView;
-import com.fh.util.PageData;
-import com.fh.util.Jurisdiction;
-import com.fh.util.Tools;
-import com.fh.service.management.classify.ClassifyManager;
 import com.fh.service.management.contract.ContractManager;
 
 /** 
  * 说明：合同管理
  * 创建人：FH Q313596790
- * 创建时间：2018-03-22
+ * 创建时间：2018-04-08
  */
 @Controller
 @RequestMapping(value="/contract")
@@ -43,8 +38,12 @@ public class ContractController extends BaseController {
 	String menuUrl = "contract/list.do"; //菜单地址(权限用)
 	@Resource(name="contractService")
 	private ContractManager contractService;
+
 	@Resource(name="classifyService")
 	private ClassifyManager classifyService;
+
+	@Resource(name="contractpictureService")
+	private ContractPictureManager contractpictureService;
 	
 	/**保存
 	 * @param
@@ -57,11 +56,55 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("CONTRACT_ID", this.get32UUID());	//主键
+		//pd.put("CONTRACT_ID", this.get32UUID());	//主键
 		contractService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
+	}
+
+	/**去新增页面
+	 * @return
+	 */
+	@RequestMapping(value="/goAddPic")
+	public ModelAndView goAddPic() throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		mv.setViewName("management/contract/pictures_add");
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
+	@RequestMapping(value="/savePic")
+	@ResponseBody
+	public Object savePic(
+			@RequestParam(required=false) MultipartFile file, @RequestParam(value="CONTRACT_ID",required=false)String CONTRACT_ID
+	) throws Exception{
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
+		logBefore(logger, Jurisdiction.getUsername()+"新增图片");
+		Map<String,String> map = new HashMap<String,String>();
+		String  ffile = DateUtil.getDays(), fileName = "";
+		PageData pd = new PageData();
+		System.out.println(CONTRACT_ID);
+		String filePath = "";
+		if(Jurisdiction.buttonJurisdiction(menuUrl, "add")){
+			if (null != file && !file.isEmpty()) {
+				filePath = PathUtil.getClasspath() + Const.FILEPATHIMG + ffile;		//文件上传路径
+				fileName = FileUpload.fileUp(file, filePath, this.get32UUID());				//执行上传
+				System.out.println(">>>>>>>>>>>>");
+			}else{
+				System.out.println("上传失败");
+			}
+			pd.put("CONTRACTPICTURE_ID", this.get32UUID());
+			pd.put("NAME", fileName);
+			pd.put("URL_PIC", filePath);
+			pd.put("CONTRACT_ID", CONTRACT_ID);
+			contractpictureService.save(pd);
+			//Watermark.setWatemark(PathUtil.getClasspath() + Const.FILEPATHIMG + ffile + "/" + fileName);//加水印
+		}
+		map.put("result", "ok");
+		return AppUtil.returnObject(pd, map);
 	}
 	
 	/**删除
@@ -79,57 +122,11 @@ public class ContractController extends BaseController {
 		out.close();
 	}
 	
-	@RequestMapping(value = "/listTree")
-	public ModelAndView listTree() throws Exception {
-		ModelAndView mv = new ModelAndView();
-		// mv.addObject("zNodes", jsStr);
-		mv.setViewName("management/contract/contract_tree");
-		return mv;
-	}
-	
-	@RequestMapping(value = "/dateTree")
-	@ResponseBody
-	public JSONArray dateTree(Page page) {
-		PageData pd = new PageData();
-		pd = this.getPageData();
-		String keywords = pd.getString("keywords"); // 关键词检索条件
-		if (null != keywords && !"".equals(keywords)) {
-			pd.put("keywords", keywords.trim());
-		}
-		page.setPd(pd);
-		JSONArray arr = null;
-		try {
-			arr = JSONArray.fromObject(classifyService.listAll(pd));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		JSONArray jsStr = JSONArray.fromObject(this.makeTree(arr));
-		// System.out.println("====>"+jsStr);
-		return jsStr;
-	}
-
-	@SuppressWarnings("unchecked")
-	public String makeTree(JSONArray arr) {
-		// Check Roles is null
-		StringBuffer sb = new StringBuffer();
-		sb.append("[");
-		Iterator<Object> it = arr.iterator();
-		while (it.hasNext()) {
-			JSONObject ob = (JSONObject) it.next();
-			sb.append("{id:").append(ob.getString("FITEMID")).append(",pId:")
-					.append(ob.getString("FPARENTID")).append(",name:\"")
-					.append(ob.getString("FNAME")).append("\"").append(",open:")
-					.append("true").append("},");
-		}
-		// System.out.println(sb.substring(0,sb.length()-1)+"]");
-		return sb.substring(0, sb.length() - 1) + "]";
-	}
-	
 	/**修改
 	 * @param
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/edit")
+	@RequestMapping(value="/editInfo")
 	public ModelAndView edit() throws Exception{
 		logBefore(logger, Jurisdiction.getUsername()+"修改Contract");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
@@ -175,9 +172,13 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
+		pd.put("CONTRACT_ID",this.get32UUID());
+		List<PageData> listClassify = classifyService.listAll(pd);
 		mv.setViewName("management/contract/contract_edit");
 		mv.addObject("msg", "save");
+		mv.addObject("listClassify", listClassify);
 		mv.addObject("pd", pd);
+		System.out.println(pd);
 		return mv;
 	}	
 	
@@ -191,8 +192,10 @@ public class ContractController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd = contractService.findById(pd);	//根据ID读取
+		List<PageData> listClassify = classifyService.listAll(pd);
 		mv.setViewName("management/contract/contract_edit");
-		mv.addObject("msg", "edit");
+		mv.addObject("msg", "editInfo");
+		mv.addObject("listClassify", listClassify);
 		mv.addObject("pd", pd);
 		return mv;
 	}	
@@ -239,10 +242,18 @@ public class ContractController extends BaseController {
 		titles.add("合同名称");	//1
 		titles.add("合同编号");	//2
 		titles.add("合同金额");	//3
-		titles.add("签约名");	//4
-		titles.add("有效期");	//5
-		titles.add("其他字段1");	//6
-		titles.add("其他字段2");	//7
+		titles.add("签约方");	//4
+		titles.add("合同签订使用时间");	//5
+		titles.add("项目");	//6
+		titles.add("签约时间");	//7
+		titles.add("押金");	//8
+		titles.add("印花税");	//9
+		titles.add("印花税计提月份");	//10
+		titles.add("税目");	//11
+		titles.add("方式");	//12
+		titles.add("经办人");	//13
+		titles.add("合同类型");	//14
+		titles.add("招待票");	//15
 		dataMap.put("titles", titles);
 		List<PageData> varOList = contractService.listAll(pd);
 		List<PageData> varList = new ArrayList<PageData>();
@@ -252,9 +263,17 @@ public class ContractController extends BaseController {
 			vpd.put("var2", varOList.get(i).getString("CONTRACTNUM"));	    //2
 			vpd.put("var3", varOList.get(i).get("CONTRACTPIC").toString());	//3
 			vpd.put("var4", varOList.get(i).getString("CONTRACTOFNAME"));	    //4
-			vpd.put("var5", varOList.get(i).getString("FDATE"));	    //5
-			vpd.put("var6", varOList.get(i).getString("ZDONE"));	    //6
-			vpd.put("var7", varOList.get(i).getString("ZDTWO"));	    //7
+			vpd.put("var5", varOList.get(i).getString("FUSEDATE"));	    //5
+			vpd.put("var6", varOList.get(i).getString("PROJECT"));	    //6
+			vpd.put("var7", varOList.get(i).getString("FDATE"));	    //7
+			vpd.put("var8", varOList.get(i).get("DEPOSIT").toString());	//8
+			vpd.put("var9", varOList.get(i).get("STAMPDUTY").toString());	//9
+			vpd.put("var10", varOList.get(i).getString("STAMPDUTYMONTH"));	    //10
+			vpd.put("var11", varOList.get(i).getString("TAXITEMS"));	    //11
+			vpd.put("var12", varOList.get(i).getString("MODE"));	    //12
+			vpd.put("var13", varOList.get(i).getString("OPERATOR"));	    //13
+			vpd.put("var14", varOList.get(i).getString("CONTRACTTYPES"));	    //14
+			vpd.put("var15", varOList.get(i).getString("INVITATIONTICKET"));	    //15
 			varList.add(vpd);
 		}
 		dataMap.put("varList", varList);

@@ -29,7 +29,7 @@
 				<div class="page-content">
 					<div class="row">
 						<div class="col-xs-12">
-
+							
 						<!-- 检索  -->
 						<form action="contract/list.do" method="post" name="Form" id="Form">
 						<table style="margin-top:5px;">
@@ -59,8 +59,8 @@
 							</tr>
 						</table>
 						<!-- 检索  -->
-
-						<table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+					
+						<table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">	
 							<thead>
 								<tr>
 									<th class="center" style="width:35px;">
@@ -70,16 +70,24 @@
 									<th class="center">合同名称</th>
 									<th class="center">合同编号</th>
 									<th class="center">合同金额</th>
-									<th class="center">签约名</th>
-									<th class="center">有效期</th>
-									<th class="center">其他字段1</th>
-									<th class="center">其他字段2</th>
+									<th class="center">签约方</th>
+									<th class="center">合同签订使用时间</th>
+									<th class="center">项目</th>
+									<th class="center">签约时间</th>
+									<th class="center">押金</th>
+									<th class="center">印花税</th>
+									<th class="center">印花税计提月份</th>
+									<th class="center">税目</th>
+									<th class="center">方式</th>
+									<th class="center">经办人</th>
+									<th class="center">合同类型</th>
+									<th class="center">招待票</th>
 									<th class="center">操作</th>
 								</tr>
 							</thead>
-
+													
 							<tbody>
-							<!-- 开始循环 -->
+							<!-- 开始循环 -->	
 							<c:choose>
 								<c:when test="${not empty varList}">
 									<c:if test="${QX.cha == 1 }">
@@ -93,9 +101,17 @@
 											<td class='center'>${var.CONTRACTNUM}</td>
 											<td class='center'>${var.CONTRACTPIC}</td>
 											<td class='center'>${var.CONTRACTOFNAME}</td>
+											<td class='center'>${var.FUSEDATE}</td>
+											<td class='center'>${var.PROJECT}</td>
 											<td class='center'>${var.FDATE}</td>
-											<td class='center'>${var.ZDONE}</td>
-											<td class='center'>${var.ZDTWO}</td>
+											<td class='center'>${var.DEPOSIT}</td>
+											<td class='center'>${var.STAMPDUTY}</td>
+											<td class='center'>${var.STAMPDUTYMONTH}</td>
+											<td class='center'>${var.TAXITEMS}</td>
+											<td class='center'>${var.MODE}</td>
+											<td class='center'>${var.OPERATOR}</td>
+											<td class='center'>${var.CONTRACTTYPES}</td>
+											<td class='center'>${var.INVITATIONTICKET}</td>
 											<td class="center">
 												<c:if test="${QX.edit != 1 && QX.del != 1 }">
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
@@ -117,7 +133,7 @@
 														<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
 															<i class="ace-icon fa fa-cog icon-only bigger-110"></i>
 														</button>
-
+			
 														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 															<c:if test="${QX.edit == 1 }">
 															<li>
@@ -142,7 +158,7 @@
 												</div>
 											</td>
 										</tr>
-
+									
 									</c:forEach>
 									</c:if>
 									<c:if test="${QX.cha == 0 }">
@@ -175,7 +191,7 @@
 						</table>
 						</div>
 						</form>
-
+					
 						</div>
 						<!-- /.col -->
 					</div>
@@ -215,16 +231,16 @@
 			$("#Form").submit();
 		}
 		$(function() {
-
+		
 			//日期框
 			$('.date-picker').datepicker({
 				autoclose: true,
 				todayHighlight: true
 			});
-
+			
 			//下拉框
 			if(!ace.vars['touch']) {
-				$('.chosen-select').chosen({allow_single_deselect:true});
+				$('.chosen-select').chosen({allow_single_deselect:true}); 
 				$(window)
 				.off('resize.chosen')
 				.on('resize.chosen', function() {
@@ -247,8 +263,8 @@
 					 else $('#form-field-select-4').removeClass('tag-input-style');
 				});
 			}
-
-
+			
+			
 			//复选框全选控制
 			var active_class = 'active';
 			$('#simple-table > thead > tr > th input[type=checkbox]').eq(0).on('click', function(){
@@ -260,7 +276,7 @@
 				});
 			});
 		});
-
+		
 		//新增
 		function add(){
 			 top.jzts();
@@ -268,24 +284,18 @@
 			 diag.Drag=true;
 			 diag.Title ="新增";
 			 diag.URL = '<%=basePath%>contract/goAdd.do';
-			 diag.Width = 450;
-			 diag.Height = 355;
+			diag.Width =  window.innerWidth*0.7;
+			diag.Height = window.innerHeight*0.7;
 			 diag.Modal = true;				//有无遮罩窗口
 			 diag. ShowMaxButton = true;	//最大化按钮
 		     diag.ShowMinButton = true;		//最小化按钮
-			 diag.CancelEvent = function(){ //关闭事件
-				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-					 if('${page.currentPage}' == '0'){
-						 tosearch();
-					 }else{
-						 tosearch();
-					 }
-				}
+			diag.CancelEvent = function(){ //关闭事件
+				tosearch();
 				diag.close();
-			 };
+			};
 			 diag.show();
 		}
-
+		
 		//删除
 		function del(Id){
 			bootbox.confirm("确定要删除吗?", function(result) {
@@ -298,7 +308,7 @@
 				}
 			});
 		}
-
+		
 		//修改
 		function edit(Id){
 			 top.jzts();
@@ -306,20 +316,18 @@
 			 diag.Drag=true;
 			 diag.Title ="编辑";
 			 diag.URL = '<%=basePath%>contract/goEdit.do?CONTRACT_ID='+Id;
-			 diag.Width = 450;
-			 diag.Height = 355;
-			 diag.Modal = true;				//有无遮罩窗口
-			 diag. ShowMaxButton = true;	//最大化按钮
-		     diag.ShowMinButton = true;		//最小化按钮
-			 diag.CancelEvent = function(){ //关闭事件
-				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-					 tosearch();
-				}
+			diag.Width =  window.innerWidth*0.7;
+			diag.Height = window.innerHeight*0.7;
+			diag.Modal = true;				//有无遮罩窗口
+			diag. ShowMaxButton = true;	//最大化按钮
+			diag.ShowMinButton = true;		//最小化按钮
+			diag.CancelEvent = function(){ //关闭事件
+				tosearch();
 				diag.close();
-			 };
-			 diag.show();
+			};
+			diag.show();
 		}
-
+		
 		//批量操作
 		function makeAll(msg){
 			bootbox.confirm(msg, function(result) {
@@ -334,7 +342,7 @@
 					if(str==''){
 						bootbox.dialog({
 							message: "<span class='bigger-110'>您没有选择任何内容!</span>",
-							buttons:
+							buttons: 			
 							{ "button":{ "label":"确定", "className":"btn-sm btn-success"}}
 						});
 						$("#zcheckbox").tips({
@@ -365,7 +373,7 @@
 				}
 			});
 		};
-
+		
 		//导出excel
 		function toExcel(){
 			window.location.href='<%=basePath%>contract/excel.do';

@@ -1,16 +1,16 @@
-package com.fh.service.management.contract;
+package com.fh.service.management.contractpicture;
 
 import java.util.List;
 import com.fh.entity.Page;
 import com.fh.util.PageData;
 
 /** 
- * 说明： 合同管理接口
+ * 说明： 合同图片管理接口
  * 创建人：FH Q313596790
- * 创建时间：2018-04-08
+ * 创建时间：2018-04-09
  * @version
  */
-public interface ContractManager{
+public interface ContractPictureManager{
 
 	/**新增
 	 * @param pd

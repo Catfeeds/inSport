@@ -1,50 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ContractMapper">
+<mapper namespace="ContractPictureMapper">
 	
 	<!--表名 -->
 	<sql id="tableName">
-		TB_CONTRACT
+		TB_CONTRACTPICTURE
 	</sql>
 	
 	<!-- 字段 -->
 	<sql id="Field">
-		CONTRACTNAME,	
-		CONTRACTNUM,	
-		CONTRACTPIC,	
-		CONTRACTOFNAME,	
-		FUSEDATE,	
-		PROJECT,	
-		FDATE,	
-		DEPOSIT,	
-		STAMPDUTY,	
-		STAMPDUTYMONTH,	
-		TAXITEMS,	
-		MODE,	
-		OPERATOR,	
-		CONTRACTTYPES,	
-		INVITATIONTICKET,	
-		CONTRACT_ID
+		NAME,	
+		URL_PIC,	
+		CONTRACT_ID,	
+		REMARK,	
+		NUMBER,	
+		CONTRACTPICTURE_ID
 	</sql>
 	
 	<!-- 字段值 -->
 	<sql id="FieldValue">
-		#{CONTRACTNAME},	
-		#{CONTRACTNUM},	
-		#{CONTRACTPIC},	
-		#{CONTRACTOFNAME},	
-		#{FUSEDATE},	
-		#{PROJECT},	
-		#{FDATE},	
-		#{DEPOSIT},	
-		#{STAMPDUTY},	
-		#{STAMPDUTYMONTH},	
-		#{TAXITEMS},	
-		#{MODE},	
-		#{OPERATOR},	
-		#{CONTRACTTYPES},	
-		#{INVITATIONTICKET},	
-		#{CONTRACT_ID}
+		#{NAME},	
+		#{URL_PIC},	
+		#{CONTRACT_ID},	
+		#{REMARK},	
+		#{NUMBER},	
+		#{CONTRACTPICTURE_ID}
 	</sql>
 	
 	<!-- 新增-->
@@ -63,7 +43,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			CONTRACT_ID = #{CONTRACT_ID}
+			CONTRACTPICTURE_ID = #{CONTRACTPICTURE_ID}
 	</delete>
 	
 	<!-- 修改 -->
@@ -71,24 +51,14 @@
 		update
 		<include refid="tableName"></include>
 		set 
-			CONTRACTNAME = #{CONTRACTNAME},
-			CONTRACTNUM = #{CONTRACTNUM},
-			CONTRACTPIC = #{CONTRACTPIC},
-			CONTRACTOFNAME = #{CONTRACTOFNAME},
-			FUSEDATE = #{FUSEDATE},
-			PROJECT = #{PROJECT},
-			FDATE = #{FDATE},
-			DEPOSIT = #{DEPOSIT},
-			STAMPDUTY = #{STAMPDUTY},
-			STAMPDUTYMONTH = #{STAMPDUTYMONTH},
-			TAXITEMS = #{TAXITEMS},
-			MODE = #{MODE},
-			OPERATOR = #{OPERATOR},
-			CONTRACTTYPES = #{CONTRACTTYPES},
-			INVITATIONTICKET = #{INVITATIONTICKET},
-		CONTRACT_ID = CONTRACT_ID
+			NAME = #{NAME},
+			URL_PIC = #{URL_PIC},
+			CONTRACT_ID = #{CONTRACT_ID},
+			REMARK = #{REMARK},
+			NUMBER = #{NUMBER},
+		CONTRACTPICTURE_ID = CONTRACTPICTURE_ID
 		where 
-		CONTRACT_ID = #{CONTRACT_ID}
+		CONTRACTPICTURE_ID = #{CONTRACTPICTURE_ID}
 	</update>
 	
 	<!-- 通过ID获取数据 -->
@@ -98,7 +68,7 @@
 		from 
 		<include refid="tableName"></include>
 		where 
-			CONTRACT_ID = #{CONTRACT_ID}
+			CONTRACTPICTURE_ID = #{CONTRACTPICTURE_ID}
 	</select>
 	
 	<!-- 列表 -->
@@ -133,7 +103,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			CONTRACT_ID in
+			CONTRACTPICTURE_ID in
 		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
                  #{item}
 		</foreach>
