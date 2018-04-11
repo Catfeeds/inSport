@@ -86,19 +86,18 @@ public class ContractController extends BaseController {
 		Map<String,String> map = new HashMap<String,String>();
 		String  ffile = DateUtil.getDays(), fileName = "";
 		PageData pd = new PageData();
-		System.out.println(CONTRACT_ID);
 		String filePath = "";
 		if(Jurisdiction.buttonJurisdiction(menuUrl, "add")){
 			if (null != file && !file.isEmpty()) {
 				filePath = PathUtil.getClasspath() + Const.FILEPATHIMG + ffile;		//文件上传路径
+				//filePath = "static/images/contract/" + ffile;		//文件上传路径
 				fileName = FileUpload.fileUp(file, filePath, this.get32UUID());				//执行上传
-				System.out.println(">>>>>>>>>>>>");
 			}else{
 				System.out.println("上传失败");
 			}
 			pd.put("CONTRACTPICTURE_ID", this.get32UUID());
 			pd.put("NAME", fileName);
-			pd.put("URL_PIC", filePath);
+			pd.put("URL_PIC", filePath.substring(61,filePath.length())+"/"+fileName);
 			pd.put("CONTRACT_ID", CONTRACT_ID);
 			contractpictureService.save(pd);
 			//Watermark.setWatemark(PathUtil.getClasspath() + Const.FILEPATHIMG + ffile + "/" + fileName);//加水印

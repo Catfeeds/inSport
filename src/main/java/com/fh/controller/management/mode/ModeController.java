@@ -1,12 +1,6 @@
-package com.fh.controller.management.contractpicture;
+package com.fh.controller.management.mode;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,9 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -32,20 +23,20 @@ import com.fh.util.ObjectExcelView;
 import com.fh.util.PageData;
 import com.fh.util.Jurisdiction;
 import com.fh.util.Tools;
-import com.fh.service.management.contractpicture.ContractPictureManager;
+import com.fh.service.management.mode.ModeManager;
 
 /** 
- * 说明：合同图片管理
+ * 说明：方式管理
  * 创建人：FH Q313596790
- * 创建时间：2018-04-09
+ * 创建时间：2018-04-11
  */
 @Controller
-@RequestMapping(value="/contractpicture")
-public class ContractPictureController extends BaseController {
+@RequestMapping(value="/mode")
+public class ModeController extends BaseController {
 	
-	String menuUrl = "contractpicture/list.do"; //菜单地址(权限用)
-	@Resource(name="contractpictureService")
-	private ContractPictureManager contractpictureService;
+	String menuUrl = "mode/list.do"; //菜单地址(权限用)
+	@Resource(name="modeService")
+	private ModeManager modeService;
 	
 	/**保存
 	 * @param
@@ -53,13 +44,13 @@ public class ContractPictureController extends BaseController {
 	 */
 	@RequestMapping(value="/save")
 	public ModelAndView save() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"新增ContractPicture");
+		logBefore(logger, Jurisdiction.getUsername()+"新增Mode");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("CONTRACTPICTURE_ID", this.get32UUID());	//主键
-		contractpictureService.save(pd);
+		pd.put("MODE_ID", this.get32UUID());	//主键
+		modeService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -71,11 +62,11 @@ public class ContractPictureController extends BaseController {
 	 */
 	@RequestMapping(value="/delete")
 	public void delete(PrintWriter out) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"删除ContractPicture");
+		logBefore(logger, Jurisdiction.getUsername()+"删除Mode");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		contractpictureService.delete(pd);
+		modeService.delete(pd);
 		out.write("success");
 		out.close();
 	}
@@ -86,12 +77,12 @@ public class ContractPictureController extends BaseController {
 	 */
 	@RequestMapping(value="/edit")
 	public ModelAndView edit() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"修改ContractPicture");
+		logBefore(logger, Jurisdiction.getUsername()+"修改Mode");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		contractpictureService.edit(pd);
+		modeService.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -103,7 +94,7 @@ public class ContractPictureController extends BaseController {
 	 */
 	@RequestMapping(value="/list")
 	public ModelAndView list(Page page) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"列表ContractPicture");
+		logBefore(logger, Jurisdiction.getUsername()+"列表Mode");
 		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
@@ -113,8 +104,8 @@ public class ContractPictureController extends BaseController {
 			pd.put("keywords", keywords.trim());
 		}
 		page.setPd(pd);
-		List<PageData>	varList = contractpictureService.list(page);	//列出ContractPicture列表
-		mv.setViewName("management/contractpicture/contractpicture_list");
+		List<PageData>	varList = modeService.list(page);	//列出Mode列表
+		mv.setViewName("management/mode/mode_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
@@ -130,7 +121,7 @@ public class ContractPictureController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		mv.setViewName("management/contractpicture/contractpicture_edit");
+		mv.setViewName("management/mode/mode_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
 		return mv;
@@ -145,23 +136,12 @@ public class ContractPictureController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd = contractpictureService.findById(pd);	//根据ID读取
-		mv.setViewName("management/contractpicture/contractpicture_edit");
+		pd = modeService.findById(pd);	//根据ID读取
+		mv.setViewName("management/mode/mode_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;
-	}
-
-	@RequestMapping(value="/listOneContractPic")
-	@ResponseBody
-	public Map<String, Object> listOneContractPic(Page page)throws Exception{
-		Map<String, Object> json = new HashMap<String, Object>();
-		PageData pd = this.getPageData();
-		page.setPd(pd);
-		List<PageData> listOnePic = contractpictureService.listOneContractPic(page);
-		json.put("listOnePic",listOnePic);
-		return json;
-	}
+	}	
 	
 	 /**批量删除
 	 * @param
@@ -170,7 +150,7 @@ public class ContractPictureController extends BaseController {
 	@RequestMapping(value="/deleteAll")
 	@ResponseBody
 	public Object deleteAll() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"批量删除ContractPicture");
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除Mode");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
 		PageData pd = new PageData();		
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -179,7 +159,7 @@ public class ContractPictureController extends BaseController {
 		String DATA_IDS = pd.getString("DATA_IDS");
 		if(null != DATA_IDS && !"".equals(DATA_IDS)){
 			String ArrayDATA_IDS[] = DATA_IDS.split(",");
-			contractpictureService.deleteAll(ArrayDATA_IDS);
+			modeService.deleteAll(ArrayDATA_IDS);
 			pd.put("msg", "ok");
 		}else{
 			pd.put("msg", "no");
@@ -195,28 +175,24 @@ public class ContractPictureController extends BaseController {
 	 */
 	@RequestMapping(value="/excel")
 	public ModelAndView exportExcel() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"导出ContractPicture到excel");
+		logBefore(logger, Jurisdiction.getUsername()+"导出Mode到excel");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		List<String> titles = new ArrayList<String>();
-		titles.add("图片名称");	//1
-		titles.add("图片路径");	//2
-		titles.add("合同id");	//3
-		titles.add("备注");	//4
-		titles.add("序号");	//5
+		titles.add("名称");	//1
+		titles.add("编号");	//2
+		titles.add("备注");	//3
 		dataMap.put("titles", titles);
-		List<PageData> varOList = contractpictureService.listAll(pd);
+		List<PageData> varOList = modeService.listAll(pd);
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
 			vpd.put("var1", varOList.get(i).getString("NAME"));	    //1
-			vpd.put("var2", varOList.get(i).getString("URL_PIC"));	    //2
-			vpd.put("var3", varOList.get(i).getString("CONTRACT_ID"));	    //3
-			vpd.put("var4", varOList.get(i).getString("REMARK"));	    //4
-			vpd.put("var5", varOList.get(i).get("NUMBER").toString());	//5
+			vpd.put("var2", varOList.get(i).getString("NUMBER"));	    //2
+			vpd.put("var3", varOList.get(i).getString("REMARK"));	    //3
 			varList.add(vpd);
 		}
 		dataMap.put("varList", varList);

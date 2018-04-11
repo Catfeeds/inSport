@@ -1,16 +1,16 @@
-package com.fh.service.management.contractpicture;
+package com.fh.service.management.mode;
 
 import java.util.List;
 import com.fh.entity.Page;
 import com.fh.util.PageData;
 
 /** 
- * 说明： 合同图片管理接口
+ * 说明： 方式管理接口
  * 创建人：FH Q313596790
- * 创建时间：2018-04-09
+ * 创建时间：2018-04-11
  * @version
  */
-public interface ContractPictureManager{
+public interface ModeManager{
 
 	/**新增
 	 * @param pd
@@ -35,13 +35,7 @@ public interface ContractPictureManager{
 	 * @throws Exception
 	 */
 	public List<PageData> list(Page page)throws Exception;
-
-	/**列表
-	 * @param page
-	 * @throws Exception
-	 */
-	public List<PageData> listOneContractPic(Page page)throws Exception;
-
+	
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception

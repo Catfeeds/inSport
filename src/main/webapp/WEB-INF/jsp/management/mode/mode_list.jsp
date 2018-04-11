@@ -14,8 +14,6 @@
 <base href="<%=basePath%>">
 <!-- 下拉框 -->
 <link rel="stylesheet" href="static/ace/css/chosen.css" />
-<!-- page specific plugin styles -->
-<link rel="stylesheet" href="static/ace/css/colorbox.css" />
 <!-- jsp文件头和头部 -->
 <%@ include file="../../system/index/top.jsp"%>
 <!-- 日期框 -->
@@ -33,7 +31,7 @@
 						<div class="col-xs-12">
 							
 						<!-- 检索  -->
-						<form action="contract/list.do" method="post" name="Form" id="Form">
+						<form action="mode/list.do" method="post" name="Form" id="Form">
 						<table style="margin-top:5px;">
 							<tr>
 								<td>
@@ -69,21 +67,9 @@
 									<label class="pos-rel"><input type="checkbox" class="ace" id="zcheckbox" /><span class="lbl"></span></label>
 									</th>
 									<th class="center" style="width:50px;">序号</th>
-									<th class="center">合同名称</th>
-									<th class="center">合同编号</th>
-									<th class="center">合同金额</th>
-									<th class="center">签约方</th>
-									<th class="center">合同签订使用时间</th>
-									<th class="center">项目</th>
-									<th class="center">签约时间</th>
-									<th class="center">押金</th>
-									<th class="center">印花税</th>
-									<th class="center">印花税计提月份</th>
-									<th class="center">税目</th>
-									<th class="center">方式</th>
-									<th class="center">经办人</th>
-									<th class="center">合同类型</th>
-									<th class="center">招待票</th>
+									<th class="center">名称</th>
+									<th class="center">编号</th>
+									<th class="center">备注</th>
 									<th class="center">操作</th>
 								</tr>
 							</thead>
@@ -94,43 +80,26 @@
 								<c:when test="${not empty varList}">
 									<c:if test="${QX.cha == 1 }">
 									<c:forEach items="${varList}" var="var" varStatus="vs">
-										<tr onclick="showPic('${var.CONTRACT_ID}')">
+										<tr>
 											<td class='center'>
-												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.CONTRACT_ID}" class="ace" /><span class="lbl"></span></label>
+												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.MODE_ID}" class="ace" /><span class="lbl"></span></label>
 											</td>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
-											<td class='center'>${var.CONTRACTNAME}</td>
-											<td class='center'>${var.CONTRACTNUM}</td>
-											<td class='center'>${var.CONTRACTPIC}</td>
-											<td class='center'>${var.CONTRACTOFNAME}</td>
-											<td class='center'>${var.FUSEDATESTART} - ${var.FUSEDATEENT}</td>
-											<td class='center'>${var.PROJECT}</td>
-											<td class='center'>${var.FDATE}</td>
-											<c:if test="${var.ISSTAMPDUTY == 1 }">
-												<td class='center'>${var.DEPOSIT}</td>
-											</c:if>
-											<c:if test="${var.ISSTAMPDUTY ==  0}">
-												<td class='center'>没有押金</td>
-											</c:if>
-											<td class='center'>${var.STAMPDUTY}</td>
-											<td class='center'>${var.STAMPDUTYMONTH}</td>
-											<td class='center'>${var.TAXITEMS}</td>
-											<td class='center'>${var.MODE}</td>
-											<td class='center'>${var.OPERATOR}</td>
-											<td class='center'>${var.CONTRACTTYPES}</td>
-											<td class='center'>${var.INVITATIONTICKET}</td>
+											<td class='center'>${var.NAME}</td>
+											<td class='center'>${var.NUMBER}</td>
+											<td class='center'>${var.REMARK}</td>
 											<td class="center">
 												<c:if test="${QX.edit != 1 && QX.del != 1 }">
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
 												</c:if>
 												<div class="hidden-sm hidden-xs btn-group">
 													<c:if test="${QX.edit == 1 }">
-													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.CONTRACT_ID}');">
+													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.MODE_ID}');">
 														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
 													</a>
 													</c:if>
 													<c:if test="${QX.del == 1 }">
-													<a class="btn btn-xs btn-danger" onclick="del('${var.CONTRACT_ID}');">
+													<a class="btn btn-xs btn-danger" onclick="del('${var.MODE_ID}');">
 														<i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
 													</a>
 													</c:if>
@@ -144,7 +113,7 @@
 														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 															<c:if test="${QX.edit == 1 }">
 															<li>
-																<a style="cursor:pointer;" onclick="edit('${var.CONTRACT_ID}');" class="tooltip-success" data-rel="tooltip" title="修改">
+																<a style="cursor:pointer;" onclick="edit('${var.MODE_ID}');" class="tooltip-success" data-rel="tooltip" title="修改">
 																	<span class="green">
 																		<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 																	</span>
@@ -153,7 +122,7 @@
 															</c:if>
 															<c:if test="${QX.del == 1 }">
 															<li>
-																<a style="cursor:pointer;" onclick="del('${var.CONTRACT_ID}');" class="tooltip-error" data-rel="tooltip" title="删除">
+																<a style="cursor:pointer;" onclick="del('${var.MODE_ID}');" class="tooltip-error" data-rel="tooltip" title="删除">
 																	<span class="red">
 																		<i class="ace-icon fa fa-trash-o bigger-120"></i>
 																	</span>
@@ -200,18 +169,6 @@
 						</form>
 					
 						</div>
-						<div class="hr hr-16 hr-dotted"></div>
-						<div>
-							<ul class="ace-thumbnails clearfix" id="imgList">
-								<!-- #section:pages/gallery -->
-								<li style="display: none;">
-									<a href="" data-rel="colorbox">
-										<img width="150" height="150" alt="150x150" src="" />
-									</a>
-								</li>
-							</ul>
-						</div><!-- PAGE CONTENT ENDS -->
-
 						<!-- /.col -->
 					</div>
 					<!-- /.row -->
@@ -234,7 +191,6 @@
 	<%@ include file="../../system/index/foot.jsp"%>
 	<!-- 删除时确认窗口 -->
 	<script src="static/ace/js/bootbox.js"></script>
-	<script src="static/ace/js/jquery.colorbox.js"></script>
 	<!-- ace scripts -->
 	<script src="static/ace/js/ace/ace.js"></script>
 	<!-- 下拉框 -->
@@ -245,44 +201,13 @@
 	<script type="text/javascript" src="static/js/jquery.tips.js"></script>
 	<script type="text/javascript">
 		$(top.hangge());//关闭加载状态
-
-		//图片效果
-		jQuery(function($) {
-			var $overflow = '';
-			var colorbox_params = {
-				rel: 'colorbox',
-				reposition:true,
-				scalePhotos:true,
-				scrolling:false,
-				previous:'<i class="ace-icon fa fa-arrow-left"></i>',
-				next:'<i class="ace-icon fa fa-arrow-right"></i>',
-				close:'&times;',
-				current:'{current} of {total}',
-				maxWidth:'100%',
-				maxHeight:'100%',
-				onOpen:function(){
-					$overflow = document.body.style.overflow;
-					document.body.style.overflow = 'hidden';
-				},
-				onClosed:function(){
-					document.body.style.overflow = $overflow;
-				},
-				onComplete:function(){
-					$.colorbox.resize();
-				}
-			};
-
-			$('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
-			$("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange fa-spin'></i>");//let's add a custom loading icon
-
-		});
-
 		//检索
 		function tosearch(){
 			top.jzts();
 			$("#Form").submit();
 		}
 		$(function() {
+		
 			//日期框
 			$('.date-picker').datepicker({
 				autoclose: true,
@@ -327,65 +252,29 @@
 				});
 			});
 		});
-
-		function showPic(CONTRACT_ID){
-			$.ajax({
-				type: "POST",
-				url: '<%=basePath%>contractpicture/listOneContractPic',
-				data: {CONTRACT_ID:CONTRACT_ID},
-				dataType:'json',
-				//beforeSend: validateData,
-				cache: false,
-				success: function(data){
-					$("#imgList").html('');
-					var count = 0;	//总数
-					var html = '';
-					var res = data.listOnePic;
-					for(var i = 0 ;i<res.length;i++){
-						html += '<li>'+
-						'<a href="<%=basePath%>'+res[i].URL_PIC+'" data-rel="colorbox" class="cboxElement">'+
-						'<img width="160" height="160" alt="200x200" src="<%=basePath%>'+res[i].URL_PIC+'" />'+
-						'<div class="text">'+
-						'<div class="inner">点击预览</div>'+
-						'</div>'+
-						'</a>'+
-						'</li>'
-					}
-					$("#imgList").append(html);
-					/*$.each(JSON.parse( data.listOnePic ), function(i, URL_PIC){
-						$("#imgList").append(
-								'<li>'+
-								'<a href="<%=basePath%>'+URL_PIC+'" data-rel="colorbox" class="cboxElement">'+
-								'<img width="150" height="150" alt="150x150" src="<%=basePath%>'+URL_PIC+'" />'+
-								'<div class="text">'+
-								'<div class="inner">FH</div>'+
-								'</div>'+
-								'</a>'+
-								'</li>'
-						);
-						count = i+1;
-					});*/
-					//alert(data.listOnePic);
-				}
-			});
-		}
-
+		
 		//新增
 		function add(){
 			 top.jzts();
 			 var diag = new top.Dialog();
 			 diag.Drag=true;
 			 diag.Title ="新增";
-			 diag.URL = '<%=basePath%>contract/goAdd.do';
-			diag.Width =  window.innerWidth*0.7;
-			diag.Height = window.innerHeight*0.7;
+			 diag.URL = '<%=basePath%>mode/goAdd.do';
+			 diag.Width = 450;
+			 diag.Height = 355;
 			 diag.Modal = true;				//有无遮罩窗口
 			 diag. ShowMaxButton = true;	//最大化按钮
 		     diag.ShowMinButton = true;		//最小化按钮
-			diag.CancelEvent = function(){ //关闭事件
-				tosearch();
+			 diag.CancelEvent = function(){ //关闭事件
+				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
+					 if('${page.currentPage}' == '0'){
+						 tosearch();
+					 }else{
+						 tosearch();
+					 }
+				}
 				diag.close();
-			};
+			 };
 			 diag.show();
 		}
 		
@@ -394,7 +283,7 @@
 			bootbox.confirm("确定要删除吗?", function(result) {
 				if(result) {
 					top.jzts();
-					var url = "<%=basePath%>contract/delete.do?CONTRACT_ID="+Id+"&tm="+new Date().getTime();
+					var url = "<%=basePath%>mode/delete.do?MODE_ID="+Id+"&tm="+new Date().getTime();
 					$.get(url,function(data){
 						tosearch();
 					});
@@ -408,17 +297,19 @@
 			 var diag = new top.Dialog();
 			 diag.Drag=true;
 			 diag.Title ="编辑";
-			 diag.URL = '<%=basePath%>contract/goEdit.do?CONTRACT_ID='+Id;
-			diag.Width =  window.innerWidth*0.7;
-			diag.Height = window.innerHeight*0.7;
-			diag.Modal = true;				//有无遮罩窗口
-			diag. ShowMaxButton = true;	//最大化按钮
-			diag.ShowMinButton = true;		//最小化按钮
-			diag.CancelEvent = function(){ //关闭事件
-				tosearch();
+			 diag.URL = '<%=basePath%>mode/goEdit.do?MODE_ID='+Id;
+			 diag.Width = 450;
+			 diag.Height = 355;
+			 diag.Modal = true;				//有无遮罩窗口
+			 diag. ShowMaxButton = true;	//最大化按钮
+		     diag.ShowMinButton = true;		//最小化按钮 
+			 diag.CancelEvent = function(){ //关闭事件
+				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
+					 tosearch();
+				}
 				diag.close();
-			};
-			diag.show();
+			 };
+			 diag.show();
 		}
 		
 		//批量操作
@@ -450,7 +341,7 @@
 							top.jzts();
 							$.ajax({
 								type: "POST",
-								url: '<%=basePath%>contract/deleteAll.do?tm='+new Date().getTime(),
+								url: '<%=basePath%>mode/deleteAll.do?tm='+new Date().getTime(),
 						    	data: {DATA_IDS:str},
 								dataType:'json',
 								//beforeSend: validateData,
@@ -469,7 +360,7 @@
 		
 		//导出excel
 		function toExcel(){
-			window.location.href='<%=basePath%>contract/excel.do';
+			window.location.href='<%=basePath%>mode/excel.do';
 		}
 	</script>
 

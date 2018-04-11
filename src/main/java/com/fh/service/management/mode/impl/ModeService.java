@@ -1,4 +1,4 @@
-package com.fh.service.management.contractpicture.impl;
+package com.fh.service.management.mode.impl;
 
 import java.util.List;
 import javax.annotation.Resource;
@@ -6,16 +6,16 @@ import org.springframework.stereotype.Service;
 import com.fh.dao.DaoSupport;
 import com.fh.entity.Page;
 import com.fh.util.PageData;
-import com.fh.service.management.contractpicture.ContractPictureManager;
+import com.fh.service.management.mode.ModeManager;
 
 /** 
- * 说明： 合同图片管理
+ * 说明： 方式管理
  * 创建人：FH Q313596790
- * 创建时间：2018-04-09
+ * 创建时间：2018-04-11
  * @version
  */
-@Service("contractpictureService")
-public class ContractPictureService implements ContractPictureManager{
+@Service("modeService")
+public class ModeService implements ModeManager{
 
 	@Resource(name = "daoSupport")
 	private DaoSupport dao;
@@ -25,7 +25,7 @@ public class ContractPictureService implements ContractPictureManager{
 	 * @throws Exception
 	 */
 	public void save(PageData pd)throws Exception{
-		dao.save("ContractPictureMapper.save", pd);
+		dao.save("ModeMapper.save", pd);
 	}
 	
 	/**删除
@@ -33,7 +33,7 @@ public class ContractPictureService implements ContractPictureManager{
 	 * @throws Exception
 	 */
 	public void delete(PageData pd)throws Exception{
-		dao.delete("ContractPictureMapper.delete", pd);
+		dao.delete("ModeMapper.delete", pd);
 	}
 	
 	/**修改
@@ -41,7 +41,7 @@ public class ContractPictureService implements ContractPictureManager{
 	 * @throws Exception
 	 */
 	public void edit(PageData pd)throws Exception{
-		dao.update("ContractPictureMapper.edit", pd);
+		dao.update("ModeMapper.edit", pd);
 	}
 	
 	/**列表
@@ -50,25 +50,16 @@ public class ContractPictureService implements ContractPictureManager{
 	 */
 	@SuppressWarnings("unchecked")
 	public List<PageData> list(Page page)throws Exception{
-		return (List<PageData>)dao.findForList("ContractPictureMapper.datalistPage", page);
+		return (List<PageData>)dao.findForList("ModeMapper.datalistPage", page);
 	}
-
-	/**列表
-	 * @param page
-	 * @throws Exception
-	 */
-	@SuppressWarnings("unchecked")
-	public List<PageData> listOneContractPic(Page page)throws Exception{
-		return (List<PageData>)dao.findForList("ContractPictureMapper.listOneContractPic", page);
-	}
-
+	
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
 	public List<PageData> listAll(PageData pd)throws Exception{
-		return (List<PageData>)dao.findForList("ContractPictureMapper.listAll", pd);
+		return (List<PageData>)dao.findForList("ModeMapper.listAll", pd);
 	}
 	
 	/**通过id获取数据
@@ -76,7 +67,7 @@ public class ContractPictureService implements ContractPictureManager{
 	 * @throws Exception
 	 */
 	public PageData findById(PageData pd)throws Exception{
-		return (PageData)dao.findForObject("ContractPictureMapper.findById", pd);
+		return (PageData)dao.findForObject("ModeMapper.findById", pd);
 	}
 	
 	/**批量删除
@@ -84,7 +75,7 @@ public class ContractPictureService implements ContractPictureManager{
 	 * @throws Exception
 	 */
 	public void deleteAll(String[] ArrayDATA_IDS)throws Exception{
-		dao.delete("ContractPictureMapper.deleteAll", ArrayDATA_IDS);
+		dao.delete("ModeMapper.deleteAll", ArrayDATA_IDS);
 	}
 	
 }

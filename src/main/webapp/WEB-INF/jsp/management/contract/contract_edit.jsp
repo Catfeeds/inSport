@@ -43,6 +43,7 @@
 						<!-- ------------------------------------------------------------------------------- -->
 						<form action="contract/${msg }.do" name="Form" id="Form" method="post">
 							<input type="hidden" name="CONTRACT_ID" id="CONTRACT_ID" value="${pd.CONTRACT_ID}"/>
+							<input type="hidden" name="ISSTAMPDUTY" id="ISSTAMPDUTY" value="${pd.ISSTAMPDUTY}"/>
 							<table class="table table-border table-bg table-bordered">
 								<tbody>
 								<tr class="warning">
@@ -75,24 +76,25 @@
 									<th ><input type="text" style="width: 150px" value="${pd.CONTRACTOFNAME}"
 												class="input-text"  name="CONTRACTOFNAME"
 												id="CONTRACTOFNAME"></th>
-									<th  ><label>合同签订使用时间：</label></th>
-									<th  ><input type="date" style="width: 150px;height: 31px" value="${pd.FUSEDATE}"
-												 class="input-date"  name="FUSEDATE"
-												 id="FUSEDATE"></th>
-									<th  ><label>项目：</label></th>
-									<th  ><input type="text" style="width: 150px" value="${pd.PROJECT}"
-												 class="input-text"  name="PROJECT"
-												 id="PROJECT"></th>
+									<th  ><label>是否有押金：</label></th>
+									<th  >
+										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio" id="form-field-radio1" onclick="isSTAMPDUTY('1');" <c:if test="${pd.ISSTAMPDUTY == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>
+										<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio" id="form-field-radio2" onclick="isSTAMPDUTY('0');" <c:if test="${pd.ISSTAMPDUTY == '0' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">否</span></label>
+									</th>
+									<th width="15%"><label>押金：</label></th>
+									<th width="20%"><input type="number" style="width: 150px" value="${pd.DEPOSIT}"
+														   class="input-text"  name="DEPOSIT"
+														   id="DEPOSIT"></th>
 								</tr>
 								<tr class="success">
 									<th ><label>签约时间：</label></th>
 									<th  ><input type="date" style="width: 150px;height: 31px" value="${pd.FDATE}"
 												 class="input-text"  name="FDATE"
 												 id="FDATE"></th>
-									<th width="15%"><label>押金：</label></th>
-									<th width="20%"><input type="number" style="width: 150px" value="${pd.DEPOSIT}"
-														   class="input-text"  name="DEPOSIT"
-														   id="DEPOSIT"></th>
+									<th  ><label>项目：</label></th>
+									<th  ><input type="text" style="width: 150px" value="${pd.PROJECT}"
+												 class="input-text"  name="PROJECT"
+												 id="PROJECT"></th>
 									<th width="10%" ><label>印花税：</label></th>
 									<th  ><input type="text" style="width: 150px" value="${pd.STAMPDUTY}"
 												 class="input-text"  name="STAMPDUTY"
@@ -135,6 +137,19 @@
 									<th  ><input type="text" style="width: 150px" value="${pd.INVITATIONTICKET}"
 												 class="input-text"  name="INVITATIONTICKET"
 												 id="INVITATIONTICKET"></th>
+								</tr>
+								<tr class="success">
+									<th  ><label>合同签订使用时间：</label></th>
+									<th  colspan="2">
+										<label>
+											<input type="date" style="width: 150px;height: 31px" value="${pd.FUSEDATESTART}"
+												   class="input-date"  name="FUSEDATESTART"
+												   id="FUSEDATESTART">
+											- <input type="date" style="width: 150px;height: 31px" value="${pd.FUSEDATEENT}"
+													 class="input-date"  name="FUSEDATEENT"
+													 id="FUSEDATEENT">
+										</label>
+									</th>
 								</tr>
 								</tbody>
 							</table>
@@ -186,6 +201,17 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
 	$(top.hangge());
+
+	function isSTAMPDUTY(num){
+		$("#ISSTAMPDUTY").val(num);
+		if( num == "1"){
+			$("#DEPOSIT").removeAttr("readonly");
+		}else{
+			$("#DEPOSIT").attr("readonly","readonly");
+		}
+
+	}
+
 
 	function selectPic(CONTRACT_ID){
 		var diag = new top.Dialog();
@@ -293,15 +319,17 @@
 			$("#FDATE").focus();
 			return false;
 		}
-		if($("#DEPOSIT").val()==""){
-			$("#DEPOSIT").tips({
-				side:3,
-				msg:'请输入押金',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#DEPOSIT").focus();
-			return false;
+		if($("#DEPOSIT").attr("readonly") != "readonly"){
+			if($("#DEPOSIT").val()==""){
+				$("#DEPOSIT").tips({
+					side:3,
+					msg:'请输入押金',
+					bg:'#AE81FF',
+					time:2
+				});
+				$("#DEPOSIT").focus();
+				return false;
+			}
 		}
 		if($("#STAMPDUTY").val()==""){
 			$("#STAMPDUTY").tips({
