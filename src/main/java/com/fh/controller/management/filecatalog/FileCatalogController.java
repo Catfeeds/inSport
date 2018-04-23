@@ -78,7 +78,7 @@ public class FileCatalogController extends BaseController {
 				sb.append("{id:").append(ob.getString("FITEMID")).append(",pId:")
 						.append(ob.getString("FPARENTID")).append(",name:\"")
 						.append(ob.getString("FNAME")).append("\"")
-						.append(",open:").append("false").append("},");
+						.append(",open:").append("true").append("},");
 			}
 			return sb.substring(0, sb.length() - 1) + "]";
 		}catch (Exception e){
@@ -170,8 +170,11 @@ public class FileCatalogController extends BaseController {
 	public ModelAndView goAdd()throws Exception{
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
-		System.out.println(pd);
+		PageData pd1 = filecatalogService.findMax_Fitemid(pd);
 		pd = this.getPageData();
+		int FITEMID = Integer.parseInt(pd1.get("FITEMID").toString())+1;
+		pd.put("FITEMID",FITEMID);
+		System.out.println(pd);
 		mv.setViewName("management/filecatalog/filecatalog_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);

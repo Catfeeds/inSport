@@ -70,7 +70,11 @@
 		where 
 			FILECATALOG_ID = #{FILECATALOG_ID}
 	</select>
-	
+
+	<select id="findMax_Fitemid" parameterType="pd" resultType="pd">
+		SELECT MAX(FITEMID) as FITEMID from TB_FILECATALOG
+	</select>
+
 	<!-- 列表 -->
 	<select id="datalistPage" parameterType="page" resultType="pd">
 		select

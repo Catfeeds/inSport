@@ -29,23 +29,24 @@
 					
 					<form action="filecatalog/${msg }.do" name="Form" id="Form" method="post">
 						<input type="hidden" name="FILECATALOG_ID" id="FILECATALOG_ID" value="${pd.FILECATALOG_ID}"/>
+						<input type="hidden" name="FPARENTID" id="FPARENTID" value="${pd.FPARENTID}"/>
 						<div id="zhongxin" style="padding-top: 13px;">
 						<table id="table_report" class="table table-striped table-bordered table-hover">
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">FITEMID:</td>
-								<td><input type="number" name="FITEMID" id="FITEMID" value="${pd.FITEMID}" maxlength="32" placeholder="这里输入FITEMID" title="FITEMID" style="width:98%;"/></td>
+								<td><input readonly="readonly" type="number" name="FITEMID" id="FITEMID" value="${pd.FITEMID}" maxlength="32" placeholder="这里输入FITEMID" title="FITEMID" style="width:98%;"/></td>
 							</tr>
-							<tr>
+							<%--<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">FNUMBER:</td>
 								<td><input type="text" name="FNUMBER" id="FNUMBER" value="${pd.FNUMBER}" maxlength="255" placeholder="这里输入FNUMBER" title="FNUMBER" style="width:98%;"/></td>
-							</tr>
+							</tr>--%>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">名称:</td>
 								<td><input type="text" name="FNAME" id="FNAME" value="${pd.FNAME}" maxlength="255" placeholder="这里输入名称" title="名称" style="width:98%;"/></td>
 							</tr>
 							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">FPARENTID:</td>
-								<td><input readonly="readonly" type="number" name="FPARENTID" id="FPARENTID" value="${pd.FPARENTID}" maxlength="32" placeholder="这里输入FPARENTID" title="FPARENTID" style="width:98%;"/></td>
+								<td style="width:75px;text-align: right;padding-top: 13px;">上级目录:</td>
+								<td><input readonly="readonly" type="text" name=""  value="${pd.PNAME}" maxlength="32" placeholder="这里输入FPARENTID" title="FPARENTID" style="width:98%;"/></td>
 							</tr>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">备注:</td>

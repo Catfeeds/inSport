@@ -118,20 +118,37 @@
         callback: {
             onRightClick : function(event, treeId, treeNode) {
                 var FPARENTID = treeNode.id;
+                var PNAME = treeNode.name;
                 top.jzts();
                 var diag = new top.Dialog();
                 diag.Drag=true;
                 diag.Title ="新增目录";
-                diag.URL = '<%=basePath%>filecatalog/goAdd.do?FPARENTID='+FPARENTID;
+                diag.URL = '<%=basePath%>filecatalog/goAdd.do?FPARENTID='+FPARENTID+"&PNAME="+PNAME;
                 diag.Width = 450;
                 diag.Height = 355;
                 diag.Modal = true;				//有无遮罩窗口
                 diag. ShowMaxButton = true;	//最大化按钮
                 diag.ShowMinButton = true;		//最小化按钮
                 diag.CancelEvent = function(){ //关闭事件
-                    if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-                        tosearch();
-                    }
+                    $.ajax({
+                        async: false,
+                        cache: false,
+                        type: 'POST',
+                        //dataType:"String",
+                        url: '<%=basePath%>filecatalog/dateTree',
+                        success: function (data) {
+                            //alert(data) ;
+                            zNodes = data;
+                        },
+                        error: function () {
+                            alert("请求失败");
+                        }
+                    });
+                    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                    var hmainT = document.getElementById("treeFrame");
+                    var bheightT = document.documentElement.clientHeight;
+                    hmainT.style.width = '100%';
+                    hmainT.style.height = (bheightT - 50) + 'px';
                     diag.close();
                 };
                 diag.show();

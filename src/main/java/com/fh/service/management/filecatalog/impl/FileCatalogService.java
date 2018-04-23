@@ -69,7 +69,11 @@ public class FileCatalogService implements FileCatalogManager{
 	public PageData findById(PageData pd)throws Exception{
 		return (PageData)dao.findForObject("FileCatalogMapper.findById", pd);
 	}
-	
+
+	public PageData findMax_Fitemid(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("FileCatalogMapper.findMax_Fitemid", pd);
+	}
+
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception
