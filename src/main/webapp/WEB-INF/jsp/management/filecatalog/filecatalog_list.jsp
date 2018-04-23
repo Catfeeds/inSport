@@ -31,7 +31,7 @@
 						<div class="col-xs-12">
 							
 						<!-- 检索  -->
-						<form action="filemeans/list.do" method="post" name="Form" id="Form">
+						<form action="filecatalog/list.do" method="post" name="Form" id="Form">
 						<table style="margin-top:5px;">
 							<tr>
 								<td>
@@ -67,14 +67,10 @@
 									<label class="pos-rel"><input type="checkbox" class="ace" id="zcheckbox" /><span class="lbl"></span></label>
 									</th>
 									<th class="center" style="width:50px;">序号</th>
-									<th class="center">文件名称</th>
-									<th class="center">文件路径</th>
-									<th class="center">文件创建时间</th>
-									<th class="center">文件权限</th>
-									<th class="center">文件类型</th>
-									<th class="center">文件创建人员</th>
-									<th class="center">文件下载次数</th>
-									<th class="center">文件查阅次数</th>
+									<th class="center">FITEMID</th>
+									<th class="center">FNUMBER</th>
+									<th class="center">名称</th>
+									<th class="center">FPARENTID</th>
 									<th class="center">备注</th>
 									<th class="center">操作</th>
 								</tr>
@@ -88,30 +84,26 @@
 									<c:forEach items="${varList}" var="var" varStatus="vs">
 										<tr>
 											<td class='center'>
-												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.FILEMEANS_ID}" class="ace" /><span class="lbl"></span></label>
+												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.FILECATALOG_ID}" class="ace" /><span class="lbl"></span></label>
 											</td>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
-											<td class='center'>${var.FILENAME}</td>
-											<td class='center'>${var.FILE_URL}</td>
-											<td class='center'>${var.FILE_CREATETIME}</td>
-											<td class='center'>${var.FILE_JURISDICTION}</td>
-											<td class='center'>${var.FILE_TYPE}</td>
-											<td class='center'>${var.FILE_CREATEUSER}</td>
-											<td class='center'>${var.FILE_DOWNLOAD}</td>
-											<td class='center'>${var.FILE_READ}</td>
-											<td class='center'>${var.FILE_REMARK}</td>
+											<td class='center'>${var.FITEMID}</td>
+											<td class='center'>${var.FNUMBER}</td>
+											<td class='center'>${var.FNAME}</td>
+											<td class='center'>${var.FPARENTID}</td>
+											<td class='center'>${var.FREMAK}</td>
 											<td class="center">
 												<c:if test="${QX.edit != 1 && QX.del != 1 }">
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
 												</c:if>
 												<div class="hidden-sm hidden-xs btn-group">
 													<c:if test="${QX.edit == 1 }">
-													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.FILEMEANS_ID}');">
+													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.FILECATALOG_ID}');">
 														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
 													</a>
 													</c:if>
 													<c:if test="${QX.del == 1 }">
-													<a class="btn btn-xs btn-danger" onclick="del('${var.FILEMEANS_ID}');">
+													<a class="btn btn-xs btn-danger" onclick="del('${var.FILECATALOG_ID}');">
 														<i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
 													</a>
 													</c:if>
@@ -125,7 +117,7 @@
 														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 															<c:if test="${QX.edit == 1 }">
 															<li>
-																<a style="cursor:pointer;" onclick="edit('${var.FILEMEANS_ID}');" class="tooltip-success" data-rel="tooltip" title="修改">
+																<a style="cursor:pointer;" onclick="edit('${var.FILECATALOG_ID}');" class="tooltip-success" data-rel="tooltip" title="修改">
 																	<span class="green">
 																		<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 																	</span>
@@ -134,7 +126,7 @@
 															</c:if>
 															<c:if test="${QX.del == 1 }">
 															<li>
-																<a style="cursor:pointer;" onclick="del('${var.FILEMEANS_ID}');" class="tooltip-error" data-rel="tooltip" title="删除">
+																<a style="cursor:pointer;" onclick="del('${var.FILECATALOG_ID}');" class="tooltip-error" data-rel="tooltip" title="删除">
 																	<span class="red">
 																		<i class="ace-icon fa fa-trash-o bigger-120"></i>
 																	</span>
@@ -271,20 +263,20 @@
 			 var diag = new top.Dialog();
 			 diag.Drag=true;
 			 diag.Title ="新增";
-			 diag.URL = '<%=basePath%>filemeans/goAdd.do';
-			diag.Width =  window.innerWidth*0.7;
-			diag.Height = window.innerHeight*0.7;
+			 diag.URL = '<%=basePath%>filecatalog/goAdd.do';
+			 diag.Width = 450;
+			 diag.Height = 355;
 			 diag.Modal = true;				//有无遮罩窗口
 			 diag. ShowMaxButton = true;	//最大化按钮
 		     diag.ShowMinButton = true;		//最小化按钮
 			 diag.CancelEvent = function(){ //关闭事件
-				/* if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
+				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
 					 if('${page.currentPage}' == '0'){
 						 tosearch();
 					 }else{
 						 tosearch();
 					 }
-				}*/
+				}
 				diag.close();
 			 };
 			 diag.show();
@@ -295,7 +287,7 @@
 			bootbox.confirm("确定要删除吗?", function(result) {
 				if(result) {
 					top.jzts();
-					var url = "<%=basePath%>filemeans/delete.do?FILEMEANS_ID="+Id+"&tm="+new Date().getTime();
+					var url = "<%=basePath%>filecatalog/delete.do?FILECATALOG_ID="+Id+"&tm="+new Date().getTime();
 					$.get(url,function(data){
 						tosearch();
 					});
@@ -309,16 +301,16 @@
 			 var diag = new top.Dialog();
 			 diag.Drag=true;
 			 diag.Title ="编辑";
-			 diag.URL = '<%=basePath%>filemeans/goEdit.do?FILEMEANS_ID='+Id;
-			diag.Width =  window.innerWidth*0.7;
-			diag.Height = window.innerHeight*0.7;
+			 diag.URL = '<%=basePath%>filecatalog/goEdit.do?FILECATALOG_ID='+Id;
+			 diag.Width = 450;
+			 diag.Height = 355;
 			 diag.Modal = true;				//有无遮罩窗口
 			 diag. ShowMaxButton = true;	//最大化按钮
 		     diag.ShowMinButton = true;		//最小化按钮 
 			 diag.CancelEvent = function(){ //关闭事件
-				/* if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
+				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
 					 tosearch();
-				}*/
+				}
 				diag.close();
 			 };
 			 diag.show();
@@ -353,7 +345,7 @@
 							top.jzts();
 							$.ajax({
 								type: "POST",
-								url: '<%=basePath%>filemeans/deleteAll.do?tm='+new Date().getTime(),
+								url: '<%=basePath%>filecatalog/deleteAll.do?tm='+new Date().getTime(),
 						    	data: {DATA_IDS:str},
 								dataType:'json',
 								//beforeSend: validateData,
@@ -372,7 +364,7 @@
 		
 		//导出excel
 		function toExcel(){
-			window.location.href='<%=basePath%>filemeans/excel.do';
+			window.location.href='<%=basePath%>filecatalog/excel.do';
 		}
 	</script>
 

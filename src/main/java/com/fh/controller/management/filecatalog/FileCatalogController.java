@@ -1,4 +1,4 @@
-package com.fh.controller.management.classify;
+package com.fh.controller.management.filecatalog;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -22,27 +22,27 @@ import com.fh.util.ObjectExcelView;
 import com.fh.util.PageData;
 import com.fh.util.Jurisdiction;
 import com.fh.util.Tools;
-import com.fh.service.management.classify.ClassifyManager;
+import com.fh.service.management.filecatalog.FileCatalogManager;
 
 /** 
- * 说明：合同分类
+ * 说明：文件目录
  * 创建人：FH Q313596790
- * 创建时间：2018-03-22
+ * 创建时间：2018-04-23
  */
 @Controller
-@RequestMapping(value="/classify")
-public class ClassifyController extends BaseController {
+@RequestMapping(value="/filecatalog")
+public class FileCatalogController extends BaseController {
 	
-	String menuUrl = "classify/list.do"; //菜单地址(权限用)
-	@Resource(name="classifyService")
-	private ClassifyManager classifyService;
+	String menuUrl = "filecatalog/list.do"; //菜单地址(权限用)
+	@Resource(name="filecatalogService")
+	private FileCatalogManager filecatalogService;
 
 	// 树
 	@RequestMapping(value = "/listTree")
 	public ModelAndView listTree() throws Exception {
 		ModelAndView mv = new ModelAndView();
 		// mv.addObject("zNodes", jsStr);
-		mv.setViewName("management/classify_item/classify_item_tree");
+		mv.setViewName("management/filecatalog/filecatalog_tree");
 		return mv;
 	}
 
@@ -58,43 +58,49 @@ public class ClassifyController extends BaseController {
 		page.setPd(pd);
 		JSONArray arr = null;
 		try {
-			arr = JSONArray.fromObject(classifyService.listAll(pd));
+			arr = JSONArray.fromObject(filecatalogService.listAll(pd));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		JSONArray jsStr = JSONArray.fromObject(this.makeTree(arr));
-		System.out.println(jsStr);
+		//System.out.println(jsStr);
 		return jsStr;
 	}
 
 	@SuppressWarnings("unchecked")
 	public String makeTree(JSONArray arr) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("[");
-		Iterator<Object> it = arr.iterator();
-		while (it.hasNext()) {
-			JSONObject ob = (JSONObject) it.next();
-			sb.append("{id:").append(ob.getString("FITEMID")).append(",pId:")
-					.append(ob.getString("FPARENTID")).append(",name:\"")
-					.append(ob.getString("FNAME")).append("\"")
-					.append(",open:").append("false").append("},");
+		try {
+			sb.append("[");
+			Iterator<Object> it = arr.iterator();
+			while (it.hasNext()) {
+				JSONObject ob = (JSONObject) it.next();
+				sb.append("{id:").append(ob.getString("FITEMID")).append(",pId:")
+						.append(ob.getString("FPARENTID")).append(",name:\"")
+						.append(ob.getString("FNAME")).append("\"")
+						.append(",open:").append("false").append("},");
+			}
+			return sb.substring(0, sb.length() - 1) + "]";
+		}catch (Exception e){
+			System.out.println("");
 		}
-		return sb.substring(0, sb.length() - 1) + "]";
+
+		return "";
 	}
-	
+
 	/**保存
 	 * @param
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/save")
 	public ModelAndView save() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"新增Classify");
+		logBefore(logger, Jurisdiction.getUsername()+"新增FileCatalog");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("CLASSIFY_ID", this.get32UUID());	//主键
-		classifyService.save(pd);
+		pd.put("FILECATALOG_ID", this.get32UUID());	//主键
+		filecatalogService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -106,11 +112,11 @@ public class ClassifyController extends BaseController {
 	 */
 	@RequestMapping(value="/delete")
 	public void delete(PrintWriter out) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"删除Classify");
+		logBefore(logger, Jurisdiction.getUsername()+"删除FileCatalog");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		classifyService.delete(pd);
+		filecatalogService.delete(pd);
 		out.write("success");
 		out.close();
 	}
@@ -121,12 +127,12 @@ public class ClassifyController extends BaseController {
 	 */
 	@RequestMapping(value="/edit")
 	public ModelAndView edit() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"修改Classify");
+		logBefore(logger, Jurisdiction.getUsername()+"修改FileCatalog");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		classifyService.edit(pd);
+		filecatalogService.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -138,19 +144,18 @@ public class ClassifyController extends BaseController {
 	 */
 	@RequestMapping(value="/list")
 	public ModelAndView list(Page page) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"列表Classify");
+		logBefore(logger, Jurisdiction.getUsername()+"列表FileCatalog");
 		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		System.out.printf("---------");
 		String keywords = pd.getString("keywords");				//关键词检索条件
 		if(null != keywords && !"".equals(keywords)){
 			pd.put("keywords", keywords.trim());
 		}
 		page.setPd(pd);
-		List<PageData>	varList = classifyService.list(page);	//列出Classify列表
-		mv.setViewName("management/classify/classify_list");
+		List<PageData>	varList = filecatalogService.list(page);	//列出FileCatalog列表
+		mv.setViewName("management/filecatalog/filecatalog_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
@@ -165,8 +170,9 @@ public class ClassifyController extends BaseController {
 	public ModelAndView goAdd()throws Exception{
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
+		System.out.println(pd);
 		pd = this.getPageData();
-		mv.setViewName("management/classify/classify_edit");
+		mv.setViewName("management/filecatalog/filecatalog_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
 		return mv;
@@ -181,8 +187,8 @@ public class ClassifyController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd = classifyService.findById(pd);	//根据ID读取
-		mv.setViewName("management/classify/classify_edit");
+		pd = filecatalogService.findById(pd);	//根据ID读取
+		mv.setViewName("management/filecatalog/filecatalog_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;
@@ -195,7 +201,7 @@ public class ClassifyController extends BaseController {
 	@RequestMapping(value="/deleteAll")
 	@ResponseBody
 	public Object deleteAll() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"批量删除Classify");
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除FileCatalog");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
 		PageData pd = new PageData();		
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -204,7 +210,7 @@ public class ClassifyController extends BaseController {
 		String DATA_IDS = pd.getString("DATA_IDS");
 		if(null != DATA_IDS && !"".equals(DATA_IDS)){
 			String ArrayDATA_IDS[] = DATA_IDS.split(",");
-			classifyService.deleteAll(ArrayDATA_IDS);
+			filecatalogService.deleteAll(ArrayDATA_IDS);
 			pd.put("msg", "ok");
 		}else{
 			pd.put("msg", "no");
@@ -220,7 +226,7 @@ public class ClassifyController extends BaseController {
 	 */
 	@RequestMapping(value="/excel")
 	public ModelAndView exportExcel() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"导出Classify到excel");
+		logBefore(logger, Jurisdiction.getUsername()+"导出FileCatalog到excel");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
@@ -233,7 +239,7 @@ public class ClassifyController extends BaseController {
 		titles.add("FPARENTID");	//4
 		titles.add("备注");	//5
 		dataMap.put("titles", titles);
-		List<PageData> varOList = classifyService.listAll(pd);
+		List<PageData> varOList = filecatalogService.listAll(pd);
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
