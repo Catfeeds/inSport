@@ -110,9 +110,15 @@
 														   class="input-text"  name="TAXITEMS"
 														   id="TAXITEMS"></th>
 									<th width="15%"><label>方式：</label></th>
-									<th width="20%"><input type="number" style="width: 150px" value="${pd.MODE}"
-														   class="input-text"  name="MODE"
-														   id="MODE"></th>
+									<th width="10%">
+										<select name="MODE" id="MODE" data-placeholder=""
+												style="vertical-align:top;width: 150px;" onchange="selectType(this.value)">
+											<option value="${pd.MODE}" name="${pd.MODE}">${pd.MODE}</option>
+											<c:forEach items="${listMode}" var="var" varStatus="vs">
+												<option value="${var.NAME}" name="${var.NAME}">${var.NAME}</option>
+											</c:forEach>
+										</select>
+									</th>
 								</tr>
 								<tr class="active">
 									<th ><label>经办人：</label></th>
@@ -122,14 +128,10 @@
 									<th  ><label>合同类型：</label></th>
 									<th width="10%">
 										<select name="CONTRACTTYPES" id="CONTRACTTYPES" data-placeholder=""
-												style="vertical-align:top;width: 150px;" onchange="selectType(this.value)">
+												style="vertical-align:top;width: 150px;" onchange="selectType(this.value);toType(this.value) ">
 											<option value="${pd.CONTRACTTYPES}" name="${pd.CONTRACTTYPES}">${pd.CONTRACTTYPES}</option>
 											<c:forEach items="${listClassify}" var="var" varStatus="vs">
 												<option value="${var.FNAME}" name="${var.FITEMID}">${var.FNAME}</option>
-												<!-- <option value="single">单表</option>
-												<option value="tree">树形</option>
-												<option value="fathertable">主表</option>
-												<option value="sontable">明细表</option> -->
 											</c:forEach>
 										</select>
 									</th>
@@ -160,7 +162,7 @@
 							<div style="width: 100%" align="center">
 								<br>
 								<p>
-									<input onclick="selectPic('${pd.CONTRACT_ID}')" style="width: 50%;" value="选择附件" class="btn btn-success btn-block"></input>
+									<input onclick="selectPic('${pd.CONTRACT_ID}')" style="width: 50%;" value="选择附件" class="btn btn-success btn-block"/>
 								</p>
 							</div>
 
@@ -201,6 +203,10 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
 	$(top.hangge());
+	
+	function toType() {
+
+	}
 
 	function isSTAMPDUTY(num){
 		$("#ISSTAMPDUTY").val(num);

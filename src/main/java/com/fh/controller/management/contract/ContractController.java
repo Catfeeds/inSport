@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 
 import com.fh.service.management.classify.ClassifyManager;
 import com.fh.service.management.contractpicture.ContractPictureManager;
+import com.fh.service.management.mode.ModeManager;
 import com.fh.util.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -44,6 +45,9 @@ public class ContractController extends BaseController {
 
 	@Resource(name="contractpictureService")
 	private ContractPictureManager contractpictureService;
+
+	@Resource(name="modeService")
+	private ModeManager modeService;
 	
 	/**保存
 	 * @param
@@ -90,6 +94,7 @@ public class ContractController extends BaseController {
 		if(Jurisdiction.buttonJurisdiction(menuUrl, "add")){
 			if (null != file && !file.isEmpty()) {
 				filePath = PathUtil.getClasspath() + Const.FILEPATHIMG + ffile;		//文件上传路径
+				System.out.println(filePath);
 				//filePath = "static/images/contract/" + ffile;		//文件上传路径
 				fileName = FileUpload.fileUp(file, filePath, this.get32UUID());				//执行上传
 			}else{
@@ -97,7 +102,7 @@ public class ContractController extends BaseController {
 			}
 			pd.put("CONTRACTPICTURE_ID", this.get32UUID());
 			pd.put("NAME", fileName);
-			pd.put("URL_PIC", filePath.substring(61,filePath.length())+"/"+fileName);
+			pd.put("URL_PIC", filePath.substring(47,filePath.length())+"/"+fileName);
 			pd.put("CONTRACT_ID", CONTRACT_ID);
 			contractpictureService.save(pd);
 			//Watermark.setWatemark(PathUtil.getClasspath() + Const.FILEPATHIMG + ffile + "/" + fileName);//加水印
@@ -192,9 +197,11 @@ public class ContractController extends BaseController {
 		pd = this.getPageData();
 		pd = contractService.findById(pd);	//根据ID读取
 		List<PageData> listClassify = classifyService.listAll(pd);
+		List<PageData> listMode = modeService.listAll(pd);
 		mv.setViewName("management/contract/contract_edit");
 		mv.addObject("msg", "editInfo");
 		mv.addObject("listClassify", listClassify);
+		mv.addObject("listMode", listMode);
 		mv.addObject("pd", pd);
 		return mv;
 	}	

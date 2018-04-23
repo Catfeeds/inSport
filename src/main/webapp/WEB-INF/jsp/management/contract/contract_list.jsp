@@ -94,7 +94,7 @@
 								<c:when test="${not empty varList}">
 									<c:if test="${QX.cha == 1 }">
 									<c:forEach items="${varList}" var="var" varStatus="vs">
-										<tr onclick="showPic('${var.CONTRACT_ID}')">
+										<tr>
 											<td class='center'>
 												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.CONTRACT_ID}" class="ace" /><span class="lbl"></span></label>
 											</td>
@@ -124,6 +124,9 @@
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
 												</c:if>
 												<div class="hidden-sm hidden-xs btn-group">
+													<a class="btn btn-xs btn-info" title="预览图片" onclick="showPic('${var.CONTRACT_ID}')">
+														<i class="ace-icon fa fa-laptop bigger-120" title="预览图片"></i>
+													</a>
 													<c:if test="${QX.edit == 1 }">
 													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.CONTRACT_ID}');">
 														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
@@ -200,7 +203,7 @@
 						</form>
 					
 						</div>
-						<div class="hr hr-16 hr-dotted"></div>
+						<div  class="hr hr-16 hr-dotted" ></div>
 						<div>
 							<ul class="ace-thumbnails clearfix" id="imgList">
 								<!-- #section:pages/gallery -->
@@ -348,24 +351,33 @@
 						'<div class="text">'+
 						'<div class="inner">点击预览</div>'+
 						'</div>'+
-						'</a>'+
-						'</li>'
+						'</a>' +
+						'<div style="width: 100%;height: 25px" align="center" >' +
+						'<button  onclick="delPic('+"'"+res[i].CONTRACTPICTURE_ID+"','"+CONTRACT_ID+"'"+')" style="width: 45px;height: 20px;margin-top:2px" >删除</button>' +
+						'</div>'+
+						'</li>'+
+						''
 					}
 					$("#imgList").append(html);
-					/*$.each(JSON.parse( data.listOnePic ), function(i, URL_PIC){
-						$("#imgList").append(
-								'<li>'+
-								'<a href="<%=basePath%>'+URL_PIC+'" data-rel="colorbox" class="cboxElement">'+
-								'<img width="150" height="150" alt="150x150" src="<%=basePath%>'+URL_PIC+'" />'+
-								'<div class="text">'+
-								'<div class="inner">FH</div>'+
-								'</div>'+
-								'</a>'+
-								'</li>'
-						);
-						count = i+1;
-					});*/
-					//alert(data.listOnePic);
+
+				}
+			});
+		}
+
+		function delPic(CONTRACTPICTURE_ID,CONTRACT_ID){
+			bootbox.confirm("确定要删除该相片吗?", function(result) {
+				if(result) {
+					$.ajax({
+						type: "POST",
+						url: '<%=basePath%>contractpicture/delete.do?tm='+new Date().getTime(),
+						data: {CONTRACTPICTURE_ID:CONTRACTPICTURE_ID},
+						dataType:'json',
+						//beforeSend: validateData,
+						cache: false,
+						success: function(data){
+							showPic(CONTRACT_ID);
+						}
+					});
 				}
 			});
 		}

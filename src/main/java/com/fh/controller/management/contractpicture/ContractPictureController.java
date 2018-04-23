@@ -1,9 +1,6 @@
 package com.fh.controller.management.contractpicture;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -70,14 +67,24 @@ public class ContractPictureController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/delete")
-	public void delete(PrintWriter out) throws Exception{
+	@ResponseBody
+	public Map<String, Object> delete(Page page) throws Exception{
 		logBefore(logger, Jurisdiction.getUsername()+"删除ContractPicture");
-		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
+		Map<String, Object> json = new HashMap<String, Object>();
 		PageData pd = new PageData();
 		pd = this.getPageData();
+		PageData delPd = contractpictureService.findById(pd);
+		String filePath ="D:/【源码】maven_sqlsever_版本/MVNFHS/target/inSport/"+ delPd.getString("URL_PIC");
+		try {
+			File file = new File(filePath);
+			file.delete();
+		}catch (Exception e){
+			System.out.println("该文件不存在！！");
+		}
+		System.out.println(filePath);
 		contractpictureService.delete(pd);
-		out.write("success");
-		out.close();
+		json.put("res","success");
+		return  json;
 	}
 	
 	/**修改
