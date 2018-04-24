@@ -394,8 +394,7 @@
                             '<div style="width: 100%;height: 25px" align="center" >' +
                             '<button  onclick="delPic(' + "'" + res[i].CONTRACTPICTURE_ID + "','" + CONTRACT_ID + "'" + ')" style="width: 45px;height: 20px;margin-top:2px" >删除</button>' +
                             '</div>' +
-                            '</li>' +
-                            ''
+                            '</li>'
                 }
                 $("#imgList").append(html);
 

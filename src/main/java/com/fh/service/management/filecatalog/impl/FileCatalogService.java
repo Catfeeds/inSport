@@ -61,7 +61,11 @@ public class FileCatalogService implements FileCatalogManager{
 	public List<PageData> listAll(PageData pd)throws Exception{
 		return (List<PageData>)dao.findForList("FileCatalogMapper.listAll", pd);
 	}
-	
+
+	public List<PageData> list_catalog(Page page)throws Exception{
+		return (List<PageData>)dao.findForList("FileCatalogMapper.list_catalog", page);
+	}
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

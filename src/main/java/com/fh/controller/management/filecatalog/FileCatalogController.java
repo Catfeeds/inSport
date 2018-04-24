@@ -46,6 +46,26 @@ public class FileCatalogController extends BaseController {
 		return mv;
 	}
 
+	// 树
+	@RequestMapping(value = "/file_load")
+	public ModelAndView file_load(Page page) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		String FPARENTID = pd.getString("FPARENTID");
+		if(FPARENTID != null && !"".equals(FPARENTID)){
+			pd.put("FPARENTID",Integer.parseInt(FPARENTID));
+		}else {
+			pd.put("FPARENTID",1);
+		}
+		page.setPd(pd);
+		List<PageData> list_catalog = filecatalogService.list_catalog(page);
+		mv.addObject("pd",pd);
+		mv.addObject("list_catalog",list_catalog);
+		mv.setViewName("management/filecatalog/file_load");
+		return mv;
+	}
+
 	@RequestMapping(value = "/dateTree")
 	@ResponseBody
 	public JSONArray dateTree(Page page) {

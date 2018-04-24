@@ -35,7 +35,9 @@ public interface FileCatalogManager{
 	 * @throws Exception
 	 */
 	public List<PageData> list(Page page)throws Exception;
-	
+
+	public List<PageData> list_catalog(Page page)throws Exception;
+
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception
