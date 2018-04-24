@@ -41,7 +41,9 @@ public interface FileMeansManager{
 	 * @throws Exception
 	 */
 	public List<PageData> listAll(PageData pd)throws Exception;
-	
+
+	public List<PageData> listByFILE_CATALOGURL_ID(PageData pd)throws Exception;
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

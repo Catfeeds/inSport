@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.annotation.Resource;
 
+import com.fh.service.management.filemeans.FileMeansManager;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -36,11 +37,17 @@ public class FileCatalogController extends BaseController {
 	String menuUrl = "filecatalog/list.do"; //菜单地址(权限用)
 	@Resource(name="filecatalogService")
 	private FileCatalogManager filecatalogService;
+	@Resource(name="filemeansService")
+	private FileMeansManager filemeansService;
 
 	@RequestMapping(value = "/addFile")
 	public ModelAndView addFile() throws Exception {
 		ModelAndView mv = new ModelAndView();
-		// mv.addObject("zNodes", jsStr);
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = filecatalogService.findByFitemid(pd);
+		System.out.println(pd);
+		mv.addObject("pd",pd);
 		mv.setViewName("management/filecatalog/addFile");
 		return mv;
 	}
@@ -50,17 +57,25 @@ public class FileCatalogController extends BaseController {
 	public ModelAndView file_load(Page page) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
+		PageData pd1 = new PageData();
 		pd = this.getPageData();
 		String FPARENTID = pd.getString("FPARENTID");
 		if(FPARENTID != null && !"".equals(FPARENTID)){
 			pd.put("FPARENTID",Integer.parseInt(FPARENTID));
+			pd1.put("FILE_CATALOGURL_ID",Integer.parseInt(FPARENTID));
 		}else {
 			pd.put("FPARENTID",1);
+			pd1.put("FILE_CATALOGURL_ID",1);
 		}
 		page.setPd(pd);
 		List<PageData> list_catalog = filecatalogService.list_catalog(page);
+		List<PageData> list_files = filemeansService.listByFILE_CATALOGURL_ID(pd1);
+		System.out.println(list_files.size());
+		System.out.println(list_files);
+		System.out.println(pd);
 		mv.addObject("pd",pd);
 		mv.addObject("list_catalog",list_catalog);
+		mv.addObject("list_files",list_files);
 		mv.setViewName("management/filecatalog/file_load");
 		return mv;
 	}

@@ -63,12 +63,22 @@
 	
 	<!-- 通过ID获取数据 -->
 	<select id="findById" parameterType="pd" resultType="pd">
-		select 
+		select
 		<include refid="Field"></include>
-		from 
+		from
 		<include refid="tableName"></include>
-		where 
-			FILECATALOG_ID = #{FILECATALOG_ID}
+		where
+		FILECATALOG_ID = #{FILECATALOG_ID}
+	</select>
+
+	<!-- 通过ID获取数据 -->
+	<select id="findByFitemid" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where
+		FITEMID = #{FITEMID}
 	</select>
 
 	<select id="findMax_Fitemid" parameterType="pd" resultType="pd">

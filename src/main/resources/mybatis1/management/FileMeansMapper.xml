@@ -27,15 +27,15 @@
     <sql id="FieldValue">
 		#{FILENAME},	
 		#{FILE_URL},
-		#{FILE_CATALOGURL},
-		#{FILE_CATALOGURL_ID},
 		#{FILE_CREATETIME},
-		#{FILE_JURISDICTION},	
-		#{FILE_TYPE},	
-		#{FILE_CREATEUSER},	
-		#{FILE_DOWNLOAD},	
-		#{FILE_READ},	
-		#{FILE_REMARK},	
+		#{FILE_JURISDICTION},
+		#{FILE_TYPE},
+		#{FILE_CREATEUSER},
+		#{FILE_DOWNLOAD},
+		#{FILE_READ},
+		#{FILE_CATALOGURL},
+		#{FILE_REMARK},
+		#{FILE_CATALOGURL_ID},
 		#{FILEMEANS_ID}
 	</sql>
 
@@ -114,6 +114,14 @@
         <include refid="Field"></include>
         from
         <include refid="tableName"></include>
+    </select>
+
+    <select id="listByFILE_CATALOGURL_ID" parameterType="pd" resultType="pd">
+        select
+        <include refid="Field"></include>
+        from
+        <include refid="tableName"></include>
+        WHERE FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
     </select>
 
     <!-- 批量删除 -->

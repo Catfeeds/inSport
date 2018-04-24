@@ -61,7 +61,11 @@ public class FileMeansService implements FileMeansManager{
 	public List<PageData> listAll(PageData pd)throws Exception{
 		return (List<PageData>)dao.findForList("FileMeansMapper.listAll", pd);
 	}
-	
+
+	public List<PageData> listByFILE_CATALOGURL_ID(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("FileMeansMapper.listByFILE_CATALOGURL_ID", pd);
+	}
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

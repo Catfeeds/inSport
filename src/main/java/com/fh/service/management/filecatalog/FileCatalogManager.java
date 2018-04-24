@@ -50,6 +50,8 @@ public interface FileCatalogManager{
 	 */
 	public PageData findById(PageData pd)throws Exception;
 
+	public PageData findByFitemid(PageData pd)throws Exception;
+
 	public PageData findMax_Fitemid(PageData pd)throws Exception;
 	
 	/**批量删除

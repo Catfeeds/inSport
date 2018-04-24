@@ -38,6 +38,19 @@ public class FileUpload {
 		}
 		return fileName+extName;
 	}
+
+	public static String fileUpNotType(MultipartFile file, String filePath, String fileName){
+		String extName = ""; // 扩展名格式：
+		try {
+			if (file.getOriginalFilename().lastIndexOf(".") >= 0){
+				extName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+			}
+			copyFile(file.getInputStream(), filePath, fileName).replaceAll("-", "");
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+		return fileName+extName;
+	}
 	
 	/**
 	 * 写文件到当前目录的upload目录中
