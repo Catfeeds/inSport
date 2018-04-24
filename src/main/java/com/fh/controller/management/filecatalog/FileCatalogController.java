@@ -37,12 +37,11 @@ public class FileCatalogController extends BaseController {
 	@Resource(name="filecatalogService")
 	private FileCatalogManager filecatalogService;
 
-	// 树
-	@RequestMapping(value = "/listTree")
-	public ModelAndView listTree() throws Exception {
+	@RequestMapping(value = "/addFile")
+	public ModelAndView addFile() throws Exception {
 		ModelAndView mv = new ModelAndView();
 		// mv.addObject("zNodes", jsStr);
-		mv.setViewName("management/filecatalog/filecatalog_tree");
+		mv.setViewName("management/filecatalog/addFile");
 		return mv;
 	}
 
@@ -63,6 +62,15 @@ public class FileCatalogController extends BaseController {
 		mv.addObject("pd",pd);
 		mv.addObject("list_catalog",list_catalog);
 		mv.setViewName("management/filecatalog/file_load");
+		return mv;
+	}
+
+	// 树
+	@RequestMapping(value = "/listTree")
+	public ModelAndView listTree() throws Exception {
+		ModelAndView mv = new ModelAndView();
+		// mv.addObject("zNodes", jsStr);
+		mv.setViewName("management/filecatalog/filecatalog_tree");
 		return mv;
 	}
 

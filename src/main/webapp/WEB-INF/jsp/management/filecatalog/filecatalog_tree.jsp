@@ -156,13 +156,12 @@
 
                 }
                 //var treeKey = encodeURI(encodeURI(treeNode.name));
-                var treeKey = treeNode.id;
-                alert(treeKey);
+                var FPARENTID = treeNode.id;
                 if (treeNode.id == 1) {
                     keywords = "";
-                    $("#treeFrame").attr("src", "<%=basePath%>http/getCommodity?treeKey=" + treeKey);
+                    $("#treeFrame").attr("src", '<%=basePath%>filecatalog/file_load?FPARENTID='+FPARENTID);
                 }
-                $("#treeFrame").attr("src", "<%=basePath%>http/getCommodity?treeKey=" + treeKey);
+                $("#treeFrame").attr("src", '<%=basePath%>filecatalog/file_load?FPARENTID='+FPARENTID);
                 //$("#treeFrame").attr("src","http://www.baidu.com");
             }
         }

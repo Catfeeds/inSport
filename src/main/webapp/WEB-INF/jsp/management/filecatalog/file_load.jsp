@@ -58,6 +58,17 @@
 											</tr>
 										</c:otherwise>
 									</c:choose>
+									<li style="border:none;margin-top: 30px" >
+										<a onclick="addFile('${pd.FPARENTID}')" data-rel="colorbox" class="cboxElement">
+											<img width="120" height="120" alt="200x200" src="static/filecatalog/images/add.png" />
+											<div class="text">
+												<div class="inner">添加文件</div>
+											</div>
+										</a>
+										<%--<div style="width: 100%;height: 25px" align="center" >
+											<p>${var.FNAME}</p>
+										</div>--%>
+									</li>
 								</ul>
 							</div>
 
@@ -98,6 +109,23 @@
 		
 		function openFile(FPARENTID) {
 			window.location.href = '<%=basePath%>filecatalog/file_load?FPARENTID='+FPARENTID;
+		}
+		
+		function addFile(FITEMID) {
+			top.jzts();
+			var diag = new top.Dialog();
+			diag.Drag=true;
+			diag.Title ="选择文件类型";
+			diag.URL = '<%=basePath%>filecatalog/addFile.do?FITEMID='+FITEMID;
+			diag.Width = 450;
+			diag.Height = 355;
+			diag.Modal = true;				//有无遮罩窗口
+			diag. ShowMaxButton = true;	//最大化按钮
+			diag.ShowMinButton = true;		//最小化按钮
+			diag.CancelEvent = function(){ //关闭事件
+				diag.close();
+			};
+			diag.show();
 		}
 	</script>
 
