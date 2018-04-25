@@ -246,7 +246,7 @@
 				accept: {
 					title: 'myself',
 					extensions: 'gif,jpg,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,xlm',
-					mimeTypes: 'image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,' +
+					mimeTypes: 'image/*,application/pdf,application/msword,' +
 					'.xls,.xlsx,application/xls,application/xlsx,application/vnd.ms-excel,application/x-excel,application/excel,application/x-msexcel'
 				},
 

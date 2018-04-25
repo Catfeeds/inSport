@@ -1,6 +1,7 @@
 package com.fh.controller.management.filecatalog;
 
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -57,7 +58,11 @@ public class FileCatalogController extends BaseController {
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-
+		String FILE_URL = URLDecoder.decode(pd.getString("FILE_URL"), "UTF-8");
+		System.out.println(pd.getString("FILE_URL"));
+		pd.put("FILE_URL",FILE_URL);
+		mv.addObject("pd",pd);
+		System.out.println(pd);
 		mv.setViewName("management/filecatalog/wep_open");
 		return mv;
 	}

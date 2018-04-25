@@ -24,7 +24,7 @@
 </body>
 <script>
     window.onload=function(){
-        $("#iframe").attr("src","http://127.0.0.1:8080/inSport/uploadFiles/upload/合同管理系统开发合同2.0.doc");
+        $("#iframe").attr("src","${pd.FILE_URL}");
     }
 </script>
 </html>
