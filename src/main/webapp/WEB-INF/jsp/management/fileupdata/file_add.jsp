@@ -245,8 +245,9 @@
 
 				accept: {
 					title: 'myself',
-					extensions: 'gif,jpg,jpeg,bmp,png,pdf,doc,docx,xls,xlsx',
-					mimeTypes: 'image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/xls,application/xlsx,application/vnd.ms-excel'
+					extensions: 'gif,jpg,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,xlm',
+					mimeTypes: 'image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,' +
+					'.xls,.xlsx,application/xls,application/xlsx,application/vnd.ms-excel,application/x-excel,application/excel,application/x-msexcel'
 				},
 
 				// 禁掉全局的拖拽功能。这样不会出现图片拖进页面的时候，把图片打开。

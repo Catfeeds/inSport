@@ -72,6 +72,7 @@ public class FileUpDataController extends BaseController {
 		Map<String,String> map = new HashMap<String,String>();
 		String fileOriginalName = file.getOriginalFilename();
 		String fileType = file.getContentType();
+		System.out.println("---------------文件目录："+FNAME);
 		System.out.println("原文件名字："+fileOriginalName+"，文件类别："+fileType);
 		String  ffile = DateUtil.getDays(), fileName = "";
 		PageData pd = new PageData();
@@ -96,7 +97,6 @@ public class FileUpDataController extends BaseController {
 		pd.put("FILE_READ", 0);
 		pd.put("FILE_CATALOGURL", fileOriginalName);
 		pd.put("FILE_CATALOGURL_ID",Integer.parseInt(FITEMID));
-		System.out.println(pd);
 		filemeansService.save(pd);
 		//contractpictureService.save(pd);
 		//Watermark.setWatemark(PathUtil.getClasspath() + Const.FILEPATHIMG + ffile + "/" + fileName);//加水印

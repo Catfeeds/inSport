@@ -52,6 +52,16 @@ public class FileCatalogController extends BaseController {
 		return mv;
 	}
 
+	@RequestMapping(value = "/wep_open")
+	public ModelAndView wep_open() throws Exception {
+		ModelAndView mv = new ModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		mv.setViewName("management/filecatalog/wep_open");
+		return mv;
+	}
+
 	// 树
 	@RequestMapping(value = "/file_load")
 	public ModelAndView file_load(Page page) throws Exception {
@@ -70,7 +80,6 @@ public class FileCatalogController extends BaseController {
 		page.setPd(pd);
 		List<PageData> list_catalog = filecatalogService.list_catalog(page);
 		List<PageData> list_files = filemeansService.listByFILE_CATALOGURL_ID(pd1);
-		System.out.println(list_files.size());
 		System.out.println(list_files);
 		System.out.println(pd);
 		mv.addObject("pd",pd);
