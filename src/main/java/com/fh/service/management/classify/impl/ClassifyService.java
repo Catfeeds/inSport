@@ -52,6 +52,14 @@ public class ClassifyService implements ClassifyManager{
 	public List<PageData> list(Page page)throws Exception{
 		return (List<PageData>)dao.findForList("ClassifyMapper.datalistPage", page);
 	}
+
+	public List<PageData> listPIdClassify(Page page)throws Exception{
+		return (List<PageData>)dao.findForList("ClassifyMapper.listPIdClassify", page);
+	}
+
+	public List<PageData> listIdClassify(Page page)throws Exception{
+		return (List<PageData>)dao.findForList("ClassifyMapper.listIdClassify", page);
+	}
 	
 	/**列表(全部)
 	 * @param pd

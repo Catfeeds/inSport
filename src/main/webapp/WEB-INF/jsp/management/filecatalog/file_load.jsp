@@ -66,6 +66,19 @@
                             <ul class="ace-thumbnails clearfix" id="imgList">
                                 <c:choose>
                                     <c:when test="${not empty list_catalog}">
+                                        <li style="border:none;margin-top: 30px" id="back"
+                                            style="margin-top: 30px;margin-left:35px;margin-right:80px;">
+                                            <a ondblclick="javascript:history.back(-1)" data-rel="colorbox" class="cboxElement">
+                                                <img width="120" height="120" alt="200x200"
+                                                     src="static/filecatalog/images/super-mono-3d-part2-46.png"/>
+                                                <div class="text">
+                                                    <div class="inner">返回上一页</div>
+                                                </div>
+                                            </a>
+                                                <%--<div style="width: 100%;height: 25px" align="center" >
+                                                    <p>${var.FNAME}</p>
+                                                </div>--%>
+                                        </li>
                                         <c:forEach items="${list_catalog}" var="var" varStatus="vs">
                                             <li style="border:none;margin-top: 30px">
                                                 <a ondblclick="openFile('${var.FITEMID}','${var.FNAME}')" data-rel="colorbox"

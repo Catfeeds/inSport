@@ -89,7 +89,23 @@
 				)
 		</if>
 	</select>
-	
+
+	<select id="listPIdClassify" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where FPARENTID = 0
+	</select>
+
+	<select id="listIdClassify" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where FPARENTID = #{pd.FPARENTID}
+	</select>
+
 	<!-- 列表(全部) -->
 	<select id="listAll" parameterType="pd" resultType="pd">
 		select

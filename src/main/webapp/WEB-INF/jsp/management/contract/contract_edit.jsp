@@ -125,16 +125,7 @@
 									<th ><input type="text" style="width: 150px" value="${pd.OPERATOR}"
 												class="input-text"  name="OPERATOR"
 												id="OPERATOR"></th>
-									<th  ><label>合同类型：</label></th>
-									<th width="10%">
-										<select name="CONTRACTTYPES" id="CONTRACTTYPES" data-placeholder=""
-												style="vertical-align:top;width: 150px;" onchange="selectType(this.value);toType(this.value) ">
-											<option value="${pd.CONTRACTTYPES}" name="${pd.CONTRACTTYPES}">${pd.CONTRACTTYPES}</option>
-											<c:forEach items="${listClassify}" var="var" varStatus="vs">
-												<option value="${var.FNAME}" name="${var.FITEMID}">${var.FNAME}</option>
-											</c:forEach>
-										</select>
-									</th>
+
 									<th  ><label>招待票：</label></th>
 									<th  ><input type="text" style="width: 150px" value="${pd.INVITATIONTICKET}"
 												 class="input-text"  name="INVITATIONTICKET"
@@ -144,13 +135,30 @@
 									<th  ><label>合同签订使用时间：</label></th>
 									<th  colspan="2">
 										<label>
-											<input type="date" style="width: 150px;height: 31px" value="${pd.FUSEDATESTART}"
+											<input type="date" style="width: 140px;height: 31px" value="${pd.FUSEDATESTART}"
 												   class="input-date"  name="FUSEDATESTART"
 												   id="FUSEDATESTART">
-											- <input type="date" style="width: 150px;height: 31px" value="${pd.FUSEDATEENT}"
+											- <input type="date" style="width: 140px;height: 31px" value="${pd.FUSEDATEENT}"
 													 class="input-date"  name="FUSEDATEENT"
 													 id="FUSEDATEENT">
 										</label>
+									</th>
+									<th  ><label>合同类型：</label></th>
+									<th colspan="2" >
+										<select name="CONTRACTTYPES" id="CONTRACTTYPES" data-placeholder=""
+												style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
+											<option value="${pd.CONTRACTTYPES}" name="${pd.CONTRACTTYPES}">${pd.CONTRACTTYPES}</option>
+											<c:forEach items="${listPIdClassify}" var="var" varStatus="vs">
+												<option id="${var.FITEMID}" value="${var.FNAME}" name="${var.FITEMID}">${var.FNAME}</option>
+											</c:forEach>
+										</select> -
+										<select name="CONTRACTCLASSIFY" id="CONTRACTCLASSIFY" data-placeholder=""
+												style="vertical-align:top;width: 150px;" onchange="selectType(this.value); ">
+											<option  value="${pd.CONTRACTCLASSIFY}" name="${pd.CONTRACTCLASSIFY}">${pd.CONTRACTCLASSIFY}</option>
+											<%--<c:forEach items="${listClassify}" var="var" varStatus="vs">
+												<option value="${var.FNAME}" name="${var.FITEMID}">${var.FNAME}</option>
+											</c:forEach>--%>
+										</select>
 									</th>
 								</tr>
 								</tbody>
@@ -203,10 +211,39 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
 	$(top.hangge());
-	
-	function toType() {
 
-	}
+
+	$("#CONTRACTTYPES").change(function(){
+		var FPARENTID = $("#CONTRACTTYPES").find("option:selected").attr("name");
+		$.ajax({
+			async: false,
+			cache: false,
+			type: 'POST',
+			data : {
+				FPARENTID : FPARENTID
+			},
+			//dataType:"String",
+			url: '<%=basePath%>contract/listCheClassify',
+			success: function (data) {
+				var listCheClassify = data.listCheClassify;
+				var option = "";
+				$("#CONTRACTCLASSIFY").find("option").remove();
+				for(var i=0;i < listCheClassify.length;i++){
+					option += "<option id="+listCheClassify[i].FITEMID+" value="+listCheClassify[i].FNAME+
+							" name="+listCheClassify[i].FNAME+">"+listCheClassify[i].FNAME+"</option>";
+				}
+				$("#CONTRACTCLASSIFY").append(option);
+			},
+			error: function () {
+				alert("请求失败");
+			}
+		});
+		//alert($("#pselect").find("option:selected").attr("name"));
+	});
+	
+	/*function selectType(value) {
+		alert(value.id);
+	}*/
 
 	function isSTAMPDUTY(num){
 		$("#ISSTAMPDUTY").val(num);

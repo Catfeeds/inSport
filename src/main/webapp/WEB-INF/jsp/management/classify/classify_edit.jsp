@@ -126,7 +126,7 @@
 				$("#FPARENTID").focus();
 			return false;
 			}
-			if($("#FREMAK").val()==""){
+			/*if($("#FREMAK").val()==""){
 				$("#FREMAK").tips({
 					side:3,
 		            msg:'请输入备注',
@@ -135,7 +135,7 @@
 		        });
 				$("#FREMAK").focus();
 			return false;
-			}
+			}*/
 			$("#Form").submit();
 			$("#zhongxin").hide();
 			$("#zhongxin2").show();

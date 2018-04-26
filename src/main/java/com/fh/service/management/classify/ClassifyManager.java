@@ -35,6 +35,10 @@ public interface ClassifyManager{
 	 * @throws Exception
 	 */
 	public List<PageData> list(Page page)throws Exception;
+
+	public List<PageData> listPIdClassify(Page page)throws Exception;
+
+	public List<PageData> listIdClassify(Page page)throws Exception;
 	
 	/**列表(全部)
 	 * @param pd

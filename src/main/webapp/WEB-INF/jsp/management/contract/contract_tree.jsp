@@ -119,14 +119,18 @@
 								+ treeNode.id + ", 节点文本是：" + treeNode.name); */
 								
 					}
-					//var treeKey = encodeURI(encodeURI(treeNode.name));
-					var treeKey = treeNode.id;
-					//alert(treeKey);
-					if(treeNode.id == 1){
-						keywords ="";
-						$("#treeFrame").attr("src","<%=basePath%>commodity/list?treeKey="+treeKey);
+					//var treeKey = treeNode.name;
+					//alert(treeNode.pId);
+					if(treeNode.id == 1 || treeNode.id == 2){
+						//pkeywords ="";
+						var p_treeKey = encodeURI(encodeURI(treeNode.name));
+						//alert(treeNode.name + "---------"+p_treeKey)
+						$("#treeFrame").attr("src","<%=basePath%>contract/list?p_treeKey="+p_treeKey);
+					}else {
+						var treeKey = encodeURI(encodeURI(treeNode.name));
+						$("#treeFrame").attr("src","<%=basePath%>contract/list?keywords="+treeKey);
 					}
-					$("#treeFrame").attr("src","<%=basePath%>commodity/list?treeKey="+treeKey);
+
 					//$("#treeFrame").attr("src","http://www.baidu.com");
 				}
 			}

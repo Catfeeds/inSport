@@ -25,7 +25,8 @@
 		OPERATOR,	
 		CONTRACTTYPES,
 		ISSTAMPDUTY,
-		INVITATIONTICKET,	
+		INVITATIONTICKET,
+		CONTRACTCLASSIFY,
 		CONTRACT_ID
 	</sql>
 	
@@ -47,7 +48,8 @@
 		#{OPERATOR},	
 		#{CONTRACTTYPES},
 		#{ISSTAMPDUTY},
-		#{INVITATIONTICKET},	
+		#{INVITATIONTICKET},
+		#{CONTRACTCLASSIFY},
 		#{CONTRACT_ID}
 	</sql>
 	
@@ -92,6 +94,7 @@
 			OPERATOR = #{OPERATOR},
 			CONTRACTTYPES = #{CONTRACTTYPES},
 			INVITATIONTICKET = #{INVITATIONTICKET},
+			CONTRACTCLASSIFY = #{CONTRACTCLASSIFY},
 		CONTRACT_ID = CONTRACT_ID
 		where 
 		CONTRACT_ID = #{CONTRACT_ID}
@@ -116,13 +119,11 @@
 		where 1=1
 		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
 			and
-				(
-				<!--	根据需求自己加检索条件
-					字段1 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
-					 or 
-					字段2 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
-				-->
-				)
+			CONTRACTCLASSIFY LIKE '%'+ #{pd.keywords}+'%'
+		</if>
+		<if test="pd.p_treeKey!= null and pd.p_treeKey != ''"><!-- 关键词检索 -->
+			and
+			CONTRACTTYPES LIKE '%'+ #{pd.p_treeKey}+'%'
 		</if>
 	</select>
 	

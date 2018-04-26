@@ -1,19 +1,18 @@
 package com.fh.controller.management.contract;
 
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.annotation.Resource;
 
 import com.fh.service.management.classify.ClassifyManager;
 import com.fh.service.management.contractpicture.ContractPictureManager;
 import com.fh.service.management.mode.ModeManager;
 import com.fh.util.*;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -48,6 +47,57 @@ public class ContractController extends BaseController {
 
 	@Resource(name="modeService")
 	private ModeManager modeService;
+
+	// 树
+	@RequestMapping(value = "/listTree")
+	public ModelAndView listTree() throws Exception {
+		ModelAndView mv = new ModelAndView();
+		// mv.addObject("zNodes", jsStr);
+		mv.setViewName("management/contract/contract_tree");
+		return mv;
+	}
+
+	@RequestMapping(value = "/dateTree")
+	@ResponseBody
+	public JSONArray dateTree(Page page) {
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		String keywords = pd.getString("keywords"); // 关键词检索条件
+		if (null != keywords && !"".equals(keywords)) {
+			pd.put("keywords", keywords.trim());
+		}
+		page.setPd(pd);
+		JSONArray arr = null;
+		try {
+			arr = JSONArray.fromObject(classifyService.listAll(pd));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		JSONArray jsStr = JSONArray.fromObject(this.makeTree(arr));
+		//System.out.println(jsStr);
+		return jsStr;
+	}
+
+	@SuppressWarnings("unchecked")
+	public String makeTree(JSONArray arr) {
+		StringBuffer sb = new StringBuffer();
+		try {
+			sb.append("[");
+			Iterator<Object> it = arr.iterator();
+			while (it.hasNext()) {
+				JSONObject ob = (JSONObject) it.next();
+				sb.append("{id:").append(ob.getString("FITEMID")).append(",pId:")
+						.append(ob.getString("FPARENTID")).append(",name:\"")
+						.append(ob.getString("FNAME")).append("\"")
+						.append(",open:").append("true").append("},");
+			}
+			return sb.substring(0, sb.length() - 1) + "]";
+		}catch (Exception e){
+			System.out.println("");
+		}
+
+		return "";
+	}
 	
 	/**保存
 	 * @param
@@ -156,7 +206,15 @@ public class ContractController extends BaseController {
 		pd = this.getPageData();
 		String keywords = pd.getString("keywords");				//关键词检索条件
 		if(null != keywords && !"".equals(keywords)){
+			keywords = URLDecoder.decode(keywords, "UTF-8");
+			System.out.println(keywords);
 			pd.put("keywords", keywords.trim());
+		}
+		String p_treeKey = pd.getString("p_treeKey");				//关键词检索条件
+		if(null != p_treeKey && !"".equals(p_treeKey)){
+			p_treeKey = URLDecoder.decode(p_treeKey, "UTF-8");
+			System.out.println(p_treeKey);
+			pd.put("p_treeKey", p_treeKey.trim());
 		}
 		page.setPd(pd);
 		List<PageData>	varList = contractService.list(page);	//列出Contract列表
@@ -172,15 +230,18 @@ public class ContractController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/goAdd")
-	public ModelAndView goAdd()throws Exception{
+	public ModelAndView goAdd(Page page)throws Exception{
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd.put("CONTRACT_ID",this.get32UUID());
-		List<PageData> listClassify = classifyService.listAll(pd);
+		List<PageData> listPIdClassify = classifyService.listPIdClassify(page);
+		List<PageData> listMode = modeService.listAll(pd);
+		System.out.println(listPIdClassify.size());
 		mv.setViewName("management/contract/contract_edit");
 		mv.addObject("msg", "save");
-		mv.addObject("listClassify", listClassify);
+		mv.addObject("listPIdClassify", listPIdClassify);
+		mv.addObject("listMode", listMode);
 		mv.addObject("pd", pd);
 		System.out.println(pd);
 		return mv;
@@ -191,21 +252,41 @@ public class ContractController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/goEdit")
-	public ModelAndView goEdit()throws Exception{
+	public ModelAndView goEdit(Page page)throws Exception{
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd = contractService.findById(pd);	//根据ID读取
-		List<PageData> listClassify = classifyService.listAll(pd);
+		page.setPd(pd);
+		List<PageData> listPIdClassify = classifyService.listPIdClassify(page);
+		System.out.println(listPIdClassify.size());
 		List<PageData> listMode = modeService.listAll(pd);
 		mv.setViewName("management/contract/contract_edit");
 		mv.addObject("msg", "editInfo");
-		mv.addObject("listClassify", listClassify);
+		mv.addObject("listPIdClassify", listPIdClassify);
 		mv.addObject("listMode", listMode);
 		mv.addObject("pd", pd);
 		return mv;
-	}	
-	
+	}
+
+
+	@RequestMapping(value = "/listCheClassify")
+	@ResponseBody
+	public Map<String, Object> listCheClassify(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		String FPARENTID = pd.getString("FPARENTID"); // 关键词检索条件
+		if (null != FPARENTID && !"".equals(FPARENTID)) {
+			pd.put("keywords", FPARENTID.trim());
+		}
+		page.setPd(pd);
+		List<PageData> listCheClassify = classifyService.listIdClassify(page);
+		System.out.println(listCheClassify);
+		json.put("listCheClassify",listCheClassify);
+		return  json;
+	}
+
 	 /**批量删除
 	 * @param
 	 * @throws Exception
