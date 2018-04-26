@@ -23,6 +23,8 @@ public interface FileMeansManager{
 	 * @throws Exception
 	 */
 	public void delete(PageData pd)throws Exception;
+
+	public void deleteByUrl(PageData pd)throws Exception;
 	
 	/**修改
 	 * @param pd

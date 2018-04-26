@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -95,12 +96,26 @@ public class FileUpDataController extends BaseController {
 		pd.put("FILE_CREATEUSER", Jurisdiction.getUsername());
 		pd.put("FILE_DOWNLOAD", 0);
 		pd.put("FILE_READ", 0);
-		pd.put("FILE_CATALOGURL", fileOriginalName);
+		pd.put("FILE_CATALOGURL", FNAME);
 		pd.put("FILE_CATALOGURL_ID",Integer.parseInt(FITEMID));
 		filemeansService.save(pd);
 		//contractpictureService.save(pd);
 		//Watermark.setWatemark(PathUtil.getClasspath() + Const.FILEPATHIMG + ffile + "/" + fileName);//加水印
 		map.put("result", "ok");
 		return AppUtil.returnObject(pd, map);
+	}
+
+	@RequestMapping(value="/deleteFile")
+	@ResponseBody
+	public Map<String,String> deleteFile(Page page) throws Exception{
+		Map<String,String> json = new HashMap<String,String>();
+		PageData pd = this.getPageData();
+		System.out.println(pd.getString("FILE_URL"));
+		String fileUrl= "D:/【源码】maven_sqlsever_版本/MVNFHS/target/inSport/"+pd.getString("FILE_URL");
+		File file = new File(fileUrl);
+		file.delete();
+		filemeansService.deleteByUrl(pd);
+		json.put("result", "ok");
+		return json;
 	}
 }

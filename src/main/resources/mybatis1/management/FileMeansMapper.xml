@@ -58,6 +58,13 @@
         FILEMEANS_ID = #{FILEMEANS_ID}
     </delete>
 
+    <delete id="deleteByUrl" parameterType="pd">
+        delete from
+        <include refid="tableName"></include>
+        where
+        FILE_URL = #{FILE_URL}
+    </delete>
+
     <!-- 修改 -->
     <update id="edit" parameterType="pd">
         update
@@ -122,6 +129,7 @@
         from
         <include refid="tableName"></include>
         WHERE FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
+        ORDER BY FILENAME
     </select>
 
     <!-- 批量删除 -->

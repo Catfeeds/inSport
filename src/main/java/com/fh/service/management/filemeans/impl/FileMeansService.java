@@ -35,7 +35,11 @@ public class FileMeansService implements FileMeansManager{
 	public void delete(PageData pd)throws Exception{
 		dao.delete("FileMeansMapper.delete", pd);
 	}
-	
+
+	public void deleteByUrl(PageData pd)throws Exception{
+		dao.delete("FileMeansMapper.deleteByUrl", pd);
+	}
+
 	/**修改
 	 * @param pd
 	 * @throws Exception

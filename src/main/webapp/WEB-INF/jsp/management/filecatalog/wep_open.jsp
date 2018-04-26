@@ -14,13 +14,13 @@
 <html>
 <head>
     <base href="<%=basePath%>">
-    <title>Title</title>
+    <title>${pd.FILENAME}</title>
     <link rel="stylesheet" href="static/viewerjs/docs/css/viewer.css" />
     <script src="static/viewerjs/docs/js/viewer.js"></script>
     <script src="static/js/jquery-2.1.1.js"></script>
 </head>
 <body>
-    <iframe id="iframe" src="" style="width: 90%;height: 90%"  ></iframe>
+    <iframe id="iframe" src="" style="width: 100%;height: 100%"  ></iframe>
 </body>
 <script>
     window.onload=function(){

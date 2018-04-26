@@ -36,6 +36,7 @@ import com.fh.service.management.filecatalog.FileCatalogManager;
 public class FileCatalogController extends BaseController {
 	
 	String menuUrl = "filecatalog/list.do"; //菜单地址(权限用)
+	String meanMenuUrl = "filemeans/list.do"; //菜单地址(权限用)
 	@Resource(name="filecatalogService")
 	private FileCatalogManager filecatalogService;
 	@Resource(name="filemeansService")
@@ -70,6 +71,7 @@ public class FileCatalogController extends BaseController {
 	// 树
 	@RequestMapping(value = "/file_load")
 	public ModelAndView file_load(Page page) throws Exception {
+		boolean del = Jurisdiction.buttonJurisdiction(meanMenuUrl, "del");
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
 		PageData pd1 = new PageData();
@@ -85,8 +87,12 @@ public class FileCatalogController extends BaseController {
 		page.setPd(pd);
 		List<PageData> list_catalog = filecatalogService.list_catalog(page);
 		List<PageData> list_files = filemeansService.listByFILE_CATALOGURL_ID(pd1);
-		System.out.println(list_files);
 		System.out.println(pd);
+		if (del){
+			mv.addObject("isdel",0);//当isdel为0时则具有删除功能;1为不具有删除功能
+		}else {
+			mv.addObject("isdel",1);
+		}
 		mv.addObject("pd",pd);
 		mv.addObject("list_catalog",list_catalog);
 		mv.addObject("list_files",list_files);
