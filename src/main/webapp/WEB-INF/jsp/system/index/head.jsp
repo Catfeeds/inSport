@@ -38,7 +38,7 @@
 								<span class="badge badge-grey">2</span>
 							</a>
 
-							<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+							<%--<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
 								<li class="dropdown-header">
 									<i class="ace-icon fa fa-check"></i>
 									预留功能,待开发
@@ -49,10 +49,10 @@
 										<i class="ace-icon fa fa-arrow-right"></i>
 									</a>
 								</li>
-							</ul>
+							</ul>--%>
 						</li>
 
-						<li title="即时聊天" class="purple"  onclick="creatw();"><!-- creatw()在 WebRoot\plugins\websocketInstantMsg\websocket.js中 -->
+						<%--<li title="即时聊天" class="purple"  onclick="creatw();"><!-- creatw()在 WebRoot\plugins\websocketInstantMsg\websocket.js中 -->
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 								<i class="ace-icon fa fa-bell icon-animated-bell"></i>
 								<span class="badge badge-important"></span>
@@ -64,7 +64,7 @@
 									FH Aadmin 即时通讯
 								</li>
 							</ul>
-						</li>
+						</li>--%>
 
 						<li title="站内信" class="green" onclick="fhsms();" id="fhsmstss"><!-- fhsms()在 WebRoot\static\js\myjs\head.js中 -->
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#">

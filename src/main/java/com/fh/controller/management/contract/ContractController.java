@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import com.fh.service.management.classify.ClassifyManager;
 import com.fh.service.management.contractpicture.ContractPictureManager;
 import com.fh.service.management.mode.ModeManager;
+import com.fh.service.management.paymentcontract.PaymentContractManager;
 import com.fh.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -47,6 +48,9 @@ public class ContractController extends BaseController {
 
 	@Resource(name="modeService")
 	private ModeManager modeService;
+
+	@Resource(name="paymentcontractService")
+	private PaymentContractManager paymentcontractService;
 
 	// 树
 	@RequestMapping(value = "/listTree")
@@ -110,7 +114,16 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
+		PageData pd1 = new PageData();
+		pd1.put("PAYMENTCONTRACT_ID",get32UUID());
+		pd1.put("AMOUNT",pd.get("AMOUNT").toString());
+		pd1.put("DUE_AMOUNT",pd.get("DUE_AMOUNT").toString());
+		pd1.put("REALITY_AMOUNT",pd.get("REALITY_AMOUNT").toString());
+		pd1.put("REALITYTIME",pd.get("REALITYTIME").toString());
+		pd1.put("REMARK",pd.getString("REMARK"));
+		pd1.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
 		//pd.put("CONTRACT_ID", this.get32UUID());	//主键
+		paymentcontractService.save(pd1);
 		contractService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
@@ -187,6 +200,25 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
+		PageData pd1 = new PageData();
+		if(pd.getString("PAYMENTCONTRACT_ID") == null || "".equals(pd.getString("PAYMENTCONTRACT_ID"))){
+			pd1.put("PAYMENTCONTRACT_ID",get32UUID());
+		}else {
+			pd1.put("PAYMENTCONTRACT_ID",pd.getString("PAYMENTCONTRACT_ID"));
+		}
+		pd1.put("AMOUNT",pd.get("AMOUNT").toString());
+		pd1.put("DUE_AMOUNT",pd.get("DUE_AMOUNT").toString());
+		pd1.put("REALITY_AMOUNT",pd.get("REALITY_AMOUNT").toString());
+		pd1.put("REALITYTIME",pd.get("REALITYTIME").toString());
+		pd1.put("REMARK",pd.getString("REMARK"));
+		pd1.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
+		System.out.println(pd1);
+		PageData findPd = paymentcontractService.findByContractId(pd);
+		if (findPd == null){
+			paymentcontractService.save(pd1);
+		}else {
+			paymentcontractService.edit(pd1);
+		}
 		contractService.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
@@ -259,13 +291,14 @@ public class ContractController extends BaseController {
 		pd = contractService.findById(pd);	//根据ID读取
 		page.setPd(pd);
 		List<PageData> listPIdClassify = classifyService.listPIdClassify(page);
-		System.out.println(listPIdClassify.size());
 		List<PageData> listMode = modeService.listAll(pd);
+		PageData pd1 = paymentcontractService.findByContractId(pd);
 		mv.setViewName("management/contract/contract_edit");
 		mv.addObject("msg", "editInfo");
 		mv.addObject("listPIdClassify", listPIdClassify);
 		mv.addObject("listMode", listMode);
 		mv.addObject("pd", pd);
+		mv.addObject("pd1", pd1);
 		return mv;
 	}
 

@@ -62,6 +62,12 @@
             <div class="page-content">
                 <div class="row">
                     <div class="col-xs-12">
+                        <table style="margin-top:5px;">
+                            <tr>
+                                <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="deletes();"  title="检索">删除文件<i id="nav-search-icon" class="ace-icon fa fa-cogs bigger-110 nav-search-icon red"></i></a></td>
+                                <td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="downs();" title="下载文件">下载文件<i id="downfile" class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td>
+                            </tr>
+                        </table>
                         <div>
                             <ul class="ace-thumbnails clearfix" id="imgList">
                                 <c:choose>
@@ -112,13 +118,13 @@
                                             <c:if test="${fn:contains(var.FILE_TYPE,'image')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
-                                                        <a ondblclick="toSelect('${var.FILEMEANS_ID}')"
+                                                        <a onclick="toSelect('${var.FILEMEANS_ID}')"
                                                             style="width: 120px;"
                                                            data-rel="colorbox" class="cboxElement">
-                                                            <div name="<%=basePath%>${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                                  class="float_div"
                                                                  style="display: none">
-                                                                <img src="static/images/downloads.png"
+                                                                <img src="static/images/Smile.png"
                                                                      style="width: 35px;height: 35px"/>
                                                             </div>
                                                             <div  name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
@@ -127,10 +133,10 @@
                                                                 <img src="static/images/trash_can.png"
                                                                      style="width: 35px;height: 35px"/>
                                                             </div>
-                                                            <img onclick="toDel('${var.FILEMEANS_ID}')" width="120" height="110" alt="200x200"
+                                                            <img  width="120" height="110" alt="200x200"
                                                                  src="<%=basePath%>${var.FILE_URL}"/>
                                                             <div onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text" style="margin-top: 15px">
-                                                                <div class="inner">${var.FILE_CATALOGURL}</div>
+                                                                <div class="inner">${var.FILENAME}</div>
                                                             </div>
                                                         </a>
                                                         <%--<div class="text" style="margin-top: 15px">
@@ -143,10 +149,10 @@
                                             <c:if test="${fn:contains(var.FILE_TYPE,'pdf')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
-                                                        <div name="<%=basePath%>${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                        <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                              class="float_div"
                                                              style="display: none">
-                                                            <img src="static/images/downloads.png"
+                                                            <img src="static/images/Smile.png"
                                                                  style="width: 35px;height: 35px"/>
                                                         </div>
                                                         <div name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
@@ -155,14 +161,14 @@
                                                             <img src="static/images/trash_can.png"
                                                                  style="width: 35px;height: 35px"/>
                                                         </div>
-                                                        <a ondblclick="toSelect('${var.FILEMEANS_ID}')"
+                                                        <a onclick="toSelect('${var.FILEMEANS_ID}')"
                                                            data-rel="colorbox"
                                                            class="cboxElement">
-                                                            <img  onclick="toDel('${var.FILEMEANS_ID}')" width="120" height="120" alt="200x200"
+                                                            <img   width="120" height="120" alt="200x200"
                                                                  src="static/filecatalog/images/application-pdf.png"/>
                                                             <div onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text"
                                                                  style="margin-top: 15px">
-                                                                <div class="inner">${var.FILE_CATALOGURL}</div>
+                                                                <div class="inner">${var.FILENAME}</div>
                                                             </div>
                                                         </a>
                                                             <%--<div style="width: 100%;height: 25px" align="center" >
@@ -174,10 +180,10 @@
                                             <c:if test="${fn:contains(var.FILE_TYPE,'word')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
-                                                        <div name="<%=basePath%>${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                        <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                              class="float_div"
                                                              style="display: none">
-                                                            <img src="static/images/downloads.png"
+                                                            <img src="static/images/Smile.png"
                                                                  style="width: 35px;height: 35px"/>
                                                         </div>
                                                         <div name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
@@ -186,13 +192,13 @@
                                                             <img src="static/images/trash_can.png"
                                                                  style="width: 35px;height: 35px"/>
                                                         </div>
-                                                        <a ondblclick="toSelect('${var.FILEMEANS_ID}')"
+                                                        <a onclick="toSelect('${var.FILEMEANS_ID}')"
                                                            data-rel="colorbox"
                                                            class="cboxElement">
-                                                            <img  onclick="toDel('${var.FILEMEANS_ID}')" width="120" height="120" alt="200x200"
+                                                            <img  width="120" height="120" alt="200x200"
                                                                  src="static/filecatalog/images/file-word-icon.png"/>
                                                             <div class="text" style="margin-top: 15px">
-                                                                <div class="inner">${var.FILE_CATALOGURL}</div>
+                                                                <div class="inner">${var.FILENAME}</div>
                                                             </div>
                                                         </a>
                                                             <%--<div style="width: 100%;height: 25px" align="center" >
@@ -204,10 +210,10 @@
                                             <c:if test="${fn:contains(var.FILE_TYPE,'sheet')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
-                                                        <div name="<%=basePath%>${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                        <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                              class="float_div"
                                                              style="display: none">
-                                                            <img src="static/images/downloads.png"
+                                                            <img src="static/images/Smile.png"
                                                                  style="width: 35px;height: 35px"/>
                                                         </div>
                                                         <div name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
@@ -216,13 +222,13 @@
                                                             <img src="static/images/trash_can.png"
                                                                  style="width: 35px;height: 35px"/>
                                                         </div>
-                                                        <a ondblclick="toSelect('${var.FILEMEANS_ID}')"
+                                                        <a onclick="toSelect('${var.FILEMEANS_ID}')"
                                                             data-rel="colorbox"
                                                            class="cboxElement">
-                                                            <img onclick="toDel('${var.FILEMEANS_ID}')" width="120" height="120" alt="200x200"
+                                                            <img  width="120" height="120" alt="200x200"
                                                                  src="static/filecatalog/images/xlsx.png"/>
                                                             <div class="text" style="margin-top: 15px">
-                                                                <div class="inner">${var.FILE_CATALOGURL}</div>
+                                                                <div class="inner">${var.FILENAME}</div>
                                                             </div>
                                                         </a>
                                                             <%--<div  class="text" style="margin-top: 15px">
@@ -322,41 +328,6 @@
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
 
-    //图片效果
-    /*jQuery(function ($) {
-        var $overflow = '';
-        var colorbox_params = {
-            rel: 'colorbox',
-            reposition: true,
-            scalePhotos: true,
-            scrolling: false,
-            previous: '<i class="ace-icon fa fa-arrow-left"></i>',
-            next: '<i class="ace-icon fa fa-arrow-right"></i>',
-            close: '&times;',
-            current: '{current} of {total}',
-            maxWidth: '100%',
-            maxHeight: '100%',
-            onOpen: function () {
-                $overflow = document.body.style.overflow;
-                document.body.style.overflow = 'hidden';
-            },
-            onClosed: function () {
-                document.body.style.overflow = $overflow;
-            },
-            onComplete: function () {
-                $.colorbox.resize();
-            }
-        };
-
-        $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
-        $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange fa-spin'></i>");//let's add a custom loading icon
-
-    });*/
-    
-    function showPic() {
-        
-    }
-
     //双击打开文件夹
     function openFile(FPARENTID, FNAME) {
         window.location.href = '<%=basePath%>filecatalog/file_load?FPARENTID=' + FPARENTID + '&FNAME=' + FNAME;
@@ -380,39 +351,38 @@
         } else {
             $("#del" + value).css("display", "none");
         }
-        var file = [];
+       /* var file1 = [];
         $(".ace-thumbnails .delfloat_div").each(function () {
             if ($(this).css("display") != "none") {
-                file.push($(this).attr("name"));
+                file1.push($(this).attr("name"));
             }
-        });
-        if (file.length != 0) {
+        });*/
+        /*if (file1.length != 0) {
             $("#todeletes").css("display", "");
         } else {
             $("#todeletes").css("display", "none");
-        }
+        }*/
     }
 
     //执行删除任务
     function deletes() {
         bootbox.confirm("确定要删除吗?", function (result) {
             if (result) {
-                var file = [];
-                $(".ace-thumbnails .delfloat_div").each(function () {
+                var delfile = [];
+                $(".ace-thumbnails .float_div").each(function () {
                     if ($(this).css("display") != "none") {
-                        file.push($(this).attr("name"));
+                        delfile.push($(this).attr("name"));
                     }
                 });
-                //alert(file);
-                for (var index = 0; index < file.length; index++) {
-                    //var index1 = file[index].lastIndexOf("/");
-                    //download(file[index].substring(index1 + 1, file[index].length), file[index]);
+                //alert(delfile.length);
+                for (var index = 0; index < delfile.length; index++) {
+                    //alert(delfile[index]);
                     $.ajax({
                         async: false,
                         cache: false,
                         type: 'POST',
                         data : {
-                            FILE_URL:file[index]
+                            FILE_URL:delfile[index]
                         },
                         //dataType:"String",
                         url: '<%=basePath%>fileupata/deleteFile',
@@ -441,9 +411,20 @@
         });
         for (var index = 0; index < file.length; index++) {
             var index1 = file[index].lastIndexOf("/");
-            download(file[index].substring(index1 + 1, file[index].length), file[index]);
+            var url = "<%=basePath%>"+file[index];
+            download(file[index].substring(index1 + 1, file[index].length), url);
         }
     }
+
+    function download(name, href) {
+        var a = document.createElement("a"), //创建a标签
+                e = document.createEvent("MouseEvents"); //创建鼠标事件对象
+        e.initEvent("click", false, false); //初始化事件对象
+        a.href = href; //设置下载地址
+        a.download = name; //设置下载文件名
+        a.dispatchEvent(e); //给指定的元素，执行事件click事件
+    }
+
 
     //选择下载文件
     function toSelect(value) {
@@ -459,11 +440,11 @@
                 file.push($(this).attr("name"));
             }
         });
-        if (file.length != 0) {
+       /* if (file.length != 0) {
             $("#downloads").css("display", "");
         } else {
             $("#downloads").css("display", "none");
-        }
+        }*/
 
     }
 

@@ -44,6 +44,7 @@
 						<form action="contract/${msg }.do" name="Form" id="Form" method="post">
 							<input type="hidden" name="CONTRACT_ID" id="CONTRACT_ID" value="${pd.CONTRACT_ID}"/>
 							<input type="hidden" name="ISSTAMPDUTY" id="ISSTAMPDUTY" value="${pd.ISSTAMPDUTY}"/>
+							<input type="hidden" name="PAYMENTCONTRACT_ID" id="PAYMENTCONTRACT_ID" value="${pd1.PAYMENTCONTRACT_ID}"/>
 							<table class="table table-border table-bg table-bordered">
 								<tbody>
 								<tr class="warning">
@@ -175,6 +176,35 @@
 							</div>
 
 							<br />
+							<table id="paymentContarct" style="display: none" class="table table-border table-bg table-bordered">
+								<tbody>
+								<tr class="active">
+									<th ><label>总金额：</label></th>
+									<th ><input type="number" style="width: 150px" value="${pd1.AMOUNT}"
+												class="input-text"  name="AMOUNT"
+												id="AMOUNT"></th>
+									<th width="15%"><label>应付款金额：</label></th>
+									<th width="20%"><input type="number" style="width: 150px" value="${pd1.DUE_AMOUNT}"
+														   class="input-text"  name="DUE_AMOUNT"
+														   id="DUE_AMOUNT"></th>
+									<th ><label>实际付款时间：</label></th>
+									<th  ><input type="date" style="width: 150px;height: 31px" value="${pd1.REALITYTIME}"
+												 class="input-text"  name="REALITYTIME"
+												 id="REALITYTIME"></th>
+								</tr>
+								<tr class="success">
+
+									<th  ><label>实际付款金额：</label></th>
+									<th  ><input type="number" style="width: 150px" value="${pd1.REALITY_AMOUNT}"
+												 class="input-text"  name="REALITY_AMOUNT"
+												 id="REALITY_AMOUNT"></th>
+									<th width="10%" ><label>备注：</label></th>
+									<th colspan="3" ><input type="text" style="width: 550px" value="${pd1.REMARK}"
+												 class="input-text"  name="REMARK"
+												 id="REMARK"></th>
+								</tr>
+								</tbody>
+							</table>
 						</form>
 						<!-- ------------------------------------------------------------------------------- -->
 					</div>
@@ -212,9 +242,23 @@
 <script type="text/javascript">
 	$(top.hangge());
 
+	$(function () {
+		if($("#CONTRACTTYPES").find("option:selected").attr("value") == "付款合同"){
+			$("#paymentContarct").css("display","");
+		}else {
+			$("#paymentContarct").css("display","none");
+		}
+	})
 
 	$("#CONTRACTTYPES").change(function(){
 		var FPARENTID = $("#CONTRACTTYPES").find("option:selected").attr("name");
+		//alert($("#CONTRACTTYPES").find("option:selected").attr("value"));
+		if($("#CONTRACTTYPES").find("option:selected").attr("value") == "付款合同"){
+			$("#paymentContarct").css("display","");
+		}else {
+			$("#paymentContarct").css("display","none");
+		}
+		//paymentContarct
 		$.ajax({
 			async: false,
 			cache: false,

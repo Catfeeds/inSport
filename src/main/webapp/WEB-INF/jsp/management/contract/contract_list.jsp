@@ -428,7 +428,7 @@
         diag.Title = "新增";
         diag.URL = '<%=basePath%>contract/goAdd.do';
         diag.Width = window.innerWidth * 0.7;
-        diag.Height = window.innerHeight * 0.7;
+        diag.Height = window.innerHeight * 0.9;
         diag.Modal = true;				//有无遮罩窗口
         diag.ShowMaxButton = true;	//最大化按钮
         diag.ShowMinButton = true;		//最小化按钮
@@ -460,7 +460,7 @@
         diag.Title = "编辑";
         diag.URL = '<%=basePath%>contract/goEdit.do?CONTRACT_ID=' + Id;
         diag.Width = window.innerWidth * 0.7;
-        diag.Height = window.innerHeight * 0.7;
+        diag.Height = window.innerHeight * 0.9;
         diag.Modal = true;				//有无遮罩窗口
         diag.ShowMaxButton = true;	//最大化按钮
         diag.ShowMinButton = true;		//最小化按钮
