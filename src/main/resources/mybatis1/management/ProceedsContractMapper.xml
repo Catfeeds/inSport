@@ -124,6 +124,15 @@
 		where 
 			PROCEEDSCONTRACT_ID = #{PROCEEDSCONTRACT_ID}
 	</select>
+
+	<select id="findByContractId" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where
+		CONTRACT_ID = #{CONTRACT_ID}
+	</select>
 	
 	<!-- 列表 -->
 	<select id="datalistPage" parameterType="page" resultType="pd">

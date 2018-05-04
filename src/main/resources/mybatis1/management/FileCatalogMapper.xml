@@ -71,6 +71,15 @@
 		FILECATALOG_ID = #{FILECATALOG_ID}
 	</select>
 
+	<select id="findByNameAndPid" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where
+		FITEMID = #{FPARENTID}
+	</select>
+
 	<!-- 通过ID获取数据 -->
 	<select id="findByFitemid" parameterType="pd" resultType="pd">
 		select

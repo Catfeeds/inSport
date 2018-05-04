@@ -74,6 +74,10 @@ public class FileCatalogService implements FileCatalogManager{
 		return (PageData)dao.findForObject("FileCatalogMapper.findById", pd);
 	}
 
+	public PageData findByNameAndPid(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("FileCatalogMapper.findByNameAndPid", pd);
+	}
+
 	public PageData findByFitemid(PageData pd)throws Exception{
 		return (PageData)dao.findForObject("FileCatalogMapper.findByFitemid", pd);
 	}

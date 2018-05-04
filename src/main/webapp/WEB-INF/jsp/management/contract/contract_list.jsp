@@ -114,7 +114,7 @@
                                     <c:when test="${not empty varList}">
                                         <c:if test="${QX.cha == 1 }">
                                             <c:forEach items="${varList}" var="var" varStatus="vs">
-                                                <tr>
+                                                <tr onclick="list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}')">
                                                     <td class='center'>
                                                         <label class="pos-rel"><input type='checkbox' name='ids'
                                                                                       value="${var.CONTRACT_ID}"
@@ -242,6 +242,9 @@
                         </form>
 
                     </div>
+                    <div style="width: 100%">
+                        <iframe id="iframe" style="width: 100%;display: none" src=""></iframe>
+                    </div>
                     <div class="hr hr-16 hr-dotted"></div>
                     <div>
                         <ul class="ace-thumbnails clearfix" id="imgList">
@@ -287,6 +290,11 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
+
+    function list_one(CONTRACT_ID,CONTRACTTYPES) {
+        $("#iframe").attr("src","contract/list_one?CONTRACT_ID="+CONTRACT_ID+"&CONTRACTTYPES="+CONTRACTTYPES);
+        $("#iframe").css("display","");
+    }
 
     //图片效果
     jQuery(function ($) {
@@ -427,7 +435,7 @@
         diag.Drag = true;
         diag.Title = "新增";
         diag.URL = '<%=basePath%>contract/goAdd.do';
-        diag.Width = window.innerWidth * 0.7;
+        diag.Width = window.innerWidth * 0.9;
         diag.Height = window.innerHeight * 0.9;
         diag.Modal = true;				//有无遮罩窗口
         diag.ShowMaxButton = true;	//最大化按钮
@@ -459,7 +467,7 @@
         diag.Drag = true;
         diag.Title = "编辑";
         diag.URL = '<%=basePath%>contract/goEdit.do?CONTRACT_ID=' + Id;
-        diag.Width = window.innerWidth * 0.7;
+        diag.Width = window.innerWidth * 0.9;
         diag.Height = window.innerHeight * 0.9;
         diag.Modal = true;				//有无遮罩窗口
         diag.ShowMaxButton = true;	//最大化按钮

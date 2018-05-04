@@ -11,6 +11,7 @@ import com.fh.service.management.classify.ClassifyManager;
 import com.fh.service.management.contractpicture.ContractPictureManager;
 import com.fh.service.management.mode.ModeManager;
 import com.fh.service.management.paymentcontract.PaymentContractManager;
+import com.fh.service.management.proceedscontract.ProceedsContractManager;
 import com.fh.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -51,6 +52,9 @@ public class ContractController extends BaseController {
 
 	@Resource(name="paymentcontractService")
 	private PaymentContractManager paymentcontractService;
+
+	@Resource(name="proceedscontractService")
+	private ProceedsContractManager proceedscontractService;
 
 	// 树
 	@RequestMapping(value = "/listTree")
@@ -102,6 +106,26 @@ public class ContractController extends BaseController {
 
 		return "";
 	}
+
+	@RequestMapping(value="/list_one")
+	public ModelAndView list_one(Page page) throws Exception{
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		System.out.println(pd);
+		if("收款合同".equals(pd.getString("CONTRACTTYPES"))){
+			PageData pd1 = proceedscontractService.findByContractId(pd);	//列出ProceedsContract列表
+			mv.setViewName("management/proceedscontract/proceedscontract_list_one");
+			mv.addObject("pd1", pd1);
+		}else if("付款合同".equals(pd.getString("CONTRACTTYPES"))){
+			PageData pd1 = paymentcontractService.findByContractId(pd);
+			mv.setViewName("management/paymentcontract/paymentcontract_list_one");
+			mv.addObject("pd1", pd1);
+		}
+		mv.addObject("pd", pd);
+		return mv;
+	}
 	
 	/**保存
 	 * @param
@@ -114,16 +138,46 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		PageData pd1 = new PageData();
-		pd1.put("PAYMENTCONTRACT_ID",get32UUID());
-		pd1.put("AMOUNT",pd.get("AMOUNT").toString());
-		pd1.put("DUE_AMOUNT",pd.get("DUE_AMOUNT").toString());
-		pd1.put("REALITY_AMOUNT",pd.get("REALITY_AMOUNT").toString());
-		pd1.put("REALITYTIME",pd.get("REALITYTIME").toString());
-		pd1.put("REMARK",pd.getString("REMARK"));
-		pd1.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
-		//pd.put("CONTRACT_ID", this.get32UUID());	//主键
-		paymentcontractService.save(pd1);
+		if (pd.getString("CONTRACTTYPES") == "付款合同"){
+			PageData pd1 = new PageData();
+			pd1.put("PAYMENTCONTRACT_ID",get32UUID());
+			pd1.put("AMOUNT",pd.get("AMOUNT").toString());
+			pd1.put("DUE_AMOUNT",pd.get("DUE_AMOUNT").toString());
+			pd1.put("REALITY_AMOUNT",pd.get("REALITY_AMOUNT").toString());
+			pd1.put("REALITYTIME",pd.get("REALITYTIME").toString());
+			pd1.put("REMARK",pd.getString("REMARK"));
+			pd1.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
+			paymentcontractService.save(pd1);
+		}
+		if (pd.getString("CONTRACTTYPES") == "收款合同"){
+			PageData pd2 = new PageData();
+			pd2.put("PROCEEDSCONTRACT_ID",get32UUID());
+			pd2.put("PRINCIPAL",pd.getString("PRINCIPAL"));
+			pd2.put("RECEIVABLE",pd.get("RECEIVABLE").toString());
+			pd2.put("PAYERNAME",pd.getString("PAYERNAME"));
+			pd2.put("PAYTIME",pd.getString("PAYTIME"));
+			pd2.put("ISPAY",Integer.parseInt(pd.get("ISPAY").toString()));
+			pd2.put("RECEIVABLE_REALITY",pd.get("RECEIVABLE_REALITY").toString());
+			pd2.put("INVOICENAME",pd.getString("INVOICENAME"));
+			pd2.put("INVOICETIME",pd.getString("INVOICETIME"));
+			pd2.put("RECEIVABLECASH",pd.get("RECEIVABLECASH").toString());
+			pd2.put("PAYERNAME2",pd.get("PAYERNAME2").toString());
+			pd2.put("PAYTIME2",pd.getString("PAYTIME2"));
+			pd2.put("RECEIVABLE_REALITY2",pd.get("RECEIVABLE_REALITY2").toString());
+			pd2.put("RECEIVABL_PAYTIME",pd.getString("RECEIVABL_PAYTIME"));
+			pd2.put("RECEIVABL_PAYTIME2",pd.getString("RECEIVABL_PAYTIME2"));
+			pd2.put("ENTERTIME",pd.getString("ENTERTIME"));
+			pd2.put("ISENTERPROCEDURE",Integer.parseInt(pd.get("ISENTERPROCEDURE").toString()));
+			pd2.put("WITHDRAWALTIME",pd.getString("WITHDRAWALTIME"));
+			pd2.put("ISDRAWALPROCEDURE",Integer.parseInt(pd.get("ISDRAWALPROCEDURE").toString()));
+			pd2.put("RETURNCASH",pd.get("RETURNCASH").toString());
+			pd2.put("TRAINCOAMOUNT",pd.get("TRAINCOAMOUNT").toString());
+			pd2.put("INVOICENAME2",pd.getString("INVOICENAME2"));
+			pd2.put("INVOICETIME2",pd.getString("INVOICETIME2"));
+			pd2.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
+			//pd.put("CONTRACT_ID", this.get32UUID());	//主键
+			proceedscontractService.save(pd2);
+		}
 		contractService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
@@ -200,24 +254,63 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		PageData pd1 = new PageData();
-		if(pd.getString("PAYMENTCONTRACT_ID") == null || "".equals(pd.getString("PAYMENTCONTRACT_ID"))){
-			pd1.put("PAYMENTCONTRACT_ID",get32UUID());
-		}else {
-			pd1.put("PAYMENTCONTRACT_ID",pd.getString("PAYMENTCONTRACT_ID"));
+		if ("付款合同".equals(pd.getString("CONTRACTTYPES"))){
+			PageData pd1 = new PageData();
+			if(pd.getString("PAYMENTCONTRACT_ID") == null || "".equals(pd.getString("PAYMENTCONTRACT_ID"))){
+				pd1.put("PAYMENTCONTRACT_ID",get32UUID());
+			}else {
+				pd1.put("PAYMENTCONTRACT_ID",pd.getString("PAYMENTCONTRACT_ID"));
+			}
+			pd1.put("AMOUNT",pd.get("AMOUNT").toString());
+			pd1.put("DUE_AMOUNT",pd.get("DUE_AMOUNT").toString());
+			pd1.put("REALITY_AMOUNT",pd.get("REALITY_AMOUNT").toString());
+			pd1.put("REALITYTIME",pd.get("REALITYTIME").toString());
+			pd1.put("REMARK",pd.getString("REMARK"));
+			pd1.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
+			PageData findPayPd = paymentcontractService.findByContractId(pd);
+			if (findPayPd == null){
+				paymentcontractService.save(pd1);
+			}else {
+				paymentcontractService.edit(pd1);
+			}
 		}
-		pd1.put("AMOUNT",pd.get("AMOUNT").toString());
-		pd1.put("DUE_AMOUNT",pd.get("DUE_AMOUNT").toString());
-		pd1.put("REALITY_AMOUNT",pd.get("REALITY_AMOUNT").toString());
-		pd1.put("REALITYTIME",pd.get("REALITYTIME").toString());
-		pd1.put("REMARK",pd.getString("REMARK"));
-		pd1.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
-		System.out.println(pd1);
-		PageData findPd = paymentcontractService.findByContractId(pd);
-		if (findPd == null){
-			paymentcontractService.save(pd1);
-		}else {
-			paymentcontractService.edit(pd1);
+		if ("收款合同".equals(pd.getString("CONTRACTTYPES"))){
+			PageData findProPd = proceedscontractService.findByContractId(pd);
+
+			PageData pd2 = new PageData();
+			if(pd.getString("PROCEEDSCONTRACT_ID") == null || "".equals(pd.getString("PROCEEDSCONTRACT_ID"))){
+				pd2.put("PROCEEDSCONTRACT_ID",get32UUID());
+			}else {
+				pd2.put("PROCEEDSCONTRACT_ID",pd.getString("PROCEEDSCONTRACT_ID"));
+			}
+			pd2.put("PRINCIPAL",pd.getString("PRINCIPAL"));
+			pd2.put("RECEIVABLE",pd.get("RECEIVABLE").toString());
+			pd2.put("PAYERNAME",pd.getString("PAYERNAME"));
+			pd2.put("PAYTIME",pd.getString("PAYTIME"));
+			pd2.put("ISPAY",Integer.parseInt(pd.get("ISPAY").toString()));
+			pd2.put("RECEIVABLE_REALITY",pd.get("RECEIVABLE_REALITY").toString());
+			pd2.put("INVOICENAME",pd.getString("INVOICENAME"));
+			pd2.put("INVOICETIME",pd.getString("INVOICETIME"));
+			pd2.put("RECEIVABLECASH",pd.get("RECEIVABLECASH").toString());
+			pd2.put("PAYERNAME2",pd.get("PAYERNAME2").toString());
+			pd2.put("PAYTIME2",pd.getString("PAYTIME2"));
+			pd2.put("RECEIVABLE_REALITY2",pd.get("RECEIVABLE_REALITY2").toString());
+			pd2.put("RECEIVABL_PAYTIME",pd.getString("RECEIVABL_PAYTIME"));
+			pd2.put("RECEIVABL_PAYTIME2",pd.getString("RECEIVABL_PAYTIME2"));
+			pd2.put("ENTERTIME",pd.getString("ENTERTIME"));
+			pd2.put("ISENTERPROCEDURE",Integer.parseInt(pd.get("ISENTERPROCEDURE").toString()));
+			pd2.put("WITHDRAWALTIME",pd.getString("WITHDRAWALTIME"));
+			pd2.put("ISDRAWALPROCEDURE",Integer.parseInt(pd.get("ISDRAWALPROCEDURE").toString()));
+			pd2.put("RETURNCASH",pd.get("RETURNCASH").toString());
+			pd2.put("TRAINCOAMOUNT",pd.get("TRAINCOAMOUNT").toString());
+			pd2.put("INVOICENAME2",pd.getString("INVOICENAME2"));
+			pd2.put("INVOICETIME2",pd.getString("INVOICETIME2"));
+			pd2.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
+			if (findProPd == null){
+				proceedscontractService.save(pd2);
+			}else {
+				proceedscontractService.edit(pd2);
+			}
 		}
 		contractService.edit(pd);
 		mv.addObject("msg","success");
@@ -293,12 +386,15 @@ public class ContractController extends BaseController {
 		List<PageData> listPIdClassify = classifyService.listPIdClassify(page);
 		List<PageData> listMode = modeService.listAll(pd);
 		PageData pd1 = paymentcontractService.findByContractId(pd);
+		PageData pd2 = proceedscontractService.findByContractId(pd);
+		System.out.println("--------->"+pd2);
 		mv.setViewName("management/contract/contract_edit");
 		mv.addObject("msg", "editInfo");
 		mv.addObject("listPIdClassify", listPIdClassify);
 		mv.addObject("listMode", listMode);
 		mv.addObject("pd", pd);
 		mv.addObject("pd1", pd1);
+		mv.addObject("pd2", pd2);
 		return mv;
 	}
 

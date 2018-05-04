@@ -85,9 +85,9 @@ public class FileCatalogController extends BaseController {
 			pd1.put("FILE_CATALOGURL_ID",1);
 		}
 		page.setPd(pd);
+		System.out.println(pd);
 		List<PageData> list_catalog = filecatalogService.list_catalog(page);
 		List<PageData> list_files = filemeansService.listByFILE_CATALOGURL_ID(pd1);
-		System.out.println(pd);
 		if (del){
 			mv.addObject("isdel",0);//当isdel为0时则具有删除功能;1为不具有删除功能
 		}else {
@@ -141,7 +141,7 @@ public class FileCatalogController extends BaseController {
 				sb.append("{id:").append(ob.getString("FITEMID")).append(",pId:")
 						.append(ob.getString("FPARENTID")).append(",name:\"")
 						.append(ob.getString("FNAME")).append("\"")
-						.append(",open:").append("true").append("},");
+						.append(",open:").append("false").append("},");
 			}
 			return sb.substring(0, sb.length() - 1) + "]";
 		}catch (Exception e){
@@ -253,7 +253,8 @@ public class FileCatalogController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd = filecatalogService.findById(pd);	//根据ID读取
+		pd = filecatalogService.findByNameAndPid(pd);	//根据ID读取
+		System.out.println(pd);
 		mv.setViewName("management/filecatalog/filecatalog_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);

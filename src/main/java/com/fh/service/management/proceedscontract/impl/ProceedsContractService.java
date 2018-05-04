@@ -69,7 +69,11 @@ public class ProceedsContractService implements ProceedsContractManager{
 	public PageData findById(PageData pd)throws Exception{
 		return (PageData)dao.findForObject("ProceedsContractMapper.findById", pd);
 	}
-	
+
+	public PageData findByContractId(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("ProceedsContractMapper.findByContractId", pd);
+	}
+
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception

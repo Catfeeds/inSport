@@ -44,7 +44,11 @@
 						<form action="contract/${msg }.do" name="Form" id="Form" method="post">
 							<input type="hidden" name="CONTRACT_ID" id="CONTRACT_ID" value="${pd.CONTRACT_ID}"/>
 							<input type="hidden" name="ISSTAMPDUTY" id="ISSTAMPDUTY" value="${pd.ISSTAMPDUTY}"/>
+							<input type="hidden" name="ISPAY" id="ISPAY" value="${pd2.ISPAY}"/>
+							<input type="hidden" name="ISENTERPROCEDURE" id="ISENTERPROCEDURE" value="${pd2.ISENTERPROCEDURE}"/>
+							<input type="hidden" name="PROCEEDSCONTRACT_ID" id="PROCEEDSCONTRACT_ID" value="${pd2.PROCEEDSCONTRACT_ID}"/>
 							<input type="hidden" name="PAYMENTCONTRACT_ID" id="PAYMENTCONTRACT_ID" value="${pd1.PAYMENTCONTRACT_ID}"/>
+							<input type="hidden" name="ISDRAWALPROCEDURE" id="ISDRAWALPROCEDURE" value="${pd2.ISDRAWALPROCEDURE}"/>
 							<table class="table table-border table-bg table-bordered">
 								<tbody>
 								<tr class="warning">
@@ -52,17 +56,6 @@
 									<th width="10%"><input type="text" style="width: 150px" value="${pd.CONTRACTNAME}"
 														   class="input-text"  name="CONTRACTNAME"
 														   id="CONTRACTNAME"></th>
-									<%--<th width="10%">
-										<select name="FDEPTID" id="FDEPTID" data-placeholder=""  style="vertical-align:top;width: 150px;" onchange="selectType(this.value)">
-											<c:forEach items="${varOList}" var="var" varStatus="vs">
-												<option value="${var.FITEMID}">${var.FNAME}</option>
-												<!-- <option value="single">单表</option>
-												<option value="tree">树形</option>
-												<option value="fathertable">主表</option>
-												<option value="sontable">明细表</option> -->
-											</c:forEach>
-										</select>
-									</th>--%>
 									<th width="15%"><label>合同编号：</label></th>
 									<th width="10%"><input type="text" style="width: 150px" value="${pd.CONTRACTNUM}"
 														   class="input-text"  name="CONTRACTNUM"
@@ -176,6 +169,150 @@
 							</div>
 
 							<br />
+							<!-- --------------------------------------------------------------------------- -->
+							<table id="proceedsContract" style="display: none;" class="table table-border table-bg table-bordered">
+								<tbody>
+								<tr class="success">
+									<th width="15%"><label>项目负责人：</label></th>
+									<th width="10%"><input type="text" style="width: 150px" value="${pd2.PRINCIPAL}"
+														   class="input-text"  name="PRINCIPAL"
+														   id="PRINCIPAL"></th>
+									<th width="15%"><label>应收金额：</label></th>
+									<th width="10%"><input type="text" style="width: 150px" value="${pd2.RECEIVABLE}"
+														   class="input-text"  name="RECEIVABLE"
+														   id="RECEIVABLE"></th>
+									<th width="15%"><label>付款方名称：</label></th>
+									<th width="20%"><input type="number" style="width: 150px" value="${pd2.PAYERNAME}"
+														   class="input-text"  name="PAYERNAME"
+														   id="PAYERNAME"></th>
+								</tr>
+								<tr class="success">
+									<th ><label>应付款时间：</label></th>
+									<th ><input type="date" style="width: 150px;height: 31px" value="${pd2.PAYTIME}"
+												class="input-text"  name="PAYTIME"
+												id="PAYTIME"></th>
+									<th  ><label>是否收款：</label></th>
+									<th  >
+										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio1" id="form-field-radio3" onclick="isPAY('1');" <c:if test="${pd2.ISPAY == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>
+										<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio1" id="form-field-radio4" onclick="isPAY('0');" <c:if test="${pd2.ISPAY == '0' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">否</span></label>
+									</th>
+									<th width="15%"><label>实际付款金额：</label></th>
+									<th width="20%"><input type="number" style="width: 150px" value="${pd2.RECEIVABLE_REALITY}"
+														   class="input-text"  name="RECEIVABLE_REALITY"
+														   id="RECEIVABLE_REALITY"></th>
+								</tr>
+								<tr class="success">
+									<th ><label>实际付款时间：</label></th>
+									<th ><input type="date" style="width: 150px;height: 31px" value="${pd2.RECEIVABL_PAYTIME}"
+												class="input-text"  name="RECEIVABL_PAYTIME"
+												id="RECEIVABL_PAYTIME"></th>
+									<th ><label>发票名称：</label></th>
+									<th  ><input type="text" style="width: 150px;height: 31px" value="${pd2.INVOICENAME}"
+												 class="input-text"  name="INVOICENAME"
+												 id="INVOICENAME"></th>
+									<th  ><label>开票时间：</label></th>
+									<th  ><input type="date" style="width: 150px;height: 31px" value="${pd2.INVOICETIME}"
+												 class="input-text"  name="INVOICETIME"
+												 id="INVOICETIME"></th>
+
+								</tr>
+								<tr class="danger">
+									<th width="10%" ><label>应收押金：</label></th>
+									<th  ><input type="number" style="width: 150px" value="${pd2.RECEIVABLECASH}"
+												 class="input-text"  name="RECEIVABLECASH"
+												 id="RECEIVABLECASH"></th>
+									<th width="15%"><label>付款方（押金）：</label></th>
+									<th width="10%"><input type="number" style="width: 150px" value="${pd2.PAYERNAME2}"
+														   class="input-text"  name="PAYERNAME2"
+														   id="PAYERNAME2"></th>
+									<th width="15%"><label>付款时间（押金）：</label></th>
+									<th width="10%"><input type="number" style="width: 150px" value="${pd2.PAYTIME2}"
+														   class="input-text"  name="PAYTIME2"
+														   id="PAYTIME2"></th>
+
+									</th>
+								</tr>
+								<tr class="danger">
+									<th width="15%"><label>实际付款金额（押金）：</label></th>
+									<th width="10%">
+										<input type="number" style="width: 150px" value="${pd2.RECEIVABLE_REALITY2}"
+											   class="input-text"  name="RECEIVABLE_REALITY2"
+											   id="RECEIVABLE_REALITY2">
+
+									<th  ><label>实际付款时间（押金）：</label></th>
+									<th  ><input type="number" style="width: 150px" value="${pd2.RECEIVABL_PAYTIME2}"
+												 class="input-text"  name="RECEIVABL_PAYTIME2"
+												 id="RECEIVABL_PAYTIME2"></th>
+								</tr>
+								<tr class="info">
+									<th ><label>进场时间：</label></th>
+									<th >
+										<label>
+											<input type="date" style="width: 140px;height: 31px" value="${pd2.ENTERTIME}"
+												   class="input-date"  name="ENTERTIME"
+												   id="ENTERTIME">
+										</label>
+									</th>
+									<th ><label>是否已办进场手续：</label></th>
+									<th  >
+										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio2" id="form-field-radio5" onclick="isENTERPROCEDURE('1');" <c:if test="${pd2.ISENTERPROCEDURE == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>
+										<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio2" id="form-field-radio6" onclick="isENTERPROCEDURE('0');" <c:if test="${pd2.ISENTERPROCEDURE == '0' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">否</span></label>
+									</th>
+
+								</tr>
+								<tr class="warning">
+									<th  ><label>撤场时间：</label></th>
+									<th >
+										<label>
+											<input type="date" style="width: 140px;height: 31px" value="${pd2.WITHDRAWALTIME}"
+												   class="input-date"  name="WITHDRAWALTIME"
+												   id="WITHDRAWALTIME">
+										</label>
+									</th>
+									<th ><label>是否已办撤场手续：</label></th>
+									<th  >
+										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio3" id="form-field-radio7" onclick="isDRAWALPROCEDURE('1');" <c:if test="${pd2.ISDRAWALPROCEDURE == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>
+										<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio3" id="form-field-radio8" onclick="isDRAWALPROCEDURE('0');" <c:if test="${pd2.ISDRAWALPROCEDURE == '0' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">否</span></label>
+									</th>
+									<th ><label>退押金金额：</label></th>
+									<th >
+										<label>
+											<input type="number" style="width: 140px;height: 31px" value="${pd2.RETURNCASH}"
+												   class="input-date"  name="RETURNCASH"
+												   id="RETURNCASH">
+										</label>
+									</th>
+
+								</tr>
+								<tr class="warning">
+									<th  ><label>结转收入金额：</label></th>
+									<th >
+										<label>
+											<input type="number" style="width: 140px;height: 31px" value="${pd2.TRAINCOAMOUNT}"
+												   class="input-date"  name="TRAINCOAMOUNT"
+												   id="TRAINCOAMOUNT">
+										</label>
+									</th>
+									<th ><label>发票名称：</label></th>
+									<th >
+										<label>
+											<input type="text" style="width: 140px;height: 31px" value="${pd2.INVOICENAME2}"
+												   class="input-date"  name="INVOICENAME2"
+												   id="INVOICENAME2">
+										</label>
+									</th>
+									<th ><label>开票时间：</label></th>
+									<th >
+										<label>
+											<input type="date" style="width: 140px;height: 31px" value="${pd2.INVOICETIME2}"
+												   class="input-date"  name="INVOICETIME2"
+												   id="INVOICETIME2">
+										</label>
+									</th>
+								</tr>
+								</tbody>
+							</table>
+							<!-- --------------------------------------------------------------------------- -->
 							<table id="paymentContarct" style="display: none" class="table table-border table-bg table-bordered">
 								<tbody>
 								<tr class="active">
@@ -245,7 +382,9 @@
 	$(function () {
 		if($("#CONTRACTTYPES").find("option:selected").attr("value") == "付款合同"){
 			$("#paymentContarct").css("display","");
-		}else {
+			$("#proceedsContract").css("display","none");
+		}else if($("#CONTRACTTYPES").find("option:selected").attr("value") == "收款合同"){
+			$("#proceedsContract").css("display","");
 			$("#paymentContarct").css("display","none");
 		}
 	})
@@ -255,7 +394,9 @@
 		//alert($("#CONTRACTTYPES").find("option:selected").attr("value"));
 		if($("#CONTRACTTYPES").find("option:selected").attr("value") == "付款合同"){
 			$("#paymentContarct").css("display","");
-		}else {
+			$("#proceedsContract").css("display","none");
+		}else if($("#CONTRACTTYPES").find("option:selected").attr("value") == "收款合同"){
+			$("#proceedsContract").css("display","");
 			$("#paymentContarct").css("display","none");
 		}
 		//paymentContarct
@@ -288,6 +429,18 @@
 	/*function selectType(value) {
 		alert(value.id);
 	}*/
+
+	function isENTERPROCEDURE(value) {
+		$("#ISENTERPROCEDURE").val(value);
+	}
+
+	function isPAY(value) {
+		$("#ISPAY").val(value);
+	}
+
+	function isDRAWALPROCEDURE(value) {
+		$("#ISDRAWALPROCEDURE").val(value);
+	}
 
 	function isSTAMPDUTY(num){
 		$("#ISSTAMPDUTY").val(num);

@@ -111,6 +111,8 @@ public class ProceedsContractController extends BaseController {
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
 		return mv;
 	}
+
+
 	
 	/**去新增页面
 	 * @param
