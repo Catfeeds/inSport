@@ -35,6 +35,9 @@ public class FileUpDataController extends BaseController {
 
 	@Resource(name="filemeansService")
 	private FileMeansManager filemeansService;
+
+	@Resource(name="filecatalogService")
+	private FileCatalogManager filecatalogService;
 	/*
 	去增加图片页面
 	 */
@@ -117,5 +120,108 @@ public class FileUpDataController extends BaseController {
 		filemeansService.deleteByUrl(pd);
 		json.put("result", "ok");
 		return json;
+	}
+
+	@RequestMapping(value="/deleteFileCatalog")
+	@ResponseBody
+	public Map<String,String> deleteFileCatalog(Page page) throws Exception{
+		Map<String,String> json = new HashMap<String,String>();
+		PageData pd = this.getPageData();
+		System.out.println(pd);
+		filecatalogService.deleteByItemid(pd);
+		filecatalogService.deleteByPid(pd);
+		pd = this.getPageData();
+		String keywords = pd.getString("keywords"); // 关键词检索条件
+		if (null != keywords && !"".equals(keywords)) {
+			pd.put("keywords", keywords.trim());
+		}
+		page.setPd(pd);
+		JSONArray arr = null;
+		try {
+			arr = JSONArray.fromObject(filecatalogService.listAll(pd));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		JSONArray jsStr = JSONArray.fromObject(this.makeTree(arr));
+		/*String fileUrl= "D:/【源码】maven_sqlsever_版本/MVNFHS/target/inSport/"+pd.getString("FILE_URL");
+		File file = new File(fileUrl);
+		file.delete();
+		filemeansService.deleteByUrl(pd);*/
+		json.put("result", "ok");
+		return json;
+	}
+
+	@RequestMapping(value="/goEditName")
+	public ModelAndView goEditName() throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		System.out.println(pd);
+		mv.setViewName("management/fileupdata/fileEditName");
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
+	@RequestMapping(value="/editFile")
+	public ModelAndView editFile(Page page) throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = this.getPageData();
+		System.out.println("pd------------------>"+pd);
+		String oldName = pd.getString("FILE_URL");
+		String qz = "D:/【源码】maven_sqlsever_版本/MVNFHS/target/inSport/";
+		String fileUrl= qz + pd.getString("FILE_URL");
+		File file = new File(fileUrl);
+		String newName =pd.getString("FNAME") + oldName.substring(oldName.lastIndexOf("."),oldName.length());
+		String newUrl = oldName.substring(0,oldName.lastIndexOf("/")+1) + newName;
+		pd.put("FILENAME",newName);
+		pd.put("newUrl",newUrl);
+		System.out.println("pd："+pd);
+		file.renameTo(new File(qz + newUrl));
+		filemeansService.editName(pd);
+		mv.addObject("msg","success");
+		mv.setViewName("save_result");
+		return mv;
+	}
+
+	@RequestMapping(value = "/dateTree")
+	@ResponseBody
+	public JSONArray dateTree(Page page) {
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		String keywords = pd.getString("keywords"); // 关键词检索条件
+		if (null != keywords && !"".equals(keywords)) {
+			pd.put("keywords", keywords.trim());
+		}
+		page.setPd(pd);
+		JSONArray arr = null;
+		try {
+			arr = JSONArray.fromObject(filecatalogService.listAll(pd));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		JSONArray jsStr = JSONArray.fromObject(this.makeTree(arr));
+		//System.out.println(jsStr);
+		return jsStr;
+	}
+
+	@SuppressWarnings("unchecked")
+	public String makeTree(JSONArray arr) {
+		StringBuffer sb = new StringBuffer();
+		try {
+			sb.append("[");
+			Iterator<Object> it = arr.iterator();
+			while (it.hasNext()) {
+				JSONObject ob = (JSONObject) it.next();
+				sb.append("{id:").append(ob.getString("FITEMID")).append(",pId:")
+						.append(ob.getString("FPARENTID")).append(",name:\"")
+						.append(ob.getString("FNAME")).append("\"")
+						.append(",open:").append("true").append("},");
+			}
+			return sb.substring(0, sb.length() - 1) + "]";
+		}catch (Exception e){
+			System.out.println("");
+		}
+
+		return "";
 	}
 }

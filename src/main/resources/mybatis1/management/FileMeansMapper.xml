@@ -86,6 +86,16 @@
         FILEMEANS_ID = #{FILEMEANS_ID}
     </update>
 
+    <update id="editName" parameterType="pd">
+        update
+        <include refid="tableName"></include>
+        set
+        FILENAME = #{FILENAME},
+        FILE_URL = #{newUrl}
+        where
+        FILE_URL = #{FILE_URL}
+    </update>
+
     <!-- 通过ID获取数据 -->
     <select id="findById" parameterType="pd" resultType="pd">
         select

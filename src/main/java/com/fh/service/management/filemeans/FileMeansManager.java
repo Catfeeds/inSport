@@ -31,7 +31,9 @@ public interface FileMeansManager{
 	 * @throws Exception
 	 */
 	public void edit(PageData pd)throws Exception;
-	
+
+	public void editName(PageData pd)throws Exception;
+
 	/**列表
 	 * @param page
 	 * @throws Exception

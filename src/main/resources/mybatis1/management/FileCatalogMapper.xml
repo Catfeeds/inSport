@@ -39,11 +39,25 @@
 	</insert>
 	
 	<!-- 删除-->
+	<delete id="deleteByItemid" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where
+		FITEMID = #{FITEMID} AND FNAME = #{FNAME}
+	</delete>
+
+	<delete id="deleteByPid" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where
+		FPARENTID = #{FITEMID}
+	</delete>
+
 	<delete id="delete" parameterType="pd">
 		delete from
 		<include refid="tableName"></include>
-		where 
-			FILECATALOG_ID = #{FILECATALOG_ID}
+		where
+		FILECATALOG_ID = #{FILECATALOG_ID}
 	</delete>
 	
 	<!-- 修改 -->

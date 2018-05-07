@@ -35,7 +35,15 @@ public class FileCatalogService implements FileCatalogManager{
 	public void delete(PageData pd)throws Exception{
 		dao.delete("FileCatalogMapper.delete", pd);
 	}
-	
+
+	public void deleteByItemid(PageData pd)throws Exception{
+		dao.delete("FileCatalogMapper.deleteByItemid", pd);
+	}
+
+	public void deleteByPid(PageData pd)throws Exception{
+		dao.delete("FileCatalogMapper.deleteByPid", pd);
+	}
+
 	/**修改
 	 * @param pd
 	 * @throws Exception

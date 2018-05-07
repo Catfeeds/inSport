@@ -67,6 +67,7 @@
                         <table style="margin-top:5px;">
                             <tr>
                                 <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" title="当前目录">当前目录:<c:if test="${pd.FNAME == null }">根目录</c:if><c:if test="${not empty pd.FNAME}">${pd.FNAME}</c:if></a></td>
+                                <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="editFileName();"  title="修改文件名称">修改文件名称<i id="nach-icon" class="ace-icon fa fa-cog bigger-110 nav-search-icon green"></i></a></td>
                                 <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="deletes();"  title="检索">删除文件<i id="nav-search-icon" class="ace-icon fa fa-cogs bigger-110 nav-search-icon red"></i></a></td>
                                 <td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="downs();" title="下载文件">下载文件<i id="downfile" class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td>
                             </tr>
@@ -235,13 +236,7 @@
                                                                 <div class="inner">${var.FILENAME}</div>
                                                             </div>
                                                         </a>
-                                                            <%--<div  class="text" style="margin-top: 15px">
-                                                                <div class="inner">${var.FILE_CATALOGURL}</div>
-                                                            </div>--%>
                                                     </div>
-                                                        <%--<div style="width: 100%;height: 25px" align="center" >
-                                                            <p>${var.FILE_CATALOGURL}</p>
-                                                        </div>--%>
                                                 </li>
                                             </c:if>
                                         </c:forEach>
@@ -331,7 +326,7 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
-
+    var zNodes;
     function test(event){
             var btnNum = event.button;
             if (btnNum==2)
@@ -374,18 +369,12 @@
                         //dataType:"String",
                         url: '<%=basePath%>filecatalog/dateTree',
                         success: function (data) {
-                            //alert(data) ;
-                            zNodes = data;
+                            window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
                         },
                         error: function () {
                             alert("请求失败");
                         }
                     });
-                   /* $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-                    var hmainT = document.getElementById("treeFrame");
-                    var bheightT = document.documentElement.clientHeight;
-                    hmainT.style.width = '100%';
-                    hmainT.style.height = (bheightT - 50) + 'px';*/
                     diag.close();
                 };
                 diag.show();
@@ -415,18 +404,12 @@
                         //dataType:"String",
                         url: '<%=basePath%>filecatalog/dateTree',
                         success: function (data) {
-                            //alert(data) ;
-                            zNodes = data;
+                            window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
                         },
                         error: function () {
                             alert("请求失败");
                         }
                     });
-                    /* $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-                     var hmainT = document.getElementById("treeFrame");
-                     var bheightT = document.documentElement.clientHeight;
-                     hmainT.style.width = '100%';
-                     hmainT.style.height = (bheightT - 50) + 'px';*/
                     diag.close();
                 };
                 diag.show();
@@ -436,7 +419,25 @@
             name:"删除当前目录",
             id:"menu-delete",
             callback: function() {
-                alert("删除");
+                var FPARENTID = '${pd.FPARENTID}';
+                var PNAME = '${pd.FNAME}';
+                bootbox.confirm("确定要删除当前吗?将会把该文件夹里文件连同删除", function (result) {
+                    if (result) {
+                        $.ajax({
+                            async: false,
+                            cache: false,
+                            type: 'POST',
+                            //dataType:"String",
+                            url: '<%=basePath%>fileupata/deleteFileCatalog?FITEMID='+FPARENTID+"&FNAME="+PNAME,
+                            success: function (data) {
+                                window.location.href="<%=basePath%>filecatalog/file_load";
+                            },
+                            error: function () {
+                                alert("请求失败");
+                            }
+                        });
+                    }
+                })
             }
         },
     ];
@@ -456,6 +457,8 @@
         window.open("<%=basePath%>filecatalog/wep_open?FILE_URL=" + FILE_URL +"&FILENAME="+FILENAME);
     }
 
+
+
     //选择删除文件
     function toDel(value) {
         if('${isdel}' == 1 || '${isdel}' == '1'){
@@ -466,17 +469,39 @@
         } else {
             $("#del" + value).css("display", "none");
         }
-       /* var file1 = [];
-        $(".ace-thumbnails .delfloat_div").each(function () {
-            if ($(this).css("display") != "none") {
-                file1.push($(this).attr("name"));
+    }
+
+    //执行修改任务
+    function editFileName(){
+            var editfile = [];
+            $(".ace-thumbnails .float_div").each(function () {
+                if ($(this).css("display") != "none") {
+                    editfile.push($(this).attr("name"));
+                }
+            });
+            alert(editfile);
+            if (editfile.length == 1){
+
+                for (var index = 0; index < editfile.length; index++) {
+                    top.jzts();
+                    var diag = new top.Dialog();
+                    diag.Drag=true;
+                    diag.Title ="修改文件名称";
+                    diag.URL = '<%=basePath%>fileupata/goEditName.do?FILE_URL='+editfile[index];
+                    diag.Width = 450;
+                    diag.Height = 255;
+                    diag.Modal = true;				//有无遮罩窗口
+                    diag. ShowMaxButton = true;	//最大化按钮
+                    diag.ShowMinButton = true;		//最小化按钮
+                    diag.CancelEvent = function(){ //关闭事件
+                        diag.close();
+                        window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
+                    };
+                    diag.show();
+
+                }
             }
-        });*/
-        /*if (file1.length != 0) {
-            $("#todeletes").css("display", "");
-        } else {
-            $("#todeletes").css("display", "none");
-        }*/
+
     }
 
     //执行删除任务
@@ -489,7 +514,6 @@
                         delfile.push($(this).attr("name"));
                     }
                 });
-                //alert(delfile.length);
                 for (var index = 0; index < delfile.length; index++) {
                     //alert(delfile[index]);
                     $.ajax({
@@ -502,9 +526,6 @@
                         //dataType:"String",
                         url: '<%=basePath%>fileupata/deleteFile',
                         success: function (data) {
-                            //alert(data) ;
-                            //zNodes = data;
-
                             window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
                         },
                         error: function () {
@@ -555,12 +576,6 @@
                 file.push($(this).attr("name"));
             }
         });
-       /* if (file.length != 0) {
-            $("#downloads").css("display", "");
-        } else {
-            $("#downloads").css("display", "none");
-        }*/
-
     }
 
     //去选择上传文件
@@ -572,9 +587,8 @@
         diag.Width = 800;
         diag.Height = 490;
         diag.CancelEvent = function () { //关闭事件
-
+            window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
             diag.close();
-            //tosearch();
         };
         diag.show();
     }

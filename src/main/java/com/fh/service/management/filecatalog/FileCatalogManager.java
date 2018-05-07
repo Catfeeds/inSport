@@ -23,7 +23,11 @@ public interface FileCatalogManager{
 	 * @throws Exception
 	 */
 	public void delete(PageData pd)throws Exception;
-	
+
+	public void deleteByItemid(PageData pd)throws Exception;
+
+	public void deleteByPid(PageData pd)throws Exception;
+
 	/**修改
 	 * @param pd
 	 * @throws Exception

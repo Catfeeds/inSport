@@ -141,7 +141,7 @@ public class FileCatalogController extends BaseController {
 				sb.append("{id:").append(ob.getString("FITEMID")).append(",pId:")
 						.append(ob.getString("FPARENTID")).append(",name:\"")
 						.append(ob.getString("FNAME")).append("\"")
-						.append(",open:").append("false").append("},");
+						.append(",open:").append("true").append("},");
 			}
 			return sb.substring(0, sb.length() - 1) + "]";
 		}catch (Exception e){
