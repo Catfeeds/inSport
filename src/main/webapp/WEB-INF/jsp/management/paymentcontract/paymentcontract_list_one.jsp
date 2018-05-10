@@ -32,7 +32,7 @@
 							
 						<!-- 检索  -->
 						<form action="paymentcontract/list.do" method="post" name="Form" id="Form">
-
+						合同名称：${pd.CONTRACTNAME}
 						<table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">	
 							<thead>
 								<tr>
@@ -102,6 +102,7 @@
 	<script type="text/javascript" src="static/js/jquery.tips.js"></script>
 	<script type="text/javascript">
 		$(top.hangge());//关闭加载状态
+		
 		//检索
 		function tosearch(){
 			top.jzts();

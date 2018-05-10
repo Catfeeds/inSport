@@ -38,12 +38,7 @@
 						<div class="col-xs-12">
 							<table style="width:100%;" border="0">
 								<tr>
-									<td style="width:12%;" valign="top" bgcolor="#F9F9F9"><!-- <a
-										style="width: 100%;margin-top: 5px"
-										class="btn btn-light btn-xs" onclick="updateDep()">同步用户信息<i
-											id="nav-search-icon"
-											class="ace-icon fa fa-refresh bigger-110 nav-search-icon blue"></i> 
-									</a>-->
+									<td style="width:12%;" valign="top" bgcolor="#F9F9F9">
 										<ul id="treeDemo" class="ztree"></ul></td>
 									<td style="width:88%;" valign="top"><iframe
 											name="treeFrame" id="treeFrame" frameborder="0"

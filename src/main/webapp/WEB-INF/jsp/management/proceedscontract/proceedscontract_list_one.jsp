@@ -29,7 +29,7 @@
 			<div class="page-content">
 				<div class="row">
 					<div class="col-xs-12">
-
+						合同名称：${pd.CONTRACTNAME}
 						<table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
 							<thead>
 							<tr>
@@ -39,28 +39,34 @@
 								<th class="center">应付款时间</th>
 								<th class="center">是否收款</th>
 								<th class="center">实际付款金额</th>
+								<th class="center">实际付款时间</th>
 								<th class="center">发票名称</th>
 								<th class="center">开票时间</th>
 								<th class="center">应收押金</th>
 								<th class="center">付款方（押金）</th>
-								<th class="center">付款时间（押金）</th>
+
 							</tr>
 							<tr>
 								<td class='center'>${pd1.PRINCIPAL}</td>
 								<td class='center'>${pd1.RECEIVABLE}</td>
 								<td class='center'>${pd1.PAYERNAME}</td>
 								<td class='center'>${pd1.PAYTIME}</td>
-								<td class='center'>${pd1.ISPAY}</td>
+								<c:if test="${pd1.ISPAY == 1 }">
+									<td class='center'>是</td>
+								</c:if>
+								<c:if test="${pd1.ISPAY == 0 }">
+									<td class='center'>否</td>
+								</c:if>
 								<td class='center'>${pd1.RECEIVABLE_REALITY}</td>
+								<td class='center'>${pd1.RECEIVABL_PAYTIME}</td>
 								<td class='center'>${pd1.INVOICENAME}</td>
 								<td class='center'>${pd1.INVOICETIME}</td>
 								<td class='center'>${pd1.RECEIVABLECASH}</td>
 								<td class='center'>${pd1.PAYERNAME2}</td>
-								<td class='center'>${pd1.PAYTIME2}</td>
 							</tr>
 							<tr>
+								<th class="center">付款时间（押金）</th>
 								<th class="center">实际付款金额（押金）</th>
-								<th class="center">实际付款时间</th>
 								<th class="center">实际付款时间（押金）</th>
 								<th class="center">进场时间</th>
 								<th class="center">是否已办进场手续</th>
@@ -72,13 +78,23 @@
 								<th class="center">开票时间</th>
 							</tr>
 							<tr>
+								<td class='center'>${pd1.PAYTIME2}</td>
 								<td class='center'>${pd1.RECEIVABLE_REALITY2}</td>
-								<td class='center'>${pd1.RECEIVABL_PAYTIME}</td>
 								<td class='center'>${pd1.RECEIVABL_PAYTIME2}</td>
 								<td class='center'>${pd1.ENTERTIME}</td>
-								<td class='center'>${pd1.ISENTERPROCEDURE}</td>
+								<c:if test="${pd1.ISENTERPROCEDURE == 1 }">
+									<td class='center'>是</td>
+								</c:if>
+								<c:if test="${pd1.ISENTERPROCEDURE == 0 }">
+									<td class='center'>否</td>
+								</c:if>
 								<td class='center'>${pd1.WITHDRAWALTIME}</td>
-								<td class='center'>${pd1.ISDRAWALPROCEDURE}</td>
+								<c:if test="${pd1.ISDRAWALPROCEDURE == 1 }">
+									<td class='center'>是</td>
+								</c:if>
+								<c:if test="${pd1.ISDRAWALPROCEDURE == 0 }">
+									<td class='center'>否</td>
+								</c:if>
 								<td class='center'>${pd1.RETURNCASH}</td>
 								<td class='center'>${pd1.TRAINCOAMOUNT}</td>
 								<td class='center'>${pd1.INVOICENAME2}</td>

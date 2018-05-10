@@ -115,45 +115,42 @@
 									</th>
 								</tr>
 								<tr class="active">
-									<th ><label>经办人：</label></th>
-									<th ><input type="text" style="width: 150px" value="${pd.OPERATOR}"
-												class="input-text"  name="OPERATOR"
-												id="OPERATOR"></th>
-
-									<th  ><label>招待票：</label></th>
-									<th  ><input type="text" style="width: 150px" value="${pd.INVITATIONTICKET}"
-												 class="input-text"  name="INVITATIONTICKET"
-												 id="INVITATIONTICKET"></th>
-								</tr>
-								<tr class="success">
-									<th  ><label>合同签订使用时间：</label></th>
-									<th  colspan="2">
-										<label>
-											<input type="date" style="width: 140px;height: 31px" value="${pd.FUSEDATESTART}"
-												   class="input-date"  name="FUSEDATESTART"
-												   id="FUSEDATESTART">
-											- <input type="date" style="width: 140px;height: 31px" value="${pd.FUSEDATEENT}"
-													 class="input-date"  name="FUSEDATEENT"
-													 id="FUSEDATEENT">
-										</label>
-									</th>
 									<th  ><label>合同类型：</label></th>
-									<th colspan="2" >
+									<th colspan="3" >
 										<select name="CONTRACTTYPES" id="CONTRACTTYPES" data-placeholder=""
 												style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
 											<option value="${pd.CONTRACTTYPES}" name="${pd.CONTRACTTYPES}">${pd.CONTRACTTYPES}</option>
 											<c:forEach items="${listPIdClassify}" var="var" varStatus="vs">
 												<option id="${var.FITEMID}" value="${var.FNAME}" name="${var.FITEMID}">${var.FNAME}</option>
 											</c:forEach>
-										</select> -
+										</select> ---
 										<select name="CONTRACTCLASSIFY" id="CONTRACTCLASSIFY" data-placeholder=""
 												style="vertical-align:top;width: 150px;" onchange="selectType(this.value); ">
 											<option  value="${pd.CONTRACTCLASSIFY}" name="${pd.CONTRACTCLASSIFY}">${pd.CONTRACTCLASSIFY}</option>
-											<%--<c:forEach items="${listClassify}" var="var" varStatus="vs">
-												<option value="${var.FNAME}" name="${var.FITEMID}">${var.FNAME}</option>
-											</c:forEach>--%>
 										</select>
 									</th>
+									<th  ><label>招待票：</label></th>
+									<th  ><input type="text" readonly="readonly" style="width: 150px" value="${pd.INVITATIONTICKET}"
+												 class="input-text"  name="INVITATIONTICKET"
+												 id="INVITATIONTICKET"></th>
+								</tr>
+								<tr class="success">
+									<th ><label>经办人：</label></th>
+									<th ><input type="text" style="width: 150px" value="${pd.OPERATOR}"
+												class="input-text"  name="OPERATOR"
+												id="OPERATOR"></th>
+									<th  ><label>合同签订使用时间：</label></th>
+									<th  colspan="3">
+										<label>
+											<input type="date" style="width: 140px;height: 31px" value="${pd.FUSEDATESTART}"
+												   class="input-date"  name="FUSEDATESTART"
+												   id="FUSEDATESTART">
+											--- <input type="date" style="width: 140px;height: 31px" value="${pd.FUSEDATEENT}"
+													 class="input-date"  name="FUSEDATEENT"
+													 id="FUSEDATEENT">
+										</label>
+									</th>
+
 								</tr>
 								</tbody>
 							</table>
@@ -335,8 +332,12 @@
 									<th  ><input type="number" style="width: 150px" value="${pd1.REALITY_AMOUNT}"
 												 class="input-text"  name="REALITY_AMOUNT"
 												 id="REALITY_AMOUNT"></th>
+									<th  ><label>付款日：</label></th>
+									<th  ><input type="number" style="width: 150px" value="${pd1.PAYDAY}"
+												 class="input-text"  name="PAYDAY"
+												 id="PAYDAY"></th>
 									<th width="10%" ><label>备注：</label></th>
-									<th colspan="3" ><input type="text" style="width: 550px" value="${pd1.REMARK}"
+									<th ><input type="text" style="width: 150px" value="${pd1.REMARK}"
 												 class="input-text"  name="REMARK"
 												 id="REMARK"></th>
 								</tr>
@@ -386,6 +387,21 @@
 		}else if($("#CONTRACTTYPES").find("option:selected").attr("value") == "收款合同"){
 			$("#proceedsContract").css("display","");
 			$("#paymentContarct").css("display","none");
+		}
+		var FNAME = $("#CONTRACTCLASSIFY").find("option:selected").attr("name");
+		if (FNAME == "大型体育赛事场地租赁" || FNAME == "文艺演出场地租赁"){
+			$("#INVITATIONTICKET").removeAttr("readonly");
+		}else {
+			$("#INVITATIONTICKET").attr("readonly","readonly");
+		}
+	})
+
+	$("#CONTRACTCLASSIFY").change(function(){
+		var FNAME = $("#CONTRACTCLASSIFY").find("option:selected").attr("name");
+		if (FNAME == "大型体育赛事场地租赁" || FNAME == "文艺演出场地租赁"){
+			$("#INVITATIONTICKET").removeAttr("readonly");
+		}else {
+			$("#INVITATIONTICKET").attr("readonly","readonly");
 		}
 	})
 

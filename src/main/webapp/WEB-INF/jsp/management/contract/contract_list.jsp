@@ -114,7 +114,7 @@
                                     <c:when test="${not empty varList}">
                                         <c:if test="${QX.cha == 1 }">
                                             <c:forEach items="${varList}" var="var" varStatus="vs">
-                                                <tr onclick="list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}')">
+                                                <tr id="${var.CONTRACT_ID}" onclick="changeColor('${var.CONTRACT_ID}');list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}','${var.CONTRACTNAME}')">
                                                     <td class='center'>
                                                         <label class="pos-rel"><input type='checkbox' name='ids'
                                                                                       value="${var.CONTRACT_ID}"
@@ -148,6 +148,12 @@
                                                                     class="ace-icon fa fa-lock" title="无权限"></i></span>
                                                         </c:if>
                                                         <div class="hidden-sm hidden-xs btn-group">
+                                                            <c:if test="${var.CONTRACTTYPES == '付款合同' }">
+                                                                <a class="btn btn-xs btn-success" title="打开付款表格"
+                                                                   onclick="openPayT('${var.CONTRACT_ID}')">
+                                                                    <i class="ace-icon fa fa-calendar bigger-120" title="打开付款表格"></i>
+                                                                </a>
+                                                            </c:if>
                                                             <a class="btn btn-xs btn-info" title="预览图片"
                                                                onclick="showPic('${var.CONTRACT_ID}')">
                                                                 <i class="ace-icon fa fa-laptop bigger-120" title="预览图片"></i>
@@ -219,6 +225,7 @@
                                     </c:otherwise>
                                 </c:choose>
                                 </tbody>
+
                             </table>
                             <div class="page-header position-relative">
                                 <table style="width:100%;">
@@ -242,9 +249,12 @@
                         </form>
 
                     </div>
-                    <div style="width: 100%">
-                        <iframe id="iframe" style="width: 100%;display: none" src=""></iframe>
-                    </div>
+                    <table style="margin-top:5px;">
+                        <div style="width: 100%;height: 100%">
+                            <iframe id="iframe" frameborder="0" scrolling="0" style="width: 100%;display: none;height: 200px" src=""></iframe>
+                        </div>
+                    </table>
+
                     <div class="hr hr-16 hr-dotted"></div>
                     <div>
                         <ul class="ace-thumbnails clearfix" id="imgList">
@@ -291,8 +301,17 @@
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
 
-    function list_one(CONTRACT_ID,CONTRACTTYPES) {
-        $("#iframe").attr("src","contract/list_one?CONTRACT_ID="+CONTRACT_ID+"&CONTRACTTYPES="+CONTRACTTYPES);
+    function changeColor(CONTRACT_ID) {
+        var tr = document.getElementsByTagName("tr");
+        for(var i = 0; i < tr.length ; i ++){ // 从第二行开始遍历，i初始为1，递增6
+            tr[i].style.backgroundColor = "";
+        }
+        $("#"+CONTRACT_ID).css("background-color","#CCCC99");
+
+    }
+
+    function list_one(CONTRACT_ID,CONTRACTTYPES,CONTRACTNAME) {
+        $("#iframe").attr("src","contract/list_one?CONTRACT_ID="+CONTRACT_ID+"&CONTRACTTYPES="+CONTRACTTYPES+"&CONTRACTNAME="+CONTRACTNAME);
         $("#iframe").css("display","");
     }
 
@@ -426,6 +445,24 @@
                 });
             }
         });
+    }
+
+    function openPayT(CONTRACT_ID){
+        top.jzts();
+        var diag = new top.Dialog();
+        diag.Drag = true;
+        diag.Title = "供应商付款表格";
+        diag.URL = '<%=basePath%>contract/openPayT?CONTRACT_ID='+CONTRACT_ID;
+        diag.Width = window.innerWidth * 0.9;
+        diag.Height = window.innerHeight;
+        diag.Modal = true;				//有无遮罩窗口
+        diag.ShowMaxButton = true;	//最大化按钮
+        diag.ShowMinButton = true;		//最小化按钮
+        diag.CancelEvent = function () { //关闭事件
+            //tosearch();
+            diag.close();
+        };
+        diag.show();
     }
 
     //新增

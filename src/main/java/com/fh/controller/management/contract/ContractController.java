@@ -3,6 +3,7 @@ package com.fh.controller.management.contract;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.annotation.Resource;
@@ -145,6 +146,7 @@ public class ContractController extends BaseController {
 			pd1.put("DUE_AMOUNT",pd.get("DUE_AMOUNT").toString());
 			pd1.put("REALITY_AMOUNT",pd.get("REALITY_AMOUNT").toString());
 			pd1.put("REALITYTIME",pd.get("REALITYTIME").toString());
+			pd1.put("PAYDAY",pd.getString("PAYDAY"));
 			pd1.put("REMARK",pd.getString("REMARK"));
 			pd1.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
 			paymentcontractService.save(pd1);
@@ -194,6 +196,61 @@ public class ContractController extends BaseController {
 		pd = this.getPageData();
 		mv.setViewName("management/contract/pictures_add");
 		mv.addObject("pd", pd);
+		return mv;
+	}
+
+	/**
+	 * 打开openPayT供应商付款表格
+	 * @param
+	 * @return
+	 * @throws Exception
+     */
+	@RequestMapping(value="/openPayT")
+	public ModelAndView openPayT(Page page) throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = contractService.findById(pd);
+		int start_year = Integer.valueOf(pd.getString("FUSEDATESTART").substring(0,4));
+		int end_year = Integer.valueOf(pd.getString("FUSEDATEENT").substring(0,4));
+		int start_month = Integer.valueOf(pd.getString("FUSEDATESTART").substring(5,7));
+		int end_month = Integer.valueOf(pd.getString("FUSEDATEENT").substring(5,7));
+		PageData payPd = paymentcontractService.findByContractId(pd);
+		int payDay = Integer.valueOf(payPd.getString("PAYDAY"));
+		System.out.println(start_month);
+		System.out.println(end_year - start_year);
+		ArrayList<String> arr = new ArrayList<String>();
+		if((end_year - start_year) == 0){
+			for (int i = start_month; i <= end_month; i++) {
+				arr.add(start_year+"-"+i+"-"+payDay);
+			}
+			System.out.println("arr------------>"+arr);
+		}else {
+			for (int i = start_month; i <= 12; i++) {
+				arr.add(start_year+"-"+i+"-"+payDay);
+			}
+			for (int i = start_year+1; i < end_year; i++) {
+				for (int j = 1; j < 13; j++) {
+					arr.add(i+"-"+j+"-"+payDay);
+				}
+
+			}
+			for (int i = 1; i <= end_month; i++) {
+				arr.add(end_year+"-"+i+"-"+payDay);
+			}
+			System.out.println("arr------------>"+arr);
+		}
+
+		DecimalFormat df = new DecimalFormat("#0.00");
+		Double contractPic = Double.valueOf(pd.get("CONTRACTPIC").toString());
+		Double everyMonthPay = contractPic / arr.size();
+		System.out.println(df.format(everyMonthPay));
+		mv.setViewName("management/contract/contract_openpay");
+		mv.addObject("arr", arr);
+		mv.addObject("count", arr.size());
+		mv.addObject("pd", pd);
+		mv.addObject("everyMonthPay", df.format(everyMonthPay));
+		mv.addObject("payPd", payPd);
 		return mv;
 	}
 
@@ -264,6 +321,7 @@ public class ContractController extends BaseController {
 			pd1.put("AMOUNT",pd.get("AMOUNT").toString());
 			pd1.put("DUE_AMOUNT",pd.get("DUE_AMOUNT").toString());
 			pd1.put("REALITY_AMOUNT",pd.get("REALITY_AMOUNT").toString());
+			pd1.put("PAYDAY",pd.getString("PAYDAY"));
 			pd1.put("REALITYTIME",pd.get("REALITYTIME").toString());
 			pd1.put("REMARK",pd.getString("REMARK"));
 			pd1.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
