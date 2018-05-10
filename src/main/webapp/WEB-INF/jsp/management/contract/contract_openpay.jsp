@@ -62,41 +62,43 @@
                                 <td style="padding-left:2px;">实际付款时间</td>
                                 <td style="padding-left:2px;">实际付款金额</td>
                                 <td style="padding-left:2px;">尚没付款金额</td>
+                                <td style="padding-left:2px;">操作</td>
                             </tr>
-                            <tr class="center">
-                                <td rowspan="${count +1}" style="padding-left:2px;">${pd.FUSEDATESTART } -- ${pd.FUSEDATEENT }</td>
-                                <td rowspan="${count +1}" style="padding-left:2px;">${pd.CONTRACTPIC }</td>
+                            <tr class="center" id="sum" >
+                                <td rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${pd.FUSEDATESTART } -- ${pd.FUSEDATEENT }</td>
+                                <td rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${pd.CONTRACTPIC }</td>
                             </tr>
                             <c:forEach items="${arr}" var="var" varStatus="vs">
                                 <tr class="center">
                                     <td style="padding-left:2px;">${var}</td>
-                                    <td style="padding-left:2px;">${everyMonthPay}</td>
-                                    <td style="padding-left:2px;"></td>
-                                    <td style="padding-left:2px;"></td>
-                                    <td style="padding-left:2px;"></td>
+                                    <td style="padding-left:2px;">
+                                        <input type="number" style="width: 150px;height: 31px" value="${everyMonthPay}"
+                                               class="input-text"  name="everyMonthPay" id="PIC${var}"
+                                        ></td>
+                                    <td style="padding-left:2px;">
+                                        <input type="date" style="width: 150px;height: 31px" value="${pd.REALITYPAYTIME}"
+                                               class="input-text"  name="REALITYPAYTIME" id="REATIME${var}"
+                                               >
+                                    </td>
+                                    <td style="padding-left:2px;">
+                                        <input type="number" style="width: 150px" value="${everyMonthPay}"
+                                               class="input-text"  name="REALITYPAY" id="REAPAY${var}"
+                                               >
+                                    </td>
+                                    <td style="padding-left:2px;">
+                                       <%-- <input type="number" style="width: 150px" value="${pd1.REMARK}"
+                                               class="input-text"  name="REMARK" id="${var}"
+                                               >--%>
+                                    </td>
+                                    <td style="padding-left:2px;">
+                                        <a class="btn btn-xs btn-success" title="保存"
+                                           onclick="savePay('${var}','${pd.CONTRACT_ID}');">
+                                            <i class="ace-icon fa fa-check-square-o bigger-120"
+                                               title="保存"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             </c:forEach>
-                            <%--<tr class="center">
-                                <td style="padding-left:2px;">${pd.CONTRACTOFNAME }</td>
-                                <td style="padding-left:2px;">${pd.PROJECT }</td>
-                                <td style="padding-left:2px;">${pd.PROJECT }</td>
-                                <td style="padding-left:2px;">${pd.PROJECT }</td>
-                                <td style="padding-left:2px;">${pd.FUSEDATESTART } -- ${pd.FUSEDATEENT }</td>
-                            </tr>
-                            <tr class="center">
-                                <td style="padding-left:2px;">${pd.CONTRACTOFNAME }</td>
-                                <td style="padding-left:2px;">${pd.PROJECT }</td>
-                                <td style="padding-left:2px;">${pd.PROJECT }</td>
-                                <td style="padding-left:2px;">${pd.PROJECT }</td>
-                                <td style="padding-left:2px;">${pd.FUSEDATESTART } -- ${pd.FUSEDATEENT }</td>
-                            </tr>
-                            <tr class="center">
-                                <td style="padding-left:2px;">${pd.CONTRACTOFNAME }</td>
-                                <td style="padding-left:2px;">${pd.PROJECT }</td>
-                                <td style="padding-left:2px;">${pd.PROJECT }</td>
-                                <td style="padding-left:2px;">${pd.PROJECT }</td>
-                                <td style="padding-left:2px;">${pd.FUSEDATESTART } -- ${pd.FUSEDATEENT }</td>
-                            </tr>--%>
                             </tbody>
                         </table>
                     </div>
@@ -132,7 +134,35 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
+    function savePay(value,CONTRACT_ID){
+        /**
+         *  <td style="padding-left:2px;">付款所属时间</td>
+         <td style="padding-left:2px;">应付款金额</td> id="PIC"
+         <td style="padding-left:2px;">实际付款时间</td> id="REATIME"
+         <td style="padding-left:2px;">实际付款金额</td>   id="REALITYPAY"
+         */
+        var REATIME = $("#REATIME"+value).val();
+        var REAPAY = $("#REAPAY"+value).val();
+        var PIC = $("#PIC"+value).val();
+        //alert("应付款金额:"+PIC+",实际付款时间:"+REATIME+",实际付款金额:"+REAPAY);
+        $.ajax({
+            type: "POST",
+            url: '<%=basePath%>paytable/save',
+            data: {
+                CONTRACT_ID: CONTRACT_ID,
+                SHPAYTIME: value,
+                SHPAY: PIC,
+                REALITYPAYTIME:REATIME,
+                REALITYPAY:REAPAY
+                },
+            dataType: 'json',
+            //beforeSend: validateData,
+            cache: false,
+            success: function (data) {
 
+            }
+        });
+    }
 </script>
 
 

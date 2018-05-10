@@ -12,6 +12,7 @@ import com.fh.service.management.classify.ClassifyManager;
 import com.fh.service.management.contractpicture.ContractPictureManager;
 import com.fh.service.management.mode.ModeManager;
 import com.fh.service.management.paymentcontract.PaymentContractManager;
+import com.fh.service.management.paytable.PayTableManager;
 import com.fh.service.management.proceedscontract.ProceedsContractManager;
 import com.fh.util.*;
 import net.sf.json.JSONArray;
@@ -41,6 +42,9 @@ public class ContractController extends BaseController {
 	String menuUrl = "contract/list.do"; //菜单地址(权限用)
 	@Resource(name="contractService")
 	private ContractManager contractService;
+
+	@Resource(name="paytableService")
+	private PayTableManager paytableService;
 
 	@Resource(name="classifyService")
 	private ClassifyManager classifyService;
@@ -216,6 +220,7 @@ public class ContractController extends BaseController {
 		int start_month = Integer.valueOf(pd.getString("FUSEDATESTART").substring(5,7));
 		int end_month = Integer.valueOf(pd.getString("FUSEDATEENT").substring(5,7));
 		PageData payPd = paymentcontractService.findByContractId(pd);
+		List<PageData> listpays = paytableService.findByContractId(pd);
 		int payDay = Integer.valueOf(payPd.getString("PAYDAY"));
 		System.out.println(start_month);
 		System.out.println(end_year - start_year);

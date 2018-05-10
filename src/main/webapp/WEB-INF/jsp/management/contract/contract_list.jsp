@@ -249,13 +249,11 @@
                         </form>
 
                     </div>
-                    <table style="margin-top:5px;">
+                    <table style="margin-top:-5px;">
                         <div style="width: 100%;height: 100%">
-                            <iframe id="iframe" frameborder="0" scrolling="0" style="width: 100%;display: none;height: 200px" src=""></iframe>
+                            <iframe id="iframe" frameborder="0" scrolling="no" style="width: 100%;display: none;height: 200px" src=""></iframe>
                         </div>
                     </table>
-
-                    <div class="hr hr-16 hr-dotted"></div>
                     <div>
                         <ul class="ace-thumbnails clearfix" id="imgList">
                             <!-- #section:pages/gallery -->
@@ -302,6 +300,7 @@
     $(top.hangge());//关闭加载状态
 
     function changeColor(CONTRACT_ID) {
+        $("#imgList").html('');
         var tr = document.getElementsByTagName("tr");
         for(var i = 0; i < tr.length ; i ++){ // 从第二行开始遍历，i初始为1，递增6
             tr[i].style.backgroundColor = "";
