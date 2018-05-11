@@ -219,40 +219,79 @@ public class ContractController extends BaseController {
 		int end_year = Integer.valueOf(pd.getString("FUSEDATEENT").substring(0,4));
 		int start_month = Integer.valueOf(pd.getString("FUSEDATESTART").substring(5,7));
 		int end_month = Integer.valueOf(pd.getString("FUSEDATEENT").substring(5,7));
+
 		PageData payPd = paymentcontractService.findByContractId(pd);
 		List<PageData> listpays = paytableService.findByContractId(pd);
-		int payDay = Integer.valueOf(payPd.getString("PAYDAY"));
-		System.out.println(start_month);
-		System.out.println(end_year - start_year);
+
+		//System.out.println(start_month);
+		//System.out.println(end_year - start_year);
 		ArrayList<String> arr = new ArrayList<String>();
-		if((end_year - start_year) == 0){
-			for (int i = start_month; i <= end_month; i++) {
-				arr.add(start_year+"-"+i+"-"+payDay);
-			}
-			System.out.println("arr------------>"+arr);
-		}else {
-			for (int i = start_month; i <= 12; i++) {
-				arr.add(start_year+"-"+i+"-"+payDay);
-			}
-			for (int i = start_year+1; i < end_year; i++) {
-				for (int j = 1; j < 13; j++) {
-					arr.add(i+"-"+j+"-"+payDay);
-				}
-
-			}
-			for (int i = 1; i <= end_month; i++) {
-				arr.add(end_year+"-"+i+"-"+payDay);
-			}
-			System.out.println("arr------------>"+arr);
-		}
-
+		PageData maxpd = paytableService.findtime_max(pd);
+		PageData sumPaypd = paytableService.findPay_sum(pd);
+		Double everyMonthPay;
+		Double onPayPic;
 		DecimalFormat df = new DecimalFormat("#0.00");
-		Double contractPic = Double.valueOf(pd.get("CONTRACTPIC").toString());
-		Double everyMonthPay = contractPic / arr.size();
-		System.out.println(df.format(everyMonthPay));
+		DecimalFormat dften=new DecimalFormat("00");
+		String payDay = dften.format(Integer.valueOf(payPd.getString("PAYDAY")));
+		//当已经存在有付款数据时---
+		if(maxpd != null && !"".equals(maxpd)){
+			int max_year = Integer.valueOf(maxpd.getString("SHPAYTIME").substring(0,4));
+			int max_month = Integer.valueOf(maxpd.getString("SHPAYTIME").substring(5,maxpd.getString("SHPAYTIME").lastIndexOf("-")));
+			if((end_year - max_year) == 0){
+				for (int i = max_month+1; i <= end_month; i++) {
+					arr.add(max_year+"-"+dften.format(i)+"-"+payDay);
+				}
+				//System.out.println("arr------------>"+arr);
+			}else {
+				for (int i = max_month+1; i <= 12; i++) {
+					arr.add(max_year+"-"+dften.format(i)+"-"+payDay);
+				}
+				for (int i = max_year+1; i < end_year; i++) {
+					for (int j = 1; j < 13; j++) {
+						arr.add(i+"-"+dften.format(j)+"-"+payDay);
+					}
+
+				}
+				for (int i = 1; i <= end_month; i++) {
+					arr.add(end_year+"-"+dften.format(i)+"-"+payDay);
+				}
+				//System.out.println("arr------------>"+arr);
+			}
+			mv.addObject("count", arr.size()+listpays.size());
+			onPayPic = Double.valueOf(pd.get("CONTRACTPIC").toString()) - Double.valueOf(sumPaypd.get("SUM_REALITYPAY").toString());
+		}else {
+			if((end_year - start_year) == 0){
+				for (int i = start_month; i <= end_month; i++) {
+					arr.add(start_year+"-"+dften.format(i)+"-"+payDay);
+				}
+				//System.out.println("arr------------>"+arr);
+			}else {
+				for (int i = start_month; i <= 12; i++) {
+					arr.add(start_year+"-"+dften.format(i)+"-"+payDay);
+				}
+				for (int i = start_year+1; i < end_year; i++) {
+					for (int j = 1; j < 13; j++) {
+						arr.add(i+"-"+dften.format(j)+"-"+payDay);
+					}
+
+				}
+				for (int i = 1; i <= end_month; i++) {
+					arr.add(end_year+"-"+dften.format(i)+"-"+payDay);
+				}
+				//System.out.println("arr------------>"+arr);
+			}
+			onPayPic = Double.valueOf(pd.get("CONTRACTPIC").toString());
+			mv.addObject("count", arr.size());
+		}
+		System.out.println(sumPaypd);
+		//未付款金额
+
+		everyMonthPay = onPayPic / arr.size();
+		//System.out.println(df.format(everyMonthPay));listpays
 		mv.setViewName("management/contract/contract_openpay");
+		mv.addObject("listpays", listpays);
 		mv.addObject("arr", arr);
-		mv.addObject("count", arr.size());
+		mv.addObject("onPayPic", onPayPic);
 		mv.addObject("pd", pd);
 		mv.addObject("everyMonthPay", df.format(everyMonthPay));
 		mv.addObject("payPd", payPd);

@@ -55,6 +55,21 @@ public class PayTableController extends BaseController {
 		mv.setViewName("save_result");
 		return mv;
 	}
+
+	@RequestMapping(value="/saveInfo")
+	@ResponseBody
+	public Map<String, Object> saveInfo() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"新增PayTable");
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
+		Map<String, Object> json = new HashMap<String, Object>();
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd.put("PAYTABLE_ID", this.get32UUID());	//主键
+		paytableService.save(pd);
+		json.put("msg","success");
+		return  json;
+	}
 	
 	/**删除
 	 * @param out

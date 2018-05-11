@@ -73,7 +73,15 @@ public class PayTableService implements PayTableManager{
 	public PageData findById(PageData pd)throws Exception{
 		return (PageData)dao.findForObject("PayTableMapper.findById", pd);
 	}
-	
+
+	public PageData findtime_max(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("PayTableMapper.findtime_max", pd);
+	}
+
+	public PageData findPay_sum(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("PayTableMapper.findPay_sum", pd);
+	}
+
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception

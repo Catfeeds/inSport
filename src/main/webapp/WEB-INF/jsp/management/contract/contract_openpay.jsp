@@ -67,7 +67,40 @@
                             <tr class="center" id="sum" >
                                 <td rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${pd.FUSEDATESTART } -- ${pd.FUSEDATEENT }</td>
                                 <td rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${pd.CONTRACTPIC }</td>
-                            </tr>
+                            </tr> <c:forEach items="${listpays}" var="var" varStatus="vs">
+                                <tr class="center" style="background-color: #FFFFCC">
+                                    <td style="padding-left:2px;">${var.SHPAYTIME}</td>
+                                    <td style="padding-left:2px;">
+                                        <input type="number" style="width: 150px;height: 31px" value="${var.SHPAY}"
+                                               class="input-text"  name="SHPAY" id="SHPAY${var.PAYTABLE_ID}"
+                                        ></td>
+                                    <td style="padding-left:2px;">
+                                        <input type="date" style="width: 150px;height: 31px" value="${var.REALITYPAYTIME}"
+                                               class="input-text"  name="REALITYPAYTIME" id="REATIME${var.PAYTABLE_ID}"
+                                        >
+                                    </td>
+                                    <td style="padding-left:2px;">
+                                        <input type="number" style="width: 150px" value="${var.REALITYPAY}"
+                                               class="input-text"  name="REALITYPAY" id="REALITYPAY${var.PAYTABLE_ID}"
+                                        >
+                                    </td>
+                                    <td style="padding-left:2px;">
+                                        <c:if test="${vs.last }">
+                                            ${onPayPic}
+                                        </c:if>
+                                        <c:if test="${!vs.last }">
+                                            ${var.NOPAY}
+                                        </c:if>
+                                    </td>
+                                    <td style="padding-left:2px;">
+                                        <a class="btn btn-xs btn-success" title="保存修改"
+                                           onclick="editPay('${pd.PAYTABLE_ID}');">
+                                            <i class="ace-icon fa fa-check-square-o bigger-120"
+                                               title="保存修改"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                             <c:forEach items="${arr}" var="var" varStatus="vs">
                                 <tr class="center">
                                     <td style="padding-left:2px;">${var}</td>
@@ -81,14 +114,13 @@
                                                >
                                     </td>
                                     <td style="padding-left:2px;">
-                                        <input type="number" style="width: 150px" value="${everyMonthPay}"
+                                        <input type="number" style="width: 150px" value=""
                                                class="input-text"  name="REALITYPAY" id="REAPAY${var}"
                                                >
                                     </td>
+
                                     <td style="padding-left:2px;">
-                                       <%-- <input type="number" style="width: 150px" value="${pd1.REMARK}"
-                                               class="input-text"  name="REMARK" id="${var}"
-                                               >--%>
+
                                     </td>
                                     <td style="padding-left:2px;">
                                         <a class="btn btn-xs btn-success" title="保存"
@@ -144,22 +176,54 @@
         var REATIME = $("#REATIME"+value).val();
         var REAPAY = $("#REAPAY"+value).val();
         var PIC = $("#PIC"+value).val();
+        var onPayPic = '${onPayPic}' - REAPAY;
+        if($("#REATIME"+value).val()==""){
+            $("#REATIME"+value).tips({
+                side:3,
+                msg:'实际付款时间',
+                bg:'#AE81FF',
+                time:2
+            });
+            $("#REATIME"+value).focus();
+            return false;
+        }
+        if($("#REAPAY"+value).val()==""){
+            $("#REAPAY"+value).tips({
+                side:3,
+                msg:'实际付款金额',
+                bg:'#AE81FF',
+                time:2
+            });
+            $("#REAPAY"+value).focus();
+            return false;
+        }
+        /*if($("#CONTRACTNAME").val()==""){
+            $("#CONTRACTNAME").tips({
+                side:3,
+                msg:'请输入合同名称',
+                bg:'#AE81FF',
+                time:2
+            });
+            $("#CONTRACTNAME").focus();
+            return false;
+        }*/
         //alert("应付款金额:"+PIC+",实际付款时间:"+REATIME+",实际付款金额:"+REAPAY);
         $.ajax({
             type: "POST",
-            url: '<%=basePath%>paytable/save',
+            url: '<%=basePath%>paytable/saveInfo',
             data: {
                 CONTRACT_ID: CONTRACT_ID,
                 SHPAYTIME: value,
                 SHPAY: PIC,
                 REALITYPAYTIME:REATIME,
-                REALITYPAY:REAPAY
+                REALITYPAY:REAPAY,
+                NOPAY:onPayPic
                 },
             dataType: 'json',
             //beforeSend: validateData,
             cache: false,
             success: function (data) {
-
+                window.location.reload();
             }
         });
     }
