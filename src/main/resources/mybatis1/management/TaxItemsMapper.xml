@@ -1,30 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ClassifyMapper">
+<mapper namespace="TaxItemsMapper">
 	
 	<!--表名 -->
 	<sql id="tableName">
-		TB_CLASSIFY
+		TB_TAXITEMS
 	</sql>
 	
 	<!-- 字段 -->
 	<sql id="Field">
-		FITEMID,	
-		FNUMBER,	
 		FNAME,	
-		FPARENTID,	
-		FREMAK,	
-		CLASSIFY_ID
+		REMARK,	
+		COEFFCIENT,	
+		TAXITEMS_ID
 	</sql>
 	
 	<!-- 字段值 -->
 	<sql id="FieldValue">
-		#{FITEMID},	
-		#{FNUMBER},	
 		#{FNAME},	
-		#{FPARENTID},	
-		#{FREMAK},	
-		#{CLASSIFY_ID}
+		#{REMARK},	
+		#{COEFFCIENT},	
+		#{TAXITEMS_ID}
 	</sql>
 	
 	<!-- 新增-->
@@ -43,7 +39,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			CLASSIFY_ID = #{CLASSIFY_ID}
+			TAXITEMS_ID = #{TAXITEMS_ID}
 	</delete>
 	
 	<!-- 修改 -->
@@ -51,28 +47,22 @@
 		update
 		<include refid="tableName"></include>
 		set 
-			FITEMID = #{FITEMID},
-			FNUMBER = #{FNUMBER},
 			FNAME = #{FNAME},
-			FPARENTID = #{FPARENTID},
-			FREMAK = #{FREMAK},
-		CLASSIFY_ID = CLASSIFY_ID
+			REMARK = #{REMARK},
+			COEFFCIENT = #{COEFFCIENT},
+		TAXITEMS_ID = TAXITEMS_ID
 		where 
-		CLASSIFY_ID = #{CLASSIFY_ID}
+		TAXITEMS_ID = #{TAXITEMS_ID}
 	</update>
 	
 	<!-- 通过ID获取数据 -->
 	<select id="findById" parameterType="pd" resultType="pd">
-		<!--select
+		select 
 		<include refid="Field"></include>
 		from 
-		<include refid="tableName"></include>-->
-		SELECT a.CLASSIFY_ID as CLASSIFY_ID1,a.FITEMID as FITEMID1,a.FNAME as FNAME1,a.FNUMBER as FNUMBER1,
-		a.FPARENTID as FPARENTID1 ,a.FREMAK as FREMAK1,b.CLASSIFY_ID as CLASSIFY_ID2,b.FITEMID as FITEMID2,
-		b.FNAME as FNAME2,b.FNUMBER as FNUMBER2,b.FPARENTID as FPARENTID2,b.FREMAK as FREMAK2
-		from TB_CLASSIFY a LEFT  JOIN TB_CLASSIFY b ON  a.FPARENTID = b.FITEMID
-		where
-		a.CLASSIFY_ID = #{CLASSIFY_ID}
+		<include refid="tableName"></include>
+		where 
+			TAXITEMS_ID = #{TAXITEMS_ID}
 	</select>
 	
 	<!-- 列表 -->
@@ -93,23 +83,7 @@
 				)
 		</if>
 	</select>
-
-	<select id="listPIdClassify" parameterType="page" resultType="pd">
-		select
-		<include refid="Field"></include>
-		from
-		<include refid="tableName"></include>
-		where FPARENTID = 0
-	</select>
-
-	<select id="listIdClassify" parameterType="page" resultType="pd">
-		select
-		<include refid="Field"></include>
-		from
-		<include refid="tableName"></include>
-		where FPARENTID = #{pd.FPARENTID}
-	</select>
-
+	
 	<!-- 列表(全部) -->
 	<select id="listAll" parameterType="pd" resultType="pd">
 		select
@@ -123,7 +97,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			CLASSIFY_ID in
+			TAXITEMS_ID in
 		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
                  #{item}
 		</foreach>

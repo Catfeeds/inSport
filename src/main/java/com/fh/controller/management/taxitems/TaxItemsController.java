@@ -1,13 +1,14 @@
-package com.fh.controller.management.classify;
+package com.fh.controller.management.taxitems;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -22,65 +23,20 @@ import com.fh.util.ObjectExcelView;
 import com.fh.util.PageData;
 import com.fh.util.Jurisdiction;
 import com.fh.util.Tools;
-import com.fh.service.management.classify.ClassifyManager;
+import com.fh.service.management.taxitems.TaxItemsManager;
 
 /** 
- * 说明：合同分类
+ * 说明：税目管理
  * 创建人：FH Q313596790
- * 创建时间：2018-03-22
+ * 创建时间：2018-05-14
  */
 @Controller
-@RequestMapping(value="/classify")
-public class ClassifyController extends BaseController {
+@RequestMapping(value="/taxitems")
+public class TaxItemsController extends BaseController {
 	
-	String menuUrl = "classify/list.do"; //菜单地址(权限用)
-	@Resource(name="classifyService")
-	private ClassifyManager classifyService;
-
-	// 树
-	@RequestMapping(value = "/listTree")
-	public ModelAndView listTree() throws Exception {
-		ModelAndView mv = new ModelAndView();
-		// mv.addObject("zNodes", jsStr);
-		mv.setViewName("management/classify_item/classify_item_tree");
-		return mv;
-	}
-
-	@RequestMapping(value = "/dateTree")
-	@ResponseBody
-	public JSONArray dateTree(Page page) {
-		PageData pd = new PageData();
-		pd = this.getPageData();
-		String keywords = pd.getString("keywords"); // 关键词检索条件
-		if (null != keywords && !"".equals(keywords)) {
-			pd.put("keywords", keywords.trim());
-		}
-		page.setPd(pd);
-		JSONArray arr = null;
-		try {
-			arr = JSONArray.fromObject(classifyService.listAll(pd));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		JSONArray jsStr = JSONArray.fromObject(this.makeTree(arr));
-		System.out.println(jsStr);
-		return jsStr;
-	}
-
-	@SuppressWarnings("unchecked")
-	public String makeTree(JSONArray arr) {
-		StringBuffer sb = new StringBuffer();
-		sb.append("[");
-		Iterator<Object> it = arr.iterator();
-		while (it.hasNext()) {
-			JSONObject ob = (JSONObject) it.next();
-			sb.append("{id:").append(ob.getString("FITEMID")).append(",pId:")
-					.append(ob.getString("FPARENTID")).append(",name:\"")
-					.append(ob.getString("FNAME")).append("\"")
-					.append(",open:").append("false").append("},");
-		}
-		return sb.substring(0, sb.length() - 1) + "]";
-	}
+	String menuUrl = "taxitems/list.do"; //菜单地址(权限用)
+	@Resource(name="taxitemsService")
+	private TaxItemsManager taxitemsService;
 	
 	/**保存
 	 * @param
@@ -88,13 +44,13 @@ public class ClassifyController extends BaseController {
 	 */
 	@RequestMapping(value="/save")
 	public ModelAndView save() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"新增Classify");
+		logBefore(logger, Jurisdiction.getUsername()+"新增TaxItems");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("CLASSIFY_ID", this.get32UUID());	//主键
-		classifyService.save(pd);
+		pd.put("TAXITEMS_ID", this.get32UUID());	//主键
+		taxitemsService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -106,11 +62,11 @@ public class ClassifyController extends BaseController {
 	 */
 	@RequestMapping(value="/delete")
 	public void delete(PrintWriter out) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"删除Classify");
+		logBefore(logger, Jurisdiction.getUsername()+"删除TaxItems");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		classifyService.delete(pd);
+		taxitemsService.delete(pd);
 		out.write("success");
 		out.close();
 	}
@@ -121,12 +77,12 @@ public class ClassifyController extends BaseController {
 	 */
 	@RequestMapping(value="/edit")
 	public ModelAndView edit() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"修改Classify");
+		logBefore(logger, Jurisdiction.getUsername()+"修改TaxItems");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		classifyService.edit(pd);
+		taxitemsService.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -138,19 +94,18 @@ public class ClassifyController extends BaseController {
 	 */
 	@RequestMapping(value="/list")
 	public ModelAndView list(Page page) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"列表Classify");
+		logBefore(logger, Jurisdiction.getUsername()+"列表TaxItems");
 		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		System.out.printf("---------");
 		String keywords = pd.getString("keywords");				//关键词检索条件
 		if(null != keywords && !"".equals(keywords)){
 			pd.put("keywords", keywords.trim());
 		}
 		page.setPd(pd);
-		List<PageData>	varList = classifyService.list(page);	//列出Classify列表
-		mv.setViewName("management/classify/classify_list");
+		List<PageData>	varList = taxitemsService.list(page);	//列出TaxItems列表
+		mv.setViewName("management/taxitems/taxitems_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
@@ -166,12 +121,8 @@ public class ClassifyController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		Page page = null;
-		List<PageData> listPid = classifyService.listPIdClassify(page);
-		System.out.println("listPid--->"+listPid);
-		mv.setViewName("management/classify/classify_edit");
+		mv.setViewName("management/taxitems/taxitems_edit");
 		mv.addObject("msg", "save");
-		mv.addObject("listPid", listPid);
 		mv.addObject("pd", pd);
 		return mv;
 	}	
@@ -185,13 +136,9 @@ public class ClassifyController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd = classifyService.findById(pd);	//根据ID读取
-		Page page = null;
-		System.out.println(pd);
-		List<PageData> listPid = classifyService.listPIdClassify(page);
-		mv.setViewName("management/classify/classify_edit");
+		pd = taxitemsService.findById(pd);	//根据ID读取
+		mv.setViewName("management/taxitems/taxitems_edit");
 		mv.addObject("msg", "edit");
-		mv.addObject("listPid", listPid);
 		mv.addObject("pd", pd);
 		return mv;
 	}	
@@ -203,7 +150,7 @@ public class ClassifyController extends BaseController {
 	@RequestMapping(value="/deleteAll")
 	@ResponseBody
 	public Object deleteAll() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"批量删除Classify");
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除TaxItems");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
 		PageData pd = new PageData();		
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -212,7 +159,7 @@ public class ClassifyController extends BaseController {
 		String DATA_IDS = pd.getString("DATA_IDS");
 		if(null != DATA_IDS && !"".equals(DATA_IDS)){
 			String ArrayDATA_IDS[] = DATA_IDS.split(",");
-			classifyService.deleteAll(ArrayDATA_IDS);
+			taxitemsService.deleteAll(ArrayDATA_IDS);
 			pd.put("msg", "ok");
 		}else{
 			pd.put("msg", "no");
@@ -228,28 +175,24 @@ public class ClassifyController extends BaseController {
 	 */
 	@RequestMapping(value="/excel")
 	public ModelAndView exportExcel() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"导出Classify到excel");
+		logBefore(logger, Jurisdiction.getUsername()+"导出TaxItems到excel");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		List<String> titles = new ArrayList<String>();
-		titles.add("FITEMID");	//1
-		titles.add("FNUMBER");	//2
-		titles.add("名称");	//3
-		titles.add("FPARENTID");	//4
-		titles.add("备注");	//5
+		titles.add("名称");	//1
+		titles.add("备注");	//2
+		titles.add("系数");	//3
 		dataMap.put("titles", titles);
-		List<PageData> varOList = classifyService.listAll(pd);
+		List<PageData> varOList = taxitemsService.listAll(pd);
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
-			vpd.put("var1", varOList.get(i).get("FITEMID").toString());	//1
-			vpd.put("var2", varOList.get(i).getString("FNUMBER"));	    //2
-			vpd.put("var3", varOList.get(i).getString("FNAME"));	    //3
-			vpd.put("var4", varOList.get(i).get("FPARENTID").toString());	//4
-			vpd.put("var5", varOList.get(i).getString("FREMAK"));	    //5
+			vpd.put("var1", varOList.get(i).getString("FNAME"));	    //1
+			vpd.put("var2", varOList.get(i).getString("REMARK"));	    //2
+			vpd.put("var3", varOList.get(i).getString("COEFFCIENT"));	    //3
 			varList.add(vpd);
 		}
 		dataMap.put("varList", varList);

@@ -60,16 +60,20 @@
 									<th width="10%"><input type="text" style="width: 150px" value="${pd.CONTRACTNUM}"
 														   class="input-text"  name="CONTRACTNUM"
 														   id="CONTRACTNUM"></th>
-									<th width="15%"><label>合同金额：</label></th>
-									<th width="20%"><input type="number" style="width: 150px" value="${pd.CONTRACTPIC}"
-														   class="input-text"  name="CONTRACTPIC"
-														   id="CONTRACTPIC"></th>
-								</tr>
-								<tr class="active">
 									<th ><label>签约方：</label></th>
 									<th ><input type="text" style="width: 150px" value="${pd.CONTRACTOFNAME}"
 												class="input-text"  name="CONTRACTOFNAME"
 												id="CONTRACTOFNAME"></th>
+
+								</tr>
+								<tr class="active">
+									<th width="15%"><label>合同金额：</label></th>
+									<th width="20%">
+										<input type="number" style="width: 150px" value="${pd.CONTRACTPIC}"
+											   class="input-text"  name="CONTRACTPIC" onchange="changeStampduty()"
+											   id="CONTRACTPIC">
+									</th>
+
 									<th  ><label>是否有押金：</label></th>
 									<th  >
 										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio" id="form-field-radio1" onclick="isSTAMPDUTY('1');" <c:if test="${pd.ISSTAMPDUTY == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>
@@ -86,23 +90,11 @@
 												 class="input-text"  name="FDATE"
 												 id="FDATE"></th>
 									<th  ><label>项目：</label></th>
-									<th  ><input type="text" style="width: 150px" value="${pd.PROJECT}"
+									<th  >
+										<input type="text" style="width: 150px" value="${pd.PROJECT}"
 												 class="input-text"  name="PROJECT"
-												 id="PROJECT"></th>
-									<th width="10%" ><label>印花税：</label></th>
-									<th  ><input type="text" style="width: 150px" value="${pd.STAMPDUTY}"
-												 class="input-text"  name="STAMPDUTY"
-												 id="STAMPDUTY"></th>
-								</tr>
-								<tr class="warning">
-									<th width="15%"><label>印花税计提月份：</label></th>
-									<th width="10%"><input type="text" style="width: 150px" value="${pd.STAMPDUTYMONTH}"
-														   class="input-text"  name="STAMPDUTYMONTH"
-														   id="STAMPDUTYMONTH"></th>
-									<th width="15%"><label>税目：</label></th>
-									<th width="10%"><input type="text" style="width: 150px" value="${pd.TAXITEMS}"
-														   class="input-text"  name="TAXITEMS"
-														   id="TAXITEMS"></th>
+												 id="PROJECT">
+									</th>
 									<th width="15%"><label>方式：</label></th>
 									<th width="10%">
 										<select name="MODE" id="MODE" data-placeholder=""
@@ -113,6 +105,40 @@
 											</c:forEach>
 										</select>
 									</th>
+								</tr>
+								<tr class="warning">
+									<th width="15%"><label>税目：</label></th>
+									<th width="10%">
+										<%--<input type="text" style="width: 150px" value="${pd.TAXITEMS}"
+														   class="input-text"  name="TAXITEMS"
+														   id="TAXITEMS">--%>
+										<select name="TAXITEMS" id="TAXITEMS" data-placeholder=""
+												style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
+											<option value="${pd.TAXITEMS}" name="${pd.TAXITEMS}">${pd.TAXITEMS}</option>
+											<c:forEach items="${listItems}" var="var" varStatus="vs">
+												<option id="${var.FNAME}" value="${var.FNAME}" name="${var.COEFFCIENT}">${var.FNAME}</option>
+											</c:forEach>
+										</select>
+									</th>
+									<th width="10%" ><label>印花税：</label></th>
+									<th  ><input type="text" style="width: 150px" value="${pd.STAMPDUTY}"
+												 class="input-text"  name="STAMPDUTY" readonly="readonly"
+												 id="STAMPDUTY"></th>
+									<th width="15%"><label>印花税计提月份：</label></th>
+									<th width="10%">
+										<select name="STAMPDUTYMONTH" id="STAMPDUTYMONTH" data-placeholder=""
+												style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
+											<option value="${pd.STAMPDUTYMONTH}" name="${pd.STAMPDUTYMONTH}">${pd.STAMPDUTYMONTH}</option>
+											<c:forEach items="${listmonth}" var="var" varStatus="vs">
+												<option id="${var}" value="${var}" name="${var}">${var}</option>
+											</c:forEach>
+										</select>
+										<%--<input type="text" style="width: 150px" value="${pd.STAMPDUTYMONTH}"
+														   class="input-text"  name="STAMPDUTYMONTH"
+														   id="STAMPDUTYMONTH">--%>
+									</th>
+
+
 								</tr>
 								<tr class="active">
 									<th  ><label>合同类型：</label></th>
@@ -445,6 +471,23 @@
 	/*function selectType(value) {
 		alert(value.id);
 	}*/
+
+	$("#TAXITEMS").change(function(){
+		//var FNAME = $("#TAXITEMS").find("option:selected").text();
+		var coe = $("#TAXITEMS").find("option:selected").attr("name");
+		var CONTRACTPIC = $("#CONTRACTPIC").val();
+		if (CONTRACTPIC !=null || CONTRACTPIC != ""){
+			$("#STAMPDUTY").val((CONTRACTPIC * coe).toFixed(2));
+		}
+	});
+	function changeStampduty() {
+		//var FNAME = $("#TAXITEMS").find("option:selected").attr("name");
+		var coe = $("#TAXITEMS").find("option:selected").attr("name");
+		var CONTRACTPIC = $("#CONTRACTPIC").val();
+		if (CONTRACTPIC !=null || CONTRACTPIC != ""){
+			$("#STAMPDUTY").val((CONTRACTPIC * coe).toFixed(2));
+		}
+	}
 
 	function isENTERPROCEDURE(value) {
 		$("#ISENTERPROCEDURE").val(value);

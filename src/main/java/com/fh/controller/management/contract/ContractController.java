@@ -14,6 +14,7 @@ import com.fh.service.management.mode.ModeManager;
 import com.fh.service.management.paymentcontract.PaymentContractManager;
 import com.fh.service.management.paytable.PayTableManager;
 import com.fh.service.management.proceedscontract.ProceedsContractManager;
+import com.fh.service.management.taxitems.TaxItemsManager;
 import com.fh.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -60,6 +61,9 @@ public class ContractController extends BaseController {
 
 	@Resource(name="proceedscontractService")
 	private ProceedsContractManager proceedscontractService;
+
+	@Resource(name="taxitemsService")
+	private TaxItemsManager taxitemsService;
 
 	// 树
 	@RequestMapping(value = "/listTree")
@@ -489,11 +493,18 @@ public class ContractController extends BaseController {
 		List<PageData> listMode = modeService.listAll(pd);
 		PageData pd1 = paymentcontractService.findByContractId(pd);
 		PageData pd2 = proceedscontractService.findByContractId(pd);
-		System.out.println("--------->"+pd2);
+		List<PageData> listItems = taxitemsService.listAll(pd);
+		ArrayList<String> listmonth = new ArrayList<String>();
+		DecimalFormat dften = new DecimalFormat("00");
+		for (int i = 1; i <= 12; i++) {
+			listmonth.add(dften.format(i));
+		}
 		mv.setViewName("management/contract/contract_edit");
 		mv.addObject("msg", "editInfo");
+		mv.addObject("listmonth", listmonth);
 		mv.addObject("listPIdClassify", listPIdClassify);
 		mv.addObject("listMode", listMode);
+		mv.addObject("listItems", listItems);
 		mv.addObject("pd", pd);
 		mv.addObject("pd1", pd1);
 		mv.addObject("pd2", pd2);
