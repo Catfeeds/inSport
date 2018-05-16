@@ -67,10 +67,10 @@
 									<label class="pos-rel"><input type="checkbox" class="ace" id="zcheckbox" /><span class="lbl"></span></label>
 									</th>
 									<th class="center" style="width:50px;">序号</th>
-									<th class="center">FITEMID</th>
-									<th class="center">FNUMBER</th>
+									<%--<th class="center">FITEMID</th>--%>
+									<th class="center">编号</th>
 									<th class="center">名称</th>
-									<th class="center">FPARENTID</th>
+									<th class="center">上级分类名称</th>
 									<th class="center">备注</th>
 									<th class="center">操作</th>
 								</tr>
@@ -87,10 +87,10 @@
 												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.CLASSIFY_ID}" class="ace" /><span class="lbl"></span></label>
 											</td>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
-											<td class='center'>${var.FITEMID}</td>
+											<%--<td class='center'>${var.FITEMID}</td>--%>
 											<td class='center'>${var.FNUMBER}</td>
 											<td class='center'>${var.FNAME}</td>
-											<td class='center'>${var.FPARENTID}</td>
+											<td class='center'>${var.FNAME1}</td>
 											<td class='center'>${var.FREMAK}</td>
 											<td class="center">
 												<c:if test="${QX.edit != 1 && QX.del != 1 }">

@@ -60,6 +60,10 @@
 		where 
 		CLASSIFY_ID = #{CLASSIFY_ID}
 	</update>
+
+	<select id="findMaxFItemId" parameterType="pd" resultType="pd">
+		SELECT MAX(FITEMID) as maxFItemId from TB_CLASSIFY
+	</select>
 	
 	<!-- 通过ID获取数据 -->
 	<select id="findById" parameterType="pd" resultType="pd">
@@ -77,10 +81,10 @@
 	
 	<!-- 列表 -->
 	<select id="datalistPage" parameterType="page" resultType="pd">
-		select
-		<include refid="Field"></include>
-		from 
-		<include refid="tableName"></include>
+		SELECT a.CLASSIFY_ID as CLASSIFY_ID,a.FITEMID as FITEMID,a.FNUMBER as FNUMBER,
+		a.FNAME as FNAME,a.FPARENTID as FPARENTID ,a.FREMAK as FREMAK,b.CLASSIFY_ID as CLASSIFY_ID1 ,
+		b.FITEMID as FITEMID1,b.FNAME as FNAME1 ,b.FNUMBER as FNUMBER1,b.FPARENTID as FPARENTID1 ,b.FREMAK as FREMAK1
+		from TB_CLASSIFY a LEFT JOIN TB_CLASSIFY b ON a.FPARENTID = b.FITEMID
 		where 1=1
 		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
 			and

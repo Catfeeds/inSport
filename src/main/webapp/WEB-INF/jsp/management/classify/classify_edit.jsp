@@ -31,13 +31,13 @@
 						<input type="hidden" name="CLASSIFY_ID" id="CLASSIFY_ID" value="${pd.CLASSIFY_ID1}"/>
 						<div id="zhongxin" style="padding-top: 13px;">
 						<table id="table_report" class="table table-striped table-bordered table-hover">
-							<tr>
+							<tr style="display: none">
 								<td style="width:75px;text-align: right;padding-top: 13px;">FITEMID:</td>
 								<td><input type="number" name="FITEMID" id="FITEMID" value="${pd.FITEMID1}" maxlength="32" placeholder="这里输入FITEMID" title="FITEMID" style="width:98%;"/></td>
 							</tr>
 							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">FNUMBER:</td>
-								<td><input type="text" name="FNUMBER" id="FNUMBER" value="${pd.FNUMBER1}" maxlength="255" placeholder="这里输入FNUMBER" title="FNUMBER" style="width:98%;"/></td>
+								<td style="width:75px;text-align: right;padding-top: 13px;">编号:</td>
+								<td><input type="text" name="FNUMBER" id="FNUMBER" value="${pd.FNUMBER1}" maxlength="255" placeholder="这里输入随意编号" title="FNUMBER" style="width:98%;"/></td>
 							</tr>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">名称:</td>
@@ -51,8 +51,9 @@
 											style="vertical-align:top;width: 150px;" onchange="selectType(this.value)">
 										<option value="${pd.FNAME2}" name="${pd.FPARENTID1}">${pd.FNAME2}</option>
 										<c:forEach items="${listPid}" var="var" varStatus="vs">
-											<option value="${var.FNAME}" name="${var.FPARENTID}">${var.FNAME}</option>
+											<option value="${var.FITEMID}" name="${var.FPARENTID}">${var.FNAME}</option>
 										</c:forEach>
+										<option value="0" name="">根目录</option>
 									</select>
 								</td>
 							</tr>

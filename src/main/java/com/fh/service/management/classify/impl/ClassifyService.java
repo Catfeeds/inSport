@@ -77,7 +77,11 @@ public class ClassifyService implements ClassifyManager{
 	public PageData findById(PageData pd)throws Exception{
 		return (PageData)dao.findForObject("ClassifyMapper.findById", pd);
 	}
-	
+
+	public PageData findMaxFItemId(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("ClassifyMapper.findMaxFItemId", pd);
+	}
+
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception

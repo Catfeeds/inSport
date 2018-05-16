@@ -94,6 +94,7 @@ public class ClassifyController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd.put("CLASSIFY_ID", this.get32UUID());	//主键
+		//if (pd.get("FPARENTID") == null || "".equals(pd.get("FPARENTID")))
 		classifyService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
@@ -143,13 +144,14 @@ public class ClassifyController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		System.out.printf("---------");
+
 		String keywords = pd.getString("keywords");				//关键词检索条件
 		if(null != keywords && !"".equals(keywords)){
 			pd.put("keywords", keywords.trim());
 		}
 		page.setPd(pd);
 		List<PageData>	varList = classifyService.list(page);	//列出Classify列表
+		//System.out.printf("---------"+varList);
 		mv.setViewName("management/classify/classify_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
@@ -168,6 +170,8 @@ public class ClassifyController extends BaseController {
 		pd = this.getPageData();
 		Page page = null;
 		List<PageData> listPid = classifyService.listPIdClassify(page);
+		int maxFItemId = Integer.parseInt(classifyService.findMaxFItemId(pd).get("maxFItemId").toString()) + 1;
+		pd.put("FITEMID1",maxFItemId);
 		System.out.println("listPid--->"+listPid);
 		mv.setViewName("management/classify/classify_edit");
 		mv.addObject("msg", "save");
@@ -189,6 +193,8 @@ public class ClassifyController extends BaseController {
 		Page page = null;
 		System.out.println(pd);
 		List<PageData> listPid = classifyService.listPIdClassify(page);
+
+		System.out.println(listPid);
 		mv.setViewName("management/classify/classify_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("listPid", listPid);
