@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 
 import com.fh.service.management.classify.ClassifyManager;
 import com.fh.service.management.contractpicture.ContractPictureManager;
+import com.fh.service.management.deptno.DeptnoManager;
 import com.fh.service.management.mode.ModeManager;
 import com.fh.service.management.paymentcontract.PaymentContractManager;
 import com.fh.service.management.paytable.PayTableManager;
@@ -64,6 +65,9 @@ public class ContractController extends BaseController {
 
 	@Resource(name="taxitemsService")
 	private TaxItemsManager taxitemsService;
+
+	@Resource(name="deptnoService")
+	private DeptnoManager deptnoService;
 
 	// 树
 	@RequestMapping(value = "/listTree")
@@ -468,13 +472,21 @@ public class ContractController extends BaseController {
 		pd.put("CONTRACT_ID",this.get32UUID());
 		List<PageData> listPIdClassify = classifyService.listPIdClassify(page);
 		List<PageData> listMode = modeService.listAll(pd);
-		System.out.println(listPIdClassify.size());
+		List<PageData> listItems = taxitemsService.listAll(pd);
+		ArrayList<String> listmonth = new ArrayList<String>();
+		List<PageData> listDeptNo = deptnoService.listAll(pd);
+		DecimalFormat dften = new DecimalFormat("00");
+		for (int i = 1; i <= 12; i++) {
+			listmonth.add(dften.format(i));
+		}
 		mv.setViewName("management/contract/contract_edit");
 		mv.addObject("msg", "save");
+		mv.addObject("listDeptNo",listDeptNo);
 		mv.addObject("listPIdClassify", listPIdClassify);
+		mv.addObject("listmonth", listmonth);
+		mv.addObject("listItems", listItems);
 		mv.addObject("listMode", listMode);
 		mv.addObject("pd", pd);
-		System.out.println(pd);
 		return mv;
 	}	
 	
@@ -495,12 +507,14 @@ public class ContractController extends BaseController {
 		PageData pd2 = proceedscontractService.findByContractId(pd);
 		List<PageData> listItems = taxitemsService.listAll(pd);
 		ArrayList<String> listmonth = new ArrayList<String>();
+		List<PageData> listDeptNo = deptnoService.listAll(pd);
 		DecimalFormat dften = new DecimalFormat("00");
 		for (int i = 1; i <= 12; i++) {
 			listmonth.add(dften.format(i));
 		}
 		mv.setViewName("management/contract/contract_edit");
 		mv.addObject("msg", "editInfo");
+		mv.addObject("listDeptNo",listDeptNo);
 		mv.addObject("listmonth", listmonth);
 		mv.addObject("listPIdClassify", listPIdClassify);
 		mv.addObject("listMode", listMode);
@@ -509,6 +523,24 @@ public class ContractController extends BaseController {
 		mv.addObject("pd1", pd1);
 		mv.addObject("pd2", pd2);
 		return mv;
+	}
+
+	@RequestMapping(value = "/findMaxNo")
+	@ResponseBody
+	public Map<String, Object> findMaxNo(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		System.out.println(pd);
+		page.setPd(pd);
+		PageData maxNo = contractService.findMaxNo(pd);
+		System.out.println(maxNo);
+		DecimalFormat dften = new DecimalFormat("00");
+		String maxStr = maxNo.getString("maxNo");
+		int max = Integer.parseInt(maxStr.substring(maxStr.length()-2,maxStr.length())) + 1;
+		System.out.println("输出最大数:"+dften.format(max));
+		json.put("maxNo",dften.format(max));
+		return  json;
 	}
 
 

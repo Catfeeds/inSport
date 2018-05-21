@@ -27,7 +27,9 @@
 		ISSTAMPDUTY,
 		INVITATIONTICKET,
 		CONTRACTCLASSIFY,
-		CONTRACT_ID
+		CONTRACT_ID,
+		FREMARK,
+		DEPTNAME
 	</sql>
 	
 	<!-- 字段值 -->
@@ -50,7 +52,9 @@
 		#{ISSTAMPDUTY},
 		#{INVITATIONTICKET},
 		#{CONTRACTCLASSIFY},
-		#{CONTRACT_ID}
+		#{CONTRACT_ID},
+		#{FREMARK},
+		#{DEPTNAME}
 	</sql>
 	
 	<!-- 新增-->
@@ -95,6 +99,8 @@
 			CONTRACTTYPES = #{CONTRACTTYPES},
 			INVITATIONTICKET = #{INVITATIONTICKET},
 			CONTRACTCLASSIFY = #{CONTRACTCLASSIFY},
+			FREMARK= #{FREMARK},
+		DEPTNAME = #{DEPTNAME},
 		CONTRACT_ID = CONTRACT_ID
 		where 
 		CONTRACT_ID = #{CONTRACT_ID}
@@ -109,7 +115,11 @@
 		where 
 			CONTRACT_ID = #{CONTRACT_ID}
 	</select>
-	
+
+	<select id="findMaxNo" parameterType="pd" resultType="pd">
+		SELECT MAX(CONTRACTNUM) as maxNo from TB_CONTRACT WHERE DEPTNAME = #{DEPTNAME}
+	</select>
+
 	<!-- 列表 -->
 	<select id="datalistPage" parameterType="page" resultType="pd">
 		select

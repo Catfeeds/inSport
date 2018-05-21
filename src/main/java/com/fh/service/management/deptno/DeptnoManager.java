@@ -1,16 +1,16 @@
-package com.fh.service.management.contract;
+package com.fh.service.management.deptno;
 
 import java.util.List;
 import com.fh.entity.Page;
 import com.fh.util.PageData;
 
 /** 
- * 说明： 合同管理接口
+ * 说明： 编码管理接口
  * 创建人：FH Q313596790
- * 创建时间：2018-04-08
+ * 创建时间：2018-05-21
  * @version
  */
-public interface ContractManager{
+public interface DeptnoManager{
 
 	/**新增
 	 * @param pd
@@ -47,9 +47,7 @@ public interface ContractManager{
 	 * @throws Exception
 	 */
 	public PageData findById(PageData pd)throws Exception;
-
-	public PageData findMaxNo(PageData pd)throws Exception;
-
+	
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception

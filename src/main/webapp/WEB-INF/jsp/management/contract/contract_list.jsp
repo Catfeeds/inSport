@@ -46,12 +46,12 @@
 										</span>
                                         </div>
                                     </td>
-                                    <td style="padding-left:2px;"><input class="span10 date-picker" name="lastStart"
+                                   <%-- <td style="padding-left:2px;"><input class="span10 date-picker" name="lastStart"
                                                                          id="lastStart" value="" type="text"
                                                                          data-date-format="yyyy-mm-dd" readonly="readonly"
                                                                          style="width:88px;" placeholder="开始日期" title="开始日期"/>
-                                    </td>
-                                    <td style="padding-left:2px;"><input class="span10 date-picker" name="lastEnd" name="lastEnd"
+                                    </td>--%>
+                                   <%-- <td style="padding-left:2px;"><input class="span10 date-picker" name="lastEnd" name="lastEnd"
                                                                          value="" type="text" data-date-format="yyyy-mm-dd"
                                                                          readonly="readonly" style="width:88px;"
                                                                          placeholder="结束日期" title="结束日期"/></td>
@@ -63,7 +63,7 @@
                                             <option value="">1</option>
                                             <option value="">2</option>
                                         </select>
-                                    </td>
+                                    </td>--%>
                                     <c:if test="${QX.cha == 1 }">
                                         <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs"
                                                                                            onclick="tosearch();" title="检索"><i
@@ -91,17 +91,22 @@
                                     <th class="center" style="width:50px;">序号</th>
                                     <th class="center">合同名称</th>
                                     <th class="center">合同编号</th>
-                                    <th class="center">合同金额</th>
+
                                     <th class="center">签约方</th>
-                                    <th class="center">合同签订使用时间</th>
                                     <th class="center">项目</th>
-                                    <th class="center">签约时间</th>
+                                    <th class="center">合同金额</th>
                                     <th class="center">押金</th>
+
+                                    <th class="center">合同签订使用时间</th>
+
+                                    <th class="center">签约时间</th>
+                                    <th class="center">经办人</th>
+
                                     <th class="center">印花税</th>
                                     <th class="center">印花税计提月份</th>
                                     <th class="center">税目</th>
                                     <th class="center">方式</th>
-                                    <th class="center">经办人</th>
+
                                     <th class="center">合同类型</th>
                                     <th class="center">招待票</th>
                                     <th class="center">操作</th>
@@ -124,22 +129,26 @@
                                                     <td class='center' style="width: 30px;">${vs.index+1}</td>
                                                     <td class='center'>${var.CONTRACTNAME}</td>
                                                     <td class='center'>${var.CONTRACTNUM}</td>
-                                                    <td class='center'>${var.CONTRACTPIC}</td>
                                                     <td class='center'>${var.CONTRACTOFNAME}</td>
-                                                    <td class='center'>${var.FUSEDATESTART} - ${var.FUSEDATEENT}</td>
                                                     <td class='center'>${var.PROJECT}</td>
-                                                    <td class='center'>${var.FDATE}</td>
+                                                    <td class='center'>${var.CONTRACTPIC}</td>
                                                     <c:if test="${var.ISSTAMPDUTY == 1 }">
                                                         <td class='center'>${var.DEPOSIT}</td>
                                                     </c:if>
                                                     <c:if test="${var.ISSTAMPDUTY ==  0}">
                                                         <td class='center'>没有押金</td>
                                                     </c:if>
+
+                                                    <td class='center'>${var.FUSEDATESTART} - ${var.FUSEDATEENT}</td>
+
+                                                    <td class='center'>${var.FDATE}</td>
+                                                    <td class='center'>${var.OPERATOR}</td>
+
                                                     <td class='center'>${var.STAMPDUTY}</td>
                                                     <td class='center'>${var.STAMPDUTYMONTH}</td>
                                                     <td class='center'>${var.TAXITEMS}</td>
                                                     <td class='center'>${var.MODE}</td>
-                                                    <td class='center'>${var.OPERATOR}</td>
+
                                                     <td class='center'>${var.CONTRACTTYPES}</td>
                                                     <td class='center'>${var.INVITATIONTICKET}</td>
                                                     <td class="center">
@@ -180,29 +189,28 @@
                                                                 </button>
 
                                                                 <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                                                                    <c:if test="${var.CONTRACTTYPES == '付款合同' }">
+                                                                        <a class="btn btn-xs btn-success" title="打开付款表格"
+                                                                           onclick="openPayT('${var.CONTRACT_ID}')">
+                                                                            <i class="ace-icon fa fa-calendar bigger-120" title="打开付款表格"></i>
+                                                                        </a>
+                                                                    </c:if>
+                                                                    <a class="btn btn-xs btn-info" title="预览图片"
+                                                                       onclick="showPic('${var.CONTRACT_ID}')">
+                                                                        <i class="ace-icon fa fa-laptop bigger-120" title="预览图片"></i>
+                                                                    </a>
                                                                     <c:if test="${QX.edit == 1 }">
-                                                                        <li>
-                                                                            <a style="cursor:pointer;"
-                                                                               onclick="edit('${var.CONTRACT_ID}');"
-                                                                               class="tooltip-success" data-rel="tooltip"
-                                                                               title="修改">
-																	<span class="green">
-																		<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-																	</span>
-                                                                            </a>
-                                                                        </li>
+                                                                        <a class="btn btn-xs btn-success" title="编辑"
+                                                                           onclick="edit('${var.CONTRACT_ID}');">
+                                                                            <i class="ace-icon fa fa-pencil-square-o bigger-120"
+                                                                               title="编辑"></i>
+                                                                        </a>
                                                                     </c:if>
                                                                     <c:if test="${QX.del == 1 }">
-                                                                        <li>
-                                                                            <a style="cursor:pointer;"
-                                                                               onclick="del('${var.CONTRACT_ID}');"
-                                                                               class="tooltip-error" data-rel="tooltip"
-                                                                               title="删除">
-																	<span class="red">
-																		<i class="ace-icon fa fa-trash-o bigger-120"></i>
-																	</span>
-                                                                            </a>
-                                                                        </li>
+                                                                        <a class="btn btn-xs btn-danger"
+                                                                           onclick="del('${var.CONTRACT_ID}');">
+                                                                            <i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
+                                                                        </a>
                                                                     </c:if>
                                                                 </ul>
                                                             </div>
@@ -224,6 +232,7 @@
                                         </tr>
                                     </c:otherwise>
                                 </c:choose>
+
                                 </tbody>
 
                             </table>

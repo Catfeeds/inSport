@@ -326,7 +326,7 @@ public class LoginController extends BaseController {
 	
 	/**
 	 * 用户注销
-	 * @param session
+	 * @param
 	 * @return
 	 * @throws Exception 
 	 */
@@ -377,8 +377,8 @@ public class LoginController extends BaseController {
 		if(null != strLOGINEDIT && !"".equals(strLOGINEDIT)){
 			String strLo[] = strLOGINEDIT.split(",fh,");
 			if(strLo.length == 2){
-				pd.put("isZhuce", strLo[0]);
-				pd.put("isMusic", strLo[1]);
+				pd.put("isZhuce", "no");
+				pd.put("isMusic", "no");
 			}
 		}
 		try {
@@ -391,7 +391,7 @@ public class LoginController extends BaseController {
 	}
 	
 	/**获取用户权限
-	 * @param session
+	 * @param
 	 * @return
 	 */
 	public Map<String, String> getUQX(String USERNAME){
