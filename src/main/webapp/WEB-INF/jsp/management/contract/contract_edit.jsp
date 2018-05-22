@@ -62,7 +62,7 @@
 								<tbody>
 								<tr class="warning">
 									<th width="15%"><label>合同编号：</label></th>
-									<th width="10%"><input type="text" style="width: 150px" value="${pd.CONTRACTNUM}"
+									<th width="10%"><input type="text" style="width: 180px" value="${pd.CONTRACTNUM}"
 														   class="input-text"  name="CONTRACTNUM"
 														   id="CONTRACTNUM"></th>
 									<th width="15%"><label>合同名称：</label></th>
@@ -466,7 +466,9 @@
 		var DEPTNO = $("#DEPTNO").find("option:selected").attr("name");
 		var DEPTNAME = $("#DEPTNO").find("option:selected").attr("id");
 		$("#DEPTNAME").val(DEPTNAME);
-		alert($("#DEPTNO").find("option:selected").attr("id"));
+		//alert($("#DEPTNO").find("option:selected").attr("id"));
+		var date = new Date();
+		alert(date.getFullYear());
 		$.ajax({
 			async: false,
 			cache: false,
@@ -478,7 +480,7 @@
 			//dataType:"String",
 			url: '<%=basePath%>contract/findMaxNo',
 			success: function (data) {
-
+				$("#CONTRACTNUM").val(DEPTNO+"-"+date.getFullYear()+"-"+data.maxNo);
 			},
 			error: function () {
 				alert("请求失败");
@@ -687,7 +689,7 @@
 			$("#FDATE").focus();
 			return false;
 		}
-		if($("#DEPOSIT").attr("readonly") != "readonly"){
+		/*if($("#DEPOSIT").attr("readonly") != "readonly"){
 			if($("#DEPOSIT").val()==""){
 				$("#DEPOSIT").tips({
 					side:3,
@@ -698,8 +700,8 @@
 				$("#DEPOSIT").focus();
 				return false;
 			}
-		}
-		if($("#STAMPDUTY").val()==""){
+		}*/
+		/*if($("#STAMPDUTY").val()==""){
 			$("#STAMPDUTY").tips({
 				side:3,
 				msg:'请输入印花税',
@@ -708,8 +710,8 @@
 			});
 			$("#STAMPDUTY").focus();
 			return false;
-		}
-		if($("#STAMPDUTYMONTH").val()==""){
+		}*/
+		/*if($("#STAMPDUTYMONTH").val()==""){
 			$("#STAMPDUTYMONTH").tips({
 				side:3,
 				msg:'请输入印花税计提月份',
@@ -718,7 +720,7 @@
 			});
 			$("#STAMPDUTYMONTH").focus();
 			return false;
-		}
+		}*/
 		if($("#TAXITEMS").val()==""){
 			$("#TAXITEMS").tips({
 				side:3,
@@ -769,7 +771,7 @@
 			$("#TAXITEMS").focus();
 			return false;
 		}
-		if($("#INVITATIONTICKET").val()==""){
+		/*if($("#INVITATIONTICKET").val()==""){
 			$("#INVITATIONTICKET").tips({
 				side:3,
 				msg:'请输入招待票',
@@ -778,7 +780,7 @@
 			});
 			$("#INVITATIONTICKET").focus();
 			return false;
-		}
+		}*/
 		$("#Form").submit();
 		$("#zhongxin").hide();
 		$("#zhongxin2").show();

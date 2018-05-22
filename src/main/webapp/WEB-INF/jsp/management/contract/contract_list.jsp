@@ -40,17 +40,38 @@
                                         <div class="nav-search">
 										<span class="input-icon">
 											<input type="text" placeholder="这里输入关键词" class="nav-search-input"
-                                                   id="nav-search-input" autocomplete="off" name="keywords"
-                                                   value="${pd.keywords }" placeholder="这里输入关键词"/>
+                                                   id="nav-search-input" autocomplete="off" name="CONTRACTNUM"
+                                                   value="${pd.CONTRACTNUM }" placeholder="这里输入关键词"/>
 											<i class="ace-icon fa fa-search nav-search-icon"></i>
 										</span>
                                         </div>
                                     </td>
-                                   <%-- <td style="padding-left:2px;"><input class="span10 date-picker" name="lastStart"
-                                                                         id="lastStart" value="" type="text"
-                                                                         data-date-format="yyyy-mm-dd" readonly="readonly"
-                                                                         style="width:88px;" placeholder="开始日期" title="开始日期"/>
-                                    </td>--%>
+                                    <td style="padding-left:12px;">
+                                        <label style="margin-top: 5px">部门:</label>
+                                        <select name="DEPTNAME" id="DEPTNAME" data-placeholder=""
+                                                style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
+                                            <option value="${pd.DEPTNAME}" name="${pd.DEPTNAME}">${pd.DEPTNAME}</option>
+                                            <c:forEach items="${listDept}" var="var" varStatus="vs">
+                                                <option  value="${var.DEPTNAME}" >${var.DEPTNAME}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
+                                    <td style="padding-left:12px;">
+                                        <label style="margin-top: 5px">年份:</label>
+                                        <select name="YEAR" id="YEAR" data-placeholder=""
+                                                style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
+                                            <option value="${pd.YEAR}" name="${pd.YEAR}">${pd.YEAR}</option>
+                                        </select>
+                                    </td>
+                                    <td style="padding-left:12px;">
+                                        <label>合同金额区间:</label>
+                                        <input type="number" placeholder="这里输入金额" style="width: 110px" class="nav-search-input"
+                                               id="picStart" autocomplete="off" name="picStart"
+                                               value="${pd.picStart }" />  -至-
+                                        <input type="number" placeholder="这里输入金额" style="width: 110px" class="nav-search-input"
+                                               id="picEnd" autocomplete="off" name="picEnd"
+                                               value="${pd.picEnd }" />
+                                    </td>
                                    <%-- <td style="padding-left:2px;"><input class="span10 date-picker" name="lastEnd" name="lastEnd"
                                                                          value="" type="text" data-date-format="yyyy-mm-dd"
                                                                          readonly="readonly" style="width:88px;"
@@ -67,7 +88,7 @@
                                     <c:if test="${QX.cha == 1 }">
                                         <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs"
                                                                                            onclick="tosearch();" title="检索"><i
-                                                id="nav-search-icon"
+                                                id="search-icon"
                                                 class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
                                     </c:if>
                                     <c:if test="${QX.toExcel == 1 }">
@@ -307,6 +328,27 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
+
+    function selectDate(){
+        var option = "";
+        var now = new Date();
+        var year=now.getFullYear();
+        //$("#CONTRACTCLASSIFY").find("option").remove();
+        for(var a=0;a<=15;a++){
+            option += "<option value=" + year +">" + year +"</option>";
+            //document.write("<option>"+year+"</option>");
+            year=year-1;
+
+        }
+        $("#YEAR").append(option);
+       /* for(var i=0;i < listCheClassify.length;i++){
+            option += "<option id="+listCheClassify[i].FITEMID+" value="+listCheClassify[i].FNAME+
+                    " name="+listCheClassify[i].FNAME+">"+listCheClassify[i].FNAME+"</option>";
+        }
+        $("#CONTRACTCLASSIFY").append(option);*/
+    }
+
+    selectDate();
 
     function changeColor(CONTRACT_ID) {
         $("#imgList").html('');

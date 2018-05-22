@@ -439,22 +439,31 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
+		System.out.println("前端传参-------------->"+pd);
 		String keywords = pd.getString("keywords");				//关键词检索条件
 		if(null != keywords && !"".equals(keywords)){
 			keywords = URLDecoder.decode(keywords, "UTF-8");
-			System.out.println(keywords);
 			pd.put("keywords", keywords.trim());
 		}
 		String p_treeKey = pd.getString("p_treeKey");				//关键词检索条件
 		if(null != p_treeKey && !"".equals(p_treeKey)){
 			p_treeKey = URLDecoder.decode(p_treeKey, "UTF-8");
-			System.out.println(p_treeKey);
 			pd.put("p_treeKey", p_treeKey.trim());
 		}
+		/*String DEPTNAME = pd.getString("DEPTNAME");				//关键词检索条件
+		if(null != DEPTNAME && !"".equals(DEPTNAME)){
+			pd.put("DEPTNAME", DEPTNAME.trim());
+		}
+		String YEAR = pd.getString("YEAR");				//关键词检索条件
+		if(null != YEAR && !"".equals(YEAR)){
+			pd.put("YEAR", YEAR.trim());
+		}*/
 		page.setPd(pd);
 		List<PageData>	varList = contractService.list(page);	//列出Contract列表
+		List<PageData> listDept = deptnoService.listAll(pd);
 		mv.setViewName("management/contract/contract_list");
 		mv.addObject("varList", varList);
+		mv.addObject("listDept", listDept);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
 		return mv;
@@ -534,12 +543,16 @@ public class ContractController extends BaseController {
 		System.out.println(pd);
 		page.setPd(pd);
 		PageData maxNo = contractService.findMaxNo(pd);
-		System.out.println(maxNo);
-		DecimalFormat dften = new DecimalFormat("00");
-		String maxStr = maxNo.getString("maxNo");
-		int max = Integer.parseInt(maxStr.substring(maxStr.length()-2,maxStr.length())) + 1;
-		System.out.println("输出最大数:"+dften.format(max));
-		json.put("maxNo",dften.format(max));
+		//System.out.println(maxNo);
+		if(maxNo != null && !"".equals(maxNo)){
+			DecimalFormat dften = new DecimalFormat("000");
+			String maxStr = maxNo.getString("maxNo");
+			int max = Integer.parseInt(maxStr.substring(maxStr.length()-2,maxStr.length())) + 1;
+			System.out.println("输出最大数:"+dften.format(max));
+			json.put("maxNo",dften.format(max));
+		}else {
+			json.put("maxNo","01");
+		}
 		return  json;
 	}
 

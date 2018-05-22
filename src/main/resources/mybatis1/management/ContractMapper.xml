@@ -122,19 +122,44 @@
 
 	<!-- 列表 -->
 	<select id="datalistPage" parameterType="page" resultType="pd">
-		select
+		select top 1000000000
 		<include refid="Field"></include>
 		from 
 		<include refid="tableName"></include>
 		where 1=1
-		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+		<if test="pd.keywords != null and pd.keywords != ''"><!-- 关键词检索 -->
 			and
 			CONTRACTCLASSIFY LIKE '%'+ #{pd.keywords}+'%'
 		</if>
-		<if test="pd.p_treeKey!= null and pd.p_treeKey != ''"><!-- 关键词检索 -->
+		<if test="pd.p_treeKey != null and pd.p_treeKey != ''"><!-- 关键词检索 -->
 			and
 			CONTRACTTYPES LIKE '%'+ #{pd.p_treeKey}+'%'
 		</if>
+		<if test="pd.YEAR != null and pd.YEAR != ''"><!-- 关键词检索 -->
+			and
+			FDATE LIKE '%'+ #{pd.YEAR}+'%'
+		</if>
+		<if test="pd.CONTRACTNUM != null and pd.CONTRACTNUM != ''"><!-- 关键词检索 -->
+			and
+			CONTRACTNUM LIKE '%'+ #{pd.CONTRACTNUM}+'%'
+		</if>
+		<if test="pd.DEPTNAME != null and pd.DEPTNAME != ''"><!-- 关键词检索 -->
+			and
+			DEPTNAME LIKE '%'+ #{pd.DEPTNAME}+'%'
+		</if>
+		<if test="pd.picStart != null and pd.picStart != ''"><!-- 关键词检索 -->
+			and
+			CONTRACTPIC <![CDATA[ >= ]]> #{pd.picStart}
+		</if>
+		<if test="pd.picEnd != null and pd.picEnd != ''"><!-- 关键词检索 -->
+			and
+			CONTRACTPIC <![CDATA[ <= ]]> #{pd.picEnd}
+		</if>
+		<!--<if test="pd.picEnd != null and pd.picEnd != ''">&lt;!&ndash; 关键词检索 &ndash;&gt;
+			and
+			CONTRACTPIC <![CDATA[ <= ]]> #{pd.picEnd}
+		</if>-->
+		ORDER BY CONTRACTNUM
 	</select>
 	
 	<!-- 列表(全部) -->
