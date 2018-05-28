@@ -52,6 +52,7 @@
     <!-- 日期框 -->
     <link rel="stylesheet" href="static/ace/css/datepicker.css"/>
     <link rel="stylesheet" href="static/webContextMenu/css/web.contextmenu.css"/>
+    <link rel="stylesheet" href="static/dist/jquery.magnify.min.css"/>
     <script src="static/webContextMenu/js/web.contextmenu.js"></script>
 </head>
 <body class="no-skin" id="rightj">
@@ -123,7 +124,7 @@
                                             <c:if test="${fn:contains(var.FILE_TYPE,'image')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
-                                                        <a onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
                                                             style="width: 120px;"
                                                            data-rel="colorbox" class="cboxElement">
                                                             <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
@@ -138,12 +139,20 @@
                                                                 <img src="static/images/trash_can.png"
                                                                      style="width: 35px;height: 35px"/>
                                                             </div>
-                                                            <img  width="120" height="110" alt="200x200"
+                                                            <img width="120" height="110";
+                                                                 src="<%=basePath%>${var.FILE_URL}" alt="">
+                                                            <a data-magnify="gallery"
+                                                            data-caption="Paraglider flying over Aurlandfjord,
+                                                            Norway by framedbythomas" href="<%=basePath%>${var.FILE_URL}">
+                                                                    ${var.FILENAME}
+                                                            </a>
+                                                          <%--  <img  width="120" height="110" alt="200x200"
                                                                  src="<%=basePath%>${var.FILE_URL}"/>
+
                                                             <div onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text" style="margin-top: 15px">
                                                                 <div class="inner">${var.FILENAME}</div>
-                                                            </div>
-                                                        </a>
+                                                            </div>--%>
+                                                        </div>
                                                         <%--<div class="text" style="margin-top: 15px">
                                                             <div class="inner">点击预览</div>
                                                         </div>--%>
@@ -166,16 +175,16 @@
                                                             <img src="static/images/trash_can.png"
                                                                  style="width: 35px;height: 35px"/>
                                                         </div>
-                                                        <a onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
                                                            data-rel="colorbox"
                                                            class="cboxElement">
                                                             <img   width="120" height="120" alt="200x200"
                                                                  src="static/filecatalog/images/application-pdf.png"/>
-                                                            <div onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text"
+                                                            <a onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text"
                                                                  style="margin-top: 15px">
                                                                 <div class="inner">${var.FILENAME}</div>
-                                                            </div>
-                                                        </a>
+                                                            </a>
+                                                        </div>
                                                             <%--<div style="width: 100%;height: 25px" align="center" >
                                                                 <p>${var.FILE_CATALOGURL}</p>
                                                             </div>--%>
@@ -197,7 +206,7 @@
                                                             <img src="static/images/trash_can.png"
                                                                  style="width: 35px;height: 35px"/>
                                                         </div>
-                                                        <a onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
                                                            data-rel="colorbox"
                                                            class="cboxElement">
                                                             <img  width="120" height="120" alt="200x200"
@@ -205,7 +214,7 @@
                                                             <div class="text" style="margin-top: 15px">
                                                                 <div class="inner">${var.FILENAME}</div>
                                                             </div>
-                                                        </a>
+                                                        </div>
                                                             <%--<div style="width: 100%;height: 25px" align="center" >
                                                                 <p>${var.FILE_CATALOGURL}</p>
                                                             </div>--%>
@@ -227,7 +236,7 @@
                                                             <img src="static/images/trash_can.png"
                                                                  style="width: 35px;height: 35px"/>
                                                         </div>
-                                                        <a onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
                                                             data-rel="colorbox"
                                                            class="cboxElement">
                                                             <img  width="120" height="120" alt="200x200"
@@ -235,7 +244,7 @@
                                                             <div class="text" style="margin-top: 15px">
                                                                 <div class="inner">${var.FILENAME}</div>
                                                             </div>
-                                                        </a>
+                                                        </div>
                                                     </div>
                                                 </li>
                                             </c:if>
@@ -324,8 +333,19 @@
 <script src="static/ace/js/date-time/bootstrap-datepicker.js"></script>
 <!--提示框-->
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
+
+<script src="static/dist/jquery.magnify.js"></script>
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
+
+    //图片预览效果
+    $('[data-magnify]').magnify({
+        headToolbar: [
+            'close'
+        ],
+        initMaximized: true
+    });
+
     var zNodes;
     function test(event){
             var btnNum = event.button;

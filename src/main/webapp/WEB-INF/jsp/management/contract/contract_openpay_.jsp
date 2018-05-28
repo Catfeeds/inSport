@@ -30,7 +30,7 @@
         <div class="main-content-inner">
             <div class="page-content">
                 <div class="row">
-                    <div class="col-xs-12" >
+                    <div class="col-xs-12">
                         <table class="table table-border table-bg table-bordered" style="margin-top: 10px">
                             <tbody>
                             <tr class="center">
@@ -52,7 +52,7 @@
                             </tr>
                             </tbody>
                         </table>
-                        <%--<table class="table table-border table-bg table-bordered" style="margin-top: 10px">
+                        <table class="table table-border table-bg table-bordered" style="margin-top: 10px">
                             <tbody>
                             <tr class="center">
                                 <td style="padding-left:2px;">时间</td>
@@ -64,14 +64,75 @@
                                 <td style="padding-left:2px;">尚没付款金额</td>
                                 <td style="padding-left:2px;">操作</td>
                             </tr>
+                            <tr class="center" id="sum" >
+                                <td rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${pd.FUSEDATESTART } -- ${pd.FUSEDATEENT }</td>
+                                <td rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${pd.CONTRACTPIC }</td>
+                            </tr> <c:forEach items="${listpays}" var="var" varStatus="vs">
+                                <tr class="center" style="background-color: #FFFFCC">
+                                    <td style="padding-left:2px;">${var.SHPAYTIME}</td>
+                                    <td style="padding-left:2px;">
+                                        <input type="number" style="width: 150px;height: 31px" value="${var.SHPAY}"
+                                               class="input-text"  name="SHPAY" id="SHPAY${var.PAYTABLE_ID}"
+                                        ></td>
+                                    <td style="padding-left:2px;">
+                                        <input type="date" style="width: 150px;height: 31px" value="${var.REALITYPAYTIME}"
+                                               class="input-text"  name="REALITYPAYTIME" id="REATIME${var.PAYTABLE_ID}"
+                                        >
+                                    </td>
+                                    <td style="padding-left:2px;">
+                                        <input type="number" style="width: 150px" value="${var.REALITYPAY}"
+                                               class="input-text"  name="REALITYPAY" id="REALITYPAY${var.PAYTABLE_ID}"
+                                        >
+                                    </td>
+                                    <td style="padding-left:2px;">
+                                        <c:if test="${vs.last }">
+                                            ${onPayPic}
+                                        </c:if>
+                                        <c:if test="${!vs.last }">
+                                            ${var.NOPAY}
+                                        </c:if>
+                                    </td>
+                                    <td style="padding-left:2px;">
+                                        <a class="btn btn-xs btn-success" title="保存修改"
+                                           onclick="editPay('${pd.PAYTABLE_ID}');">
+                                            <i class="ace-icon fa fa-check-square-o bigger-120"
+                                               title="保存修改"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            <c:forEach items="${arr}" var="var" varStatus="vs">
+                                <tr class="center">
+                                    <td style="padding-left:2px;">${var}</td>
+                                    <td style="padding-left:2px;">
+                                        <input type="number" style="width: 150px;height: 31px" value="${everyMonthPay}"
+                                               class="input-text"  name="everyMonthPay" id="PIC${var}"
+                                        ></td>
+                                    <td style="padding-left:2px;">
+                                        <input type="date" style="width: 150px;height: 31px" value="${pd.REALITYPAYTIME}"
+                                               class="input-text"  name="REALITYPAYTIME" id="REATIME${var}"
+                                               >
+                                    </td>
+                                    <td style="padding-left:2px;">
+                                        <input type="number" style="width: 150px" value=""
+                                               class="input-text"  name="REALITYPAY" id="REAPAY${var}"
+                                               >
+                                    </td>
 
+                                    <td style="padding-left:2px;">
 
+                                    </td>
+                                    <td style="padding-left:2px;">
+                                        <a class="btn btn-xs btn-success" title="保存"
+                                           onclick="savePay('${var}','${pd.CONTRACT_ID}');">
+                                            <i class="ace-icon fa fa-check-square-o bigger-120"
+                                               title="保存"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
-                        </table>--%>
-
-                    </div>
-                    <div id="divTable" class="col-md-12"  style="padding-bottom:2em;">
-                        <button onclick="addTable()" class="btn btn-info" id="add"><i class="fa fa-plus"></i> 添加新的主表</button>
+                        </table>
                     </div>
                 </div>
                 <!-- /.row -->
@@ -105,74 +166,6 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
-
-    function addTable(){
-        var uuid = "";
-        $.ajax({
-            type: "POST",
-            url: '<%=basePath%>paytable/getUUID',
-            async: false,
-            data: {
-            },
-            dataType: 'json',
-            //beforeSend: validateData,
-            cache: false,
-            success: function (data) {
-                uuid = data.uuid;
-            }
-        });
-        var table = "";
-        table += '<table id="ta'+uuid+'" class="table table-border table-bg table-bordered" style="margin-top: 10px">';
-        table += '<tbody id="tb'+uuid+'" ><tr class="center" >';
-        table += '<td style="padding-left:2px;">时间</td><td style="padding-left:2px;">总应付金额</td>';
-        table += '<td style="padding-left:2px;">付款所属时间</td><td style="padding-left:2px;">应付款金额</td>';
-        table += '<td style="padding-left:2px;">实际付款时间</td><td style="padding-left:2px;">实际付款金额</td>';
-        table += '<td style="padding-left:2px;">尚没付款金额</td><td style="padding-left:2px;">操作</td>';
-        table += '</tr></tbody></table>';
-        table += '<div class="col-md-12"  style="padding-bottom:2em;">';
-        table += '<button onclick="addTr(\''+uuid+'\')" class="btn btn-info" id="add"><i class="fa fa-plus"></i> 添加新的明细项</button>';
-        table += '</div>';
-        $("#divTable").before(table);
-        table = "";
-        uuid = "";
-    }
-    
-    function addTr(uuid_var) {
-        var isname = $("#pic"+uuid_var).length;
-        var count =$("#ta"+uuid_var+" tr").length;
-        $("#td1"+uuid_var).attr("rowspan",count);
-        $("#td2"+uuid_var).attr("rowspan",count);
-        var tr = '';
-        tr += '<tr class="center" id="'+uuid_var+'">';
-        //alert(isname == null ||isname == undefined||isname =="");
-        if(isname == 0){
-            tr += ' <td id="td1'+uuid_var+'"  class="center" style="padding-left:2px;">' +
-                    '<input type="date" style="width: 150px;height: 31px" class="input-text"  name="REALITYPAYTIME" >' +
-                    ' --- <input type="date" style="width: 150px;height: 31px" class="input-text"  name="REALITYPAYTIME" >' +
-                    '</td>';
-            tr += '<td id="td2'+uuid_var+'"  class="center" style="padding-left:2px;">' +
-                    '<input id="pic'+uuid_var+'" type="number" style="width: 150px" class="input-text"  name="CONTRACTPIC" ></td>';
-        }
-        tr += '<td style="padding-left:2px;"><input type="data" style="width: 150px;height: 31px" '+
-              'class="input-text"  name="SHPAY" id="" ></td>'
-        tr += '<td style="padding-left:2px;"><input type="number" style="width: 150px;height: 31px" ' +
-                ' class="input-text"  name="SHPAY" ></td>';
-        tr += ' <td style="padding-left:2px;">' +
-                '<input type="date" style="width: 150px;height: 31px" class="input-text"  name="REALITYPAYTIME" ></td>';
-        tr += '<td style="padding-left:2px;">' +
-                '<input type="number" style="width: 150px" class="input-text"  name="REALITYPAY" ></td>';
-        tr += '<td style="padding-left:2px;"></td>';
-        tr += '<td style="padding-left:2px;"> <a class="btn btn-xs btn-success" title="保存修改" onclick="editPay();">' +
-                '<i class="ace-icon fa fa-check-square-o bigger-120" title="保存修改"></i> </a> </td>';
-        tr += '</tr>';
-        if(isname == 0) {
-            $("#tb" + uuid_var).after(tr);
-        }else {
-            $("#" + uuid_var).after(tr);
-        }
-        tr = '';
-    }
-    
     function savePay(value,CONTRACT_ID){
         /**
          *  <td style="padding-left:2px;">付款所属时间</td>

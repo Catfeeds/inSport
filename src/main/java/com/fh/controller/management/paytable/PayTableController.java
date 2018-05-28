@@ -37,7 +37,19 @@ public class PayTableController extends BaseController {
 	String menuUrl = "paytable/list.do"; //菜单地址(权限用)
 	@Resource(name="paytableService")
 	private PayTableManager paytableService;
-	
+
+	@RequestMapping(value = "/getUUID")
+	@ResponseBody
+	public Map<String, Object> getUUID(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		String uuid = this.get32UUID();
+		json.put("uuid",uuid);
+		return  json;
+	}
+
+
 	/**保存
 	 * @param
 	 * @throws Exception
