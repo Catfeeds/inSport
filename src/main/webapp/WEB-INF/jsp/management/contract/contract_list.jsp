@@ -16,10 +16,47 @@
     <link rel="stylesheet" href="static/ace/css/chosen.css"/>
     <!-- page specific plugin styles -->
     <link rel="stylesheet" href="static/ace/css/colorbox.css"/>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/dist/jquery.magnify.min.css"/>
     <!-- jsp文件头和头部 -->
     <%@ include file="../../system/index/top.jsp" %>
     <!-- 日期框 -->
     <link rel="stylesheet" href="static/ace/css/datepicker.css"/>
+    <style>
+        .magnify-modal {
+            box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .magnify-header .magnify-toolbar {
+            width: 40px;
+            background-color: rgba(0, 0, 0, .5);
+        }
+
+        .magnify-stage {
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-width: 0;
+        }
+
+        .magnify-footer .magnify-toolbar {
+            display: inline-block;
+            height: 40px;
+            background-color: rgba(0, 0, 0, .5);
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .magnify-stage img {
+            width: 0;
+        }
+
+        .magnify-loading {
+            background-color: transparent;
+        }
+
+    </style>
 </head>
 <body class="no-skin">
 
@@ -324,10 +361,20 @@
 <script src="static/ace/js/chosen.jquery.js"></script>
 <!-- 日期框 -->
 <script src="static/ace/js/date-time/bootstrap-datepicker.js"></script>
+
+<script src="static/dist/jquery.magnify.js"></script>
 <!--提示框-->
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
+
+    //图片预览效果
+    $('[data-magnify]').magnify({
+        headToolbar: [
+            'close'
+        ],
+        initMaximized: true
+    });
 
     function selectDate(){
         var option = "";
@@ -455,6 +502,27 @@
             dataType: 'json',
             //beforeSend: validateData,
             cache: false,
+            /*success: function (data) {
+             $("#imgList").html('');
+             var count = 0;	//总数
+             var html = '';
+             var res = data.listOnePic;
+             for (var i = 0; i < res.length; i++) {
+             html += '<li>' +
+             '<a href="<%=basePath%>' + res[i].URL_PIC + '" data-rel="colorbox" class="cboxElement">' +
+             '<img width="160" height="160" alt="200x200" src="<%=basePath%>' + res[i].URL_PIC + '" />' +
+             '<div class="text">' +
+             '<div class="inner">点击预览</div>' +
+             '</div>' +
+             '</a>' +
+             '<div style="width: 100%;height: 25px" align="center" >' +
+             '<button  onclick="delPic(' + "'" + res[i].CONTRACTPICTURE_ID + "','" + CONTRACT_ID + "'" + ')" style="width: 45px;height: 20px;margin-top:2px" >删除</button>' +
+             '</div>' +
+             '</li>'
+             }
+             $("#imgList").append(html);
+
+             }*/
             success: function (data) {
                 $("#imgList").html('');
                 var count = 0;	//总数
@@ -462,15 +530,10 @@
                 var res = data.listOnePic;
                 for (var i = 0; i < res.length; i++) {
                     html += '<li>' +
-                            '<a href="<%=basePath%>' + res[i].URL_PIC + '" data-rel="colorbox" class="cboxElement">' +
-                            '<img width="160" height="160" alt="200x200" src="<%=basePath%>' + res[i].URL_PIC + '" />' +
-                            '<div class="text">' +
-                            '<div class="inner">点击预览</div>' +
-                            '</div>' +
+                            '<a data-magnify="gallery"' +
+                            ' data-caption="Paraglider flying over Aurlandfjord, Norway by framedbythomas" href="<%=basePath%>' + res[i].URL_PIC + '">' +
+                            '<img width="160;" height="160";   src="<%=basePath%>' + res[i].URL_PIC + '" alt="">' +
                             '</a>' +
-                            '<div style="width: 100%;height: 25px" align="center" >' +
-                            '<button  onclick="delPic(' + "'" + res[i].CONTRACTPICTURE_ID + "','" + CONTRACT_ID + "'" + ')" style="width: 45px;height: 20px;margin-top:2px" >删除</button>' +
-                            '</div>' +
                             '</li>'
                 }
                 $("#imgList").append(html);

@@ -468,7 +468,7 @@
 		$("#DEPTNAME").val(DEPTNAME);
 		//alert($("#DEPTNO").find("option:selected").attr("id"));
 		var date = new Date();
-		alert(date.getFullYear());
+		//alert(date.getFullYear());
 		$.ajax({
 			async: false,
 			cache: false,
