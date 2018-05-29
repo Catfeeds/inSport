@@ -67,7 +67,8 @@
                             <tr class="center" id="sum" >
                                 <td rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${pd.FUSEDATESTART } -- ${pd.FUSEDATEENT }</td>
                                 <td rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${pd.CONTRACTPIC }</td>
-                            </tr> <c:forEach items="${listpays}" var="var" varStatus="vs">
+                            </tr>
+                            <c:forEach items="${listpays}" var="var" varStatus="vs">
                                 <tr class="center" style="background-color: #FFFFCC">
                                     <td style="padding-left:2px;">${var.SHPAYTIME}</td>
                                     <td style="padding-left:2px;">

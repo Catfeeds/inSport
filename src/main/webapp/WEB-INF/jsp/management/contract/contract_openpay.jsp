@@ -106,6 +106,31 @@
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
 
+    function saveTable(tuuid){
+        var PAYPRIMARY_ID = "${pd.PAYPRIMARY_ID}";
+        var CONTRACT_ID = "${pd.CONTRACT_ID}";
+        var CONTRACTPIC = $("#pic"+tuuid).val();
+        var STARTTIME = $("#st"+tuuid).val();
+        var ENTTIME = $("#et"+tuuid).val();
+        $.ajax({
+            type: "POST",
+            url: '<%=basePath%>payprimary/saveTable',
+            async: false,
+            data: {
+                PAYPRIMARY_ID : PAYPRIMARY_ID,
+                CONTRACT_ID : CONTRACT_ID,
+                CONTRACTPIC : CONTRACTPIC,
+                STARTTIME : STARTTIME,
+                ENTTIME : ENTTIME
+            },
+            dataType: 'json',
+            //beforeSend: validateData,
+            cache: false,
+            success: function (data) {
+            }
+        });
+    }
+
     function addTable(){
         var uuid = "";
         $.ajax({
@@ -143,27 +168,30 @@
         $("#td1"+uuid_var).attr("rowspan",count);
         $("#td2"+uuid_var).attr("rowspan",count);
         var tr = '';
-        tr += '<tr class="center" id="'+uuid_var+'">';
+        tr += '<tr style="border: 1px;solid #dddddd;" class="center" id="'+uuid_var+'">';
         //alert(isname == null ||isname == undefined||isname =="");
         if(isname == 0){
             tr += ' <td id="td1'+uuid_var+'"  class="center" style="padding-left:2px;">' +
-                    '<input type="date" style="width: 150px;height: 31px" class="input-text"  name="REALITYPAYTIME" >' +
-                    ' --- <input type="date" style="width: 150px;height: 31px" class="input-text"  name="REALITYPAYTIME" >' +
+                    '<input id="st'+uuid_var+'" type="date" style="width: 150px;height: 31px" class="input-text"  name="STARTTIME" >' +
+                    ' --- <input id="et'+uuid_var+'" type="date" style="width: 150px;height: 31px" class="input-text"  name="ENTTIME" >' +
                     '</td>';
             tr += '<td id="td2'+uuid_var+'"  class="center" style="padding-left:2px;">' +
-                    '<input id="pic'+uuid_var+'" type="number" style="width: 150px" class="input-text"  name="CONTRACTPIC" ></td>';
+                    '<input onchange="saveTable(\''+uuid_var+'\')" id="pic'+uuid_var+'" type="number" style="width: 150px" class="input-text"  name="CONTRACTPIC" ></td>';
         }
-        tr += '<td style="padding-left:2px;"><input type="data" style="width: 150px;height: 31px" '+
-              'class="input-text"  name="SHPAY" id="" ></td>'
-        tr += '<td style="padding-left:2px;"><input type="number" style="width: 150px;height: 31px" ' +
+        tr += '<td style="padding-left:2px;"><input id="spt'+uuid_var+'" type="date" style="width: 150px;height: 31px" '+
+              'class="input-text"  name="SHPAYTIME" id="" ></td>'
+        tr += '<td style="padding-left:2px;"><input id="sp'+uuid_var+'" type="number" style="width: 150px;height: 31px" ' +
                 ' class="input-text"  name="SHPAY" ></td>';
         tr += ' <td style="padding-left:2px;">' +
-                '<input type="date" style="width: 150px;height: 31px" class="input-text"  name="REALITYPAYTIME" ></td>';
+                '<input id="rpt'+uuid_var+'" type="date" style="width: 150px;height: 31px" class="input-text"  name="REALITYPAYTIME" ></td>';
         tr += '<td style="padding-left:2px;">' +
-                '<input type="number" style="width: 150px" class="input-text"  name="REALITYPAY" ></td>';
+                '<input id="rp'+uuid_var+'" type="number" style="width: 150px" class="input-text"  name="REALITYPAY" ></td>';
         tr += '<td style="padding-left:2px;"></td>';
-        tr += '<td style="padding-left:2px;"> <a class="btn btn-xs btn-success" title="保存修改" onclick="editPay();">' +
-                '<i class="ace-icon fa fa-check-square-o bigger-120" title="保存修改"></i> </a> </td>';
+        tr += '<td style="padding-left:2px;"> ' +
+                '<a class="btn btn-xs btn-success" title="保存" onclick="saveDetail(\''+uuid_var+'\');">' +
+                '<i class="ace-icon fa fa-check-square-o bigger-120" title="保存"></i>' +
+                '</a> ' +
+                '</td>';
         tr += '</tr>';
         if(isname == 0) {
             $("#tb" + uuid_var).after(tr);
@@ -173,64 +201,31 @@
         tr = '';
     }
     
-    function savePay(value,CONTRACT_ID){
-        /**
-         *  <td style="padding-left:2px;">付款所属时间</td>
-         <td style="padding-left:2px;">应付款金额</td> id="PIC"
-         <td style="padding-left:2px;">实际付款时间</td> id="REATIME"
-         <td style="padding-left:2px;">实际付款金额</td>   id="REALITYPAY"
-         */
-        var REATIME = $("#REATIME"+value).val();
-        var REAPAY = $("#REAPAY"+value).val();
-        var PIC = $("#PIC"+value).val();
-        var onPayPic = '${onPayPic}' - REAPAY;
-        if($("#REATIME"+value).val()==""){
-            $("#REATIME"+value).tips({
-                side:3,
-                msg:'实际付款时间',
-                bg:'#AE81FF',
-                time:2
-            });
-            $("#REATIME"+value).focus();
-            return false;
-        }
-        if($("#REAPAY"+value).val()==""){
-            $("#REAPAY"+value).tips({
-                side:3,
-                msg:'实际付款金额',
-                bg:'#AE81FF',
-                time:2
-            });
-            $("#REAPAY"+value).focus();
-            return false;
-        }
-        /*if($("#CONTRACTNAME").val()==""){
-            $("#CONTRACTNAME").tips({
-                side:3,
-                msg:'请输入合同名称',
-                bg:'#AE81FF',
-                time:2
-            });
-            $("#CONTRACTNAME").focus();
-            return false;
-        }*/
-        //alert("应付款金额:"+PIC+",实际付款时间:"+REATIME+",实际付款金额:"+REAPAY);
+    function saveDetail(uuid_var){
+        var PAYPRIMARY_ID = "${pd.PAYPRIMARY_ID}";
+        var CONTRACT_ID =  "${pd.CONTRACT_ID}";
+        var SHPAYTIME = $("#spt"+uuid_var).val();
+        var REALITYPAY = $("#rp"+uuid_var).val();
+        var REALITYPAYTIME = $("#rpt"+uuid_var).val();
+        var SHPAY =$("#sp"+uuid_var).val();
+        var SHPAYTIME = $("#spt"+uuid_var).val();
         $.ajax({
             type: "POST",
-            url: '<%=basePath%>paytable/saveInfo',
+            url: '<%=basePath%>paydetail/saveDetail',
             data: {
                 CONTRACT_ID: CONTRACT_ID,
-                SHPAYTIME: value,
-                SHPAY: PIC,
-                REALITYPAYTIME:REATIME,
-                REALITYPAY:REAPAY,
-                NOPAY:onPayPic
+                PAYPRIMARY_ID: PAYPRIMARY_ID,
+                REALITYPAY: REALITYPAY,
+                SHPAYTIME:SHPAYTIME,
+                REALITYPAYTIME:REALITYPAYTIME,
+                SHPAY:SHPAY,
+                SHPAYTIME:SHPAYTIME
                 },
             dataType: 'json',
             //beforeSend: validateData,
             cache: false,
             success: function (data) {
-                window.location.reload();
+                //window.location.reload();
             }
         });
     }

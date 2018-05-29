@@ -223,16 +223,24 @@ public class ContractController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd = contractService.findById(pd);
+		mv.setViewName("management/contract/contract_openpay");
+		pd.put("PAYPRIMARY_ID",this.get32UUID());
+		mv.addObject("pd", pd);
+		return mv;
+	}
+	/*@RequestMapping(value="/openPayT")
+	public ModelAndView openPayT(Page page) throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = contractService.findById(pd);
 		int start_year = Integer.valueOf(pd.getString("FUSEDATESTART").substring(0,4));
 		int end_year = Integer.valueOf(pd.getString("FUSEDATEENT").substring(0,4));
 		int start_month = Integer.valueOf(pd.getString("FUSEDATESTART").substring(5,7));
 		int end_month = Integer.valueOf(pd.getString("FUSEDATEENT").substring(5,7));
-
+		System.out.println(pd);
 		PageData payPd = paymentcontractService.findByContractId(pd);
 		List<PageData> listpays = paytableService.findByContractId(pd);
-
-		//System.out.println(start_month);
-		//System.out.println(end_year - start_year);
 		ArrayList<String> arr = new ArrayList<String>();
 		PageData maxpd = paytableService.findtime_max(pd);
 		PageData sumPaypd = paytableService.findPay_sum(pd);
@@ -249,7 +257,6 @@ public class ContractController extends BaseController {
 				for (int i = max_month+1; i <= end_month; i++) {
 					arr.add(max_year+"-"+dften.format(i)+"-"+payDay);
 				}
-				//System.out.println("arr------------>"+arr);
 			}else {
 				for (int i = max_month+1; i <= 12; i++) {
 					arr.add(max_year+"-"+dften.format(i)+"-"+payDay);
@@ -263,7 +270,6 @@ public class ContractController extends BaseController {
 				for (int i = 1; i <= end_month; i++) {
 					arr.add(end_year+"-"+dften.format(i)+"-"+payDay);
 				}
-				//System.out.println("arr------------>"+arr);
 			}
 			mv.addObject("count", arr.size()+listpays.size());
 			onPayPic = Double.valueOf(pd.get("CONTRACTPIC").toString()) - Double.valueOf(sumPaypd.get("SUM_REALITYPAY").toString());
@@ -272,7 +278,6 @@ public class ContractController extends BaseController {
 				for (int i = start_month; i <= end_month; i++) {
 					arr.add(start_year+"-"+dften.format(i)+"-"+payDay);
 				}
-				//System.out.println("arr------------>"+arr);
 			}else {
 				for (int i = start_month; i <= 12; i++) {
 					arr.add(start_year+"-"+dften.format(i)+"-"+payDay);
@@ -286,25 +291,22 @@ public class ContractController extends BaseController {
 				for (int i = 1; i <= end_month; i++) {
 					arr.add(end_year+"-"+dften.format(i)+"-"+payDay);
 				}
-				//System.out.println("arr------------>"+arr);
 			}
 			onPayPic = Double.valueOf(pd.get("CONTRACTPIC").toString());
 			mv.addObject("count", arr.size());
 		}
-		System.out.println(sumPaypd);
 		//未付款金额
-
 		everyMonthPay = onPayPic / arr.size();
-		//System.out.println(df.format(everyMonthPay));listpays
 		mv.setViewName("management/contract/contract_openpay");
 		mv.addObject("listpays", listpays);
 		mv.addObject("arr", arr);
 		mv.addObject("onPayPic", onPayPic);
+		pd.put("PAYPRIMARY_ID",this.get32UUID());
 		mv.addObject("pd", pd);
 		mv.addObject("everyMonthPay", df.format(everyMonthPay));
 		mv.addObject("payPd", payPd);
 		return mv;
-	}
+	}*/
 
 	@RequestMapping(value="/savePic")
 	@ResponseBody
@@ -540,7 +542,6 @@ public class ContractController extends BaseController {
 		PageData pd = new PageData();
 		Map<String, Object> json = new HashMap<String, Object>();
 		pd = this.getPageData();
-		System.out.println(pd);
 		page.setPd(pd);
 		PageData maxNo = contractService.findMaxNo(pd);
 		//System.out.println(maxNo);
