@@ -16,7 +16,8 @@
 		REALITYPAYTIME,	
 		REALITYPAY,	
 		ONPAYPIC,	
-		PAYDETAIL_ID
+		PAYDETAIL_ID,
+		NUM
 	</sql>
 	
 	<!-- 字段值 -->
@@ -28,7 +29,8 @@
 		#{REALITYPAYTIME},	
 		#{REALITYPAY},	
 		#{ONPAYPIC},	
-		#{PAYDETAIL_ID}
+		#{PAYDETAIL_ID},
+		#{NUM}
 	</sql>
 	
 	<!-- 新增-->
@@ -36,9 +38,23 @@
 		insert into 
 	<include refid="tableName"></include>
 		(
-	<include refid="Field"></include>
+			PAYPRIMARY_ID,
+			CONTRACT_ID,
+			SHPAYTIME,
+			SHPAY,
+			REALITYPAYTIME,
+			REALITYPAY,
+			ONPAYPIC,
+			PAYDETAIL_ID
 		) values (
-	<include refid="FieldValue"></include>
+			#{PAYPRIMARY_ID},
+			#{CONTRACT_ID},
+			#{SHPAYTIME},
+			#{SHPAY},
+			#{REALITYPAYTIME},
+			#{REALITYPAY},
+			#{ONPAYPIC},
+			#{PAYDETAIL_ID}
 		)
 	</insert>
 	
@@ -62,6 +78,7 @@
 			REALITYPAYTIME = #{REALITYPAYTIME},
 			REALITYPAY = #{REALITYPAY},
 			ONPAYPIC = #{ONPAYPIC},
+			/*NUM = #{NUM},*/
 		PAYDETAIL_ID = PAYDETAIL_ID
 		where 
 		PAYDETAIL_ID = #{PAYDETAIL_ID}
@@ -94,6 +111,14 @@
 				-->
 				)
 		</if>
+	</select>
+
+	<select id="listByContractId" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		ORDER BY NUM
 	</select>
 	
 	<!-- 列表(全部) -->

@@ -62,6 +62,14 @@ public class PayDetailController extends BaseController {
 		PageData pd = new PageData();
 		Map<String, Object> json = new HashMap<String, Object>();
 		pd = this.getPageData();
+		System.out.println("SHPAY--->"+pd.getString("SHPAY"));
+		System.out.println("REALITYPAY--->"+pd.getString("REALITYPAY"));
+		if(pd.getString("SHPAY") == null || "".equals(pd.getString("SHPAY"))){
+			pd.put("SHPAY",0);
+		}
+		if(pd.getString("REALITYPAY") == null || "".equals(pd.getString("REALITYPAY"))){
+			pd.put("REALITYPAY",0);
+		}
 		pd.put("PAYDETAIL_ID", this.get32UUID());	//主键
 		paydetailService.save(pd);
 		return  json;

@@ -52,6 +52,68 @@
                             </tr>
                             </tbody>
                         </table>
+                        <c:if test="${not empty payPd}">
+                            <table id="ta${payPd.PAYPRIMARY_ID}" class="table table-border table-bg table-bordered" style="margin-top: 10px">
+                                <tbody id="tb${payPd.PAYPRIMARY_ID}">
+                                    <tr class="center">
+                                        <td style="padding-left:2px;">时间</td>
+                                        <td style="padding-left:2px;">总应付金额</td>
+                                        <td style="padding-left:2px;">付款所属时间</td>
+                                        <td style="padding-left:2px;">应付款金额</td>
+                                        <td style="padding-left:2px;">实际付款时间</td>
+                                        <td style="padding-left:2px;">实际付款金额</td>
+                                        <td style="padding-left:2px;">尚没付款金额</td>
+                                        <td style="padding-left:2px;">操作</td>
+                                    </tr>
+                                    <tr class="center" id="sum" >
+                                        <td id="td1${payPd.PAYPRIMARY_ID}" rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${payPd.STARTTIME } -- ${payPd.ENTTIME }</td>
+                                        <td id="td2${payPd.PAYPRIMARY_ID}" rowspan="${count +1}"  style="padding-left:2px;vertical-align:middle;">
+                                            <p id="pic${payPd.PAYPRIMARY_ID}">${payPd.CONTRACTPIC }</p>
+                                        </td>
+                                    </tr>
+                                    <c:if test="${not empty listPayDetail}">
+                                        <c:forEach items="${listPayDetail}" var="var" varStatus="vs">
+                                            <tr class="center" style="background-color: #FFFFCC" id="${payPd.PAYPRIMARY_ID}">
+                                                <td style="padding-left:2px;">${var.SHPAYTIME}</td>
+                                                <td style="padding-left:2px;">
+                                                    <input type="number" style="width: 150px;height: 31px" value="${var.SHPAY}"
+                                                           class="input-text"  name="SHPAY" id="SHPAY${var.PAYTABLE_ID}"
+                                                    ></td>
+                                                <td style="padding-left:2px;">
+                                                    <input type="date" style="width: 150px;height: 31px" value="${var.REALITYPAYTIME}"
+                                                           class="input-text"  name="REALITYPAYTIME" id="REATIME${var.PAYTABLE_ID}"
+                                                    >
+                                                </td>
+                                                <td style="padding-left:2px;">
+                                                    <input type="number" style="width: 150px" value="${var.REALITYPAY}"
+                                                           class="input-text"  name="REALITYPAY" id="REALITYPAY${var.PAYTABLE_ID}"
+                                                    >
+                                                </td>
+                                                <td style="padding-left:2px;">
+                                                    <%--<c:if test="${vs.last }">
+                                                        ${onPayPic}
+                                                    </c:if>
+                                                    <c:if test="${!vs.last }">
+                                                        ${var.NOPAY}
+                                                    </c:if>--%>
+                                                </td>
+                                                <td style="padding-left:2px;">
+                                                    <a class="btn btn-xs btn-success" title="保存修改"
+                                                       onclick="editPay('${pd.PAYTABLE_ID}');">
+                                                        <i class="ace-icon fa fa-check-square-o bigger-120"
+                                                           title="保存修改"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:if>
+                                </tbody>
+                            </table>
+                            <div class="col-md-12"  style="padding-bottom:2em;">
+                                <button onclick="addTr('${payPd.PAYPRIMARY_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i> 添加新的明细项</button>
+                            </div>
+                        </c:if>
+
                         <%--<table class="table table-border table-bg table-bordered" style="margin-top: 10px">
                             <tbody>
                             <tr class="center">
@@ -107,6 +169,14 @@
     $(top.hangge());//关闭加载状态
 
     function saveTable(tuuid){
+        var con = confirm("你喜欢玫瑰花么?"); //在页面上弹出对话框
+        if(con == true){
+            alert("非常喜欢!");
+        }
+        else {
+            alert("不喜欢!");
+            return;
+        }
         var PAYPRIMARY_ID = "${pd.PAYPRIMARY_ID}";
         var CONTRACT_ID = "${pd.CONTRACT_ID}";
         var CONTRACTPIC = $("#pic"+tuuid).val();
@@ -171,7 +241,7 @@
         tr += '<tr style="border: 1px;solid #dddddd;" class="center" id="'+uuid_var+'">';
         //alert(isname == null ||isname == undefined||isname =="");
         if(isname == 0){
-            tr += ' <td id="td1'+uuid_var+'"  class="center" style="padding-left:2px;">' +
+            tr += '<td id="td1'+uuid_var+'"  class="center" style="padding-left:2px;">' +
                     '<input id="st'+uuid_var+'" type="date" style="width: 150px;height: 31px" class="input-text"  name="STARTTIME" >' +
                     ' --- <input id="et'+uuid_var+'" type="date" style="width: 150px;height: 31px" class="input-text"  name="ENTTIME" >' +
                     '</td>';
@@ -202,6 +272,7 @@
     }
     
     function saveDetail(uuid_var){
+
         var PAYPRIMARY_ID = "${pd.PAYPRIMARY_ID}";
         var CONTRACT_ID =  "${pd.CONTRACT_ID}";
         var SHPAYTIME = $("#spt"+uuid_var).val();
@@ -209,6 +280,7 @@
         var REALITYPAYTIME = $("#rpt"+uuid_var).val();
         var SHPAY =$("#sp"+uuid_var).val();
         var SHPAYTIME = $("#spt"+uuid_var).val();
+
         $.ajax({
             type: "POST",
             url: '<%=basePath%>paydetail/saveDetail',
@@ -225,6 +297,7 @@
             //beforeSend: validateData,
             cache: false,
             success: function (data) {
+                alert(uuid_var);
                 //window.location.reload();
             }
         });

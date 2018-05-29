@@ -12,7 +12,9 @@ import com.fh.service.management.classify.ClassifyManager;
 import com.fh.service.management.contractpicture.ContractPictureManager;
 import com.fh.service.management.deptno.DeptnoManager;
 import com.fh.service.management.mode.ModeManager;
+import com.fh.service.management.paydetail.PayDetailManager;
 import com.fh.service.management.paymentcontract.PaymentContractManager;
+import com.fh.service.management.payprimary.PayPrimaryManager;
 import com.fh.service.management.paytable.PayTableManager;
 import com.fh.service.management.proceedscontract.ProceedsContractManager;
 import com.fh.service.management.taxitems.TaxItemsManager;
@@ -68,6 +70,12 @@ public class ContractController extends BaseController {
 
 	@Resource(name="deptnoService")
 	private DeptnoManager deptnoService;
+
+	@Resource(name="payprimaryService")
+	private PayPrimaryManager payprimaryService;
+
+	@Resource(name="paydetailService")
+	private PayDetailManager paydetailService;
 
 	// 树
 	@RequestMapping(value = "/listTree")
@@ -223,9 +231,18 @@ public class ContractController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd = contractService.findById(pd);
+		PageData payPd = payprimaryService.findByContractId(pd);
+		List<PageData> listPayDetail = paydetailService.listByContractId(pd);
 		mv.setViewName("management/contract/contract_openpay");
-		pd.put("PAYPRIMARY_ID",this.get32UUID());
+		if(payPd == null || "".equals(payPd)){
+			pd.put("PAYPRIMARY_ID",this.get32UUID());
+		}else {
+			pd.put("PAYPRIMARY_ID",payPd.getString("PAYPRIMARY_ID"));
+		}
 		mv.addObject("pd", pd);
+		mv.addObject("payPd", payPd);
+		mv.addObject("count", listPayDetail.size());
+		mv.addObject("listPayDetail", listPayDetail);
 		return mv;
 	}
 	/*@RequestMapping(value="/openPayT")
