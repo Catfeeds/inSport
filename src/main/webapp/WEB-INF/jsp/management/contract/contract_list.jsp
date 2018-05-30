@@ -149,14 +149,13 @@
                                     <th class="center" style="width:50px;">序号</th>
                                     <th class="center">合同名称</th>
                                     <th class="center">合同编号</th>
-
                                     <th class="center">签约方</th>
+                                    <th class="center">客户联系人姓名</th>
+                                    <th class="center">联系电话</th>
                                     <th class="center">项目</th>
                                     <th class="center">合同金额</th>
                                     <th class="center">押金</th>
-
                                     <th class="center">合同签订使用时间</th>
-
                                     <th class="center">签约时间</th>
                                     <th class="center">经办人</th>
 
@@ -188,6 +187,8 @@
                                                     <td class='center'>${var.CONTRACTNAME}</td>
                                                     <td class='center'>${var.CONTRACTNUM}</td>
                                                     <td class='center'>${var.CONTRACTOFNAME}</td>
+                                                    <td class='center'>${var.CLIENT}</td>
+                                                    <td class='center'>${var.TELEPHONE}</td>
                                                     <td class='center'>${var.PROJECT}</td>
                                                     <td class='center'>${var.CONTRACTPIC}</td>
                                                     <c:if test="${var.ISSTAMPDUTY == 1 }">

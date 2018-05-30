@@ -108,6 +108,11 @@
                                                             <i class="ace-icon fa fa-check-square-o bigger-120"
                                                                title="保存修改"></i>
                                                         </a>
+                                                        <a class="btn btn-xs btn-danger" title="删除"
+                                                           onclick="delPay('${var1.PAYDETAIL_ID}');">
+                                                            <i class="ace-icon fa fa-trash-o bigger-120"
+                                                               title="删除"></i>
+                                                        </a>
                                                     </td>
                                                 </tr>
 
@@ -122,88 +127,6 @@
                                 </div>
                             </c:forEach>
                         </c:if>
-                       <%-- <c:if test="${not empty payPd}">
-                            <table id="ta${payPd.PAYPRIMARY_ID}" class="table table-border table-bg table-bordered" style="margin-top: 10px">
-                                <tbody id="tb${payPd.PAYPRIMARY_ID}">
-                                    <tr class="center">
-                                        <td style="padding-left:2px;">时间</td>
-                                        <td style="padding-left:2px;">总应付金额</td>
-                                        <td style="padding-left:2px;">付款所属时间</td>
-                                        <td style="padding-left:2px;">应付款金额</td>
-                                        <td style="padding-left:2px;">实际付款时间</td>
-                                        <td style="padding-left:2px;">实际付款金额</td>
-                                        <td style="padding-left:2px;">尚没付款金额</td>
-                                        <td style="padding-left:2px;">操作</td>
-                                    </tr>
-                                    <tr class="center" id="sum" >
-                                        <td id="td1${payPd.PAYPRIMARY_ID}" rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${payPd.STARTTIME } -- ${payPd.ENTTIME }</td>
-                                        <td id="td2${payPd.PAYPRIMARY_ID}" rowspan="${count +1}"  style="padding-left:2px;vertical-align:middle;">
-                                            <p id="pic${payPd.PAYPRIMARY_ID}">${payPd.CONTRACTPIC }</p>
-                                        </td>
-                                    </tr>
-                                    <c:if test="${not empty listPayDetail}">
-                                        <c:forEach items="${listPayDetail}" var="var" varStatus="vs">
-                                            <tr class="center" style="background-color: #FFFFCC" <c:if test="${vs.last}">
-                                                id="${payPd.PAYPRIMARY_ID}" </c:if> >
-                                                <td style="padding-left:2px;">
-                                                    <input type="date" style="width: 150px;height: 31px" value="${var.SHPAYTIME}"
-                                                           class="input-text"  name="SHPAY" id="SHPAY${var.PAYDETAIL_ID}"
-                                                    ></td>
-                                                <td style="padding-left:2px;">
-                                                    <input type="number" style="width: 150px;height: 31px" value="${var.SHPAY}"
-                                                           class="input-text"  name="SHPAY" id="SHPAY${var.PAYDETAIL_ID}"
-                                                    ></td>
-                                                <td style="padding-left:2px;">
-                                                    <input type="date" style="width: 150px;height: 31px" value="${var.REALITYPAYTIME}"
-                                                           class="input-text"  name="REALITYPAYTIME" id="REATIME${var.PAYDETAIL_ID}"
-                                                    >
-                                                </td>
-                                                <td style="padding-left:2px;">
-                                                    <input type="number" style="width: 150px" value="${var.REALITYPAY}"
-                                                           class="input-text"  name="REALITYPAY" id="REALITYPAY${var.PAYDETAIL_ID}"
-                                                    >
-                                                </td>
-                                                <td style="padding-left:2px;">
-                                                    &lt;%&ndash;<c:if test="${vs.last }">
-                                                        ${onPayPic}
-                                                    </c:if>
-                                                    <c:if test="${!vs.last }">
-                                                        ${var.NOPAY}
-                                                    </c:if>&ndash;%&gt;
-                                                </td>
-                                                <td style="padding-left:2px;">
-                                                    <a class="btn btn-xs btn-success" title="保存修改"
-                                                       onclick="editPay('${var.PAYDETAIL_ID}');">
-                                                        <i class="ace-icon fa fa-check-square-o bigger-120"
-                                                           title="保存修改"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </c:if>
-                                </tbody>
-                            </table>
-                            <div class="col-md-12"  style="padding-bottom:2em;">
-                                <button onclick="addTr('${payPd.PAYPRIMARY_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i> 添加新的明细项</button>
-                            </div>
-                        </c:if>--%>
-
-                        <%--<table class="table table-border table-bg table-bordered" style="margin-top: 10px">
-                            <tbody>
-                            <tr class="center">
-                                <td style="padding-left:2px;">时间</td>
-                                <td style="padding-left:2px;">总应付金额</td>
-                                <td style="padding-left:2px;">付款所属时间</td>
-                                <td style="padding-left:2px;">应付款金额</td>
-                                <td style="padding-left:2px;">实际付款时间</td>
-                                <td style="padding-left:2px;">实际付款金额</td>
-                                <td style="padding-left:2px;">尚没付款金额</td>
-                                <td style="padding-left:2px;">操作</td>
-                            </tr>
-
-
-                            </tbody>
-                        </table>--%>
 
                     </div>
                     <div id="divTable" class="col-md-12"  style="padding-bottom:2em;">
@@ -242,6 +165,23 @@
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
 
+    function delPay(PAYDETAIL_ID){
+        $.ajax({
+            type: "POST",
+            url: '<%=basePath%>paydetail/deleteDetail',
+            async: false,
+            data: {
+                PAYDETAIL_ID : PAYDETAIL_ID
+            },
+            dataType: 'json',
+            //beforeSend: validateData,
+            cache: false,
+            success: function (data) {
+                window.location.reload();
+            }
+        });
+    }
+
     function editPay(PAYDETAIL_ID){
         var PAYDETAIL_ID = PAYDETAIL_ID;
         var SHPAYTIME = $("#spt"+PAYDETAIL_ID).val();
@@ -251,7 +191,7 @@
         //alert("应付时间:"+SHPAYTIME+",应付金额:"+SHPAY+",实际付款时间:"+REALITYPAYTIME+",实际付款金额:"+REALITYPAY+"。");
         $.ajax({
             type: "POST",
-            url: '<%=basePath%>paydetail/edit',
+            url: '<%=basePath%>paydetail/editPayDetailInfo',
             async: false,
             data: {
                 PAYDETAIL_ID : PAYDETAIL_ID,
@@ -264,6 +204,7 @@
             //beforeSend: validateData,
             cache: false,
             success: function (data) {
+                window.location.reload();
             }
         });
     }

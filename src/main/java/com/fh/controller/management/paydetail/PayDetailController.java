@@ -62,8 +62,6 @@ public class PayDetailController extends BaseController {
 		PageData pd = new PageData();
 		Map<String, Object> json = new HashMap<String, Object>();
 		pd = this.getPageData();
-		System.out.println("SHPAY--->"+pd.getString("SHPAY"));
-		System.out.println("REALITYPAY--->"+pd.getString("REALITYPAY"));
 		if(pd.getString("SHPAY") == null || "".equals(pd.getString("SHPAY"))){
 			pd.put("SHPAY",0);
 		}
@@ -72,6 +70,20 @@ public class PayDetailController extends BaseController {
 		}
 		pd.put("PAYDETAIL_ID", this.get32UUID());	//主键
 		paydetailService.save(pd);
+		return  json;
+	}
+
+	/**删除
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/deleteDetail")
+	@ResponseBody
+	public Map<String, Object> deleteDetail() throws Exception{
+		Map<String, Object> json = new HashMap<String, Object>();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		paydetailService.delete(pd);
 		return  json;
 	}
 	
@@ -106,7 +118,17 @@ public class PayDetailController extends BaseController {
 		mv.setViewName("save_result");
 		return mv;
 	}
-	
+
+	@RequestMapping(value = "/editPayDetailInfo")
+	@ResponseBody
+	public Map<String, Object> editPayDetailInfo(Page page)throws Exception {
+		Map<String, Object> json = new HashMap<String, Object>();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		paydetailService.edit(pd);
+		return  json;
+	}
+
 	/**列表
 	 * @param page
 	 * @throws Exception

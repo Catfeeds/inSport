@@ -53,7 +53,7 @@
 							<input type="hidden" name="CONTRACT_ID" id="CONTRACT_ID" value="${pd.CONTRACT_ID}"/>
 							<input type="hidden" name="ISSTAMPDUTY" id="ISSTAMPDUTY" value="${pd.ISSTAMPDUTY}"/>
 							<input type="hidden" name="ISPAY" id="ISPAY" value="${pd2.ISPAY}"/>
-							<input type="hidden" name="DEPTNAME" id="DEPTNAME" value="${pd.DEPTNO}"/>
+							<input type="hidden" name="DEPTNAME" id="DEPTNAME" value="${pd.DEPTNAME}"/>
 							<input type="hidden" name="ISENTERPROCEDURE" id="ISENTERPROCEDURE" value="${pd2.ISENTERPROCEDURE}"/>
 							<input type="hidden" name="PROCEEDSCONTRACT_ID" id="PROCEEDSCONTRACT_ID" value="${pd2.PROCEEDSCONTRACT_ID}"/>
 							<input type="hidden" name="PAYMENTCONTRACT_ID" id="PAYMENTCONTRACT_ID" value="${pd1.PAYMENTCONTRACT_ID}"/>
@@ -86,6 +86,19 @@
 									<th  ></th>
 								</tr>
 								<tr class="success">
+									<th ><label>客户联系人姓名：</label></th>
+									<th ><input type="text" style="width: 150px" value="${pd.CLIENT}"
+												class="input-text"  name="CLIENT"
+												id="CLIENT"></th>
+									<th  ><label>联系电话：</label></th>
+									<th  >
+										<input type="text" style="width: 150px" value="${pd.TELEPHONE}"
+											   class="input-text"  name="TELEPHONE"
+											   id="TELEPHONE"></th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+								<tr class="warning">
 									<th width="15%"><label>合同金额：</label></th>
 									<th width="20%">
 										<input type="number" style="width: 150px" value="${pd.CONTRACTPIC}"
@@ -104,7 +117,7 @@
 										</label>
 									</th>
 								</tr>
-								<tr class="warning">
+								<tr class="active">
 									<th  ><label>是否有押金：</label></th>
 									<th  >
 										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio" id="form-field-radio1" onclick="isSTAMPDUTY('1');" <c:if test="${pd.ISSTAMPDUTY == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>

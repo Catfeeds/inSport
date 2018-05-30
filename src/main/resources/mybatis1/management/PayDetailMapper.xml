@@ -71,8 +71,8 @@
 		update
 		<include refid="tableName"></include>
 		set 
-			PAYPRIMARY_ID = #{PAYPRIMARY_ID},
-			CONTRACT_ID = #{CONTRACT_ID},
+			<!--PAYPRIMARY_ID = #{PAYPRIMARY_ID},
+			CONTRACT_ID = #{CONTRACT_ID},-->
 			SHPAYTIME = #{SHPAYTIME},
 			SHPAY = #{SHPAY},
 			REALITYPAYTIME = #{REALITYPAYTIME},
