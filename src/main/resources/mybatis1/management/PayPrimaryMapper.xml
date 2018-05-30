@@ -29,12 +29,22 @@
 	
 	<!-- 新增-->
 	<insert id="save" parameterType="pd">
-		insert into 
+		insert into
 	<include refid="tableName"></include>
 		(
-	<include refid="Field"></include>
+		CONTRACT_ID,
+		CONTRACTPIC,
+		STARTTIME,
+		ENTTIME,
+		REMARK,
+		PAYPRIMARY_ID
 		) values (
-	<include refid="FieldValue"></include>
+		#{CONTRACT_ID},
+		#{CONTRACTPIC},
+		#{STARTTIME},
+		#{ENTTIME},
+		#{REMARK},
+		#{PAYPRIMARY_ID}
 		)
 	</insert>
 	
@@ -78,6 +88,7 @@
 		<include refid="tableName"></include>
 		where
 		CONTRACT_ID = #{CONTRACT_ID}
+		ORDER BY NUM
 	</select>
 	
 	<!-- 列表 -->

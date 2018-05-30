@@ -231,16 +231,14 @@ public class ContractController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd = contractService.findById(pd);
-		PageData payPd = payprimaryService.findByContractId(pd);
-		List<PageData> listPayDetail = paydetailService.listByContractId(pd);
+		List<PageData> listPayprimary = payprimaryService.findByContractId(pd); //主表
+		List<PageData> listPayDetail = paydetailService.listByContractId(pd);  //明细
 		mv.setViewName("management/contract/contract_openpay");
-		if(payPd == null || "".equals(payPd)){
+		if(listPayprimary == null || "".equals(listPayprimary)){
 			pd.put("PAYPRIMARY_ID",this.get32UUID());
-		}else {
-			pd.put("PAYPRIMARY_ID",payPd.getString("PAYPRIMARY_ID"));
 		}
 		mv.addObject("pd", pd);
-		mv.addObject("payPd", payPd);
+		mv.addObject("listPayprimary", listPayprimary);
 		mv.addObject("count", listPayDetail.size());
 		mv.addObject("listPayDetail", listPayDetail);
 		return mv;

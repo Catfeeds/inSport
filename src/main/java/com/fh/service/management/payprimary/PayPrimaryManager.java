@@ -48,7 +48,7 @@ public interface PayPrimaryManager{
 	 */
 	public PageData findById(PageData pd)throws Exception;
 
-	public PageData findByContractId(PageData pd)throws Exception;
+	public List<PageData> findByContractId(PageData pd)throws Exception;
 
 	/**批量删除
 	 * @param ArrayDATA_IDS

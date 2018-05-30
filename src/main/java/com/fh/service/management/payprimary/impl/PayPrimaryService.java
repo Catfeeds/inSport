@@ -70,8 +70,8 @@ public class PayPrimaryService implements PayPrimaryManager{
 		return (PageData)dao.findForObject("PayPrimaryMapper.findById", pd);
 	}
 
-	public PageData findByContractId(PageData pd)throws Exception{
-		return (PageData)dao.findForObject("PayPrimaryMapper.findByContractId", pd);
+	public List<PageData> findByContractId(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("PayPrimaryMapper.findByContractId", pd);
 	}
 
 	/**批量删除
