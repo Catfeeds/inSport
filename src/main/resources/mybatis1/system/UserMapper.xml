@@ -321,7 +321,17 @@
 	
 	<!-- 用户列表(全部) -->
 	<select id="listAll" parameterType="pd" resultType="pd" >
-		SELECT  * from sys_user u WHERE u.USER_ID not IN(SELECT d.UID FROM TB_DEPARTMENTGROUP d WHERE d.PID = #{pid})
+		SELECT  * from sys_user u
+		WHERE u.USER_ID not IN(SELECT d.UID FROM TB_DEPARTMENTGROUP d WHERE d.PID = #{pid})
+		<if test="keywords!= null and keywords != ''">
+			AND NAME like '%' + #{keywords} + '%'
+		</if>
+	</select>
+
+	<select id="listOperatorAll" parameterType="pd" resultType="pd" >
+		SELECT  * from sys_user u
+		WHERE u.USER_ID not IN(SELECT o.UID FROM TB_OPERATOR o )
+
 	</select>
 
 	<select id="listAllUser" parameterType="pd" resultType="pd" >

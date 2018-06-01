@@ -91,6 +91,10 @@ public class UserService implements UserManager{
 		return (List<PageData>) dao.findForList("UserMapper.listAll", pd);
 	}
 
+	public List<PageData> listOperatorAll(PageData pd)throws Exception{
+		return (List<PageData>) dao.findForList("UserMapper.listOperatorAll", pd);
+	}
+
 	/**用户列表(弹窗选择用)
 	 * @param page
 	 * @return

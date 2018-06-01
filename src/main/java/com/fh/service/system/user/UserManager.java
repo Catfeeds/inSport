@@ -60,6 +60,8 @@ public interface UserManager {
 	 */
 	public List<PageData> listUsers(Page page)throws Exception;
 
+	public List<PageData> listOperatorAll(PageData pd)throws Exception;
+
 	public List<PageData> listAll(PageData pd)throws Exception;
 
 	/**用户列表(弹窗选择用)

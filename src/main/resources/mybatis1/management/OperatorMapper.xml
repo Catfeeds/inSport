@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="DepartmentGroupMapper">
+<mapper namespace="OperatorMapper">
 	
 	<!--表名 -->
 	<sql id="tableName">
-		TB_DEPARTMENTGROUP
+		TB_OPERATOR
 	</sql>
 	
 	<!-- 字段 -->
 	<sql id="Field">
-		DNAME,	
+		ONAME,	
 		UID,	
-		PID,	
 		REMARK,	
-		DEPARTMENTGROUP_ID
+		OPERATOR_ID
 	</sql>
 	
 	<!-- 字段值 -->
 	<sql id="FieldValue">
-		#{DNAME},	
+		#{ONAME},	
 		#{UID},	
-		#{PID},	
 		#{REMARK},	
-		#{DEPARTMENTGROUP_ID}
+		#{OPERATOR_ID}
 	</sql>
 	
 	<!-- 新增-->
@@ -41,7 +39,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			DEPARTMENTGROUP_ID = #{DEPARTMENTGROUP_ID}
+			OPERATOR_ID = #{OPERATOR_ID}
 	</delete>
 	
 	<!-- 修改 -->
@@ -49,13 +47,12 @@
 		update
 		<include refid="tableName"></include>
 		set 
-			DNAME = #{DNAME},
-			<!--UID = #{UID},
-			PID = #{PID},-->
+			ONAME = #{ONAME},
+			UID = #{UID},
 			REMARK = #{REMARK},
-		DEPARTMENTGROUP_ID = DEPARTMENTGROUP_ID
+		OPERATOR_ID = OPERATOR_ID
 		where 
-		DEPARTMENTGROUP_ID = #{DEPARTMENTGROUP_ID}
+		OPERATOR_ID = #{OPERATOR_ID}
 	</update>
 	
 	<!-- 通过ID获取数据 -->
@@ -65,16 +62,7 @@
 		from 
 		<include refid="tableName"></include>
 		where 
-			DEPARTMENTGROUP_ID = #{DEPARTMENTGROUP_ID}
-	</select>
-
-	<select id="listTree" parameterType="pd" resultType="pd">
-		select
-		<include refid="Field"></include>
-		from
-		<include refid="tableName"></include>
-		where
-		PID = #{PID}
+			OPERATOR_ID = #{OPERATOR_ID}
 	</select>
 	
 	<!-- 列表 -->
@@ -86,26 +74,14 @@
 		where 1=1
 		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
 			and
-				PID = #{pd.keywords}
+				(
+				<!--	根据需求自己加检索条件
+					字段1 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					 or 
+					字段2 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+				-->
+				)
 		</if>
-		<if test="pd.DNAME!= null and pd.DNAME != ''"><!-- 关键词检索 -->
-			and
-			DNAME LIKE '%' + #{pd.DNAME} + '%'
-		</if>
-		<!--AND PID = #{pd.PID}-->
-	</select>
-
-	<select id="listHasuser" parameterType="page" resultType="pd">
-		select
-		<include refid="Field"></include>
-		from
-		<include refid="tableName"></include>
-		where 1=1
-		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
-			and
-			PID = #{pd.keywords}
-		</if>
-		<!--AND PID = #{pd.PID}-->
 	</select>
 	
 	<!-- 列表(全部) -->
@@ -121,7 +97,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			DEPARTMENTGROUP_ID in
+			OPERATOR_ID in
 		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
                  #{item}
 		</foreach>

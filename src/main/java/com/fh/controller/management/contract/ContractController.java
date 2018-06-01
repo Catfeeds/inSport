@@ -13,6 +13,7 @@ import com.fh.service.management.contractpicture.ContractPictureManager;
 import com.fh.service.management.deptno.DeptnoManager;
 import com.fh.service.management.mode.ModeManager;
 import com.fh.service.management.officecontract.OfficeContractManager;
+import com.fh.service.management.operator.OperatorManager;
 import com.fh.service.management.paydetail.PayDetailManager;
 import com.fh.service.management.paymentcontract.PaymentContractManager;
 import com.fh.service.management.payprimary.PayPrimaryManager;
@@ -80,6 +81,9 @@ public class ContractController extends BaseController {
 
 	@Resource(name="officecontractService")
 	private OfficeContractManager officecontractService;
+
+	@Resource(name="operatorService")
+	private OperatorManager operatorService;
 
 	// 树
 	@RequestMapping(value = "/listTree")
@@ -587,6 +591,7 @@ public class ContractController extends BaseController {
 		pd = this.getPageData();
 		pd.put("CONTRACT_ID",this.get32UUID());
 		List<PageData> listPIdClassify = classifyService.listPIdClassify(page);
+		List<PageData> listOperator = operatorService.listAll(pd);
 		List<PageData> listMode = modeService.listAll(pd);
 		List<PageData> listItems = taxitemsService.listAll(pd);
 		ArrayList<String> listmonth = new ArrayList<String>();
@@ -598,6 +603,7 @@ public class ContractController extends BaseController {
 		mv.setViewName("management/contract/contract_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("listDeptNo",listDeptNo);
+		mv.addObject("listOperator",listOperator);
 		mv.addObject("listPIdClassify", listPIdClassify);
 		mv.addObject("listmonth", listmonth);
 		mv.addObject("listItems", listItems);
@@ -619,6 +625,7 @@ public class ContractController extends BaseController {
 		page.setPd(pd);
 		List<PageData> listPIdClassify = classifyService.listPIdClassify(page);
 		List<PageData> listMode = modeService.listAll(pd);
+		List<PageData> listOperator = operatorService.listAll(pd);
 		PageData pd1 = paymentcontractService.findByContractId(pd);
 		PageData pd2 = proceedscontractService.findByContractId(pd);
 		PageData pd3 = officecontractService.findByContractId(pd);
@@ -633,6 +640,7 @@ public class ContractController extends BaseController {
 		mv.setViewName("management/contract/contract_edit");
 		mv.addObject("msg", "editInfo");
 		mv.addObject("listDeptNo",listDeptNo);
+		mv.addObject("listOperator",listOperator);
 		mv.addObject("listmonth", listmonth);
 		mv.addObject("listPIdClassify", listPIdClassify);
 		mv.addObject("listMode", listMode);

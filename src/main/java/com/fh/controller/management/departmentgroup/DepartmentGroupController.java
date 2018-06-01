@@ -106,7 +106,7 @@ public class DepartmentGroupController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		//System.out.println(pd+"-----------");
+		System.out.println(pd+"-----------");
 		pd.put("DEPARTMENTGROUP_ID",get32UUID());
 		pd.put("UID",(int)(Math.random()*1003));
 		pd.put("PID","0");
@@ -129,6 +129,7 @@ public class DepartmentGroupController extends BaseController {
 		pd = this.getPageData();
 		if(pd.getString("USERS").length()>2){
 			JSONArray jsStr = JSONArray.fromObject(pd.getString("USERS"));
+			System.out.println(pd+"------------->");
 			PageData pd1 = new PageData();
 			for (int i = 0; i < jsStr.size(); i++) {
 				JSONObject job = jsStr.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
@@ -204,6 +205,10 @@ public class DepartmentGroupController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd.put("PID","0");
+		String DNAME = pd.getString("DNAME");
+		if(null != DNAME && !"".equals(DNAME)){
+			pd.put("DNAME", DNAME.trim());
+		}
 		String keywords = pd.getString("keywords");				//关键词检索条件
 		String p_treeKey = pd.getString("p_treeKey");
 		if(null != keywords && !"".equals(keywords)){
@@ -216,7 +221,6 @@ public class DepartmentGroupController extends BaseController {
 		List<PageData>	varList = departmentgroupService.list(page);	//列出DepartmentGroup列表
 		mv.setViewName("management/departmentgroup/departmentgroup_list");
 		mv.addObject("varList", varList);
-		System.out.println(pd);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
 		return mv;
@@ -227,7 +231,12 @@ public class DepartmentGroupController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		/*List<PageData>	varList = departmentgroupService.list(page);*/
+		System.out.println(pd);
+		String keywords = pd.getString("keywords");
+		if(null != keywords && !"".equals(keywords)){
+			pd.put("keywords", keywords.trim());
+		}
+		/*List<PageData> varList = departmentgroupService.list(page);*/
 		List<PageData> listUsers = userService.listAll(pd);
 		//System.out.println(listUsers.get(0));
 		mv.setViewName("management/departmentgroup/goAddUser");
@@ -266,7 +275,19 @@ public class DepartmentGroupController extends BaseController {
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;
-	}	
+	}
+
+	@RequestMapping(value="/goEditDept")
+	public ModelAndView goEditDept()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = departmentgroupService.findById(pd);	//根据ID读取
+		mv.setViewName("management/departmentgroup/department_edit");
+		mv.addObject("msg", "edit");
+		mv.addObject("pd", pd);
+		return mv;
+	}
 	
 	 /**批量删除
 	 * @param

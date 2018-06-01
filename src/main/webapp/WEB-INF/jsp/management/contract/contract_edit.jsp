@@ -171,9 +171,18 @@
 								</tr>
 								<tr class="success">
 									<th ><label>经办人：</label></th>
-									<th ><input type="text" style="width: 150px" value="${pd.OPERATOR}"
+									<th >
+										<%--<input type="text" style="width: 150px" value="${pd.OPERATOR}"
 												class="input-text"  name="OPERATOR"
-												id="OPERATOR"></th>
+												id="OPERATOR">--%>
+										<select name="OPERATOR" id="OPERATOR" data-placeholder=""
+												style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
+											<option value="${pd.OPERATOR}" name="${pd.OPERATOR}">${pd.OPERATOR}</option>
+											<c:forEach items="${listOperator}" var="var" varStatus="vs">
+												<option id="${var.ONAME}" value="${var.ONAME}" name="${var.ONAME}">${var.ONAME}</option>
+											</c:forEach>
+										</select>
+									</th>
 									<th width="15%"><label>方式：</label></th>
 									<th width="10%">
 										<select name="MODE" id="MODE" data-placeholder=""
