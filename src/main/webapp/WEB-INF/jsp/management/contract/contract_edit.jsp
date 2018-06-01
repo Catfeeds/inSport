@@ -488,7 +488,7 @@
 												 class="input-text"  name="RECEIVABLECASH_O"
 												 id="RECEIVABLECASH_O"></th>
 									<th width="15%"><label>应付款时间（押金）：</label></th>
-									<th width="10%"><input type="date" style="width: 150px" value="${pd3.PAYTIME2_O}"
+									<th width="10%"><input type="date" style="width: 150px;height: 31px" value="${pd3.PAYTIME2_O}"
 														   class="input-text"  name="PAYTIME2_O"
 														   id="PAYTIME2_O"></th>
 									<th  ><label></label></th>
@@ -502,7 +502,7 @@
 											   id="RECEIVABLE_REALITY2_O">
 									</th>
 									<th  ><label>实际付款时间（押金）：</label></th>
-									<th  ><input type="date" style="width: 150px" value="${pd3.RECEIVABL_PAYTIME2_O}"
+									<th  ><input type="date" style="width: 150px;height: 31px" value="${pd3.RECEIVABL_PAYTIME2_O}"
 												 class="input-text"  name="RECEIVABL_PAYTIME2_O"
 												 id="RECEIVABL_PAYTIME2_O"></th>
 									<th width="15%"><label>付款方名称（押金）：</label></th>
@@ -593,7 +593,7 @@
 												 class="input-text"  name="RECEIVABLECASH1_O"
 												 id="RECEIVABLECASH1_O"></th>
 									<th width="15%"><label>应付款时间（押金）：</label></th>
-									<th width="10%"><input type="date" style="width: 150px" value="${pd3.PAYTIME3_O}"
+									<th width="10%"><input type="date" style="width: 150px;height: 31px" value="${pd3.PAYTIME3_O}"
 														   class="input-text"  name="PAYTIME3_O"
 														   id="PAYTIME3_O"></th>
 									<th  ><label></label></th>
@@ -607,7 +607,7 @@
 											   id="RECEIVABLE_REALITY3_O">
 									</th>
 									<th  ><label>实际付款时间（押金）：</label></th>
-									<th  ><input type="date" style="width: 150px" value="${pd3.RECEIVABL_PAYTIME3_O}"
+									<th  ><input type="date" style="width: 150px;height: 31px" value="${pd3.RECEIVABL_PAYTIME3_O}"
 												 class="input-text"  name="RECEIVABL_PAYTIME3_O"
 												 id="RECEIVABL_PAYTIME3_O"></th>
 									<th width="15%"><label>付款方名称（押金）：</label></th>
@@ -745,9 +745,17 @@
 		if($("#CONTRACTTYPES").find("option:selected").attr("value") == "付款合同"){
 			$("#paymentContarct").css("display","");
 			$("#proceedsContract").css("display","none");
-		}else if($("#CONTRACTTYPES").find("option:selected").attr("value") == "收款合同"){
+			$("#officeContract").css("display","none");
+		}else if($("#CONTRACTTYPES").find("option:selected").attr("value") == "收款合同"
+				&& $("#CONTRACTCLASSIFY").find("option:selected").attr("value") !="写字楼"){
 			$("#proceedsContract").css("display","");
 			$("#paymentContarct").css("display","none");
+			$("#officeContract").css("display","none");
+		}else if($("#CONTRACTTYPES").find("option:selected").attr("value") == "收款合同"
+				&& $("#CONTRACTCLASSIFY").find("option:selected").attr("value") =="写字楼"){
+			$("#proceedsContract").css("display","none");
+			$("#paymentContarct").css("display","none");
+			$("#officeContract").css("display","");
 		}
 		var FNAME = $("#CONTRACTCLASSIFY").find("option:selected").attr("name");
 		if (FNAME == "大型体育赛事场地租赁" || FNAME == "文艺演出场地租赁"){

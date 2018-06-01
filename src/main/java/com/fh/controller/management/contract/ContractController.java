@@ -177,6 +177,7 @@ public class ContractController extends BaseController {
 			pd3.put("RECEIVABLE_REALITY2_O",pd.getString("RECEIVABLE_REALITY2_O"));
 			pd3.put("RECEIVABL_PAYTIME2_O",pd.getString("RECEIVABL_PAYTIME2_O"));
 			pd3.put("PAYERNAME2_O",pd.getString("PAYERNAME2_O"));
+			pd3.put("PAYTIME2_O",pd.getString("PAYTIME2_O"));
 			pd3.put("ENTERTIME_O",pd.getString("ENTERTIME_O"));
 			pd3.put("ISENTERPROCEDURE_O",pd.getString("ISENTERPROCEDURE_O"));
 			pd3.put("WITHDRAWALTIME_O",pd.getString("WITHDRAWALTIME_O"));
@@ -200,6 +201,7 @@ public class ContractController extends BaseController {
 			pd3.put("INVOICETIME3_O",pd.getString("INVOICETIME3_O"));
 			pd3.put("OVERDUE_O",pd.getString("OVERDUE_O"));
 			pd3.put("REMARK_O",pd.getString("REMARK_O"));
+			pd3.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
 			officecontractService.save(pd3);
 		}
 		if (pd.getString("CONTRACTTYPES") == "付款合同"){
@@ -425,7 +427,7 @@ public class ContractController extends BaseController {
 		pd = this.getPageData();
 		if ("收款合同".equals(pd.getString("CONTRACTTYPES")) && "写字楼".equals(pd.getString("CONTRACTCLASSIFY"))){
 			PageData pd3 = new PageData();
-			if(pd.getString("PAYMENTCONTRACT_ID") == null || "".equals(pd.getString("PAYMENTCONTRACT_ID"))){
+			if(pd.getString("OFFICECONTRACT_ID") == null || "".equals(pd.getString("OFFICECONTRACT_ID"))){
 				pd3.put("OFFICECONTRACT_ID",get32UUID());
 			}else {
 				pd3.put("OFFICECONTRACT_ID",pd.getString("OFFICECONTRACT_ID"));
@@ -442,6 +444,7 @@ public class ContractController extends BaseController {
 			pd3.put("RECEIVABL_PAYTIME2_O",pd.getString("RECEIVABL_PAYTIME2_O"));
 			pd3.put("PAYERNAME2_O",pd.getString("PAYERNAME2_O"));
 			pd3.put("ENTERTIME_O",pd.getString("ENTERTIME_O"));
+			pd3.put("PAYTIME2_O",pd.getString("PAYTIME2_O"));
 			pd3.put("ISENTERPROCEDURE_O",pd.getString("ISENTERPROCEDURE_O"));
 			pd3.put("WITHDRAWALTIME_O",pd.getString("WITHDRAWALTIME_O"));
 			pd3.put("ISDRAWALPROCEDURE_O",pd.getString("ISDRAWALPROCEDURE_O"));
@@ -464,7 +467,8 @@ public class ContractController extends BaseController {
 			pd3.put("INVOICETIME3_O",pd.getString("INVOICETIME3_O"));
 			pd3.put("OVERDUE_O",pd.getString("OVERDUE_O"));
 			pd3.put("REMARK_O",pd.getString("REMARK_O"));
-			officecontractService.save(pd3);
+			pd3.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
+			officecontractService.edit(pd3);
 		}
 		if ("付款合同".equals(pd.getString("CONTRACTTYPES"))){
 			PageData pd1 = new PageData();
@@ -619,6 +623,7 @@ public class ContractController extends BaseController {
 		PageData pd2 = proceedscontractService.findByContractId(pd);
 		PageData pd3 = officecontractService.findByContractId(pd);
 		List<PageData> listItems = taxitemsService.listAll(pd);
+		System.out.println("pd3----------->"+pd3);
 		ArrayList<String> listmonth = new ArrayList<String>();
 		List<PageData> listDeptNo = deptnoService.listAll(pd);
 		DecimalFormat dften = new DecimalFormat("00");
