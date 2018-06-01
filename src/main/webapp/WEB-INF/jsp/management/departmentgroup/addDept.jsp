@@ -27,22 +27,22 @@
 				<div class="row">
 					<div class="col-xs-12">
 					
-					<form action="department/${msg }.do" name="Form" id="Form" method="post">
-						<input type="hidden" name="DEPARTMENT_ID" id="DEPARTMENT_ID" value="${pd.DEPARTMENT_ID}"/>
+					<form action="departmentgroup/saveDept.do" name="Form" id="Form" method="post">
+						<input type="hidden" name="DEPARTMENTGROUP_ID" id="DEPARTMENTGROUP_ID" value="${pd.DEPARTMENTGROUP_ID}"/>
 						<div id="zhongxin" style="padding-top: 13px;">
 						<table id="table_report" class="table table-striped table-bordered table-hover">
 							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">名称:</td>
-								<td><input type="text" name="DNAME" id="DNAME" value="${pd.DNAME}" maxlength="255" placeholder="这里输入名称" title="名称" style="width:98%;"/></td>
+								<td style="width:75px;text-align: right;padding-top: 13px;">部门名称:</td>
+								<td><input type="text"  name="DNAME" id="DNAME" value="${pd.DNAME}" maxlength="255" placeholder="这里输入名称" title="名称" style="width:98%;"/></td>
 							</tr>
-							<tr>
+							<%--<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">uid:</td>
 								<td><input type="text" name="UID" id="UID" value="${pd.UID}" maxlength="255" placeholder="这里输入uid" title="uid" style="width:98%;"/></td>
 							</tr>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">父id:</td>
 								<td><input type="text" name="PID" id="PID" value="${pd.PID}" maxlength="255" placeholder="这里输入父id" title="父id" style="width:98%;"/></td>
-							</tr>
+							</tr>--%>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">备注:</td>
 								<td><input type="text" name="REMARK" id="REMARK" value="${pd.REMARK}" maxlength="255" placeholder="这里输入备注" title="备注" style="width:98%;"/></td>

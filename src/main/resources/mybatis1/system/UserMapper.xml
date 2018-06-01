@@ -320,6 +320,10 @@
 	</delete>
 	
 	<!-- 用户列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd" >
+		SELECT  * from sys_user u WHERE u.USER_ID not IN(SELECT d.UID FROM TB_DEPARTMENTGROUP d WHERE d.PID = #{pid})
+	</select>
+
 	<select id="listAllUser" parameterType="pd" resultType="pd" >
 		select  u.USER_ID,
 				u.USERNAME,

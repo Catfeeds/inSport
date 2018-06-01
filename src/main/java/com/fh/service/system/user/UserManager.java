@@ -59,7 +59,9 @@ public interface UserManager {
 	 * @throws Exception
 	 */
 	public List<PageData> listUsers(Page page)throws Exception;
-	
+
+	public List<PageData> listAll(PageData pd)throws Exception;
+
 	/**用户列表(弹窗选择用)
 	 * @param page
 	 * @return

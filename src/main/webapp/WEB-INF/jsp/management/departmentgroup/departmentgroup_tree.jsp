@@ -42,7 +42,7 @@
 										<ul id="treeDemo" class="ztree"></ul></td>
 									<td style="width:88%;" valign="top"><iframe
 											name="treeFrame" id="treeFrame" frameborder="0"
-											src="<%=basePath%>department/list"
+											src="<%=basePath%>departmentgroup/listDept"
 											style="margin:0 auto;width:100%;height:100%;"></iframe></td>
 								</tr>
 							</table>
@@ -86,7 +86,7 @@
                 cache:false,  
                 type:'POST',  
                 //dataType:"String",  
-                url:'<%=basePath%>department/dateTree',
+                url:'<%=basePath%>departmentgroup/dateTree',
 				success : function(data) {
 					//alert(data) ;
 					zNodes = data;
@@ -118,12 +118,13 @@
 					//alert(treeNode.pId);
 					if(treeNode.id == 1 || treeNode.id == 2){
 						//pkeywords ="";
-						var p_treeKey = encodeURI(encodeURI(treeNode.name));
-						//alert(treeNode.name + "---------"+p_treeKey)
-						$("#treeFrame").attr("src","<%=basePath%>department/list?p_treeKey="+p_treeKey);
+						var p_treeKey = encodeURI(encodeURI(treeNode.id));
+						alert(treeNode.name + "---------"+p_treeKey)
+						$("#treeFrame").attr("src","<%=basePath%>departmentgroup/list?p_treeKey="+p_treeKey);
 					}else {
-						var treeKey = encodeURI(encodeURI(treeNode.name));
-						$("#treeFrame").attr("src","<%=basePath%>department/list?keywords="+treeKey);
+						var p_treeKey = encodeURI(encodeURI(treeNode.name));
+						var treeKey = encodeURI(encodeURI(treeNode.id));
+						$("#treeFrame").attr("src","<%=basePath%>departmentgroup/list?keywords="+treeKey+"&p_treeKey="+p_treeKey);
 					}
 
 					//$("#treeFrame").attr("src","http://www.baidu.com");

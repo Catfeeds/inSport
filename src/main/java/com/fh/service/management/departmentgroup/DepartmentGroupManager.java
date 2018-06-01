@@ -1,4 +1,4 @@
-package com.fh.service.management.department;
+package com.fh.service.management.departmentgroup;
 
 import java.util.List;
 import com.fh.entity.Page;
@@ -10,7 +10,7 @@ import com.fh.util.PageData;
  * 创建时间：2018-06-01
  * @version
  */
-public interface DepartmentManager{
+public interface DepartmentGroupManager{
 
 	/**新增
 	 * @param pd
