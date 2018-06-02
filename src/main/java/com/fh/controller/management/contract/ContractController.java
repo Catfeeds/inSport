@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 
 import com.fh.service.management.classify.ClassifyManager;
 import com.fh.service.management.contractpicture.ContractPictureManager;
+import com.fh.service.management.departmentgroup.DepartmentGroupManager;
 import com.fh.service.management.deptno.DeptnoManager;
 import com.fh.service.management.mode.ModeManager;
 import com.fh.service.management.officecontract.OfficeContractManager;
@@ -84,6 +85,9 @@ public class ContractController extends BaseController {
 
 	@Resource(name="operatorService")
 	private OperatorManager operatorService;
+
+	@Resource(name="departmentgroupService")
+	private DepartmentGroupManager departmentgroupService;
 
 	// 树
 	@RequestMapping(value = "/listTree")
@@ -290,6 +294,17 @@ public class ContractController extends BaseController {
 		mv.addObject("listPayprimary", listPayprimary);
 		mv.addObject("count", listPayDetail.size());
 		mv.addObject("listPayDetail", listPayDetail);
+		return mv;
+	}
+
+	@RequestMapping(value="/openOfficeT")
+	public ModelAndView openOfficeT(Page page) throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = contractService.findById(pd);
+		mv.setViewName("management/contract/contract_openoffice");
+		mv.addObject("pd", pd);
 		return mv;
 	}
 	/*@RequestMapping(value="/openPayT")
@@ -550,7 +565,13 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		System.out.println("前端传参-------------->"+pd);
+		System.out.println("用户："+Jurisdiction.getUsername());
+		if(pd.getString("USERNAME") == null || "".equals(pd.getString("USERNAME"))){
+			pd.put("USERNAME",Jurisdiction.getUsername());
+		}
+		PageData userpd = departmentgroupService.findUserlogin(pd);
+		List<PageData>	varList = null;
+		String DNAME = userpd.getString("DNAME");
 		String keywords = pd.getString("keywords");				//关键词检索条件
 		if(null != keywords && !"".equals(keywords)){
 			keywords = URLDecoder.decode(keywords, "UTF-8");
@@ -561,20 +582,25 @@ public class ContractController extends BaseController {
 			p_treeKey = URLDecoder.decode(p_treeKey, "UTF-8");
 			pd.put("p_treeKey", p_treeKey.trim());
 		}
-		/*String DEPTNAME = pd.getString("DEPTNAME");				//关键词检索条件
-		if(null != DEPTNAME && !"".equals(DEPTNAME)){
-			pd.put("DEPTNAME", DEPTNAME.trim());
-		}
-		String YEAR = pd.getString("YEAR");				//关键词检索条件
-		if(null != YEAR && !"".equals(YEAR)){
-			pd.put("YEAR", YEAR.trim());
-		}*/
 		page.setPd(pd);
-		List<PageData>	varList = contractService.list(page);	//列出Contract列表
-		List<PageData> listDept = deptnoService.listAll(pd);
+		if("总经办".equals(DNAME) || "财务部".equals(DNAME) || "综管部".equals(DNAME) ){
+			/*String DEPTNAME = pd.getString("DEPTNAME");				//关键词检索条件
+			if(null != DEPTNAME && !"".equals(DEPTNAME)){
+				pd.put("DEPTNAME", DEPTNAME.trim());
+			}
+			String YEAR = pd.getString("YEAR");				//关键词检索条件
+			if(null != YEAR && !"".equals(YEAR)){
+				pd.put("YEAR", YEAR.trim());
+			}*/
+			varList = contractService.list(page);	//列出Contract列表
+			List<PageData> listDept = deptnoService.listAll(pd);
+			mv.addObject("listDept", listDept);
+			mv.addObject("isDept", 1);
+		}else {
+			varList = contractService.datalistPageByDept(page);	//列出Contract列表
+		}
 		mv.setViewName("management/contract/contract_list");
 		mv.addObject("varList", varList);
-		mv.addObject("listDept", listDept);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
 		return mv;

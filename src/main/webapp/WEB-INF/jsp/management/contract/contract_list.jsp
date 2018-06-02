@@ -80,19 +80,22 @@
                                                    id="nav-search-input" autocomplete="off" name="CONTRACTNUM"
                                                    value="${pd.CONTRACTNUM }" placeholder="这里输入关键词"/>
 											<i class="ace-icon fa fa-search nav-search-icon"></i>
+                                            <input type="hidden" value="${pd.USERNAME}" name="USERNAME" id="USERNAME" />
 										</span>
                                         </div>
                                     </td>
-                                    <td style="padding-left:12px;">
-                                        <label style="margin-top: 5px">部门:</label>
-                                        <select name="DEPTNAME" id="DEPTNAME" data-placeholder=""
-                                                style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
-                                            <option value="${pd.DEPTNAME}" name="${pd.DEPTNAME}">${pd.DEPTNAME}</option>
-                                            <c:forEach items="${listDept}" var="var" varStatus="vs">
-                                                <option  value="${var.DEPTNAME}" >${var.DEPTNAME}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </td>
+                                    <c:if test="${isDept  == 1}">
+                                        <td style="padding-left:12px;">
+                                            <label style="margin-top: 5px">部门:</label>
+                                            <select name="DEPTNAME" id="DEPTNAME" data-placeholder=""
+                                                    style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
+                                                <option value="${pd.DEPTNAME}" name="${pd.DEPTNAME}">${pd.DEPTNAME}</option>
+                                                <c:forEach items="${listDept}" var="var" varStatus="vs">
+                                                    <option  value="${var.DEPTNAME}" >${var.DEPTNAME}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </td>
+                                    </c:if>
                                     <td style="padding-left:12px;">
                                         <label style="margin-top: 5px">年份:</label>
                                         <select name="YEAR" id="YEAR" data-placeholder=""
@@ -109,19 +112,6 @@
                                                id="picEnd" autocomplete="off" name="picEnd"
                                                value="${pd.picEnd }" />
                                     </td>
-                                   <%-- <td style="padding-left:2px;"><input class="span10 date-picker" name="lastEnd" name="lastEnd"
-                                                                         value="" type="text" data-date-format="yyyy-mm-dd"
-                                                                         readonly="readonly" style="width:88px;"
-                                                                         placeholder="结束日期" title="结束日期"/></td>
-                                    <td style="vertical-align:top;padding-left:2px;">
-                                        <select class="chosen-select form-control" name="name" id="id" data-placeholder="请选择"
-                                                style="vertical-align:top;width: 120px;">
-                                            <option value=""></option>
-                                            <option value="">全部</option>
-                                            <option value="">1</option>
-                                            <option value="">2</option>
-                                        </select>
-                                    </td>--%>
                                     <c:if test="${QX.cha == 1 }">
                                         <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs"
                                                                                            onclick="tosearch();" title="检索"><i
@@ -222,6 +212,12 @@
                                                                     <i class="ace-icon fa fa-calendar bigger-120" title="打开付款表格"></i>
                                                                 </a>
                                                             </c:if>
+                                                            <c:if test="${var.CONTRACTCLASSIFY == '写字楼' }">
+                                                                <a class="btn btn-xs btn-success" title="打开写字楼表格"
+                                                                   onclick="openOfficeT('${var.CONTRACT_ID}')">
+                                                                    <i class="ace-icon fa fa-calendar bigger-120" title="打开写字楼表格"></i>
+                                                                </a>
+                                                            </c:if>
                                                             <a class="btn btn-xs btn-info" title="预览图片"
                                                                onclick="showPic('${var.CONTRACT_ID}')">
                                                                 <i class="ace-icon fa fa-laptop bigger-120" title="预览图片"></i>
@@ -252,6 +248,12 @@
                                                                         <a class="btn btn-xs btn-success" title="打开付款表格"
                                                                            onclick="openPayT('${var.CONTRACT_ID}')">
                                                                             <i class="ace-icon fa fa-calendar bigger-120" title="打开付款表格"></i>
+                                                                        </a>
+                                                                    </c:if>
+                                                                    <c:if test="${var.CONTRACTCLASSIFY == '写字楼' }">
+                                                                        <a class="btn btn-xs btn-success" title="打开写字楼表格"
+                                                                           onclick="openOfficeT('${var.CONTRACT_ID}')">
+                                                                            <i class="ace-icon fa fa-calendar bigger-120" title="打开写字楼表格"></i>
                                                                         </a>
                                                                     </c:if>
                                                                     <a class="btn btn-xs btn-info" title="预览图片"
@@ -501,29 +503,7 @@
             url: '<%=basePath%>contractpicture/listOneContractPic',
             data: {CONTRACT_ID: CONTRACT_ID},
             dataType: 'json',
-            //beforeSend: validateData,
             cache: false,
-            /*success: function (data) {
-             $("#imgList").html('');
-             var count = 0;	//总数
-             var html = '';
-             var res = data.listOnePic;
-             for (var i = 0; i < res.length; i++) {
-             html += '<li>' +
-             '<a href="<%=basePath%>' + res[i].URL_PIC + '" data-rel="colorbox" class="cboxElement">' +
-             '<img width="160" height="160" alt="200x200" src="<%=basePath%>' + res[i].URL_PIC + '" />' +
-             '<div class="text">' +
-             '<div class="inner">点击预览</div>' +
-             '</div>' +
-             '</a>' +
-             '<div style="width: 100%;height: 25px" align="center" >' +
-             '<button  onclick="delPic(' + "'" + res[i].CONTRACTPICTURE_ID + "','" + CONTRACT_ID + "'" + ')" style="width: 45px;height: 20px;margin-top:2px" >删除</button>' +
-             '</div>' +
-             '</li>'
-             }
-             $("#imgList").append(html);
-
-             }*/
             success: function (data) {
                 $("#imgList").html('');
                 var count = 0;	//总数
@@ -535,7 +515,10 @@
                             ' data-caption="Paraglider flying over Aurlandfjord, Norway by framedbythomas" href="<%=basePath%>' + res[i].URL_PIC + '">' +
                             '<img width="160;" height="160";   src="<%=basePath%>' + res[i].URL_PIC + '" alt="">' +
                             '</a>' +
-                            '</li>'
+                            '<div style="width: 100%;height: 25px" align="center" >' +
+                            '<button  onclick="delPic('+"'"+res[i].CONTRACTPICTURE_ID+"','"+CONTRACT_ID+"'"+')" style="width: 45px;height: 20px;margin-top:2px" >删除</button>' +
+                            '</div>'+
+                            '</li>'+ ''
                 }
                 $("#imgList").append(html);
 
@@ -559,6 +542,24 @@
                 });
             }
         });
+    }
+
+    function openOfficeT(CONTRACT_ID){
+        top.jzts();
+        var diag = new top.Dialog();
+        diag.Drag = true;
+        diag.Title = "写字楼收款表格";
+        diag.URL = '<%=basePath%>contract/openOfficeT?CONTRACT_ID='+CONTRACT_ID;
+        diag.Width = window.innerWidth * 0.9;
+        diag.Height = window.innerHeight;
+        diag.Modal = true;				//有无遮罩窗口
+        diag.ShowMaxButton = true;	//最大化按钮
+        diag.ShowMinButton = true;		//最小化按钮
+        diag.CancelEvent = function () { //关闭事件
+            //tosearch();
+            diag.close();
+        };
+        diag.show();
     }
 
     function openPayT(CONTRACT_ID){

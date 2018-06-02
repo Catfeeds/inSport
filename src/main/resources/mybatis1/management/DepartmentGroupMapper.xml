@@ -95,6 +95,11 @@
 		<!--AND PID = #{pd.PID}-->
 	</select>
 
+	<select id="findUserlogin" parameterType="pd" resultType="pd">
+		SELECT DNAME from TB_DEPARTMENTGROUP WHERE UID =
+		(SELECT PID from TB_DEPARTMENTGROUP WHERE DNAME = ( SELECT NAME  from sys_user WHERE USERNAME = #{USERNAME} ))
+	</select>
+
 	<select id="listHasuser" parameterType="page" resultType="pd">
 		select
 		<include refid="Field"></include>

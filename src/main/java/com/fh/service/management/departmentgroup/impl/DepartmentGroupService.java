@@ -74,7 +74,11 @@ public class DepartmentGroupService implements DepartmentGroupManager{
 	public PageData findById(PageData pd)throws Exception{
 		return (PageData)dao.findForObject("DepartmentGroupMapper.findById", pd);
 	}
-	
+
+	public PageData findUserlogin(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("DepartmentGroupMapper.findUserlogin", pd);
+	}
+
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception

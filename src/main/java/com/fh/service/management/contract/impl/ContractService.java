@@ -52,7 +52,11 @@ public class ContractService implements ContractManager{
 	public List<PageData> list(Page page)throws Exception{
 		return (List<PageData>)dao.findForList("ContractMapper.datalistPage", page);
 	}
-	
+
+	public List<PageData> datalistPageByDept(Page page)throws Exception{
+		return (List<PageData>)dao.findForList("ContractMapper.datalistPageByDept", page);
+	}
+
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception

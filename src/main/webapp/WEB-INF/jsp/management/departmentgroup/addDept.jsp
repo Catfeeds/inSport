@@ -112,7 +112,7 @@
 				$("#PID").focus();
 			return false;
 			}
-			if($("#REMARK").val()==""){
+			/*if($("#REMARK").val()==""){
 				$("#REMARK").tips({
 					side:3,
 		            msg:'请输入备注',
@@ -121,7 +121,7 @@
 		        });
 				$("#REMARK").focus();
 			return false;
-			}
+			}*/
 			$("#Form").submit();
 			$("#zhongxin").hide();
 			$("#zhongxin2").show();
