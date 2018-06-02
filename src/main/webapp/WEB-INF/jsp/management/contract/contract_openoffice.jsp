@@ -52,64 +52,79 @@
                             </tr>
                             </tbody>
                         </table>
-                        <c:if test="${not empty listPayprimary}">
-                            <c:forEach items="${listPayprimary}" var="var" varStatus="vs">
-                                <table id="ta${var.PAYPRIMARY_ID}" class="table table-border table-bg table-bordered" style="margin-top: 10px">
-                                    <tbody id="tb${var.PAYPRIMARY_ID}">
+                        <c:if test="${not empty listOfficeprimary}">
+                            <c:forEach items="${listOfficeprimary}" var="var" varStatus="vs">
+                                <table id="ta${var.OFFICEPRIMARY_ID}" class="table table-border table-bg table-bordered" style="margin-top: 10px">
+                                    <tbody id="tb${var.OFFICEPRIMARY_ID}">
                                     <tr class="center">
                                         <td style="padding-left:2px;">时间</td>
                                         <%--<td style="padding-left:2px;">总应付金额</td>--%>
-                                        <td style="padding-left:2px;">付款所属时间</td>
-                                        <td style="padding-left:2px;">应付款金额</td>
-                                        <td style="padding-left:2px;">实际付款时间</td>
-                                        <td style="padding-left:2px;">实际付款金额</td>
-                                        <td style="padding-left:2px;">尚没付款金额</td>
+                                        <td style="padding-left:2px;">租金金额</td>
+                                        <td style="padding-left:2px;">水电费</td>
+                                        <td style="padding-left:2px;">滞纳金</td>
+                                        <td style="padding-left:2px;">应收款金额</td>
+                                        <td style="padding-left:2px;">应收款时间</td>
+                                        <td style="padding-left:2px;">实际收款金额</td>
+                                        <td style="padding-left:2px;">实际收款时间</td>
+                                        <td style="padding-left:2px;">未收款金额</td>
                                         <td style="padding-left:2px;">操作</td>
                                     </tr>
                                     <tr class="center" id="sum" >
-                                        <td id="td1${var.PAYPRIMARY_ID}" rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${var.STARTTIME } -- ${var.ENTTIME }</td>
-                                        <%--<td id="td2${var.PAYPRIMARY_ID}" rowspan="${count +1}"  style="padding-left:2px;vertical-align:middle;">
-                                            <p id="pic${var.PAYPRIMARY_ID}">${var.CONTRACTPIC }</p>
+                                        <td id="td1${var.OFFICEPRIMARY_ID}" rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${var.STARTTIME } -- ${var.ENTTIME }</td>
+                                        <%--<td id="td2${var.OFFICEPRIMARY_ID}" rowspan="${count +1}"  style="padding-left:2px;vertical-align:middle;">
+                                            <p id="pic${var.OFFICEPRIMARY_ID}">${var.CONTRACTPIC }</p>
                                         </td>--%>
                                     </tr>
-                                    <c:if test="${not empty listPayDetail}">
-                                        <c:forEach items="${listPayDetail}" var="var1" varStatus="vs1">
-                                            <c:if test="${var1.PAYPRIMARY_ID == var.PAYPRIMARY_ID}">
+                                    <c:if test="${not empty listOfficeDetail}">
+                                        <c:forEach items="${listOfficeDetail}" var="var1" varStatus="vs1">
+                                            <c:if test="${var1.OFFICEPRIMARY_ID == var.OFFICEPRIMARY_ID}">
                                                 <tr class="center" style="background-color: #FFFFCC" >
                                                     <td style="padding-left:2px;">
-                                                        <input type="date" style="width: 150px;height: 31px" value="${var1.SHPAYTIME}"
-                                                               class="input-text"  name="SHPAYTIME" id="spt${var1.PAYDETAIL_ID}"
+                                                        <input type="number" style="width: 120px;height: 31px" value="${var1.RENT}"
+                                                               class="input-text"  name="RENT" id="spt${var1.OFFICEDETAIL_ID}"
                                                         ></td>
                                                     <td style="padding-left:2px;">
-                                                        <input type="number" style="width: 150px;height: 31px" value="${var1.SHPAY}"
-                                                               class="input-text"  name="SHPAY" id="sp${var1.PAYDETAIL_ID}"
+                                                        <input type="number" style="width: 120px;height: 31px" value="${var1.UTILITIES}"
+                                                               class="input-text"  name="UTILITIES" id="sp${var1.OFFICEDETAIL_ID}"
                                                         ></td>
                                                     <td style="padding-left:2px;">
-                                                        <input type="date" style="width: 150px;height: 31px" value="${var1.REALITYPAYTIME}"
-                                                               class="input-text"  name="REALITYPAYTIME" id="rpt${var1.PAYDETAIL_ID}"
+                                                        <input type="number" style="width: 120px;height: 31px" value="${var1.OVERDUE}"
+                                                               class="input-text"  name="OVERDUE" id="rpt${var1.OFFICEDETAIL_ID}"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
-                                                        <input type="number" style="width: 150px" value="${var1.REALITYPAY}"
-                                                               class="input-text"  name="REALITYPAY" id="rp${var1.PAYDETAIL_ID}"
+                                                        <input type="number" style="width: 120px;" value="${var1.RECEIVABLE}"
+                                                               class="input-text"  name="RECEIVABLE" id="rp${var1.OFFICEDETAIL_ID}"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
-                                                        <%--<c:if test="${vs.last }">
-                                                        ${onPayPic}
-                                                    </c:if>
-                                                        <c:if test="${!vs.last }">
-                                                            ${var.NOPAY}
-                                                        </c:if>--%>
+                                                        <input type="date" style="width: 120px;height: 31px;" value="${var1.PAYTIME}"
+                                                               class="input-text"  name="PAYTIME" id="rp${var1.OFFICEDETAIL_ID}"
+                                                    >
+                                                    </td>
+                                                    <td style="padding-left:2px;">
+                                                        <input type="number" style="width: 120px" value="${var1.RECEIVABLE_REALITY}"
+                                                               class="input-text"  name="RECEIVABLE_REALITY" id="rp${var1.OFFICEDETAIL_ID}"
+                                                        >
+                                                    </td>
+                                                    <td style="padding-left:2px;">
+                                                        <input type="date" style="width: 120px;height: 31px;" value="${var1.RECEIVABL_PAYTIME}"
+                                                               class="input-text"  name="RECEIVABL_PAYTIME" id="rp${var1.OFFICEDETAIL_ID}"
+                                                        >
+                                                    </td>
+                                                    <td style="padding-left:2px;">
+                                                        <input type="number" style="width: 120px" value="${var1.UNCOLLECTED}"
+                                                               class="input-text"  name="UNCOLLECTED" id="rp${var1.OFFICEDETAIL_ID}"
+                                                        >
                                                     </td>
                                                     <td style="padding-left:2px;">
                                                         <a class="btn btn-xs btn-success" title="保存修改"
-                                                           onclick="editPay('${var1.PAYDETAIL_ID}');">
+                                                           onclick="editPay('${var1.OFFICEDETAIL_ID}');">
                                                             <i class="ace-icon fa fa-check-square-o bigger-120"
                                                                title="保存修改"></i>
                                                         </a>
                                                         <a class="btn btn-xs btn-danger" title="删除"
-                                                           onclick="delPay('${var1.PAYDETAIL_ID}');">
+                                                           onclick="delPay('${var1.OFFICEDETAIL_ID}');">
                                                             <i class="ace-icon fa fa-trash-o bigger-120"
                                                                title="删除"></i>
                                                         </a>
@@ -119,11 +134,11 @@
                                             </c:if>
                                         </c:forEach>
                                     </c:if>
-                                    <tr id="${var.PAYPRIMARY_ID}"></tr>
+                                    <tr id="${var.OFFICEPRIMARY_ID}"></tr>
                                     </tbody>
                                 </table>
                                 <div class="col-md-12"  style="padding-bottom:2em;">
-                                    <button onclick="addTr('${var.PAYPRIMARY_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i> 添加新的明细项</button>
+                                    <button onclick="addTr('${var.OFFICEPRIMARY_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i> 添加新的明细项</button>
                                 </div>
                             </c:forEach>
                         </c:if>
@@ -165,13 +180,13 @@
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
 
-    function delPay(PAYDETAIL_ID){
+    function delPay(OFFICEDETAIL_ID){
         $.ajax({
             type: "POST",
             url: '<%=basePath%>paydetail/deleteDetail',
             async: false,
             data: {
-                PAYDETAIL_ID : PAYDETAIL_ID
+                OFFICEDETAIL_ID : OFFICEDETAIL_ID
             },
             dataType: 'json',
             //beforeSend: validateData,
@@ -182,19 +197,19 @@
         });
     }
 
-    function editPay(PAYDETAIL_ID){
-        var PAYDETAIL_ID = PAYDETAIL_ID;
-        var SHPAYTIME = $("#spt"+PAYDETAIL_ID).val();
-        var SHPAY = $("#sp"+PAYDETAIL_ID).val();
-        var REALITYPAYTIME = $("#rpt"+PAYDETAIL_ID).val();
-        var REALITYPAY = $("#rp"+PAYDETAIL_ID).val();
+    function editPay(OFFICEDETAIL_ID){
+        var OFFICEDETAIL_ID = OFFICEDETAIL_ID;
+        var SHPAYTIME = $("#spt"+OFFICEDETAIL_ID).val();
+        var SHPAY = $("#sp"+OFFICEDETAIL_ID).val();
+        var REALITYPAYTIME = $("#rpt"+OFFICEDETAIL_ID).val();
+        var REALITYPAY = $("#rp"+OFFICEDETAIL_ID).val();
         //alert("应付时间:"+SHPAYTIME+",应付金额:"+SHPAY+",实际付款时间:"+REALITYPAYTIME+",实际付款金额:"+REALITYPAY+"。");
         $.ajax({
             type: "POST",
             url: '<%=basePath%>paydetail/editPayDetailInfo',
             async: false,
             data: {
-                PAYDETAIL_ID : PAYDETAIL_ID,
+                OFFICEDETAIL_ID : OFFICEDETAIL_ID,
                 SHPAYTIME : SHPAYTIME,
                 SHPAY : SHPAY,
                 REALITYPAYTIME : REALITYPAYTIME,
@@ -209,7 +224,7 @@
         });
     }
 
-    var newPAYPRIMARY_ID = null;
+    var newOFFICEPRIMARY_ID = null;
 
     function saveTable(tuuid){
         var con = confirm("是否保存时间和总金额?"); //在页面上弹出对话框
@@ -217,26 +232,24 @@
             //alert("是");
         }
         else {
-            alert("否");
+            //alert("否");
             return;
         }
-        if(newPAYPRIMARY_ID == null || newPAYPRIMARY_ID == ""){
-            var PAYPRIMARY_ID = "${pd.PAYPRIMARY_ID}";
+       if(newOFFICEPRIMARY_ID == null || newOFFICEPRIMARY_ID == ""){
+            var OFFICEPRIMARY_ID = "${pd.OFFICEPRIMARY_ID}";
         }else {
-            var PAYPRIMARY_ID = newPAYPRIMARY_ID;
+            var OFFICEPRIMARY_ID = newOFFICEPRIMARY_ID;
         }
         var CONTRACT_ID = "${pd.CONTRACT_ID}";
-        var CONTRACTPIC = $("#pic"+tuuid).val();
         var STARTTIME = $("#st"+tuuid).val();
         var ENTTIME = $("#et"+tuuid).val();
         $.ajax({
             type: "POST",
-            url: '<%=basePath%>payprimary/saveTable',
+            url: '<%=basePath%>officeprimary/saveTable',
             async: false,
             data: {
-                PAYPRIMARY_ID : PAYPRIMARY_ID,
+                OFFICEPRIMARY_ID : OFFICEPRIMARY_ID,
                 CONTRACT_ID : CONTRACT_ID,
-                CONTRACTPIC : CONTRACTPIC,
                 STARTTIME : STARTTIME,
                 ENTTIME : ENTTIME
             },
@@ -261,16 +274,22 @@
             cache: false,
             success: function (data) {
                 uuid = data.uuid;
-                newPAYPRIMARY_ID = data.uuid;
+                newOFFICEPRIMARY_ID = data.uuid;
             }
         });
         var table = "";
         table += '<table id="ta'+uuid+'" class="table table-border table-bg table-bordered" style="margin-top: 10px">';
         table += '<tbody id="tb'+uuid+'" ><tr class="center" >';
         table += '<td style="padding-left:2px;">时间</td>';
-        table += '<td style="padding-left:2px;">付款所属时间</td><td style="padding-left:2px;">应付款金额</td>';
-        table += '<td style="padding-left:2px;">实际付款时间</td><td style="padding-left:2px;">实际付款金额</td>';
-        table += '<td style="padding-left:2px;">尚没付款金额</td><td style="padding-left:2px;">操作</td>';
+        table += '<td style="padding-left:2px;">租金金额</td>';
+        table += '<td style="padding-left:2px;">水电费</td>';
+        table += '<td style="padding-left:2px;">滞纳金</td>';
+        table += '<td style="padding-left:2px;">应收款金额</td>';
+        table += '<td style="padding-left:2px;">应收款时间</td>';
+        table += '<td style="padding-left:2px;">实际收款金额</td>';
+        table += '<td style="padding-left:2px;">实际收款时间</td>';
+        table += '<td style="padding-left:2px;">未收款金额</td>';
+        table += '<td style="padding-left:2px;">操作</td>';
         table += '</tr></tbody></table>';
         table += '<div class="col-md-12"  style="padding-bottom:2em;">';
         table += '<button onclick="addTr(\''+uuid+'\')" class="btn btn-info" id="add"><i class="fa fa-plus"></i> 添加新的明细项</button>';
@@ -281,37 +300,50 @@
     }
     
     function addTr(uuid_var) {
-        var isname = $("#pic"+uuid_var).length;
+        var isname = $("#td1"+uuid_var).length;
         var count =$("#ta"+uuid_var+" tr").length;
+       // alert(count);
         $("#td1"+uuid_var).attr("rowspan",count);
-        $("#td2"+uuid_var).attr("rowspan",count);
+        //$("#td2"+uuid_var).attr("rowspan",count);
         var tr = '';
-        tr += '<tr style="border: 1px;solid #dddddd;" class="center" id="'+uuid_var+'">';
+        tr += '<tr style="border: 1px;solid #dddddd;" class="center">';
         //alert(isname == null ||isname == undefined||isname =="");
         if(isname == 0){
             tr += '<td id="td1'+uuid_var+'"  class="center" style="padding-left:2px;">' +
-                    '<input id="st'+uuid_var+'" type="date" style="width: 150px;height: 31px" class="input-text"  name="STARTTIME" >' +
-                    ' --- <input id="et'+uuid_var+'" type="date" style="width: 150px;height: 31px" class="input-text"  name="ENTTIME" >' +
+                    '<input id="st'+uuid_var+'" type="date" style="width: 110px;height: 31px" class="input-text"  name="STARTTIME" >' +
+                    ' --- <input onchange="saveTable(\''+uuid_var+'\')" id="et'+uuid_var+'" type="date" style="width: 110px;height: 31px" class="input-text"  name="ENTTIME" >' +
                     '</td>';
            /* tr += '<td id="td2'+uuid_var+'"  class="center" style="padding-left:2px;">' +
-                    '<input onchange="saveTable(\''+uuid_var+'\')" id="pic'+uuid_var+'" type="number" style="width: 150px" ' +
+                    '<input onchange="saveTable(\''+uuid_var+'\')" id="pic'+uuid_var+'" type="number" style="width: 110px" ' +
                     'class="input-text"  name="CONTRACTPIC" ></td>';*/
         }
-        tr += '<td style="padding-left:2px;"><input id="spt'+uuid_var+'" type="date" style="width: 150px;height: 31px" '+
-              'class="input-text"  name="SHPAYTIME" id="" ></td>'
-        tr += '<td style="padding-left:2px;"><input id="sp'+uuid_var+'" type="number" style="width: 150px;height: 31px" ' +
-                ' class="input-text"  name="SHPAY" ></td>';
+        tr += '<td style="padding-left:2px;"><input id="re'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
+                'class="input-text"  name="RENT"  ></td>';
+        tr += '<td style="padding-left:2px;"><input id="ut'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
+                'class="input-text"  name="UTILITIES" ></td>';
+        tr += '<td style="padding-left:2px;"><input id="od'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
+                'class="input-text"  name="OVERDUE"  ></td>';
+
+        tr += '<td style="padding-left:2px;"><input id="r'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
+                'class="input-text"  name="RECEIVABLE" ></td>'
+        tr += '<td style="padding-left:2px;"><input id="pt'+uuid_var+'" type="date" style="width: 110px;height: 31px" ' +
+                ' class="input-text"  name="PAYTIME" ></td>';
+        tr += '<td style="padding-left:2px;"><input id="rr'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
+                'class="input-text"  name="RECEIVABLE_REALITY"  ></td>'
+        tr += '<td style="padding-left:2px;"><input id="rpt'+uuid_var+'" type="date" style="width: 110px;height: 31px" '+
+                'class="input-text"  name="RECEIVABL_PAYTIME" id="" ></td>';
+
         tr += ' <td style="padding-left:2px;">' +
-                '<input id="rpt'+uuid_var+'" type="date" style="width: 150px;height: 31px" class="input-text"  name="REALITYPAYTIME" ></td>';
-        tr += '<td style="padding-left:2px;">' +
-                '<input id="rp'+uuid_var+'" type="number" style="width: 150px" class="input-text"  name="REALITYPAY" ></td>';
-        tr += '<td style="padding-left:2px;"></td>';
+                '<input id="uc'+uuid_var+'" type="number" style="width: 110px;height: 31px" class="input-text"  name="UNCOLLECTED" ></td>';
         tr += '<td style="padding-left:2px;"> ' +
                 '<a class="btn btn-xs btn-success" title="保存" onclick="saveDetail(\''+uuid_var+'\');">' +
                 '<i class="ace-icon fa fa-check-square-o bigger-120" title="保存"></i>' +
                 '</a> ' +
                 '</td>';
         tr += '</tr>';
+        if(isname == 0){
+            tr += '<tr id="'+uuid_var+'"></tr>';
+        }
         if(isname == 0) {
             $("#tb" + uuid_var).after(tr);
         }else {
@@ -321,26 +353,30 @@
     }
     
     function saveDetail(uuid_var){
-
-        var PAYPRIMARY_ID = uuid_var;
+        var OFFICEPRIMARY_ID = uuid_var;
         var CONTRACT_ID =  "${pd.CONTRACT_ID}";
-        var SHPAYTIME = $("#spt"+uuid_var).val();
-        var REALITYPAY = $("#rp"+uuid_var).val();
-        var REALITYPAYTIME = $("#rpt"+uuid_var).val();
-        var SHPAY =$("#sp"+uuid_var).val();
-        var SHPAYTIME = $("#spt"+uuid_var).val();
-
+        var RENT = $("#re"+uuid_var).val();
+        var UTILITIES = $("#ut"+uuid_var).val();
+        var OVERDUE = $("#od"+uuid_var).val();
+        var RECEIVABLE =$("#r"+uuid_var).val();
+        var PAYTIME = $("#pt"+uuid_var).val();
+        var RECEIVABLE_REALITY = $("#rr"+uuid_var).val();
+        var RECEIVABL_PAYTIME = $("#rpt"+uuid_var).val();
+        var UNCOLLECTED = $("#uc"+uuid_var).val();
         $.ajax({
             type: "POST",
-            url: '<%=basePath%>paydetail/saveDetail',
+            url: '<%=basePath%>officedetail/saveDetail',
             data: {
                 CONTRACT_ID: CONTRACT_ID,
-                PAYPRIMARY_ID: PAYPRIMARY_ID,
-                REALITYPAY: REALITYPAY,
-                SHPAYTIME:SHPAYTIME,
-                REALITYPAYTIME:REALITYPAYTIME,
-                SHPAY:SHPAY,
-                SHPAYTIME:SHPAYTIME
+                OFFICEPRIMARY_ID: OFFICEPRIMARY_ID,
+                RENT: RENT,
+                UTILITIES:UTILITIES,
+                OVERDUE:OVERDUE,
+                RECEIVABLE:RECEIVABLE,
+                RECEIVABLE_REALITY:RECEIVABLE_REALITY,
+                RECEIVABL_PAYTIME:RECEIVABL_PAYTIME,
+                UNCOLLECTED:UNCOLLECTED,
+                PAYTIME:PAYTIME
                 },
             dataType: 'json',
             //beforeSend: validateData,

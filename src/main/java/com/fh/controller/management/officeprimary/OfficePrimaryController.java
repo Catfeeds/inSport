@@ -1,8 +1,7 @@
-package com.fh.controller.management.payprimary;
+package com.fh.controller.management.officeprimary;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,20 +23,20 @@ import com.fh.util.ObjectExcelView;
 import com.fh.util.PageData;
 import com.fh.util.Jurisdiction;
 import com.fh.util.Tools;
-import com.fh.service.management.payprimary.PayPrimaryManager;
+import com.fh.service.management.officeprimary.OfficePrimaryManager;
 
 /** 
- * 说明：付款合同主表
+ * 说明：写字楼合同主表
  * 创建人：FH Q313596790
- * 创建时间：2018-05-28
+ * 创建时间：2018-06-02
  */
 @Controller
-@RequestMapping(value="/payprimary")
-public class PayPrimaryController extends BaseController {
+@RequestMapping(value="/officeprimary")
+public class OfficePrimaryController extends BaseController {
 	
-	String menuUrl = "payprimary/list.do"; //菜单地址(权限用)
-	@Resource(name="payprimaryService")
-	private PayPrimaryManager payprimaryService;
+	String menuUrl = "officeprimary/list.do"; //菜单地址(权限用)
+	@Resource(name="officeprimaryService")
+	private OfficePrimaryManager officeprimaryService;
 	
 	/**保存
 	 * @param
@@ -45,41 +44,40 @@ public class PayPrimaryController extends BaseController {
 	 */
 	@RequestMapping(value="/save")
 	public ModelAndView save() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"新增PayPrimary");
+		logBefore(logger, Jurisdiction.getUsername()+"新增OfficePrimary");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("PAYPRIMARY_ID", this.get32UUID());	//主键
-		payprimaryService.save(pd);
+		pd.put("OFFICEPRIMARY_ID", this.get32UUID());	//主键
+		officeprimaryService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
 	}
 
-	@RequestMapping(value = "/saveTable")
+	@RequestMapping(value="/saveTable")
 	@ResponseBody
-	public Map<String, Object> saveTable(Page page)throws Exception {
-		PageData pd = new PageData();
+	public Map<String, Object> saveTable(Page page) throws Exception{
+		ModelAndView mv = this.getModelAndView();
 		Map<String, Object> json = new HashMap<String, Object>();
+		PageData pd = new PageData();
 		pd = this.getPageData();
-		//pd.put("PAYPRIMARY_ID", this.get32UUID());	//主键
-		//System.out.println(pd);
-		payprimaryService.save(pd);
+		officeprimaryService.save(pd);
 		return  json;
 	}
-	
+
 	/**删除
 	 * @param out
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/delete")
 	public void delete(PrintWriter out) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"删除PayPrimary");
+		logBefore(logger, Jurisdiction.getUsername()+"删除OfficePrimary");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		payprimaryService.delete(pd);
+		officeprimaryService.delete(pd);
 		out.write("success");
 		out.close();
 	}
@@ -90,12 +88,12 @@ public class PayPrimaryController extends BaseController {
 	 */
 	@RequestMapping(value="/edit")
 	public ModelAndView edit() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"修改PayPrimary");
+		logBefore(logger, Jurisdiction.getUsername()+"修改OfficePrimary");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		payprimaryService.edit(pd);
+		officeprimaryService.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -107,7 +105,7 @@ public class PayPrimaryController extends BaseController {
 	 */
 	@RequestMapping(value="/list")
 	public ModelAndView list(Page page) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"列表PayPrimary");
+		logBefore(logger, Jurisdiction.getUsername()+"列表OfficePrimary");
 		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
@@ -117,8 +115,8 @@ public class PayPrimaryController extends BaseController {
 			pd.put("keywords", keywords.trim());
 		}
 		page.setPd(pd);
-		List<PageData>	varList = payprimaryService.list(page);	//列出PayPrimary列表
-		mv.setViewName("management/payprimary/payprimary_list");
+		List<PageData>	varList = officeprimaryService.list(page);	//列出OfficePrimary列表
+		mv.setViewName("management/officeprimary/officeprimary_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
@@ -134,7 +132,7 @@ public class PayPrimaryController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		mv.setViewName("management/payprimary/payprimary_edit");
+		mv.setViewName("management/officeprimary/officeprimary_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
 		return mv;
@@ -149,8 +147,8 @@ public class PayPrimaryController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd = payprimaryService.findById(pd);	//根据ID读取
-		mv.setViewName("management/payprimary/payprimary_edit");
+		pd = officeprimaryService.findById(pd);	//根据ID读取
+		mv.setViewName("management/officeprimary/officeprimary_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;
@@ -163,7 +161,7 @@ public class PayPrimaryController extends BaseController {
 	@RequestMapping(value="/deleteAll")
 	@ResponseBody
 	public Object deleteAll() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"批量删除PayPrimary");
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除OfficePrimary");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
 		PageData pd = new PageData();		
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -172,7 +170,7 @@ public class PayPrimaryController extends BaseController {
 		String DATA_IDS = pd.getString("DATA_IDS");
 		if(null != DATA_IDS && !"".equals(DATA_IDS)){
 			String ArrayDATA_IDS[] = DATA_IDS.split(",");
-			payprimaryService.deleteAll(ArrayDATA_IDS);
+			officeprimaryService.deleteAll(ArrayDATA_IDS);
 			pd.put("msg", "ok");
 		}else{
 			pd.put("msg", "no");
@@ -188,7 +186,7 @@ public class PayPrimaryController extends BaseController {
 	 */
 	@RequestMapping(value="/excel")
 	public ModelAndView exportExcel() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"导出PayPrimary到excel");
+		logBefore(logger, Jurisdiction.getUsername()+"导出OfficePrimary到excel");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
@@ -196,20 +194,18 @@ public class PayPrimaryController extends BaseController {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		List<String> titles = new ArrayList<String>();
 		titles.add("合同id");	//1
-		titles.add("合同应金额");	//2
-		titles.add("开始时间");	//3
-		titles.add("结束时间");	//4
-		titles.add("备注");	//5
+		titles.add("开始时间");	//2
+		titles.add("结束时间");	//3
+		titles.add("备注");	//4
 		dataMap.put("titles", titles);
-		List<PageData> varOList = payprimaryService.listAll(pd);
+		List<PageData> varOList = officeprimaryService.listAll(pd);
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
 			vpd.put("var1", varOList.get(i).getString("CONTRACT_ID"));	    //1
-			vpd.put("var2", varOList.get(i).get("CONTRACTPIC").toString());	//2
-			vpd.put("var3", varOList.get(i).getString("STARTTIME"));	    //3
-			vpd.put("var4", varOList.get(i).getString("ENTTIME"));	    //4
-			vpd.put("var5", varOList.get(i).getString("REMARK"));	    //5
+			vpd.put("var2", varOList.get(i).getString("STARTTIME"));	    //2
+			vpd.put("var3", varOList.get(i).getString("ENTTIME"));	    //3
+			vpd.put("var4", varOList.get(i).getString("REMARK"));	    //4
 			varList.add(vpd);
 		}
 		dataMap.put("varList", varList);

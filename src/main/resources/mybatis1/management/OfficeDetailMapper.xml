@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="PayDetailMapper">
+<mapper namespace="OfficeDetailMapper">
 	
 	<!--表名 -->
 	<sql id="tableName">
-		TB_PAYDETAIL
+		TB_OFFICEDETAIL
 	</sql>
 	
 	<!-- 字段 -->
 	<sql id="Field">
-		PAYPRIMARY_ID,	
-		CONTRACT_ID,	
-		SHPAYTIME,	
-		SHPAY,	
-		REALITYPAYTIME,	
-		REALITYPAY,	
-		ONPAYPIC,	
-		PAYDETAIL_ID,
-		NUM
+		RENT,	
+		UTILITIES,	
+		OVERDUE,	
+		RECEIVABLE_REALITY,	
+		RECEIVABLE,	
+		PAYTIME,	
+		RECEIVABL_PAYTIME,	
+		UNCOLLECTED,	
+		OFFICEPRIMARY_ID,	
+		OFFICEDETAIL_ID,
+		CONTRACT_ID
 	</sql>
 	
 	<!-- 字段值 -->
 	<sql id="FieldValue">
-		#{PAYPRIMARY_ID},	
-		#{CONTRACT_ID},	
-		#{SHPAYTIME},	
-		#{SHPAY},	
-		#{REALITYPAYTIME},	
-		#{REALITYPAY},	
-		#{ONPAYPIC},	
-		#{PAYDETAIL_ID},
-		#{NUM}
+		#{RENT},	
+		#{UTILITIES},	
+		#{OVERDUE},	
+		#{RECEIVABLE_REALITY},	
+		#{RECEIVABLE},	
+		#{PAYTIME},	
+		#{RECEIVABL_PAYTIME},	
+		#{UNCOLLECTED},	
+		#{OFFICEPRIMARY_ID},	
+		#{OFFICEDETAIL_ID},
+		#{CONTRACT_ID}
 	</sql>
 	
 	<!-- 新增-->
@@ -38,23 +42,9 @@
 		insert into 
 	<include refid="tableName"></include>
 		(
-			PAYPRIMARY_ID,
-			CONTRACT_ID,
-			SHPAYTIME,
-			SHPAY,
-			REALITYPAYTIME,
-			REALITYPAY,
-			ONPAYPIC,
-			PAYDETAIL_ID
+	<include refid="Field"></include>
 		) values (
-			#{PAYPRIMARY_ID},
-			#{CONTRACT_ID},
-			#{SHPAYTIME},
-			#{SHPAY},
-			#{REALITYPAYTIME},
-			#{REALITYPAY},
-			#{ONPAYPIC},
-			#{PAYDETAIL_ID}
+	<include refid="FieldValue"></include>
 		)
 	</insert>
 	
@@ -63,7 +53,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			PAYDETAIL_ID = #{PAYDETAIL_ID}
+			OFFICEDETAIL_ID = #{OFFICEDETAIL_ID}
 	</delete>
 	
 	<!-- 修改 -->
@@ -71,16 +61,18 @@
 		update
 		<include refid="tableName"></include>
 		set 
-			<!--PAYPRIMARY_ID = #{PAYPRIMARY_ID},
-			CONTRACT_ID = #{CONTRACT_ID},-->
-			SHPAYTIME = #{SHPAYTIME},
-			SHPAY = #{SHPAY},
-			REALITYPAYTIME = #{REALITYPAYTIME},
-			REALITYPAY = #{REALITYPAY},
-			ONPAYPIC = #{ONPAYPIC},
-		PAYDETAIL_ID = PAYDETAIL_ID
+			RENT = #{RENT},
+			UTILITIES = #{UTILITIES},
+			OVERDUE = #{OVERDUE},
+			RECEIVABLE_REALITY = #{RECEIVABLE_REALITY},
+			RECEIVABLE = #{RECEIVABLE},
+			PAYTIME = #{PAYTIME},
+			RECEIVABL_PAYTIME = #{RECEIVABL_PAYTIME},
+			UNCOLLECTED = #{UNCOLLECTED},
+			OFFICEPRIMARY_ID = #{OFFICEPRIMARY_ID},
+		OFFICEDETAIL_ID = OFFICEDETAIL_ID
 		where 
-		PAYDETAIL_ID = #{PAYDETAIL_ID}
+		OFFICEDETAIL_ID = #{OFFICEDETAIL_ID}
 	</update>
 	
 	<!-- 通过ID获取数据 -->
@@ -90,7 +82,7 @@
 		from 
 		<include refid="tableName"></include>
 		where 
-			PAYDETAIL_ID = #{PAYDETAIL_ID}
+			OFFICEDETAIL_ID = #{OFFICEDETAIL_ID}
 	</select>
 	
 	<!-- 列表 -->
@@ -117,7 +109,7 @@
 		<include refid="Field"></include>
 		from
 		<include refid="tableName"></include>
-		CONTRACT_ID = #{CONTRACT_ID}
+		WHERE CONTRACT_ID = #{CONTRACT_ID}
 		ORDER BY NUM
 	</select>
 	
@@ -134,7 +126,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			PAYDETAIL_ID in
+			OFFICEDETAIL_ID in
 		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
                  #{item}
 		</foreach>

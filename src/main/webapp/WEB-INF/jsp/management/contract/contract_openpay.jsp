@@ -217,7 +217,7 @@
             //alert("是");
         }
         else {
-            alert("否");
+           // alert("否");
             return;
         }
         if(newPAYPRIMARY_ID == null || newPAYPRIMARY_ID == ""){
@@ -286,7 +286,7 @@
         $("#td1"+uuid_var).attr("rowspan",count);
         $("#td2"+uuid_var).attr("rowspan",count);
         var tr = '';
-        tr += '<tr style="border: 1px;solid #dddddd;" class="center" id="'+uuid_var+'">';
+        tr += '<tr style="border: 1px;solid #dddddd;" class="center" >';
         //alert(isname == null ||isname == undefined||isname =="");
         if(isname == 0){
             tr += '<td id="td1'+uuid_var+'"  class="center" style="padding-left:2px;">' +
@@ -297,7 +297,7 @@
                     '<input onchange="saveTable(\''+uuid_var+'\')" id="pic'+uuid_var+'" type="number" style="width: 150px" class="input-text"  name="CONTRACTPIC" ></td>';
         }
         tr += '<td style="padding-left:2px;"><input id="spt'+uuid_var+'" type="date" style="width: 150px;height: 31px" '+
-              'class="input-text"  name="SHPAYTIME" id="" ></td>'
+              'class="input-text"  name="SHPAYTIME" ></td>'
         tr += '<td style="padding-left:2px;"><input id="sp'+uuid_var+'" type="number" style="width: 150px;height: 31px" ' +
                 ' class="input-text"  name="SHPAY" ></td>';
         tr += ' <td style="padding-left:2px;">' +
@@ -311,6 +311,9 @@
                 '</a> ' +
                 '</td>';
         tr += '</tr>';
+        if(isname == 0){
+            tr += '<tr id="'+uuid_var+'"></tr>';
+        }
         if(isname == 0) {
             $("#tb" + uuid_var).after(tr);
         }else {

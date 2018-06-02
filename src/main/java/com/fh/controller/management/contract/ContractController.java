@@ -14,6 +14,8 @@ import com.fh.service.management.departmentgroup.DepartmentGroupManager;
 import com.fh.service.management.deptno.DeptnoManager;
 import com.fh.service.management.mode.ModeManager;
 import com.fh.service.management.officecontract.OfficeContractManager;
+import com.fh.service.management.officedetail.OfficeDetailManager;
+import com.fh.service.management.officeprimary.OfficePrimaryManager;
 import com.fh.service.management.operator.OperatorManager;
 import com.fh.service.management.paydetail.PayDetailManager;
 import com.fh.service.management.paymentcontract.PaymentContractManager;
@@ -88,6 +90,12 @@ public class ContractController extends BaseController {
 
 	@Resource(name="departmentgroupService")
 	private DepartmentGroupManager departmentgroupService;
+
+	@Resource(name="officeprimaryService")
+	private OfficePrimaryManager officeprimaryService;
+
+	@Resource(name="officedetailService")
+	private OfficeDetailManager officedetailService;
 
 	// 树
 	@RequestMapping(value = "/listTree")
@@ -303,8 +311,18 @@ public class ContractController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd = contractService.findById(pd);
+		List<PageData> listOfficeprimary = officeprimaryService.listByContractId(pd); //主表
+		System.out.println("主表------------>"+listOfficeprimary.get(0));
+		List<PageData> listOfficeDetail = officedetailService.listByContractId(pd);  //明细
+		System.out.println("明细------------>"+listOfficeDetail.get(0));
+		if(listOfficeprimary == null || "".equals(listOfficeprimary)){
+			pd.put("OFFICEPRIMARY_ID",this.get32UUID());
+		}
 		mv.setViewName("management/contract/contract_openoffice");
 		mv.addObject("pd", pd);
+		mv.addObject("listOfficeprimary", listOfficeprimary);
+		mv.addObject("count", listOfficeDetail.size());
+		mv.addObject("listOfficeDetail", listOfficeDetail);
 		return mv;
 	}
 	/*@RequestMapping(value="/openPayT")
