@@ -247,10 +247,8 @@
 									<th ><input type="date" style="width: 150px;height: 31px" value="${pd2.PAYTIME}"
 												class="input-text"  name="PAYTIME"
 												id="PAYTIME"></th>
-									<th  ><label>滞纳金率：</label></th>
-									<th  ><input type="number" style="width: 150px;height: 31px" value="${pd2.OVERDUE}"
-												 class="input-text"  name="OVERDUE"
-												 id="OVERDUE"></th>
+									<th  ><label></label></th>
+									<th  ></th>
 
 								</tr>
 								<tr class="success">
@@ -274,21 +272,121 @@
 									</th>--%>
 
 								</tr>
-								<tr id="fp${pd.CONTRACT_ID}"></tr>
-								<tr>
-									<th>
-										<div class="col-md-12"  style="padding-bottom:2em;">
-											<a onclick="addTrFp('${pd.CONTRACT_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i> 添加新的发票项</a>
-										</div>
-									</th>
+								<tr class="success">
+
+									<th ><label>发票名称：</label></th>
+									<th  ><input type="text" style="width: 150px;height: 31px" value="${pd2.INVOICENAME}"
+												 class="input-text"  name="INVOICENAME"
+												 id="INVOICENAME"></th>
+									<th  ><label>开票时间：</label></th>
+									<th  ><input type="date" style="width: 150px;height: 31px" value="${pd2.INVOICETIME}"
+												 class="input-text"  name="INVOICETIME"
+												 id="INVOICETIME"></th>
+									<th  ><label></label></th>
+									<th  ></th>
+
 								</tr>
-								<tr id="yj${pd.CONTRACT_ID}"></tr>
-								<tr>
-									<th>
-										<div class="col-md-12"  style="padding-bottom:2em;">
-											<a onclick="addTrYj('${pd.CONTRACT_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i> 添加新的押金项</a>
-										</div>
+								<tr class="danger">
+									<th width="10%" ><label>应收押金金额：</label></th>
+									<th  ><input type="number" style="width: 150px" value="${pd2.RECEIVABLECASH}"
+												 class="input-text"  name="RECEIVABLECASH"
+												 id="RECEIVABLECASH"></th>
+									<th width="15%"><label>应付款时间（押金）：</label></th>
+									<th width="10%"><input type="date" style="width: 150px" value="${pd2.PAYTIME2}"
+														   class="input-text"  name="PAYTIME2"
+														   id="PAYTIME2"></th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+								<tr class="danger">
+									<th width="15%"><label>实际付款金额（押金）：</label></th>
+									<th width="10%">
+										<input type="number" style="width: 150px" value="${pd2.RECEIVABLE_REALITY2}"
+											   class="input-text"  name="RECEIVABLE_REALITY2"
+											   id="RECEIVABLE_REALITY2">
 									</th>
+									<th  ><label>实际付款时间（押金）：</label></th>
+									<th  ><input type="date" style="width: 150px" value="${pd2.RECEIVABL_PAYTIME2}"
+												 class="input-text"  name="RECEIVABL_PAYTIME2"
+												 id="RECEIVABL_PAYTIME2"></th>
+									<th width="15%"><label>付款方名称（押金）：</label></th>
+									<th width="10%"><input type="text" style="width: 150px" value="${pd2.PAYERNAME2}"
+														   class="input-text"  name="PAYERNAME2"
+														   id="PAYERNAME2"></th>
+								</tr>
+								<tr class="warning">
+									<th ><label>进场时间：</label></th>
+									<th >
+										<label>
+											<input type="date" style="width: 140px;height: 31px" value="${pd2.ENTERTIME}"
+												   class="input-date"  name="ENTERTIME"
+												   id="ENTERTIME">
+										</label>
+									</th>
+									<th ><label>是否已办进场手续：</label></th>
+									<th  >
+										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio2" id="form-field-radio5" onclick="isENTERPROCEDURE('1');" <c:if test="${pd2.ISENTERPROCEDURE == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>
+										<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio2" id="form-field-radio6" onclick="isENTERPROCEDURE('0');" <c:if test="${pd2.ISENTERPROCEDURE == '0' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">否</span></label>
+									</th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+								<tr class="warning">
+									<th  ><label>撤场时间：</label></th>
+									<th >
+										<label>
+											<input type="date" style="width: 140px;height: 31px" value="${pd2.WITHDRAWALTIME}"
+												   class="input-date"  name="WITHDRAWALTIME"
+												   id="WITHDRAWALTIME">
+										</label>
+									</th>
+									<th ><label>是否已办撤场手续：</label></th>
+									<th  >
+										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio3" id="form-field-radio7" onclick="isDRAWALPROCEDURE('1');" <c:if test="${pd2.ISDRAWALPROCEDURE == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>
+										<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio3" id="form-field-radio8" onclick="isDRAWALPROCEDURE('0');" <c:if test="${pd2.ISDRAWALPROCEDURE == '0' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">否</span></label>
+									</th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+								<tr class="warning">
+									<th ><label>退押金金额：</label></th>
+									<th >
+										<label>
+											<input type="number" style="width: 140px;height: 31px" value="${pd2.RETURNCASH}"
+												   class="input-date"  name="RETURNCASH"
+												   id="RETURNCASH">
+										</label>
+									</th>
+									<th  ><label>结转收入金额：</label></th>
+									<th >
+										<label>
+											<input type="number" style="width: 140px;height: 31px" value="${pd2.TRAINCOAMOUNT}"
+												   class="input-date"  name="TRAINCOAMOUNT"
+												   id="TRAINCOAMOUNT">
+										</label>
+									</th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+								<tr class="warning">
+									<th ><label>发票名称：</label></th>
+									<th >
+										<label>
+											<input type="text" style="width: 140px;height: 31px" value="${pd2.INVOICENAME2}"
+												   class="input-date"  name="INVOICENAME2"
+												   id="INVOICENAME2">
+										</label>
+									</th>
+									<th ><label>开票时间：</label></th>
+									<th >
+										<label>
+											<input type="date" style="width: 140px;height: 31px" value="${pd2.INVOICETIME2}"
+												   class="input-date"  name="INVOICETIME2"
+												   id="INVOICETIME2">
+										</label>
+									</th>
+									<th  ><label></label></th>
+									<th  ></th>
 								</tr>
 								<tr class="info">
 									<th ><label>备注：</label></th>
@@ -336,6 +434,285 @@
 								</tr>
 								</tbody>
 							</table>
+							<!-- --------------------------------------------------------------------------- -->
+							<table id="officeContract" style="display: none;" class="table table-border table-bg table-bordered">
+								<tbody>
+								<tr class="success">
+									<%--<th width="15%"><label>项目负责人：</label></th>
+									<th width="10%"><input type="text" style="width: 150px" value="${pd3.PRINCIPAL}"
+														   class="input-text"  name="PRINCIPAL"
+														   id="PRINCIPAL"></th>--%>
+									<th width="15%"><label>应收金额：</label></th>
+									<th width="10%"><input type="number" style="width: 150px" value="${pd3.RECEIVABLE_O}"
+														   class="input-text"  name="RECEIVABLE_O"
+														   id="RECEIVABLE_O"></th>
+									<th ><label>应付款时间：</label></th>
+									<th ><input type="date" style="width: 150px;height: 31px" value="${pd3.PAYTIME_O}"
+												class="input-text"  name="PAYTIME_O"
+												id="PAYTIME_O"></th>
+									<th  ><label></label></th>
+									<th  ></th>
+
+								</tr>
+								<tr class="success">
+									<th width="15%"><label>实际付款金额：</label></th>
+									<th width="20%"><input type="number" style="width: 150px" value="${pd3.RECEIVABLE_REALITY_O}"
+														   class="input-text"  name="RECEIVABLE_REALITY_O"
+														   id="RECEIVABLE_REALITY_O"></th>
+									<th ><label>实际付款时间：</label></th>
+									<th ><input type="date" style="width: 150px;height: 31px" value="${pd3.RECEIVABL_PAYTIME_O}"
+												class="input-text"  name="RECEIVABL_PAYTIME_O"
+												id="RECEIVABL_PAYTIME_O"></th>
+									<th width="15%"><label>付款方名称：</label></th>
+									<th width="20%"><input type="text" style="width: 150px" value="${pd3.PAYERNAME_O}"
+														   class="input-text"  name="PAYERNAME_O"
+														   id="PAYERNAME_O"></th>
+
+									<%--<th  ><label>是否收款：</label></th>
+									<th  >
+										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio1" id="form-field-radio3" onclick="isPAY('1');" <c:if test="${pd3.ISPAY == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>
+										<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio1" id="form-field-radio4" onclick="isPAY('0');" <c:if test="${pd3.ISPAY == '0' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">否</span></label>
+									</th>--%>
+
+								</tr>
+								<tr class="success">
+
+									<th ><label>发票名称：</label></th>
+									<th  ><input type="text" style="width: 150px;height: 31px" value="${pd3.INVOICENAME_O}"
+												 class="input-text"  name="INVOICENAME_O"
+												 id="INVOICENAME_O"></th>
+									<th  ><label>开票时间：</label></th>
+									<th  ><input type="date" style="width: 150px;height: 31px" value="${pd3.INVOICETIME_O}"
+												 class="input-text"  name="INVOICETIME_O"
+												 id="INVOICETIME_O"></th>
+									<th  ><label>滞纳金率：</label></th>
+									<th  ><input type="number" style="width: 150px;height: 31px" value="${pd3.OVERDUE_O}"
+												 class="input-text"  name="OVERDUE_O"
+												 id="OVERDUE_O"></th>
+
+								</tr>
+								<tr class="danger">
+									<th width="10%" ><label>应收押金金额：</label></th>
+									<th  ><input type="number" style="width: 150px" value="${pd3.RECEIVABLECASH_O}"
+												 class="input-text"  name="RECEIVABLECASH_O"
+												 id="RECEIVABLECASH_O"></th>
+									<th width="15%"><label>应付款时间（押金）：</label></th>
+									<th width="10%"><input type="date" style="width: 150px;height: 31px" value="${pd3.PAYTIME2_O}"
+														   class="input-text"  name="PAYTIME2_O"
+														   id="PAYTIME2_O"></th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+								<tr class="danger">
+									<th width="15%"><label>实际付款金额（押金）：</label></th>
+									<th width="10%">
+										<input type="number" style="width: 150px" value="${pd3.RECEIVABLE_REALITY2_O}"
+											   class="input-text"  name="RECEIVABLE_REALITY2_O"
+											   id="RECEIVABLE_REALITY2_O">
+									</th>
+									<th  ><label>实际付款时间（押金）：</label></th>
+									<th  ><input type="date" style="width: 150px;height: 31px" value="${pd3.RECEIVABL_PAYTIME2_O}"
+												 class="input-text"  name="RECEIVABL_PAYTIME2_O"
+												 id="RECEIVABL_PAYTIME2_O"></th>
+									<th width="15%"><label>付款方名称（押金）：</label></th>
+									<th width="10%"><input type="text" style="width: 150px" value="${pd3.PAYERNAME2_O}"
+														   class="input-text"  name="PAYERNAME2_O"
+														   id="PAYERNAME2_O"></th>
+								</tr>
+								<tr class="warning">
+									<th ><label>进场时间：</label></th>
+									<th >
+										<label>
+											<input type="date" style="width: 140px;height: 31px" value="${pd3.ENTERTIME_O}"
+												   class="input-date"  name="ENTERTIME_O"
+												   id="ENTERTIME_O">
+										</label>
+									</th>
+									<th ><label>是否已办进场手续：</label></th>
+									<th  >
+										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio4" id="form-field-radio5" onclick="isENTERPROCEDURE_O('1');" <c:if test="${pd3.ISENTERPROCEDURE_O == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>
+										<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio4" id="form-field-radio6" onclick="isENTERPROCEDURE_O('0');" <c:if test="${pd3.ISENTERPROCEDURE_O == '0' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">否</span></label>
+									</th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+								<tr class="warning">
+									<th  ><label>撤场时间：</label></th>
+									<th >
+										<label>
+											<input type="date" style="width: 140px;height: 31px" value="${pd3.WITHDRAWALTIME_O}"
+												   class="input-date"  name="WITHDRAWALTIME_O"
+												   id="WITHDRAWALTIME_O">
+										</label>
+									</th>
+									<th ><label>是否已办撤场手续：</label></th>
+									<th  >
+										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio5" id="form-field-radio7"  onclick="isDRAWALPROCEDURE_O('1');" <c:if test="${pd3.ISDRAWALPROCEDURE_O == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>
+										<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio5" id="form-field-radio8" onclick="isDRAWALPROCEDURE_O('0');" <c:if test="${pd3.ISDRAWALPROCEDURE_O == '0' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">否</span></label>
+									</th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+								<tr class="warning">
+									<th ><label>退押金金额：</label></th>
+									<th >
+										<label>
+											<input type="number" style="width: 140px;height: 31px" value="${pd3.RETURNCASH_O}"
+												   class="input-date"  name="RETURNCASH_O"
+												   id="RETURNCASH_O">
+										</label>
+									</th>
+									<th  ><label>结转收入金额：</label></th>
+									<th >
+										<label>
+											<input type="number" style="width: 140px;height: 31px" value="${pd3.TRAINCOAMOUNT_O}"
+												   class="input-date"  name="TRAINCOAMOUNT_O"
+												   id="TRAINCOAMOUNT_O">
+										</label>
+									</th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+								<tr class="warning">
+									<th ><label>发票名称：</label></th>
+									<th >
+										<label>
+											<input type="text" style="width: 140px;height: 31px" value="${pd3.INVOICENAME2_O}"
+												   class="input-date"  name="INVOICENAME2_O"
+												   id="INVOICENAME2_O">
+										</label>
+									</th>
+									<th ><label>开票时间：</label></th>
+									<th >
+										<label>
+											<input type="date" style="width: 140px;height: 31px" value="${pd3.INVOICETIME2_O}"
+												   class="input-date"  name="INVOICETIME2_O"
+												   id="INVOICETIME2_O">
+										</label>
+									</th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+
+
+								<!-- ------------------------------ 2 -->
+								<tr class="danger">
+									<th width="10%" ><label>应收押金金额：</label></th>
+									<th  ><input type="number" style="width: 150px" value="${pd3.RECEIVABLECASH1_O}"
+												 class="input-text"  name="RECEIVABLECASH1_O"
+												 id="RECEIVABLECASH1_O"></th>
+									<th width="15%"><label>应付款时间（押金）：</label></th>
+									<th width="10%"><input type="date" style="width: 150px;height: 31px" value="${pd3.PAYTIME3_O}"
+														   class="input-text"  name="PAYTIME3_O"
+														   id="PAYTIME3_O"></th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+								<tr class="danger">
+									<th width="15%"><label>实际付款金额（押金）：</label></th>
+									<th width="10%">
+										<input type="number" style="width: 150px" value="${pd3.RECEIVABLE_REALITY3_O}"
+											   class="input-text"  name="RECEIVABLE_REALITY3_O"
+											   id="RECEIVABLE_REALITY3_O">
+									</th>
+									<th  ><label>实际付款时间（押金）：</label></th>
+									<th  ><input type="date" style="width: 150px;height: 31px" value="${pd3.RECEIVABL_PAYTIME3_O}"
+												 class="input-text"  name="RECEIVABL_PAYTIME3_O"
+												 id="RECEIVABL_PAYTIME3_O"></th>
+									<th width="15%"><label>付款方名称（押金）：</label></th>
+									<th width="10%"><input type="number" style="width: 150px" value="${pd3.PAYERNAME3_O}"
+														   class="input-text"  name="PAYERNAME3_O"
+														   id="PAYERNAME3_O"></th>
+								</tr>
+								<tr class="warning">
+									<th ><label>退押金金额：</label></th>
+									<th >
+										<label>
+											<input type="number" style="width: 140px;height: 31px" value="${pd3.RETURNCASH1_O}"
+												   class="input-date"  name="RETURNCASH1_O"
+												   id="RETURNCASH1_O">
+										</label>
+									</th>
+									<th  ><label>结转收入金额：</label></th>
+									<th >
+										<label>
+											<input type="number" style="width: 140px;height: 31px" value="${pd3.TRAINCOAMOUNT1_O}"
+												   class="input-date"  name="TRAINCOAMOUNT1_O"
+												   id="TRAINCOAMOUNT1_O">
+										</label>
+									</th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+
+								<tr class="warning">
+									<th ><label>进场时间：</label></th>
+									<th >
+										<label>
+											<input type="date" style="width: 140px;height: 31px" value="${pd3.ENTERTIME1_O}"
+												   class="input-date"  name="ENTERTIME1_O"
+												   id="ENTERTIME1_O">
+										</label>
+									</th>
+									<th ><label>是否已办进场手续：</label></th>
+									<th  >
+										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio6" id="form-field-radio9" onclick="isENTERPROCEDURE1_O('1');" <c:if test="${pd3.ISENTERPROCEDURE1_O == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>
+										<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio6" id="form-field-radio10" onclick="isENTERPROCEDURE1_O('0');" <c:if test="${pd3.ISENTERPROCEDURE1_O == '0' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">否</span></label>
+									</th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+								<tr class="warning">
+									<th  ><label>撤场时间：</label></th>
+									<th >
+										<label>
+											<input type="date" style="width: 140px;height: 31px" value="${pd3.WITHDRAWALTIME1_O}"
+												   class="input-date"  name="WITHDRAWALTIME1_O"
+												   id="WITHDRAWALTIME1_O">
+										</label>
+									</th>
+									<th ><label>是否已办撤场手续：</label></th>
+									<th  >
+										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio7" id="form-field-radio11" onclick="isDRAWALPROCEDURE1_O('1');" <c:if test="${pd3.ISDRAWALPROCEDURE1_O == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>
+										<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio7" id="form-field-radio12" onclick="isDRAWALPROCEDURE1_O('0');" <c:if test="${pd3.ISDRAWALPROCEDURE1_O == '0' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">否</span></label>
+									</th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+								<tr class="warning">
+									<th ><label>发票名称：</label></th>
+									<th >
+										<label>
+											<input type="text" style="width: 140px;height: 31px" value="${pd3.INVOICENAME3_O}"
+												   class="input-date"  name="INVOICENAME3_O"
+												   id="INVOICENAME3_O">
+										</label>
+									</th>
+									<th ><label>开票时间：</label></th>
+									<th >
+										<label>
+											<input type="date" style="width: 140px;height: 31px" value="${pd3.INVOICETIME3_O}"
+												   class="input-date"  name="INVOICETIME3_O"
+												   id="INVOICETIME3_O">
+										</label>
+									</th>
+									<th  ><label></label></th>
+									<th  ></th>
+								</tr>
+								<!-- ------------------------------  -->
+
+								<tr class="info">
+									<th ><label>备注：</label></th>
+									<th colspan="5">
+										<label>
+											<input type="text" style="width: 880px;height: 31px" value="${pd3.REMARK_O}"
+												   class="input-date"  name="REMARK_O"
+												   id="REMARK_O">
+										</label>
+									</th>
+								</tr>
+								</tbody>
+							</table>
 						</form>
 						<!-- ------------------------------------------------------------------------------- -->
 					</div>
@@ -373,97 +750,6 @@
 <script type="text/javascript">
 	$(top.hangge());
 
-	function addTrYj(CONTRACT_ID) {
-		var tr = '';
-		tr += '<tr class="danger"><th width="10%" ><label>应收押金金额：</label></th>';
-		tr += '<th  ><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLECASH" id="RECEIVABLECASH"></th>';
-		tr += '<th width="15%"><label>应付款时间（押金）：</label></th>';
-		tr += '<th width="10%"><input type="date" style="width: 150px" class="input-text"  name="PAYTIME2" id="PAYTIME2"></th>';
-		tr += '<th ><label></label></th><th  ></th></tr>';
-		tr += '<tr class="danger"><th width="15%"><label>实际付款金额（押金）：</label></th><th width="10%">';
-		tr += '<input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE_REALITY2" id="RECEIVABLE_REALITY2"></th>';
-		tr += '<th  ><label>实际付款时间（押金）：</label></th><th  ><input type="date" style="width: 150px" class="input-text"  name="RECEIVABL_PAYTIME2"';
-		tr += ' id="RECEIVABL_PAYTIME2"></th>';
-		tr += '<th width="15%"><label>付款方名称（押金）：</label></th>';
-		tr += '<th width="10%"><input type="text" style="width: 150px" class="input-text"  name="PAYERNAME2" id="PAYERNAME2"></th></tr>';
-		tr += '<tr class="warning"><th ><label>进场时间：</label></th>';
-		tr += '<th><label><input type="date" style="width: 140px;height: 31px" class="input-date"  name="ENTERTIME" id="ENTERTIME"></label></th>';
-		tr += '<th><label>是否已办进场手续：</label></th><th  >';
-		tr += '<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio2" id="form-field-radio5" type="radio" value="icon-edit"><span class="lbl">是</span></label>';
-		tr += '<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio2" id="form-field-radio6" type="radio" value="icon-edit"><span class="lbl">否</span></label>';
-		tr += '</th><th  ><label></label></th><th  ></th></tr>';
-		tr += '<tr class="warning"><th  ><label>撤场时间：</label></th><th ><label>';
-		tr += '<input type="date" style="width: 140px;height: 31px" class="input-date"  name="WITHDRAWALTIME" id="WITHDRAWALTIME">';
-		tr += '</label></th><th ><label>是否已办撤场手续：</label></th><th  >';
-		tr += '<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio3" id="form-field-radio7" type="radio" value="icon-edit"><span class="lbl">是</span></label>';
-		tr += '<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio3" id="form-field-radio8" type="radio" value="icon-edit"><span class="lbl">否</span></label>';
-		tr += '</th><th  ><label></label></th><th  ></th></tr>';
-		tr += '<tr class="warning"><th ><label>退押金金额：</label></th><th ><label>';
-		tr += '<input type="number" style="width: 140px;height: 31px" class="input-date"  name="RETURNCASH" id="RETURNCASH">';
-		tr += '</label></th>';
-		tr += '<th  ><label>结转收入金额：</label></th><th ><label>';
-		tr += '<input type="number" style="width: 140px;height: 31px" class="input-date"  name="TRAINCOAMOUNT" id="TRAINCOAMOUNT">';
-		tr += '</label></th><th  ><label></label></th><th  ></th></tr>';
-		tr += '<tr class="warning"><th ><label>发票名称：</label></th><th ><label>';
-		tr += '<input type="text" style="width: 140px;height: 31px" class="input-date"  name="INVOICENAME2" id="INVOICENAME2"></label></th>';
-		tr += '<th ><label>开票时间：</label></th><th ><label>';
-		tr += '<input type="date" style="width: 140px;height: 31px" class="input-date"  name="INVOICETIME2" id="INVOICETIME2">';
-		tr += '</label></th><th  ><label></label></th><th  ></th></tr>';
-		$("#yj"+CONTRACT_ID).before(tr);
-		tr = "";
-	}
-
-
-	function addTrFp(CONTRACT_ID) {
-		var uuid = "";
-		$.ajax({
-			type: "POST",
-			url: '<%=basePath%>paytable/getUUID',
-			async: false,
-			data: {
-			},
-			dataType: 'json',
-			//beforeSend: validateData,
-			cache: false,
-			success: function (data) {
-				uuid = data.uuid;
-			}
-		});
-		var tr = "";
-		tr += '<tr class="success"><th ><label>发票名称：</label></th>';
-		tr += '<th><input type="text" style="width: 150px;height: 31px"  class="input-text"  name="INVOICENAME"'+
-		'id="in'+uuid+'"></th>';
-		tr += '<th><label>开票时间：</label></th>';
-		tr += '<th><input type="date" style="width: 150px;height: 31px"  class="input-text"  name="INVOICETIME" id="it'+uuid+'"></th>';
-		tr += '<th> <a class="btn btn-xs btn-success" title="保存" onclick="saveInvoice('+CONTRACT_ID+','+uuid+');">' +
-			  '<i class="ace-icon fa fa-check-square-o bigger-120" title="保存"></i></a></th>';
-		tr += '<th><label></label></th></tr>';
-		$("#fp"+CONTRACT_ID).before(tr);
-		tr = "";
-	}
-	
-	function saveInvoice(CONTRACT_ID,uuid) {
-		var INVOICENAME = $("#in"+uuid).val();
-		var INVOICETIME = $("#it"+uuid).val();
-		$.ajax({
-			type: "POST",
-			url: '<%=basePath%>invoice/saveDetail',
-			async: false,
-			data: {
-				INVOICENAME : INVOICENAME,
-				INVOICETIME : INVOICETIME,
-				CONTRACT_ID : CONTRACT_ID
-			},
-			dataType: 'json',
-			//beforeSend: validateData,
-			cache: false,
-			success: function (data) {
-				//uuid = data.uuid;
-				alert("保存成功!!");
-			}
-		});
-	}
-	
 	$(function () {
 		if($("#CONTRACTTYPES").find("option:selected").attr("value") == "付款合同"){
 			$("#paymentContarct").css("display","");

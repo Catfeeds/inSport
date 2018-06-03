@@ -1,4 +1,4 @@
-package com.fh.controller.management.officedetail;
+package com.fh.controller.management.invoice;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -23,20 +23,20 @@ import com.fh.util.ObjectExcelView;
 import com.fh.util.PageData;
 import com.fh.util.Jurisdiction;
 import com.fh.util.Tools;
-import com.fh.service.management.officedetail.OfficeDetailManager;
+import com.fh.service.management.invoice.InvoiceManager;
 
 /** 
- * 说明：办公室明细管理
+ * 说明：发票模块
  * 创建人：FH Q313596790
- * 创建时间：2018-06-02
+ * 创建时间：2018-06-03
  */
 @Controller
-@RequestMapping(value="/officedetail")
-public class OfficeDetailController extends BaseController {
+@RequestMapping(value="/invoice")
+public class InvoiceController extends BaseController {
 	
-	String menuUrl = "officedetail/list.do"; //菜单地址(权限用)
-	@Resource(name="officedetailService")
-	private OfficeDetailManager officedetailService;
+	String menuUrl = "invoice/list.do"; //菜单地址(权限用)
+	@Resource(name="invoiceService")
+	private InvoiceManager invoiceService;
 	
 	/**保存
 	 * @param
@@ -44,13 +44,13 @@ public class OfficeDetailController extends BaseController {
 	 */
 	@RequestMapping(value="/save")
 	public ModelAndView save() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"新增OfficeDetail");
+		logBefore(logger, Jurisdiction.getUsername()+"新增Invoice");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("OFFICEDETAIL_ID", this.get32UUID());	//主键
-		officedetailService.save(pd);
+		pd.put("INVOICE_ID", this.get32UUID());	//主键
+		invoiceService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -62,26 +62,8 @@ public class OfficeDetailController extends BaseController {
 		PageData pd = new PageData();
 		Map<String, Object> json = new HashMap<String, Object>();
 		pd = this.getPageData();
-		if(pd.getString("RENT") == null || "".equals(pd.getString("RENT"))){
-			pd.put("RENT",0);
-		}
-		if(pd.getString("UTILITIES") == null || "".equals(pd.getString("UTILITIES"))){
-			pd.put("UTILITIES",0);
-		}
-		if(pd.getString("OVERDUE") == null || "".equals(pd.getString("OVERDUE"))){
-			pd.put("OVERDUE",0);
-		}
-		if(pd.getString("RECEIVABLE") == null || "".equals(pd.getString("RECEIVABLE"))){
-			pd.put("RECEIVABLE",0);
-		}
-		if(pd.getString("RECEIVABLE_REALITY") == null || "".equals(pd.getString("RECEIVABLE_REALITY"))){
-			pd.put("RECEIVABLE_REALITY",0);
-		}
-		if(pd.getString("UNCOLLECTED") == null || "".equals(pd.getString("UNCOLLECTED"))){
-			pd.put("UNCOLLECTED",0);
-		}
-		pd.put("OFFICEDETAIL_ID", this.get32UUID());	//主键
-		officedetailService.save(pd);
+		pd.put("INVOICE_ID", this.get32UUID());	//主键
+		invoiceService.save(pd);
 		return  json;
 	}
 	
@@ -91,11 +73,11 @@ public class OfficeDetailController extends BaseController {
 	 */
 	@RequestMapping(value="/delete")
 	public void delete(PrintWriter out) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"删除OfficeDetail");
+		logBefore(logger, Jurisdiction.getUsername()+"删除Invoice");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		officedetailService.delete(pd);
+		invoiceService.delete(pd);
 		out.write("success");
 		out.close();
 	}
@@ -106,48 +88,24 @@ public class OfficeDetailController extends BaseController {
 	 */
 	@RequestMapping(value="/edit")
 	public ModelAndView edit() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"修改OfficeDetail");
+		logBefore(logger, Jurisdiction.getUsername()+"修改Invoice");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		officedetailService.edit(pd);
+		invoiceService.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
 	}
-
-	@RequestMapping(value = "/editOfficeDetailInfo")
-	@ResponseBody
-	public Map<String, Object> editOfficeDetailInfo(Page page)throws Exception {
-		Map<String, Object> json = new HashMap<String, Object>();
-		PageData pd = new PageData();
-		pd = this.getPageData();
-		officedetailService.edit(pd);
-		return  json;
-	}
-
-	/**删除
-	 * @param
-	 * @throws Exception
-	 */
-	@RequestMapping(value = "/deleteDetail")
-	@ResponseBody
-	public Map<String, Object> deleteDetail() throws Exception{
-		Map<String, Object> json = new HashMap<String, Object>();
-		PageData pd = new PageData();
-		pd = this.getPageData();
-		officedetailService.delete(pd);
-		return  json;
-	}
-
+	
 	/**列表
 	 * @param page
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/list")
 	public ModelAndView list(Page page) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"列表OfficeDetail");
+		logBefore(logger, Jurisdiction.getUsername()+"列表Invoice");
 		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
@@ -157,8 +115,8 @@ public class OfficeDetailController extends BaseController {
 			pd.put("keywords", keywords.trim());
 		}
 		page.setPd(pd);
-		List<PageData>	varList = officedetailService.list(page);	//列出OfficeDetail列表
-		mv.setViewName("management/officedetail/officedetail_list");
+		List<PageData>	varList = invoiceService.list(page);	//列出Invoice列表
+		mv.setViewName("management/invoice/invoice_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
@@ -174,7 +132,7 @@ public class OfficeDetailController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		mv.setViewName("management/officedetail/officedetail_edit");
+		mv.setViewName("management/invoice/invoice_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
 		return mv;
@@ -189,8 +147,8 @@ public class OfficeDetailController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd = officedetailService.findById(pd);	//根据ID读取
-		mv.setViewName("management/officedetail/officedetail_edit");
+		pd = invoiceService.findById(pd);	//根据ID读取
+		mv.setViewName("management/invoice/invoice_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;
@@ -203,7 +161,7 @@ public class OfficeDetailController extends BaseController {
 	@RequestMapping(value="/deleteAll")
 	@ResponseBody
 	public Object deleteAll() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"批量删除OfficeDetail");
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除Invoice");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
 		PageData pd = new PageData();		
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -212,7 +170,7 @@ public class OfficeDetailController extends BaseController {
 		String DATA_IDS = pd.getString("DATA_IDS");
 		if(null != DATA_IDS && !"".equals(DATA_IDS)){
 			String ArrayDATA_IDS[] = DATA_IDS.split(",");
-			officedetailService.deleteAll(ArrayDATA_IDS);
+			invoiceService.deleteAll(ArrayDATA_IDS);
 			pd.put("msg", "ok");
 		}else{
 			pd.put("msg", "no");
@@ -228,36 +186,26 @@ public class OfficeDetailController extends BaseController {
 	 */
 	@RequestMapping(value="/excel")
 	public ModelAndView exportExcel() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"导出OfficeDetail到excel");
+		logBefore(logger, Jurisdiction.getUsername()+"导出Invoice到excel");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		List<String> titles = new ArrayList<String>();
-		titles.add("租金金额");	//1
-		titles.add("水电费");	//2
-		titles.add("滞纳金");	//3
-		titles.add("实际收款金额");	//4
-		titles.add("应收款金额");	//5
-		titles.add("应收款时间");	//6
-		titles.add("实际收款时间");	//7
-		titles.add("未收款金额");	//8
-		titles.add("主表Id");	//9
+		titles.add("CONTRACT_ID");	//1
+		titles.add("发票名称");	//2
+		titles.add("开票时间");	//3
+		titles.add("备注");	//4
 		dataMap.put("titles", titles);
-		List<PageData> varOList = officedetailService.listAll(pd);
+		List<PageData> varOList = invoiceService.listAll(pd);
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
-			vpd.put("var1", varOList.get(i).get("RENT").toString());	//1
-			vpd.put("var2", varOList.get(i).get("UTILITIES").toString());	//2
-			vpd.put("var3", varOList.get(i).get("OVERDUE").toString());	//3
-			vpd.put("var4", varOList.get(i).get("RECEIVABLE_REALITY").toString());	//4
-			vpd.put("var5", varOList.get(i).get("RECEIVABLE").toString());	//5
-			vpd.put("var6", varOList.get(i).getString("PAYTIME"));	    //6
-			vpd.put("var7", varOList.get(i).getString("RECEIVABL_PAYTIME"));	    //7
-			vpd.put("var8", varOList.get(i).get("UNCOLLECTED").toString());	//8
-			vpd.put("var9", varOList.get(i).getString("OFFICEPRIMARY_ID"));	    //9
+			vpd.put("var1", varOList.get(i).getString("CONTRACT_ID"));	    //1
+			vpd.put("var2", varOList.get(i).getString("INVOICENAME"));	    //2
+			vpd.put("var3", varOList.get(i).getString("INVOICETIME"));	    //3
+			vpd.put("var4", varOList.get(i).getString("REMARK"));	    //4
 			varList.add(vpd);
 		}
 		dataMap.put("varList", varList);

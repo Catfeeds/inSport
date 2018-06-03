@@ -81,50 +81,51 @@
                                                 <tr class="center" style="background-color: #FFFFCC" >
                                                     <td style="padding-left:2px;">
                                                         <input type="number" style="width: 120px;height: 31px" value="${var1.RENT}"
-                                                               class="input-text"  name="RENT" id="spt${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="RENT" id="re${var1.OFFICEDETAIL_ID}"
                                                         ></td>
                                                     <td style="padding-left:2px;">
                                                         <input type="number" style="width: 120px;height: 31px" value="${var1.UTILITIES}"
-                                                               class="input-text"  name="UTILITIES" id="sp${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="UTILITIES" id="ut${var1.OFFICEDETAIL_ID}"
                                                         ></td>
                                                     <td style="padding-left:2px;">
                                                         <input type="number" style="width: 120px;height: 31px" value="${var1.OVERDUE}"
-                                                               class="input-text"  name="OVERDUE" id="rpt${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="OVERDUE" id="od${var1.OFFICEDETAIL_ID}"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
                                                         <input type="number" style="width: 120px;" value="${var1.RECEIVABLE}"
-                                                               class="input-text"  name="RECEIVABLE" id="rp${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="RECEIVABLE" id="r${var1.OFFICEDETAIL_ID}"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
                                                         <input type="date" style="width: 120px;height: 31px;" value="${var1.PAYTIME}"
-                                                               class="input-text"  name="PAYTIME" id="rp${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="PAYTIME" id="pt${var1.OFFICEDETAIL_ID}"
                                                     >
                                                     </td>
                                                     <td style="padding-left:2px;">
                                                         <input type="number" style="width: 120px" value="${var1.RECEIVABLE_REALITY}"
-                                                               class="input-text"  name="RECEIVABLE_REALITY" id="rp${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="RECEIVABLE_REALITY" id="rr${var1.OFFICEDETAIL_ID}"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
                                                         <input type="date" style="width: 120px;height: 31px;" value="${var1.RECEIVABL_PAYTIME}"
-                                                               class="input-text"  name="RECEIVABL_PAYTIME" id="rp${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="RECEIVABL_PAYTIME" id="rpt${var1.OFFICEDETAIL_ID}"
+                                                                onchange="todoOVERDUE('${var1.OFFICEDETAIL_ID}')"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
                                                         <input type="number" style="width: 120px" value="${var1.UNCOLLECTED}"
-                                                               class="input-text"  name="UNCOLLECTED" id="rp${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="UNCOLLECTED" id="uc${var1.OFFICEDETAIL_ID}"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
                                                         <a class="btn btn-xs btn-success" title="保存修改"
-                                                           onclick="editPay('${var1.OFFICEDETAIL_ID}');">
+                                                           onclick="editOfficeDetail('${var1.OFFICEDETAIL_ID}');">
                                                             <i class="ace-icon fa fa-check-square-o bigger-120"
                                                                title="保存修改"></i>
                                                         </a>
                                                         <a class="btn btn-xs btn-danger" title="删除"
-                                                           onclick="delPay('${var1.OFFICEDETAIL_ID}');">
+                                                           onclick="delOfficeDetail('${var1.OFFICEDETAIL_ID}');">
                                                             <i class="ace-icon fa fa-trash-o bigger-120"
                                                                title="删除"></i>
                                                         </a>
@@ -180,16 +181,23 @@
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
 
-    function delPay(OFFICEDETAIL_ID){
+    function todoOVERDUE(OFFICEDETAIL_ID){
+        var RENT = $("#re"+OFFICEDETAIL_ID).val();
+        var UTILITIES = $("#ut"+OFFICEDETAIL_ID).val();
+        var RECEIVABL_PAYTIME = $("#rpt"+OFFICEDETAIL_ID).val();
+        var PAYTIME = $("#pt"+OFFICEDETAIL_ID).val();
+        alert(new Date(RECEIVABL_PAYTIME.replace(/-/g, "/")));
+    }
+
+    function delOfficeDetail(OFFICEDETAIL_ID){
         $.ajax({
             type: "POST",
-            url: '<%=basePath%>paydetail/deleteDetail',
+            url: '<%=basePath%>officedetail/deleteDetail',
             async: false,
             data: {
                 OFFICEDETAIL_ID : OFFICEDETAIL_ID
             },
             dataType: 'json',
-            //beforeSend: validateData,
             cache: false,
             success: function (data) {
                 window.location.reload();
@@ -197,26 +205,32 @@
         });
     }
 
-    function editPay(OFFICEDETAIL_ID){
+    function editOfficeDetail(OFFICEDETAIL_ID){
         var OFFICEDETAIL_ID = OFFICEDETAIL_ID;
-        var SHPAYTIME = $("#spt"+OFFICEDETAIL_ID).val();
-        var SHPAY = $("#sp"+OFFICEDETAIL_ID).val();
-        var REALITYPAYTIME = $("#rpt"+OFFICEDETAIL_ID).val();
-        var REALITYPAY = $("#rp"+OFFICEDETAIL_ID).val();
-        //alert("应付时间:"+SHPAYTIME+",应付金额:"+SHPAY+",实际付款时间:"+REALITYPAYTIME+",实际付款金额:"+REALITYPAY+"。");
+        var RENT = $("#re"+OFFICEDETAIL_ID).val();
+        var UTILITIES = $("#ut"+OFFICEDETAIL_ID).val();
+        var OVERDUE = $("#od"+OFFICEDETAIL_ID).val();
+        var RECEIVABLE =$("#r"+OFFICEDETAIL_ID).val();
+        var PAYTIME = $("#pt"+OFFICEDETAIL_ID).val();
+        var RECEIVABLE_REALITY = $("#rr"+OFFICEDETAIL_ID).val();
+        var RECEIVABL_PAYTIME = $("#rpt"+OFFICEDETAIL_ID).val();
+        var UNCOLLECTED = $("#uc"+OFFICEDETAIL_ID).val();
         $.ajax({
             type: "POST",
-            url: '<%=basePath%>paydetail/editPayDetailInfo',
+            url: '<%=basePath%>officedetail/editOfficeDetailInfo',
             async: false,
             data: {
                 OFFICEDETAIL_ID : OFFICEDETAIL_ID,
-                SHPAYTIME : SHPAYTIME,
-                SHPAY : SHPAY,
-                REALITYPAYTIME : REALITYPAYTIME,
-                REALITYPAY : REALITYPAY
+                RENT : RENT,
+                UTILITIES : UTILITIES,
+                OVERDUE : OVERDUE,
+                RECEIVABLE : RECEIVABLE,
+                PAYTIME : PAYTIME,
+                RECEIVABLE_REALITY : RECEIVABLE_REALITY,
+                RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
+                UNCOLLECTED : UNCOLLECTED
             },
             dataType: 'json',
-            //beforeSend: validateData,
             cache: false,
             success: function (data) {
                 window.location.reload();

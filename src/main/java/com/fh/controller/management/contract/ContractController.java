@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import com.fh.service.management.classify.ClassifyManager;
 import com.fh.service.management.contractpicture.ContractPictureManager;
 import com.fh.service.management.departmentgroup.DepartmentGroupManager;
+import com.fh.service.management.depositinfo.DepositInfoManager;
 import com.fh.service.management.deptno.DeptnoManager;
 import com.fh.service.management.mode.ModeManager;
 import com.fh.service.management.officecontract.OfficeContractManager;
@@ -97,6 +98,9 @@ public class ContractController extends BaseController {
 	@Resource(name="officedetailService")
 	private OfficeDetailManager officedetailService;
 
+	@Resource(name="depositinfoService")
+	private DepositInfoManager depositinfoService;
+
 	// 树
 	@RequestMapping(value = "/listTree")
 	public ModelAndView listTree() throws Exception {
@@ -179,7 +183,7 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		if ("收款合同".equals(pd.getString("CONTRACTTYPES")) && "写字楼".equals(pd.getString("CONTRACTCLASSIFY"))){
+		/*if ("收款合同".equals(pd.getString("CONTRACTTYPES")) && "写字楼".equals(pd.getString("CONTRACTCLASSIFY"))){
 			PageData pd3 = new PageData();
 			pd3.put("OFFICECONTRACT_ID",get32UUID());
 			pd3.put("RECEIVABLE_O",pd.getString("RECEIVABLE_O"));
@@ -219,7 +223,7 @@ public class ContractController extends BaseController {
 			pd3.put("REMARK_O",pd.getString("REMARK_O"));
 			pd3.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
 			officecontractService.save(pd3);
-		}
+		}*/
 		if (pd.getString("CONTRACTTYPES") == "付款合同"){
 			PageData pd1 = new PageData();
 			pd1.put("PAYMENTCONTRACT_ID",get32UUID());
@@ -232,32 +236,19 @@ public class ContractController extends BaseController {
 			pd1.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
 			paymentcontractService.save(pd1);
 		}
-		if ("收款合同".equals(pd.getString("CONTRACTTYPES")) && !"写字楼".equals(pd.getString("CONTRACTCLASSIFY"))){
+		if ("收款合同".equals(pd.getString("CONTRACTTYPES"))){
 			PageData pd2 = new PageData();
 			pd2.put("PROCEEDSCONTRACT_ID",get32UUID());
 			pd2.put("PRINCIPAL",pd.getString("PRINCIPAL"));
 			pd2.put("RECEIVABLE",pd.get("RECEIVABLE").toString());
 			pd2.put("PAYERNAME",pd.getString("PAYERNAME"));
 			pd2.put("PAYTIME",pd.getString("PAYTIME"));
-			pd2.put("ISPAY",Integer.parseInt(pd.get("ISPAY").toString()));
+			//pd2.put("ISPAY",Integer.parseInt(pd.get("ISPAY").toString()));
 			pd2.put("RECEIVABLE_REALITY",pd.get("RECEIVABLE_REALITY").toString());
-			pd2.put("INVOICENAME",pd.getString("INVOICENAME"));
-			pd2.put("INVOICETIME",pd.getString("INVOICETIME"));
-			pd2.put("RECEIVABLECASH",pd.get("RECEIVABLECASH").toString());
-			pd2.put("PAYERNAME2",pd.get("PAYERNAME2").toString());
-			pd2.put("PAYTIME2",pd.getString("PAYTIME2"));
-			pd2.put("RECEIVABLE_REALITY2",pd.get("RECEIVABLE_REALITY2").toString());
 			pd2.put("RECEIVABL_PAYTIME",pd.getString("RECEIVABL_PAYTIME"));
-			pd2.put("RECEIVABL_PAYTIME2",pd.getString("RECEIVABL_PAYTIME2"));
-			pd2.put("ENTERTIME",pd.getString("ENTERTIME"));
-			pd2.put("ISENTERPROCEDURE",Integer.parseInt(pd.get("ISENTERPROCEDURE").toString()));
-			pd2.put("WITHDRAWALTIME",pd.getString("WITHDRAWALTIME"));
-			pd2.put("ISDRAWALPROCEDURE",Integer.parseInt(pd.get("ISDRAWALPROCEDURE").toString()));
-			pd2.put("RETURNCASH",pd.get("RETURNCASH").toString());
-			pd2.put("TRAINCOAMOUNT",pd.get("TRAINCOAMOUNT").toString());
-			pd2.put("INVOICENAME2",pd.getString("INVOICENAME2"));
-			pd2.put("INVOICETIME2",pd.getString("INVOICETIME2"));
 			pd2.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
+			pd2.put("OVERDUE",pd.getString("OVERDUE"));
+			pd2.put("FREMARK",pd.getString("FREMARK"));
 			//pd.put("CONTRACT_ID", this.get32UUID());	//主键
 			proceedscontractService.save(pd2);
 		}
