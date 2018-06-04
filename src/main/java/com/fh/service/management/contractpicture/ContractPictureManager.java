@@ -42,6 +42,8 @@ public interface ContractPictureManager{
 	 */
 	public List<PageData> listOneContractPic(Page page)throws Exception;
 
+	public List<PageData> listOneContractPdf(Page page)throws Exception;
+
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception

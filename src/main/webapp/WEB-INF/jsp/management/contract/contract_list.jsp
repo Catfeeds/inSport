@@ -144,18 +144,16 @@
                                     <th class="center">联系电话</th>
                                     <th class="center">项目</th>
                                     <th class="center">合同金额</th>
-                                    <th class="center">押金</th>
+                                   <%-- <th class="center">押金</th>
                                     <th class="center">合同签订使用时间</th>
                                     <th class="center">签约时间</th>
                                     <th class="center">经办人</th>
-
                                     <th class="center">印花税</th>
                                     <th class="center">印花税计提月份</th>
                                     <th class="center">税目</th>
                                     <th class="center">方式</th>
-
                                     <th class="center">合同类型</th>
-                                    <th class="center">招待票</th>
+                                    <th class="center">招待票</th>--%>
                                     <th class="center">操作</th>
                                 </tr>
                                 </thead>
@@ -166,7 +164,7 @@
                                     <c:when test="${not empty varList}">
                                         <c:if test="${QX.cha == 1 }">
                                             <c:forEach items="${varList}" var="var" varStatus="vs">
-                                                <tr id="${var.CONTRACT_ID}" onclick="changeColor('${var.CONTRACT_ID}');list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}','${var.CONTRACTNAME}')">
+                                                <tr id="${var.CONTRACT_ID}" ondblclick="show_contract('${var.CONTRACT_ID}')" onclick="changeColor('${var.CONTRACT_ID}');list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}','${var.CONTRACTNAME}')">
                                                     <td class='center'>
                                                         <label class="pos-rel"><input type='checkbox' name='ids'
                                                                                       value="${var.CONTRACT_ID}"
@@ -181,25 +179,21 @@
                                                     <td class='center'>${var.TELEPHONE}</td>
                                                     <td class='center'>${var.PROJECT}</td>
                                                     <td class='center'>${var.CONTRACTPIC}</td>
-                                                    <c:if test="${var.ISSTAMPDUTY == 1 }">
+                                                   <%-- <c:if test="${var.ISSTAMPDUTY == 1 }">
                                                         <td class='center'>${var.DEPOSIT}</td>
                                                     </c:if>
                                                     <c:if test="${var.ISSTAMPDUTY ==  0}">
                                                         <td class='center'>没有押金</td>
                                                     </c:if>
-
                                                     <td class='center'>${var.FUSEDATESTART} - ${var.FUSEDATEENT}</td>
-
                                                     <td class='center'>${var.FDATE}</td>
                                                     <td class='center'>${var.OPERATOR}</td>
-
                                                     <td class='center'>${var.STAMPDUTY}</td>
                                                     <td class='center'>${var.STAMPDUTYMONTH}</td>
                                                     <td class='center'>${var.TAXITEMS}</td>
                                                     <td class='center'>${var.MODE}</td>
-
                                                     <td class='center'>${var.CONTRACTTYPES}</td>
-                                                    <td class='center'>${var.INVITATIONTICKET}</td>
+                                                    <td class='center'>${var.INVITATIONTICKET}</td>--%>
                                                     <td class="center">
                                                         <c:if test="${QX.edit != 1 && QX.del != 1 }">
                                                             <span class="label label-large label-grey arrowed-in-right arrowed-in"><i
@@ -219,9 +213,13 @@
                                                                 </a>
                                                             </c:if>
                                                             <a class="btn btn-xs btn-info" title="预览图片"
-                                                               onclick="showPic('${var.CONTRACT_ID}')">
+                                                               onclick="show_contract('${var.CONTRACT_ID}')">
                                                                 <i class="ace-icon fa fa-laptop bigger-120" title="预览图片"></i>
                                                             </a>
+                                                           <%-- <a class="btn btn-xs btn-info" title="预览图片"
+                                                               onclick="showPic('${var.CONTRACT_ID}')">
+                                                                <i class="ace-icon fa fa-laptop bigger-120" title="预览图片"></i>
+                                                            </a>--%>
                                                             <c:if test="${QX.edit == 1 }">
                                                                 <a class="btn btn-xs btn-success" title="编辑"
                                                                    onclick="edit('${var.CONTRACT_ID}');">
@@ -301,6 +299,13 @@
                                 <table style="width:100%;">
                                     <tr>
                                         <td style="vertical-align:top;">
+                                            <label class="control-label" >显示全部：</label>
+                                            <label style="margin-top: 5px;margin-right: 15px">
+                                                <input onclick="showAlltd(this)"  name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox">	<span class="lbl"></span>
+                                            </label>
+                                            <%--<label style="margin-top: 5px;margin-right: 15px">
+                                                <input onclick="showAlltd(this)" name="switch-field-1" class="ace ace-switch ace-switch-3" type="checkbox"><span class="lbl"></span>
+                                            </label>--%>
                                             <c:if test="${QX.add == 1 }">
                                                 <a class="btn btn-mini btn-success" onclick="add();">新增</a>
                                             </c:if>
@@ -308,6 +313,7 @@
                                                 <a class="btn btn-mini btn-danger" onclick="makeAll('确定要删除选中的数据吗?');"
                                                    title="批量删除"><i class='ace-icon fa fa-trash-o bigger-120'></i></a>
                                             </c:if>
+
                                         </td>
                                         <td style="vertical-align:top;">
                                             <div class="pagination"
@@ -319,7 +325,7 @@
                         </form>
 
                     </div>
-                    <table style="margin-top:-5px;">
+                    <%--<table style="margin-top:-5px;">
                         <div style="width: 100%;height: 100%">
                             <iframe id="iframe" frameborder="0" scrolling="no" style="width: 100%;display: none;height: 200px" src=""></iframe>
                         </div>
@@ -333,7 +339,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </div><!-- PAGE CONTENT ENDS -->
+                    </div><!-- PAGE CONTENT ENDS -->--%>
 
                     <!-- /.col -->
                 </div>
@@ -378,6 +384,13 @@
         ],
         initMaximized: true
     });
+
+    function showAlltd(value) {
+        //$(value).prop("checked");
+        if($(value).prop("checked")){
+
+        }
+    }
 
     function selectDate(){
         var option = "";
@@ -621,6 +634,24 @@
         diag.URL = '<%=basePath%>contract/goEdit.do?CONTRACT_ID=' + Id;
         diag.Width = window.innerWidth * 0.9;
         diag.Height = window.innerHeight * 0.9;
+        diag.Modal = true;				//有无遮罩窗口
+        diag.ShowMaxButton = true;	//最大化按钮
+        diag.ShowMinButton = true;		//最小化按钮
+        diag.CancelEvent = function () { //关闭事件
+            tosearch();
+            diag.close();
+        };
+        diag.show();
+    }
+
+    function show_contract(CONTRACT_ID){
+        top.jzts();
+        var diag = new top.Dialog();
+        diag.Drag = true;
+        diag.Title = "查阅合同信息";
+        diag.URL = '<%=basePath%>contract/toShowContrct.do?CONTRACT_ID=' + CONTRACT_ID;
+        diag.Width = window.innerWidth * 1.2;
+        diag.Height = window.innerHeight * 1.2;
         diag.Modal = true;				//有无遮罩窗口
         diag.ShowMaxButton = true;	//最大化按钮
         diag.ShowMinButton = true;		//最小化按钮

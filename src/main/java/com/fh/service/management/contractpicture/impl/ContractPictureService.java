@@ -62,6 +62,10 @@ public class ContractPictureService implements ContractPictureManager{
 		return (List<PageData>)dao.findForList("ContractPictureMapper.listOneContractPic", page);
 	}
 
+	public List<PageData> listOneContractPdf(Page page)throws Exception{
+		return (List<PageData>)dao.findForList("ContractPictureMapper.listOneContractPdf", page);
+	}
+
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception

@@ -162,7 +162,9 @@ public class ContractPictureController extends BaseController {
 		PageData pd = this.getPageData();
 		page.setPd(pd);
 		List<PageData> listOnePic = contractpictureService.listOneContractPic(page);
+		List<PageData> listOnePdf = contractpictureService.listOneContractPdf(page);
 		json.put("listOnePic",listOnePic);
+		json.put("listOnePdf",listOnePdf);
 		return json;
 	}
 	

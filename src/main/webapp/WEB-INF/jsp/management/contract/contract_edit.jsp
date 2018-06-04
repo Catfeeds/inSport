@@ -566,13 +566,13 @@
 	}
 
 
-	function isENTERPROCEDURE(value){
+	/*function isENTERPROCEDURE(value){
 		$("#ISENTERPROCEDURE").val(value);
 	}
 
 	function isDRAWALPROCEDURE(value) {
 		$("#ISDRAWALPROCEDURE").val(value);
-	}
+	}*/
 
 	function addTrFp(CONTRACT_ID) {
 		var uuid = "";
@@ -792,17 +792,9 @@
 		if($("#CONTRACTTYPES").find("option:selected").attr("value") == "付款合同"){
 			$("#paymentContarct").css("display","");
 			$("#proceedsContract").css("display","none");
-			$("#officeContract").css("display","none");
-		}else if($("#CONTRACTTYPES").find("option:selected").attr("value") == "收款合同"
-				&& $("#CONTRACTCLASSIFY").find("option:selected").attr("value") !="写字楼"){
+		}else if($("#CONTRACTTYPES").find("option:selected").attr("value") == "收款合同"){
 			$("#proceedsContract").css("display","");
 			$("#paymentContarct").css("display","none");
-			$("#officeContract").css("display","none");
-		}else if($("#CONTRACTTYPES").find("option:selected").attr("value") == "收款合同"
-				&& $("#CONTRACTCLASSIFY").find("option:selected").attr("value") =="写字楼"){
-			$("#proceedsContract").css("display","none");
-			$("#paymentContarct").css("display","none");
-			$("#officeContract").css("display","");
 		}
 		var FNAME = $("#CONTRACTCLASSIFY").find("option:selected").attr("name");
 		if (FNAME == "大型体育赛事场地租赁" || FNAME == "文艺演出场地租赁"){
@@ -850,20 +842,10 @@
 		}else {
 			$("#INVITATIONTICKET").attr("readonly","readonly");
 		}
-		if (FNAME == "写字楼" || FNAME == "写字楼"){
-			$("#proceedsContract").css("display","none");
-			$("#paymentContarct").css("display","none");
-			$("#officeContract").css("display","");
-		}else {
-			$("#proceedsContract").css("display","");
-			$("#officeContract").css("display","none");
-			$("#paymentContarct").css("display","none");
-		}
 	})
 
 	$("#CONTRACTTYPES").change(function(){
 		var FPARENTID = $("#CONTRACTTYPES").find("option:selected").attr("name");
-		//alert($("#CONTRACTTYPES").find("option:selected").attr("value"));
 		if($("#CONTRACTTYPES").find("option:selected").attr("value") == "付款合同"){
 			$("#paymentContarct").css("display","");
 			$("#proceedsContract").css("display","none");
@@ -871,7 +853,6 @@
 			$("#proceedsContract").css("display","");
 			$("#paymentContarct").css("display","none");
 		}
-		//paymentContarct
 		$.ajax({
 			async: false,
 			cache: false,
@@ -879,7 +860,6 @@
 			data : {
 				FPARENTID : FPARENTID
 			},
-			//dataType:"String",
 			url: '<%=basePath%>contract/listCheClassify',
 			success: function (data) {
 				var listCheClassify = data.listCheClassify;
@@ -895,15 +875,9 @@
 				alert("请求失败");
 			}
 		});
-		//alert($("#pselect").find("option:selected").attr("name"));
 	});
 	
-	/*function selectType(value) {
-		alert(value.id);
-	}*/
-
 	$("#TAXITEMS").change(function(){
-		//var FNAME = $("#TAXITEMS").find("option:selected").text();
 		var coe = $("#TAXITEMS").find("option:selected").attr("name");
 		var CONTRACTPIC = $("#CONTRACTPIC").val();
 		if (CONTRACTPIC !=null || CONTRACTPIC != ""){
@@ -911,7 +885,6 @@
 		}
 	});
 	function changeStampduty() {
-		//var FNAME = $("#TAXITEMS").find("option:selected").attr("name");
 		var coe = $("#TAXITEMS").find("option:selected").attr("name");
 		var CONTRACTPIC = $("#CONTRACTPIC").val();
 		if (CONTRACTPIC !=null || CONTRACTPIC != ""){
@@ -923,21 +896,6 @@
 		$("#ISENTERPROCEDURE").val(value);
 	}
 
-	function isDRAWALPROCEDURE_O(value){
-		$("#ISDRAWALPROCEDURE_O").val(value);
-	}
-
-	function isENTERPROCEDURE1_O(value) {
-		$("#ISENTERPROCEDURE1_O").val(value);
-	}
-
-	function isENTERPROCEDURE_O(value){
-		$("#ISENTERPROCEDURE_O").val(value);
-	}
-
-	function isDRAWALPROCEDURE1_O(value){
-		$("#ISDRAWALPROCEDURE1_O").val(value);
-	}
 
 	function isPAY(value) {
 		$("#ISPAY").val(value);
@@ -1064,38 +1022,6 @@
 			$("#FDATE").focus();
 			return false;
 		}
-		/*if($("#DEPOSIT").attr("readonly") != "readonly"){
-			if($("#DEPOSIT").val()==""){
-				$("#DEPOSIT").tips({
-					side:3,
-					msg:'请输入押金',
-					bg:'#AE81FF',
-					time:2
-				});
-				$("#DEPOSIT").focus();
-				return false;
-			}
-		}*/
-		/*if($("#STAMPDUTY").val()==""){
-			$("#STAMPDUTY").tips({
-				side:3,
-				msg:'请输入印花税',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#STAMPDUTY").focus();
-			return false;
-		}*/
-		/*if($("#STAMPDUTYMONTH").val()==""){
-			$("#STAMPDUTYMONTH").tips({
-				side:3,
-				msg:'请输入印花税计提月份',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#STAMPDUTYMONTH").focus();
-			return false;
-		}*/
 		if($("#TAXITEMS").val()==""){
 			$("#TAXITEMS").tips({
 				side:3,
@@ -1146,16 +1072,6 @@
 			$("#TAXITEMS").focus();
 			return false;
 		}
-		/*if($("#INVITATIONTICKET").val()==""){
-			$("#INVITATIONTICKET").tips({
-				side:3,
-				msg:'请输入招待票',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#INVITATIONTICKET").focus();
-			return false;
-		}*/
 		$("#Form").submit();
 		$("#zhongxin").hide();
 		$("#zhongxin2").show();

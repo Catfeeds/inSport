@@ -13,7 +13,8 @@
 		URL_PIC,	
 		CONTRACT_ID,	
 		REMARK,	
-		NUMBER,	
+		NUMBER,
+		TYPE,
 		CONTRACTPICTURE_ID
 	</sql>
 	
@@ -23,7 +24,8 @@
 		#{URL_PIC},	
 		#{CONTRACT_ID},	
 		#{REMARK},	
-		#{NUMBER},	
+		#{NUMBER},
+		#{TYPE},
 		#{CONTRACTPICTURE_ID}
 	</sql>
 	
@@ -56,6 +58,7 @@
 			CONTRACT_ID = #{CONTRACT_ID},
 			REMARK = #{REMARK},
 			NUMBER = #{NUMBER},
+		TYPE = #{TYPE},
 		CONTRACTPICTURE_ID = CONTRACTPICTURE_ID
 		where 
 		CONTRACTPICTURE_ID = #{CONTRACTPICTURE_ID}
@@ -78,7 +81,18 @@
 		<include refid="tableName"></include>
 		where 1=1
 		<if test="pd.CONTRACT_ID!= null and pd.CONTRACT_ID != ''"><!-- 关键词检索 -->
-			and CONTRACT_ID = #{pd.CONTRACT_ID}
+			and CONTRACT_ID = #{pd.CONTRACT_ID} AND TYPE LIKE '%image/%'
+		</if>
+	</select>
+
+	<select id="listOneContractPdf" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where 1=1
+		<if test="pd.CONTRACT_ID!= null and pd.CONTRACT_ID != ''"><!-- 关键词检索 -->
+			and CONTRACT_ID = #{pd.CONTRACT_ID} AND TYPE LIKE '%pdf%'
 		</if>
 	</select>
 

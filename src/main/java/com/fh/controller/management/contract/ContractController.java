@@ -149,7 +149,7 @@ public class ContractController extends BaseController {
 			}
 			return sb.substring(0, sb.length() - 1) + "]";
 		}catch (Exception e){
-			System.out.println("");
+			//System.out.println("");
 		}
 
 		return "";
@@ -161,7 +161,6 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		System.out.println(pd);
 		if("收款合同".equals(pd.getString("CONTRACTTYPES"))){
 			PageData pd1 = proceedscontractService.findByContractId(pd);	//列出ProceedsContract列表
 			mv.setViewName("management/proceedscontract/proceedscontract_list_one");
@@ -186,47 +185,6 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		/*if ("收款合同".equals(pd.getString("CONTRACTTYPES")) && "写字楼".equals(pd.getString("CONTRACTCLASSIFY"))){
-			PageData pd3 = new PageData();
-			pd3.put("OFFICECONTRACT_ID",get32UUID());
-			pd3.put("RECEIVABLE_O",pd.getString("RECEIVABLE_O"));
-			pd3.put("PAYTIME_O",pd.getString("PAYTIME_O"));
-			pd3.put("RECEIVABLE_REALITY_O",pd.getString("RECEIVABLE_REALITY_O"));
-			pd3.put("RECEIVABL_PAYTIME_O",pd.getString("RECEIVABL_PAYTIME_O"));
-			pd3.put("PAYERNAME_O",pd.getString("PAYERNAME_O"));
-			pd3.put("INVOICENAME_O",pd.getString("INVOICENAME_O"));
-			pd3.put("INVOICETIME_O",pd.getString("INVOICETIME_O"));
-			pd3.put("RECEIVABLECASH_O",pd.getString("RECEIVABLECASH_O"));
-			pd3.put("RECEIVABLE_REALITY2_O",pd.getString("RECEIVABLE_REALITY2_O"));
-			pd3.put("RECEIVABL_PAYTIME2_O",pd.getString("RECEIVABL_PAYTIME2_O"));
-			pd3.put("PAYERNAME2_O",pd.getString("PAYERNAME2_O"));
-			pd3.put("PAYTIME2_O",pd.getString("PAYTIME2_O"));
-			pd3.put("ENTERTIME_O",pd.getString("ENTERTIME_O"));
-			pd3.put("ISENTERPROCEDURE_O",pd.getString("ISENTERPROCEDURE_O"));
-			pd3.put("WITHDRAWALTIME_O",pd.getString("WITHDRAWALTIME_O"));
-			pd3.put("ISDRAWALPROCEDURE_O",pd.getString("ISDRAWALPROCEDURE_O"));
-			pd3.put("RETURNCASH_O",pd.getString("RETURNCASH_O"));
-			pd3.put("TRAINCOAMOUNT_O",pd.getString("TRAINCOAMOUNT_O"));
-			pd3.put("INVOICENAME2_O",pd.getString("INVOICENAME2_O"));
-			pd3.put("INVOICETIME2_O",pd.getString("INVOICETIME2_O"));
-			pd3.put("RECEIVABLECASH1_O",pd.getString("RECEIVABLECASH1_O"));
-			pd3.put("PAYTIME3_O",pd.getString("PAYTIME3_O"));
-			pd3.put("RECEIVABLE_REALITY3_O",pd.getString("RECEIVABLE_REALITY3_O"));
-			pd3.put("RECEIVABL_PAYTIME3_O",pd.getString("RECEIVABL_PAYTIME3_O"));
-			pd3.put("PAYERNAME3_O",pd.getString("PAYERNAME3_O"));
-			pd3.put("RETURNCASH1_O",pd.getString("RETURNCASH1_O"));
-			pd3.put("TRAINCOAMOUNT1_O",pd.getString("TRAINCOAMOUNT1_O"));
-			pd3.put("ENTERTIME1_O",pd.getString("ENTERTIME1_O"));
-			pd3.put("ISENTERPROCEDURE1_O",pd.getString("ISENTERPROCEDURE1_O"));
-			pd3.put("WITHDRAWALTIME1_O",pd.getString("WITHDRAWALTIME1_O"));
-			pd3.put("ISDRAWALPROCEDURE1_O",pd.getString("ISDRAWALPROCEDURE1_O"));
-			pd3.put("INVOICENAME3_O",pd.getString("INVOICENAME3_O"));
-			pd3.put("INVOICETIME3_O",pd.getString("INVOICETIME3_O"));
-			pd3.put("OVERDUE_O",pd.getString("OVERDUE_O"));
-			pd3.put("REMARK_O",pd.getString("REMARK_O"));
-			pd3.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
-			officecontractService.save(pd3);
-		}*/
 		if (pd.getString("CONTRACTTYPES") == "付款合同"){
 			PageData pd1 = new PageData();
 			pd1.put("PAYMENTCONTRACT_ID",get32UUID());
@@ -317,85 +275,6 @@ public class ContractController extends BaseController {
 		mv.addObject("listOfficeDetail", listOfficeDetail);
 		return mv;
 	}
-	/*@RequestMapping(value="/openPayT")
-	public ModelAndView openPayT(Page page) throws Exception{
-		ModelAndView mv = this.getModelAndView();
-		PageData pd = new PageData();
-		pd = this.getPageData();
-		pd = contractService.findById(pd);
-		int start_year = Integer.valueOf(pd.getString("FUSEDATESTART").substring(0,4));
-		int end_year = Integer.valueOf(pd.getString("FUSEDATEENT").substring(0,4));
-		int start_month = Integer.valueOf(pd.getString("FUSEDATESTART").substring(5,7));
-		int end_month = Integer.valueOf(pd.getString("FUSEDATEENT").substring(5,7));
-		System.out.println(pd);
-		PageData payPd = paymentcontractService.findByContractId(pd);
-		List<PageData> listpays = paytableService.findByContractId(pd);
-		ArrayList<String> arr = new ArrayList<String>();
-		PageData maxpd = paytableService.findtime_max(pd);
-		PageData sumPaypd = paytableService.findPay_sum(pd);
-		Double everyMonthPay;
-		Double onPayPic;
-		DecimalFormat df = new DecimalFormat("#0.00");
-		DecimalFormat dften=new DecimalFormat("00");
-		String payDay = dften.format(Integer.valueOf(payPd.getString("PAYDAY")));
-		//当已经存在有付款数据时---
-		if(maxpd != null && !"".equals(maxpd)){
-			int max_year = Integer.valueOf(maxpd.getString("SHPAYTIME").substring(0,4));
-			int max_month = Integer.valueOf(maxpd.getString("SHPAYTIME").substring(5,maxpd.getString("SHPAYTIME").lastIndexOf("-")));
-			if((end_year - max_year) == 0){
-				for (int i = max_month+1; i <= end_month; i++) {
-					arr.add(max_year+"-"+dften.format(i)+"-"+payDay);
-				}
-			}else {
-				for (int i = max_month+1; i <= 12; i++) {
-					arr.add(max_year+"-"+dften.format(i)+"-"+payDay);
-				}
-				for (int i = max_year+1; i < end_year; i++) {
-					for (int j = 1; j < 13; j++) {
-						arr.add(i+"-"+dften.format(j)+"-"+payDay);
-					}
-
-				}
-				for (int i = 1; i <= end_month; i++) {
-					arr.add(end_year+"-"+dften.format(i)+"-"+payDay);
-				}
-			}
-			mv.addObject("count", arr.size()+listpays.size());
-			onPayPic = Double.valueOf(pd.get("CONTRACTPIC").toString()) - Double.valueOf(sumPaypd.get("SUM_REALITYPAY").toString());
-		}else {
-			if((end_year - start_year) == 0){
-				for (int i = start_month; i <= end_month; i++) {
-					arr.add(start_year+"-"+dften.format(i)+"-"+payDay);
-				}
-			}else {
-				for (int i = start_month; i <= 12; i++) {
-					arr.add(start_year+"-"+dften.format(i)+"-"+payDay);
-				}
-				for (int i = start_year+1; i < end_year; i++) {
-					for (int j = 1; j < 13; j++) {
-						arr.add(i+"-"+dften.format(j)+"-"+payDay);
-					}
-
-				}
-				for (int i = 1; i <= end_month; i++) {
-					arr.add(end_year+"-"+dften.format(i)+"-"+payDay);
-				}
-			}
-			onPayPic = Double.valueOf(pd.get("CONTRACTPIC").toString());
-			mv.addObject("count", arr.size());
-		}
-		//未付款金额
-		everyMonthPay = onPayPic / arr.size();
-		mv.setViewName("management/contract/contract_openpay");
-		mv.addObject("listpays", listpays);
-		mv.addObject("arr", arr);
-		mv.addObject("onPayPic", onPayPic);
-		pd.put("PAYPRIMARY_ID",this.get32UUID());
-		mv.addObject("pd", pd);
-		mv.addObject("everyMonthPay", df.format(everyMonthPay));
-		mv.addObject("payPd", payPd);
-		return mv;
-	}*/
 
 	@RequestMapping(value="/savePic")
 	@ResponseBody
@@ -409,6 +288,7 @@ public class ContractController extends BaseController {
 		PageData pd = new PageData();
 		String filePath = "";
 		String fileOriginalName = file.getOriginalFilename();
+		String fileType = file.getContentType();
 		if(Jurisdiction.buttonJurisdiction(menuUrl, "add")){
 			if (null != file && !file.isEmpty()) {
 				filePath = PathUtil.getClasspath() + Const.FILEPATHIMG + ffile;		//文件上传路径
@@ -419,7 +299,8 @@ public class ContractController extends BaseController {
 			}
 			String urlPrefix = filePath.substring(0,filePath.lastIndexOf("WEB-INF/classes/"));
 			pd.put("CONTRACTPICTURE_ID", this.get32UUID());
-			pd.put("NAME", fileName);
+			pd.put("NAME", fileOriginalName);
+			pd.put("TYPE",fileType);
 			pd.put("URL_PIC", filePath.substring(urlPrefix.length(),filePath.length())+"/"+fileOriginalName);
 			pd.put("CONTRACT_ID", CONTRACT_ID);
 			contractpictureService.save(pd);
@@ -455,51 +336,6 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		/*if ("收款合同".equals(pd.getString("CONTRACTTYPES")) && "写字楼".equals(pd.getString("CONTRACTCLASSIFY"))){
-			PageData pd3 = new PageData();
-			if(pd.getString("OFFICECONTRACT_ID") == null || "".equals(pd.getString("OFFICECONTRACT_ID"))){
-				pd3.put("OFFICECONTRACT_ID",get32UUID());
-			}else {
-				pd3.put("OFFICECONTRACT_ID",pd.getString("OFFICECONTRACT_ID"));
-			}
-			pd3.put("RECEIVABLE_O",pd.getString("RECEIVABLE_O"));
-			pd3.put("PAYTIME_O",pd.getString("PAYTIME_O"));
-			pd3.put("RECEIVABLE_REALITY_O",pd.getString("RECEIVABLE_REALITY_O"));
-			pd3.put("RECEIVABL_PAYTIME_O",pd.getString("RECEIVABL_PAYTIME_O"));
-			pd3.put("PAYERNAME_O",pd.getString("PAYERNAME_O"));
-			pd3.put("INVOICENAME_O",pd.getString("INVOICENAME_O"));
-			pd3.put("INVOICETIME_O",pd.getString("INVOICETIME_O"));
-			pd3.put("RECEIVABLECASH_O",pd.getString("RECEIVABLECASH_O"));
-			pd3.put("RECEIVABLE_REALITY2_O",pd.getString("RECEIVABLE_REALITY2_O"));
-			pd3.put("RECEIVABL_PAYTIME2_O",pd.getString("RECEIVABL_PAYTIME2_O"));
-			pd3.put("PAYERNAME2_O",pd.getString("PAYERNAME2_O"));
-			pd3.put("ENTERTIME_O",pd.getString("ENTERTIME_O"));
-			pd3.put("PAYTIME2_O",pd.getString("PAYTIME2_O"));
-			pd3.put("ISENTERPROCEDURE_O",pd.getString("ISENTERPROCEDURE_O"));
-			pd3.put("WITHDRAWALTIME_O",pd.getString("WITHDRAWALTIME_O"));
-			pd3.put("ISDRAWALPROCEDURE_O",pd.getString("ISDRAWALPROCEDURE_O"));
-			pd3.put("RETURNCASH_O",pd.getString("RETURNCASH_O"));
-			pd3.put("TRAINCOAMOUNT_O",pd.getString("TRAINCOAMOUNT_O"));
-			pd3.put("INVOICENAME2_O",pd.getString("INVOICENAME2_O"));
-			pd3.put("INVOICETIME2_O",pd.getString("INVOICETIME2_O"));
-			pd3.put("RECEIVABLECASH1_O",pd.getString("RECEIVABLECASH1_O"));
-			pd3.put("PAYTIME3_O",pd.getString("PAYTIME3_O"));
-			pd3.put("RECEIVABLE_REALITY3_O",pd.getString("RECEIVABLE_REALITY3_O"));
-			pd3.put("RECEIVABL_PAYTIME3_O",pd.getString("RECEIVABL_PAYTIME3_O"));
-			pd3.put("PAYERNAME3_O",pd.getString("PAYERNAME3_O"));
-			pd3.put("RETURNCASH1_O",pd.getString("RETURNCASH1_O"));
-			pd3.put("TRAINCOAMOUNT1_O",pd.getString("TRAINCOAMOUNT1_O"));
-			pd3.put("ENTERTIME1_O",pd.getString("ENTERTIME1_O"));
-			pd3.put("ISENTERPROCEDURE1_O",pd.getString("ISENTERPROCEDURE1_O"));
-			pd3.put("WITHDRAWALTIME1_O",pd.getString("WITHDRAWALTIME1_O"));
-			pd3.put("ISDRAWALPROCEDURE1_O",pd.getString("ISDRAWALPROCEDURE1_O"));
-			pd3.put("INVOICENAME3_O",pd.getString("INVOICENAME3_O"));
-			pd3.put("INVOICETIME3_O",pd.getString("INVOICETIME3_O"));
-			pd3.put("OVERDUE_O",pd.getString("OVERDUE_O"));
-			pd3.put("REMARK_O",pd.getString("REMARK_O"));
-			pd3.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
-			officecontractService.edit(pd3);
-		}*/
 		if ("付款合同".equals(pd.getString("CONTRACTTYPES"))){
 			PageData pd1 = new PageData();
 			if(pd.getString("PAYMENTCONTRACT_ID") == null || "".equals(pd.getString("PAYMENTCONTRACT_ID"))){
@@ -537,6 +373,7 @@ public class ContractController extends BaseController {
 			pd2.put("RECEIVABLE_REALITY",pd.get("RECEIVABLE_REALITY").toString());
 			pd2.put("RECEIVABL_PAYTIME",pd.getString("RECEIVABL_PAYTIME"));
 			pd2.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
+			pd2.put("OVERDUE",pd.getString("OVERDUE"));
 			pd2.put("FREMARK",pd.getString("FREMARK"));
 			if (findProPd == null){
 				proceedscontractService.save(pd2);
@@ -561,7 +398,7 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		System.out.println("用户："+Jurisdiction.getUsername());
+		//System.out.println("用户："+Jurisdiction.getUsername());
 		if(pd.getString("USERNAME") == null || "".equals(pd.getString("USERNAME"))){
 			pd.put("USERNAME",Jurisdiction.getUsername());
 		}
@@ -632,7 +469,46 @@ public class ContractController extends BaseController {
 		mv.addObject("listMode", listMode);
 		mv.addObject("pd", pd);
 		return mv;
-	}	
+	}
+
+	@RequestMapping(value="/toShowContrct")
+	public ModelAndView toShowContrct(Page page)throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = contractService.findById(pd);	//根据ID读取
+		page.setPd(pd);
+		List<PageData> listPIdClassify = classifyService.listPIdClassify(page);
+		List<PageData> listDepositInfo = depositinfoService.listByContractId(pd);
+		List<PageData> listInvoice = invoiceService.listByContractId(pd);
+		List<PageData> listMode = modeService.listAll(pd);
+		List<PageData> listOperator = operatorService.listAll(pd);
+		PageData pd1 = paymentcontractService.findByContractId(pd);
+		PageData pd2 = proceedscontractService.findByContractId(pd);
+		//PageData pd3 = officecontractService.findByContractId(pd);
+		List<PageData> listItems = taxitemsService.listAll(pd);
+		ArrayList<String> listmonth = new ArrayList<String>();
+		List<PageData> listDeptNo = deptnoService.listAll(pd);
+		DecimalFormat dften = new DecimalFormat("00");
+		for (int i = 1; i <= 12; i++) {
+			listmonth.add(dften.format(i));
+		}
+		mv.setViewName("management/contract/contract_show");
+		mv.addObject("msg", "editInfo");
+		mv.addObject("listDeptNo",listDeptNo);
+		mv.addObject("listOperator",listOperator);
+		mv.addObject("listmonth", listmonth);
+		mv.addObject("listPIdClassify", listPIdClassify);
+		mv.addObject("listMode", listMode);
+		mv.addObject("listInvoice", listInvoice);
+		mv.addObject("listDepositInfo", listDepositInfo);
+		mv.addObject("listItems", listItems);
+		mv.addObject("pd", pd);
+		mv.addObject("pd1", pd1);
+		mv.addObject("pd2", pd2);
+		//mv.addObject("pd3", pd3);
+		return mv;
+	}
 	
 	 /**去修改页面
 	 * @param
@@ -690,7 +566,7 @@ public class ContractController extends BaseController {
 			DecimalFormat dften = new DecimalFormat("000");
 			String maxStr = maxNo.getString("maxNo");
 			int max = Integer.parseInt(maxStr.substring(maxStr.length()-2,maxStr.length())) + 1;
-			System.out.println("输出最大数:"+dften.format(max));
+			//System.out.println("输出最大数:"+dften.format(max));
 			json.put("maxNo",dften.format(max));
 		}else {
 			json.put("maxNo","01");
@@ -711,7 +587,7 @@ public class ContractController extends BaseController {
 		}
 		page.setPd(pd);
 		List<PageData> listCheClassify = classifyService.listIdClassify(page);
-		System.out.println(listCheClassify);
+		//System.out.println(listCheClassify);
 		json.put("listCheClassify",listCheClassify);
 		return  json;
 	}
