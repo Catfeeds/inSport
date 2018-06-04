@@ -66,6 +66,16 @@ public class InvoiceController extends BaseController {
 		invoiceService.save(pd);
 		return  json;
 	}
+
+	@RequestMapping(value = "/editInfo")
+	@ResponseBody
+	public Map<String, Object> editInfo(Page page)throws Exception {
+		Map<String, Object> json = new HashMap<String, Object>();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		invoiceService.edit(pd);
+		return  json;
+	}
 	
 	/**删除
 	 * @param out

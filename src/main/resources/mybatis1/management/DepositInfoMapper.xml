@@ -82,7 +82,6 @@
 			TRAINCOAMOUNT = #{TRAINCOAMOUNT},
 			INVOICENAME = #{INVOICENAME},
 			INVOICETIME = #{INVOICETIME},
-			CONTRACT_ID = #{CONTRACT_ID},
 		DEPOSITINFO_ID = DEPOSITINFO_ID
 		where 
 		DEPOSITINFO_ID = #{DEPOSITINFO_ID}
@@ -115,6 +114,14 @@
 				-->
 				)
 		</if>
+	</select>
+
+	<select id="listByContractId" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		WHERE CONTRACT_ID = #{CONTRACT_ID} ORDER BY NUM
 	</select>
 	
 	<!-- 列表(全部) -->

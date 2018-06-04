@@ -88,7 +88,7 @@
                                         <td style="padding-left:12px;">
                                             <label style="margin-top: 5px">部门:</label>
                                             <select name="DEPTNAME" id="DEPTNAME" data-placeholder=""
-                                                    style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
+                                                    style="vertical-align:top;width: 110px;" onchange="selectType(this.value);">
                                                 <option value="${pd.DEPTNAME}" name="${pd.DEPTNAME}">${pd.DEPTNAME}</option>
                                                 <c:forEach items="${listDept}" var="var" varStatus="vs">
                                                     <option  value="${var.DEPTNAME}" >${var.DEPTNAME}</option>
@@ -99,16 +99,16 @@
                                     <td style="padding-left:12px;">
                                         <label style="margin-top: 5px">年份:</label>
                                         <select name="YEAR" id="YEAR" data-placeholder=""
-                                                style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
+                                                style="vertical-align:top;width: 120px;" onchange="selectType(this.value);">
                                             <option value="${pd.YEAR}" name="${pd.YEAR}">${pd.YEAR}</option>
                                         </select>
                                     </td>
                                     <td style="padding-left:12px;">
                                         <label>合同金额区间:</label>
-                                        <input type="number" placeholder="这里输入金额" style="width: 110px" class="nav-search-input"
+                                        <input type="number" placeholder="输入金额" style="width: 110px" class="nav-search-input"
                                                id="picStart" autocomplete="off" name="picStart"
                                                value="${pd.picStart }" />  -至-
-                                        <input type="number" placeholder="这里输入金额" style="width: 110px" class="nav-search-input"
+                                        <input type="number" placeholder="输入金额" style="width: 110px" class="nav-search-input"
                                                id="picEnd" autocomplete="off" name="picEnd"
                                                value="${pd.picEnd }" />
                                     </td>
@@ -205,17 +205,17 @@
                                                             <span class="label label-large label-grey arrowed-in-right arrowed-in"><i
                                                                     class="ace-icon fa fa-lock" title="无权限"></i></span>
                                                         </c:if>
-                                                        <div class="hidden-sm hidden-xs btn-group">
+                                                       <%-- <div class="hidden-sm hidden-xs btn-group">--%>
                                                             <c:if test="${var.CONTRACTTYPES == '付款合同' }">
                                                                 <a class="btn btn-xs btn-success" title="打开付款表格"
                                                                    onclick="openPayT('${var.CONTRACT_ID}')">
                                                                     <i class="ace-icon fa fa-calendar bigger-120" title="打开付款表格"></i>
                                                                 </a>
                                                             </c:if>
-                                                            <c:if test="${var.CONTRACTCLASSIFY == '写字楼' }">
-                                                                <a class="btn btn-xs btn-success" title="打开写字楼表格"
+                                                            <c:if test="${var.CONTRACTTYPES == '收款合同' }">
+                                                                <a class="btn btn-xs" style="background-color: lightgoldenrodyellow" title="打开收款表格"
                                                                    onclick="openOfficeT('${var.CONTRACT_ID}')">
-                                                                    <i class="ace-icon fa fa-calendar bigger-120" title="打开写字楼表格"></i>
+                                                                    <i class="ace-icon fa fa-calendar bigger-120" title="打开收款表格"></i>
                                                                 </a>
                                                             </c:if>
                                                             <a class="btn btn-xs btn-info" title="预览图片"
@@ -235,7 +235,7 @@
                                                                     <i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
                                                                 </a>
                                                             </c:if>
-                                                        </div>
+                                                       <%-- </div>--%>
                                                         <div class="hidden-md hidden-lg">
                                                             <div class="inline pos-rel">
                                                                 <button class="btn btn-minier btn-primary dropdown-toggle"

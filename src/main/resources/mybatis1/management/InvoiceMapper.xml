@@ -49,10 +49,8 @@
 		update
 		<include refid="tableName"></include>
 		set 
-			CONTRACT_ID = #{CONTRACT_ID},
 			INVOICENAME = #{INVOICENAME},
 			INVOICETIME = #{INVOICETIME},
-			REMARK = #{REMARK},
 		INVOICE_ID = INVOICE_ID
 		where 
 		INVOICE_ID = #{INVOICE_ID}
@@ -93,6 +91,14 @@
 		<include refid="Field"></include>
 		from 
 		<include refid="tableName"></include>
+	</select>
+
+	<select id="listByContractId" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		WHERE CONTRACT_ID = #{CONTRACT_ID} ORDER BY NUM
 	</select>
 	
 	<!-- 批量删除 -->

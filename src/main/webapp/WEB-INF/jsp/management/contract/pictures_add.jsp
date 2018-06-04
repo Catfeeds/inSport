@@ -268,8 +268,8 @@
 
 					accept: {
 						title: 'Images',
-						extensions: 'gif,jpg,jpeg,bmp,png',
-						mimeTypes: 'image/*'
+						extensions: 'gif,jpg,jpeg,bmp,png,pdf',
+						mimeTypes: 'image/*,application/pdf'
 					},
 
 					// 禁掉全局的拖拽功能。这样不会出现图片拖进页面的时候，把图片打开。

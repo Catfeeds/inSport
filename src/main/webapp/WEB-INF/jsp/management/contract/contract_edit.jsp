@@ -55,11 +55,7 @@
 							<input type="hidden" name="ISPAY" id="ISPAY" value="${pd2.ISPAY}"/>
 							<input type="hidden" name="DEPTNAME" id="DEPTNAME" value="${pd.DEPTNAME}"/>
 							<input type="hidden" name="ISENTERPROCEDURE" id="ISENTERPROCEDURE" value="${pd2.ISENTERPROCEDURE}"/>
-							<input type="hidden" name="ISDRAWALPROCEDURE1_O" id="ISDRAWALPROCEDURE1_O" value="${pd3.ISDRAWALPROCEDURE1_O}"/>
-							<input type="hidden" name="ISENTERPROCEDURE1_O" id="ISENTERPROCEDURE1_O" value="${pd3.ISENTERPROCEDURE_O}"/>
 							<input type="hidden" name="OFFICECONTRACT_ID" id="OFFICECONTRACT_ID" value="${pd3.OFFICECONTRACT_ID}"/>
-							<input type="hidden" name="ISENTERPROCEDURE_O" id="ISENTERPROCEDURE_O" value="${pd3.ISENTERPROCEDURE_O}"/>
-							<input type="hidden" name="ISDRAWALPROCEDURE_O" id="ISDRAWALPROCEDURE_O" value="${pd3.ISDRAWALPROCEDURE_O}"/>
 							<input type="hidden" name="PROCEEDSCONTRACT_ID" id="PROCEEDSCONTRACT_ID" value="${pd2.PROCEEDSCONTRACT_ID}"/>
 							<input type="hidden" name="PAYMENTCONTRACT_ID" id="PAYMENTCONTRACT_ID" value="${pd1.PAYMENTCONTRACT_ID}"/>
 							<input type="hidden" name="ISDRAWALPROCEDURE" id="ISDRAWALPROCEDURE" value="${pd2.ISDRAWALPROCEDURE}"/>
@@ -274,6 +270,28 @@
 									</th>--%>
 
 								</tr>
+								<c:if test="${not empty listInvoice }">
+									<c:forEach items="${listInvoice}" var="var" varStatus="vs">
+										<tr id="tr${var.INVOICE_ID}" class="success">
+											<th ><label>发票名称：</label></th>
+											<th  ><input type="text" style="width: 150px;height: 31px" value="${var.INVOICENAME}"
+														 class="input-text"  name="INVOICENAME"
+														 id="ivn${var.INVOICE_ID}"></th>
+											<th  ><label>开票时间：</label></th>
+											<th  ><input type="date" style="width: 150px;height: 31px" value="${var.INVOICETIME}"
+														 class="input-text"  name="INVOICETIME"
+														 id="ivt${var.INVOICE_ID}" ></th>
+											<th  ><a class="btn btn-xs blue" title="确认修改"
+													 onclick="editInvoice('${var.INVOICE_ID}');">
+												<i class="ace-icon fa fa-pencil-square-o bigger-120" title="确认修改"></i></a>
+												<a class="btn btn-mini btn-danger" title="删除该发票项"
+												   onclick="delInvoice('${var.INVOICE_ID}');">
+												<i class="ace-icon fa fa-trash-o bigger-120" title="删除该发票项"></i></a>
+											</th>
+											<th></th>
+										</tr>
+									</c:forEach>
+								</c:if>
 								<tr id="fp${pd.CONTRACT_ID}"></tr>
 								<tr>
 									<th>
@@ -282,6 +300,120 @@
 										</div>
 									</th>
 								</tr>
+								<c:if test="${not empty listDepositInfo }">
+									<c:forEach items="${listDepositInfo}" var="var" varStatus="vs">
+										<tbody id="tb${var.DEPOSITINFO_ID}">
+										<tr  class="danger">
+											<th width="10%" ><label>应收押金金额：</label></th>
+											<th  ><input type="number" style="width: 150px" value="${var.DWDEPOSIT}"
+														 class="input-text"  name="DWDEPOSIT"
+														id="dd${var.DEPOSITINFO_ID}"></th>
+											<th width="15%"><label>应付款时间（押金）：</label></th>
+											<th width="10%"><input type="date" style="width: 150px" value="${var.DWDEPOSITTIME}"
+																   class="input-text"  name="DWDEPOSITTIME"
+																   id="ddt${var.DEPOSITINFO_ID}"></th>
+											<th  ><label></label></th>
+											<th  ></th>
+										</tr>
+										<tr class="danger">
+											<th width="15%"><label>实际付款金额（押金）：</label></th>
+											<th width="10%">
+												<input type="number" style="width: 150px" value="${var.REALITY}"
+													   class="input-text"  name="REALITY"
+													   id="r${var.DEPOSITINFO_ID}">
+											</th>
+											<th  ><label>实际付款时间（押金）：</label></th>
+											<th  ><input type="date" style="width: 150px" value="${var.REALITYTIME}"
+														 class="input-text"  name="REALITYTIME"
+														 id="rt${var.DEPOSITINFO_ID}"></th>
+											<th width="15%"><label>付款方名称（押金）：</label></th>
+											<th width="10%"><input type="text" style="width: 150px" value="${var.DEPOSITPAYER}"
+																   class="input-text"  name="DEPOSITPAYER"
+																   id="dp${var.DEPOSITINFO_ID}" ></th>
+										</tr>
+										<tr class="warning">
+											<th ><label>进场时间：</label></th>
+											<th >
+												<label>
+													<input type="date" style="width: 140px;height: 31px" value="${var.ENTERTIME}"
+														   class="input-date"  name="ENTERTIME"
+														   id="et${var.DEPOSITINFO_ID}" id="ENTERTIME">
+												</label>
+											</th>
+											<th ><label>是否已办进场手续：</label></th>
+											<th  >
+												<label style="float:left;padding-left: 12px;"><input class="ace" name="field-radio${var.DEPOSITINFO_ID}" id="ise${var.DEPOSITINFO_ID}"  <c:if test="${var.ISENTERPROCEDURE == '1' }">checked="checked"</c:if> type="radio" value="1"><span class="lbl">是</span></label>
+												<label style="float:left;padding-left: 5px;"><input class="ace" name="field-radio${var.DEPOSITINFO_ID}"  id="ise1${var.DEPOSITINFO_ID}" <c:if test="${var.ISENTERPROCEDURE == '0' }">checked="checked"</c:if> type="radio" value="0"><span class="lbl">否</span></label>
+											</th>
+											<th  ><label></label></th>
+											<th  ></th>
+										</tr>
+										<tr class="warning">
+											<th  ><label>撤场时间：</label></th>
+											<th >
+												<label>
+													<input type="date" style="width: 140px;height: 31px" value="${var.WITHDRAWALTIME}"
+														   class="input-date"  name="WITHDRAWALTIME"
+														   id="wt${var.DEPOSITINFO_ID}" >
+												</label>
+											</th>
+											<th ><label>是否已办撤场手续：</label></th>
+											<th  >
+												<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio${var.DEPOSITINFO_ID}" id="field-radio${var.DEPOSITINFO_ID}"  <c:if test="${var.ISDRAWALPROCEDURE == '1' }">checked="checked"</c:if> type="radio" value="1"><span class="lbl">是</span></label>
+												<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio${var.DEPOSITINFO_ID}" id="form-field-radio${var.DEPOSITINFO_ID}"  <c:if test="${var.ISDRAWALPROCEDURE == '0' }">checked="checked"</c:if> type="radio" value="0"><span class="lbl">否</span></label>
+											</th>
+											<th  ><label></label></th>
+											<th  ></th>
+										</tr>
+										<tr class="warning">
+											<th ><label>退押金金额：</label></th>
+											<th >
+												<label>
+													<input type="number" style="width: 140px;height: 31px" value="${var.RETURNDEPOSIT}"
+														   class="input-date"  name="RETURNDEPOSIT"
+														   id="rd${var.DEPOSITINFO_ID}">
+												</label>
+											</th>
+											<th  ><label>结转收入金额：</label></th>
+											<th >
+												<label>
+													<input type="number" style="width: 140px;height: 31px" value="${var.TRAINCOAMOUNT}"
+														   class="input-date"  name="TRAINCOAMOUNT"
+														   id="tc${var.DEPOSITINFO_ID}">
+												</label>
+											</th>
+											<th  ><label></label></th>
+											<th  ></th>
+										</tr>
+										<tr class="warning">
+											<th ><label>发票名称：</label></th>
+											<th >
+												<label>
+													<input type="text" style="width: 140px;height: 31px" value="${var.INVOICENAME}"
+														   class="input-date"  name="INVOICENAME"
+														   id="in${var.DEPOSITINFO_ID}">
+												</label>
+											</th>
+											<th ><label>开票时间：</label></th>
+											<th >
+												<label>
+													<input type="date" style="width: 140px;height: 31px" value="${var.INVOICETIME}"
+														   class="input-date"  name="INVOICETIME"
+														   id="it${var.DEPOSITINFO_ID}">
+												</label>
+											</th>
+											<th  ><a class="btn btn-xs blue" title="确认修改"
+													 onclick="editDepositInfo('${var.DEPOSITINFO_ID}');">
+												<i class="ace-icon fa fa-pencil-square-o bigger-120" title="确认修改"></i></a>
+												<a class="btn btn-mini btn-danger" title="删除该押金项"
+												   onclick="delDepositInfo('${var.DEPOSITINFO_ID}');">
+													<i class="ace-icon fa fa-trash-o bigger-120" title="删除该押金项"></i></a>
+											</th>
+											<th  ></th>
+										</tr>
+									</tbody>
+									</c:forEach>
+								</c:if>
 								<tr id="yj${pd.CONTRACT_ID}"></tr>
 								<tr>
 									<th>
@@ -374,45 +506,73 @@
 	$(top.hangge());
 
 	function addTrYj(CONTRACT_ID) {
+		var uuid = "";
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>paytable/getUUID',
+			async: false,
+			data: {
+			},
+			dataType: 'json',
+			//beforeSend: validateData,
+			cache: false,
+			success: function (data) {
+				uuid = data.uuid;
+			}
+		});
+		var num = 1000 * Math.random();
+		num = Math.floor(num);
+		var num1 = num + 1 ;
+		//alert(num);
 		var tr = '';
 		tr += '<tr class="danger"><th width="10%" ><label>应收押金金额：</label></th>';
-		tr += '<th  ><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLECASH" id="RECEIVABLECASH"></th>';
+		tr += '<th  ><input type="number" style="width: 150px" class="input-text"  name="DWDEPOSIT" id="dd'+uuid+'"></th>';
 		tr += '<th width="15%"><label>应付款时间（押金）：</label></th>';
-		tr += '<th width="10%"><input type="date" style="width: 150px" class="input-text"  name="PAYTIME2" id="PAYTIME2"></th>';
+		tr += '<th width="10%"><input type="date" style="width: 150px" class="input-text"  name="DWDEPOSITTIME" id="ddt'+uuid+'"></th>';
 		tr += '<th ><label></label></th><th  ></th></tr>';
 		tr += '<tr class="danger"><th width="15%"><label>实际付款金额（押金）：</label></th><th width="10%">';
-		tr += '<input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE_REALITY2" id="RECEIVABLE_REALITY2"></th>';
-		tr += '<th  ><label>实际付款时间（押金）：</label></th><th  ><input type="date" style="width: 150px" class="input-text"  name="RECEIVABL_PAYTIME2"';
-		tr += ' id="RECEIVABL_PAYTIME2"></th>';
+		tr += '<input type="number" style="width: 150px" class="input-text"  name="REALITY" id="r'+uuid+'"></th>';
+		tr += '<th  ><label>实际付款时间（押金）：</label></th><th><input type="date" style="width: 150px" class="input-text"  name="REALITYTIME"';
+		tr += 'id="rt'+uuid+'"></th>';
 		tr += '<th width="15%"><label>付款方名称（押金）：</label></th>';
-		tr += '<th width="10%"><input type="text" style="width: 150px" class="input-text"  name="PAYERNAME2" id="PAYERNAME2"></th></tr>';
+		tr += '<th width="10%"><input type="text" style="width: 150px" class="input-text"  name="DEPOSITPAYER" id="dp'+uuid+'"></th></tr>';
 		tr += '<tr class="warning"><th ><label>进场时间：</label></th>';
-		tr += '<th><label><input type="date" style="width: 140px;height: 31px" class="input-date"  name="ENTERTIME" id="ENTERTIME"></label></th>';
+		tr += '<th><label><input type="date" style="width: 140px;height: 31px" class="input-date"  name="ENTERTIME" id="et'+uuid+'"></label></th>';
 		tr += '<th><label>是否已办进场手续：</label></th><th  >';
-		tr += '<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio2" id="form-field-radio5" type="radio" value="icon-edit"><span class="lbl">是</span></label>';
-		tr += '<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio2" id="form-field-radio6" type="radio" value="icon-edit"><span class="lbl">否</span></label>';
+		tr += '<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio'+num+'"  type="radio" value="1"><span class="lbl">是</span></label>';
+		tr += '<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio'+num+'"  type="radio" value="0"><span class="lbl">否</span></label>';
 		tr += '</th><th  ><label></label></th><th  ></th></tr>';
 		tr += '<tr class="warning"><th  ><label>撤场时间：</label></th><th ><label>';
-		tr += '<input type="date" style="width: 140px;height: 31px" class="input-date"  name="WITHDRAWALTIME" id="WITHDRAWALTIME">';
+		tr += '<input type="date" style="width: 140px;height: 31px" class="input-date"  name="WITHDRAWALTIME" id="wt'+uuid+'">';
 		tr += '</label></th><th ><label>是否已办撤场手续：</label></th><th  >';
-		tr += '<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio3" id="form-field-radio7" type="radio" value="icon-edit"><span class="lbl">是</span></label>';
-		tr += '<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio3" id="form-field-radio8" type="radio" value="icon-edit"><span class="lbl">否</span></label>';
+		tr += '<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio'+num1+'"  type="radio" value="1"><span class="lbl">是</span></label>';
+		tr += '<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio'+num1+'"  type="radio" value="0"><span class="lbl">否</span></label>';
 		tr += '</th><th  ><label></label></th><th  ></th></tr>';
 		tr += '<tr class="warning"><th ><label>退押金金额：</label></th><th ><label>';
-		tr += '<input type="number" style="width: 140px;height: 31px" class="input-date"  name="RETURNCASH" id="RETURNCASH">';
+		tr += '<input type="number" style="width: 140px;height: 31px" class="input-date"  name="RETURNDEPOSIT" id="rd'+uuid+'">';
 		tr += '</label></th>';
 		tr += '<th  ><label>结转收入金额：</label></th><th ><label>';
-		tr += '<input type="number" style="width: 140px;height: 31px" class="input-date"  name="TRAINCOAMOUNT" id="TRAINCOAMOUNT">';
+		tr += '<input type="number" style="width: 140px;height: 31px" class="input-date"  name="TRAINCOAMOUNT" id="tc'+uuid+'">';
 		tr += '</label></th><th  ><label></label></th><th  ></th></tr>';
 		tr += '<tr class="warning"><th ><label>发票名称：</label></th><th ><label>';
-		tr += '<input type="text" style="width: 140px;height: 31px" class="input-date"  name="INVOICENAME2" id="INVOICENAME2"></label></th>';
+		tr += '<input type="text" style="width: 140px;height: 31px" class="input-date"  name="INVOICENAME" id="in'+uuid+'"></label></th>';
 		tr += '<th ><label>开票时间：</label></th><th ><label>';
-		tr += '<input type="date" style="width: 140px;height: 31px" class="input-date"  name="INVOICETIME2" id="INVOICETIME2">';
-		tr += '</label></th><th  ><label></label></th><th  ></th></tr>';
+		tr += '<input type="date" style="width: 140px;height: 31px" class="input-date"  name="INVOICETIME" id="it'+uuid+'">';
+		tr += '</label></th><th  ><a class="btn btn-xs btn-success" title="保存" onclick="saveDepositInfo(\''+uuid+'\',\''+CONTRACT_ID+'\',\''+num+'\',\''+num1+'\');">' +
+				'<i class="ace-icon fa fa-check-square-o bigger-120" title="保存"></i></a></th><th  ></th></tr>';
 		$("#yj"+CONTRACT_ID).before(tr);
 		tr = "";
+		//alert($("input[name='form-field-radio"+num+"']:checked").val());
 	}
 
+
+	function isENTERPROCEDURE(value){
+		$("#ISENTERPROCEDURE").val(value);
+	}
+
+	function isDRAWALPROCEDURE(value) {
+		$("#ISDRAWALPROCEDURE").val(value);
+	}
 
 	function addTrFp(CONTRACT_ID) {
 		var uuid = "";
@@ -435,7 +595,7 @@
 		'id="in'+uuid+'"></th>';
 		tr += '<th><label>开票时间：</label></th>';
 		tr += '<th><input type="date" style="width: 150px;height: 31px"  class="input-text"  name="INVOICETIME" id="it'+uuid+'"></th>';
-		tr += '<th> <a class="btn btn-xs btn-success" title="保存" onclick="saveInvoice('+CONTRACT_ID+','+uuid+');">' +
+		tr += '<th> <a class="btn btn-xs btn-success" title="保存" onclick="saveInvoice(\''+CONTRACT_ID+'\',\''+uuid+'\');">' +
 			  '<i class="ace-icon fa fa-check-square-o bigger-120" title="保存"></i></a></th>';
 		tr += '<th><label></label></th></tr>';
 		$("#fp"+CONTRACT_ID).before(tr);
@@ -463,6 +623,170 @@
 			}
 		});
 	}
+
+	function editInvoice(INVOICE_ID){
+		var INVOICENAME = $("#ivn"+INVOICE_ID).val();
+		var INVOICETIME = $("#ivt"+INVOICE_ID).val();
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>invoice/editInfo',
+			async: false,
+			data: {
+				INVOICE_ID : INVOICE_ID,
+				INVOICENAME : INVOICENAME,
+				INVOICETIME : INVOICETIME
+			},
+			dataType: 'json',
+			//beforeSend: validateData,
+			cache: false,
+			success: function (data) {
+				//uuid = data.uuid;
+				alert("修改成功!!");
+			}
+		});
+	}
+
+	function delInvoice(INVOICE_ID){
+		var con = confirm("是否删除该发票项?"); //在页面上弹出对话框
+		if(con == true){
+		}
+		else {
+			return;
+		}
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>invoice/delete',
+			async: false,
+			data: {
+				INVOICE_ID : INVOICE_ID
+			},
+			dataType: 'json',
+			//beforeSend: validateData,
+			cache: false,
+			success: function (data) {
+				//uuid = data.uuid;
+				alert("删除成功!!");
+			}
+		});
+		$("#tr"+INVOICE_ID).css("display","none");
+	}
+
+	function saveDepositInfo(uuid,CONTRACT_ID,num,num1) {
+		var INVOICENAME = $("#in"+uuid).val();
+		var INVOICETIME = $("#it"+uuid).val();
+		var DWDEPOSIT = $("#dd"+uuid).val();
+		var DWDEPOSITTIME = $("#ddt"+uuid).val();
+		var REALITY =  $("#r"+uuid).val();
+		var REALITYTIME =  $("#rt"+uuid).val();
+		var DEPOSITPAYER =  $("#dp"+uuid).val();
+		var ENTERTIME =  $("#et"+uuid).val();
+		var WITHDRAWALTIME =  $("#wt"+uuid).val();
+		var RETURNDEPOSIT =  $("#rd"+uuid).val();
+		var TRAINCOAMOUNT =  $("#tc"+uuid).val();
+		var ISDRAWALPROCEDURE = $("input[name='form-field-radio"+num1+"']:checked").val();
+		var ISENTERPROCEDURE = $("input[name='form-field-radio"+num+"']:checked").val();
+		//alert(ISDRAWALPROCEDURE);
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>depositinfo/saveInfo',
+			async: false,
+			data: {
+				INVOICENAME : INVOICENAME,
+				INVOICETIME : INVOICETIME,
+				DWDEPOSIT : DWDEPOSIT,
+				DWDEPOSITTIME : DWDEPOSITTIME,
+				REALITY : REALITY,
+				REALITYTIME : REALITYTIME,
+				DEPOSITPAYER : DEPOSITPAYER,
+				ENTERTIME : ENTERTIME,
+				WITHDRAWALTIME : WITHDRAWALTIME,
+				RETURNDEPOSIT : RETURNDEPOSIT,
+				TRAINCOAMOUNT : TRAINCOAMOUNT,
+				ISDRAWALPROCEDURE : ISDRAWALPROCEDURE,
+				ISENTERPROCEDURE : ISENTERPROCEDURE,
+				CONTRACT_ID : CONTRACT_ID
+			},
+			dataType: 'json',
+			//beforeSend: validateData,
+			cache: false,
+			success: function (data) {
+				//uuid = data.uuid;
+				alert("保存成功!!");
+			}
+		});
+	}
+
+	function editDepositInfo(DEPOSITINFO_ID){
+		var INVOICETIME = $("#it"+DEPOSITINFO_ID).val();
+		var INVOICENAME = $("#in"+DEPOSITINFO_ID).val();
+		var TRAINCOAMOUNT = $("#tc"+DEPOSITINFO_ID).val();
+		var RETURNDEPOSIT = $("#rd"+DEPOSITINFO_ID).val();
+		var WITHDRAWALTIME = $("#wt"+DEPOSITINFO_ID).val();
+		var ENTERTIME = $("#et"+DEPOSITINFO_ID).val();
+		var DEPOSITPAYER = $("#dp"+DEPOSITINFO_ID).val();
+		var REALITYTIME = $("#rt"+DEPOSITINFO_ID).val();
+		var REALITY = $("#r"+DEPOSITINFO_ID).val();
+		var DWDEPOSITTIME = $("#ddt"+DEPOSITINFO_ID).val();
+		var DWDEPOSIT = $("#dd"+DEPOSITINFO_ID).val();
+		var ISDRAWALPROCEDURE = $("input[name='form-field-radio"+DEPOSITINFO_ID+"']:checked").val();
+		var ISENTERPROCEDURE = $("input[name='field-radio"+DEPOSITINFO_ID+"']:checked").val();
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>depositinfo/editInfo',
+			async: false,
+			data: {
+				TRAINCOAMOUNT : TRAINCOAMOUNT,
+				RETURNDEPOSIT : RETURNDEPOSIT,
+				WITHDRAWALTIME : WITHDRAWALTIME,
+				ENTERTIME : ENTERTIME,
+				DEPOSITPAYER : DEPOSITPAYER,
+				REALITYTIME : REALITYTIME,
+				REALITY : REALITY,
+				DWDEPOSITTIME : DWDEPOSITTIME,
+				DWDEPOSIT : DWDEPOSIT,
+				ISDRAWALPROCEDURE : ISDRAWALPROCEDURE,
+				ISENTERPROCEDURE : ISENTERPROCEDURE,
+				DEPOSITINFO_ID : DEPOSITINFO_ID,
+				INVOICENAME : INVOICENAME,
+				INVOICETIME : INVOICETIME
+			},
+			dataType: 'json',
+			//beforeSend: validateData,
+			cache: false,
+			success: function (data) {
+				//uuid = data.uuid;
+				alert("修改成功!!");
+			}
+		});
+	}
+
+	function delDepositInfo(DEPOSITINFO_ID){
+		var con = confirm("是否删除该押金项?"); //在页面上弹出对话框
+		if(con == true){
+			//alert("是");
+		}
+		else {
+			// alert("否");
+			return;
+		}
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>depositinfo/delete',
+			async: false,
+			data: {
+				DEPOSITINFO_ID : DEPOSITINFO_ID
+			},
+			dataType: 'json',
+			//beforeSend: validateData,
+			cache: false,
+			success: function (data) {
+				//uuid = data.uuid;
+				alert("删除成功!!");
+			}
+		});
+		$("#tb"+DEPOSITINFO_ID).css("display","none");
+	}
+
 	
 	$(function () {
 		if($("#CONTRACTTYPES").find("option:selected").attr("value") == "付款合同"){

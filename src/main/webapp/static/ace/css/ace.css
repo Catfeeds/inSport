@@ -4,7 +4,7 @@ html {
   position: relative;
 }
 body {
-  background-color: #e4e6e9;
+  /*background-color: #e4e6e9;*/
   min-height: 100%;
   padding-bottom: 0;
   font-family: 'Open Sans';
@@ -10641,7 +10641,7 @@ td,
 th.center,
 td.center {
   text-align: center;
-  /*white-space: nowrap;*/
+  white-space: nowrap;
 }
 th .lbl,
 td .lbl {

@@ -13,6 +13,7 @@ import com.fh.service.management.contractpicture.ContractPictureManager;
 import com.fh.service.management.departmentgroup.DepartmentGroupManager;
 import com.fh.service.management.depositinfo.DepositInfoManager;
 import com.fh.service.management.deptno.DeptnoManager;
+import com.fh.service.management.invoice.InvoiceManager;
 import com.fh.service.management.mode.ModeManager;
 import com.fh.service.management.officecontract.OfficeContractManager;
 import com.fh.service.management.officedetail.OfficeDetailManager;
@@ -101,6 +102,8 @@ public class ContractController extends BaseController {
 	@Resource(name="depositinfoService")
 	private DepositInfoManager depositinfoService;
 
+	@Resource(name="invoiceService")
+	private InvoiceManager invoiceService;
 	// 树
 	@RequestMapping(value = "/listTree")
 	public ModelAndView listTree() throws Exception {
@@ -303,9 +306,7 @@ public class ContractController extends BaseController {
 		pd = this.getPageData();
 		pd = contractService.findById(pd);
 		List<PageData> listOfficeprimary = officeprimaryService.listByContractId(pd); //主表
-		System.out.println("主表------------>"+listOfficeprimary.get(0));
 		List<PageData> listOfficeDetail = officedetailService.listByContractId(pd);  //明细
-		System.out.println("明细------------>"+listOfficeDetail.get(0));
 		if(listOfficeprimary == null || "".equals(listOfficeprimary)){
 			pd.put("OFFICEPRIMARY_ID",this.get32UUID());
 		}
@@ -407,18 +408,19 @@ public class ContractController extends BaseController {
 		String  ffile = DateUtil.getDays(), fileName = "";
 		PageData pd = new PageData();
 		String filePath = "";
+		String fileOriginalName = file.getOriginalFilename();
 		if(Jurisdiction.buttonJurisdiction(menuUrl, "add")){
 			if (null != file && !file.isEmpty()) {
 				filePath = PathUtil.getClasspath() + Const.FILEPATHIMG + ffile;		//文件上传路径
-				System.out.println(filePath);
 				//filePath = "static/images/contract/" + ffile;		//文件上传路径
-				fileName = FileUpload.fileUp(file, filePath, this.get32UUID());				//执行上传
+				fileName = FileUpload.fileUpNotType(file, filePath, fileOriginalName);				//执行上传
 			}else{
 				System.out.println("上传失败");
 			}
+			String urlPrefix = filePath.substring(0,filePath.lastIndexOf("WEB-INF/classes/"));
 			pd.put("CONTRACTPICTURE_ID", this.get32UUID());
 			pd.put("NAME", fileName);
-			pd.put("URL_PIC", filePath.substring(47,filePath.length())+"/"+fileName);
+			pd.put("URL_PIC", filePath.substring(urlPrefix.length(),filePath.length())+"/"+fileOriginalName);
 			pd.put("CONTRACT_ID", CONTRACT_ID);
 			contractpictureService.save(pd);
 			//Watermark.setWatemark(PathUtil.getClasspath() + Const.FILEPATHIMG + ffile + "/" + fileName);//加水印
@@ -453,7 +455,7 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		if ("收款合同".equals(pd.getString("CONTRACTTYPES")) && "写字楼".equals(pd.getString("CONTRACTCLASSIFY"))){
+		/*if ("收款合同".equals(pd.getString("CONTRACTTYPES")) && "写字楼".equals(pd.getString("CONTRACTCLASSIFY"))){
 			PageData pd3 = new PageData();
 			if(pd.getString("OFFICECONTRACT_ID") == null || "".equals(pd.getString("OFFICECONTRACT_ID"))){
 				pd3.put("OFFICECONTRACT_ID",get32UUID());
@@ -497,7 +499,7 @@ public class ContractController extends BaseController {
 			pd3.put("REMARK_O",pd.getString("REMARK_O"));
 			pd3.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
 			officecontractService.edit(pd3);
-		}
+		}*/
 		if ("付款合同".equals(pd.getString("CONTRACTTYPES"))){
 			PageData pd1 = new PageData();
 			if(pd.getString("PAYMENTCONTRACT_ID") == null || "".equals(pd.getString("PAYMENTCONTRACT_ID"))){
@@ -519,9 +521,8 @@ public class ContractController extends BaseController {
 				paymentcontractService.edit(pd1);
 			}
 		}
-		if ("收款合同".equals(pd.getString("CONTRACTTYPES")) && !"写字楼".equals(pd.getString("CONTRACTCLASSIFY"))){
+		if ("收款合同".equals(pd.getString("CONTRACTTYPES"))){
 			PageData findProPd = proceedscontractService.findByContractId(pd);
-
 			PageData pd2 = new PageData();
 			if(pd.getString("PROCEEDSCONTRACT_ID") == null || "".equals(pd.getString("PROCEEDSCONTRACT_ID"))){
 				pd2.put("PROCEEDSCONTRACT_ID",get32UUID());
@@ -531,26 +532,12 @@ public class ContractController extends BaseController {
 			pd2.put("PRINCIPAL",pd.getString("PRINCIPAL"));
 			pd2.put("RECEIVABLE",pd.get("RECEIVABLE").toString());
 			pd2.put("PAYERNAME",pd.getString("PAYERNAME"));
+			pd2.put("ISPAY",1);
 			pd2.put("PAYTIME",pd.getString("PAYTIME"));
-			pd2.put("ISPAY",Integer.parseInt(pd.get("ISPAY").toString()));
 			pd2.put("RECEIVABLE_REALITY",pd.get("RECEIVABLE_REALITY").toString());
-			pd2.put("INVOICENAME",pd.getString("INVOICENAME"));
-			pd2.put("INVOICETIME",pd.getString("INVOICETIME"));
-			pd2.put("RECEIVABLECASH",pd.get("RECEIVABLECASH").toString());
-			pd2.put("PAYERNAME2",pd.get("PAYERNAME2").toString());
-			pd2.put("PAYTIME2",pd.getString("PAYTIME2"));
-			pd2.put("RECEIVABLE_REALITY2",pd.get("RECEIVABLE_REALITY2").toString());
 			pd2.put("RECEIVABL_PAYTIME",pd.getString("RECEIVABL_PAYTIME"));
-			pd2.put("RECEIVABL_PAYTIME2",pd.getString("RECEIVABL_PAYTIME2"));
-			pd2.put("ENTERTIME",pd.getString("ENTERTIME"));
-			pd2.put("ISENTERPROCEDURE",Integer.parseInt(pd.get("ISENTERPROCEDURE").toString()));
-			pd2.put("WITHDRAWALTIME",pd.getString("WITHDRAWALTIME"));
-			pd2.put("ISDRAWALPROCEDURE",Integer.parseInt(pd.get("ISDRAWALPROCEDURE").toString()));
-			pd2.put("RETURNCASH",pd.get("RETURNCASH").toString());
-			pd2.put("TRAINCOAMOUNT",pd.get("TRAINCOAMOUNT").toString());
-			pd2.put("INVOICENAME2",pd.getString("INVOICENAME2"));
-			pd2.put("INVOICETIME2",pd.getString("INVOICETIME2"));
 			pd2.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
+			pd2.put("FREMARK",pd.getString("FREMARK"));
 			if (findProPd == null){
 				proceedscontractService.save(pd2);
 			}else {
@@ -659,13 +646,14 @@ public class ContractController extends BaseController {
 		pd = contractService.findById(pd);	//根据ID读取
 		page.setPd(pd);
 		List<PageData> listPIdClassify = classifyService.listPIdClassify(page);
+		List<PageData> listDepositInfo = depositinfoService.listByContractId(pd);
+		List<PageData> listInvoice = invoiceService.listByContractId(pd);
 		List<PageData> listMode = modeService.listAll(pd);
 		List<PageData> listOperator = operatorService.listAll(pd);
 		PageData pd1 = paymentcontractService.findByContractId(pd);
 		PageData pd2 = proceedscontractService.findByContractId(pd);
-		PageData pd3 = officecontractService.findByContractId(pd);
+		//PageData pd3 = officecontractService.findByContractId(pd);
 		List<PageData> listItems = taxitemsService.listAll(pd);
-		System.out.println("pd3----------->"+pd3);
 		ArrayList<String> listmonth = new ArrayList<String>();
 		List<PageData> listDeptNo = deptnoService.listAll(pd);
 		DecimalFormat dften = new DecimalFormat("00");
@@ -679,11 +667,13 @@ public class ContractController extends BaseController {
 		mv.addObject("listmonth", listmonth);
 		mv.addObject("listPIdClassify", listPIdClassify);
 		mv.addObject("listMode", listMode);
+		mv.addObject("listInvoice", listInvoice);
+		mv.addObject("listDepositInfo", listDepositInfo);
 		mv.addObject("listItems", listItems);
 		mv.addObject("pd", pd);
 		mv.addObject("pd1", pd1);
 		mv.addObject("pd2", pd2);
-		mv.addObject("pd3", pd3);
+		//mv.addObject("pd3", pd3);
 		return mv;
 	}
 

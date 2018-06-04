@@ -55,6 +55,39 @@ public class DepositInfoController extends BaseController {
 		mv.setViewName("save_result");
 		return mv;
 	}
+
+	@RequestMapping(value = "/saveInfo")
+	@ResponseBody
+	public Map<String, Object> saveDetail(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		pd.put("DEPOSITINFO_ID", this.get32UUID());	//主键
+		if(pd.getString("TRAINCOAMOUNT") == null || "".equals(pd.getString("TRAINCOAMOUNT"))){
+			pd.put("TRAINCOAMOUNT",0);
+		}
+		if(pd.getString("RETURNDEPOSIT") == null || "".equals(pd.getString("RETURNDEPOSIT"))){
+			pd.put("RETURNDEPOSIT",0);
+		}
+		if(pd.getString("REALITY") == null || "".equals(pd.getString("REALITY"))){
+			pd.put("REALITY",0);
+		}
+		if(pd.getString("DWDEPOSIT") == null || "".equals(pd.getString("DWDEPOSIT"))){
+			pd.put("DWDEPOSIT",0);
+		}
+		depositinfoService.save(pd);
+		return  json;
+	}
+
+	@RequestMapping(value = "/editInfo")
+	@ResponseBody
+	public Map<String, Object> editInfo(Page page)throws Exception {
+		Map<String, Object> json = new HashMap<String, Object>();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		depositinfoService.edit(pd);
+		return  json;
+	}
 	
 	/**删除
 	 * @param out

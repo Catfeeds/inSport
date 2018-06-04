@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 
+import com.fh.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -24,11 +25,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.Page;
-import com.fh.util.AppUtil;
-import com.fh.util.ObjectExcelView;
-import com.fh.util.PageData;
-import com.fh.util.Jurisdiction;
-import com.fh.util.Tools;
 import com.fh.service.management.contractpicture.ContractPictureManager;
 
 /** 
@@ -63,7 +59,7 @@ public class ContractPictureController extends BaseController {
 	}
 	
 	/**删除
-	 * @param out
+	 * @param
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/delete")
@@ -74,7 +70,7 @@ public class ContractPictureController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		PageData delPd = contractpictureService.findById(pd);
-		String filePath ="D:/【源码】maven_sqlsever_版本/MVNFHS/target/inSport/"+ delPd.getString("URL_PIC");
+		String filePath = PathUtil.getClasspath()+ delPd.getString("URL_PIC");
 		try {
 			File file = new File(filePath);
 			file.delete();

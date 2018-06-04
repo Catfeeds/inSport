@@ -83,7 +83,7 @@ public class FileUpDataController extends BaseController {
 		String filePath = "";
 		if (null != file && !file.isEmpty()) {
 			filePath = PathUtil.getClasspath() + Const.FILEPATH + FNAME;		//文件上传路径
-			System.out.println(filePath);
+			//System.out.println(filePath);
 			//filePath = "static/images/contract/" + ffile;		//文件上传路径
 			//fileName = FileUpload.fileUp(file, filePath, this.get32UUID());				//执行上传
 			fileName = FileUpload.fileUpNotType(file, filePath, fileOriginalName);				//执行上传
