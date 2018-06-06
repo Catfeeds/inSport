@@ -478,35 +478,16 @@ public class ContractController extends BaseController {
 		pd = this.getPageData();
 		pd = contractService.findById(pd);	//根据ID读取
 		page.setPd(pd);
-		List<PageData> listPIdClassify = classifyService.listPIdClassify(page);
 		List<PageData> listDepositInfo = depositinfoService.listByContractId(pd);
 		List<PageData> listInvoice = invoiceService.listByContractId(pd);
-		List<PageData> listMode = modeService.listAll(pd);
-		List<PageData> listOperator = operatorService.listAll(pd);
 		PageData pd1 = paymentcontractService.findByContractId(pd);
 		PageData pd2 = proceedscontractService.findByContractId(pd);
-		//PageData pd3 = officecontractService.findByContractId(pd);
-		List<PageData> listItems = taxitemsService.listAll(pd);
-		ArrayList<String> listmonth = new ArrayList<String>();
-		List<PageData> listDeptNo = deptnoService.listAll(pd);
-		DecimalFormat dften = new DecimalFormat("00");
-		for (int i = 1; i <= 12; i++) {
-			listmonth.add(dften.format(i));
-		}
 		mv.setViewName("management/contract/contract_show");
-		mv.addObject("msg", "editInfo");
-		mv.addObject("listDeptNo",listDeptNo);
-		mv.addObject("listOperator",listOperator);
-		mv.addObject("listmonth", listmonth);
-		mv.addObject("listPIdClassify", listPIdClassify);
-		mv.addObject("listMode", listMode);
 		mv.addObject("listInvoice", listInvoice);
 		mv.addObject("listDepositInfo", listDepositInfo);
-		mv.addObject("listItems", listItems);
 		mv.addObject("pd", pd);
 		mv.addObject("pd1", pd1);
 		mv.addObject("pd2", pd2);
-		//mv.addObject("pd3", pd3);
 		return mv;
 	}
 	

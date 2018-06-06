@@ -27,6 +27,18 @@
 		<div class="main-content-inner">
 			<div class="page-content">
 				<div class="hr hr-18 dotted hr-double"></div>
+				<div class="" style="text-align: left;">
+					<!-- <td style="text-align: center;" colspan="10"> -->
+					<a class="btn btn-primary  btn-xs" onclick="downs();">
+						<i class="ace-icon fa  fa-cloud-download bigger-110 nav-search-icon "></i>下载附件
+					</a>
+					<a  class="btn btn-success btn-xs" onclick="edit('${pd.CONTRACT_ID}')">
+						<i class="ace-icon fa fa-credit-card bigger-110 nav-search-icon yellow"></i>修改
+					</a>
+					<a class="btn btn-primary  btn-xs" onclick="top.Dialog.close();">
+						<i class="ace-icon fa  fa-external-link bigger-110 nav-search-icon red"></i>取消
+					</a>
+				</div>
 				<br>
 				<div class="row">
 					<div class="col-xs-12">
@@ -347,7 +359,26 @@
 		}
 		var CONTRACT_ID = '${pd.CONTRACT_ID}';
 		showPic(CONTRACT_ID);
-	})
+	});
+
+	//修改
+	function edit(Id) {
+		top.jzts();
+		var diag = new top.Dialog();
+		diag.Drag = true;
+		diag.Title = "编辑";
+		diag.URL = '<%=basePath%>contract/goEdit.do?CONTRACT_ID=' + Id;
+		diag.Width = window.innerWidth * 0.9;
+		diag.Height = window.innerHeight * 0.9;
+		diag.Modal = true;				//有无遮罩窗口
+		diag.ShowMaxButton = true;	//最大化按钮
+		diag.ShowMinButton = true;		//最小化按钮
+		diag.CancelEvent = function () { //关闭事件
+			diag.close();
+			//tosearch();
+		};
+		diag.show();
+	}
 
 	function showPic(CONTRACT_ID) {
 		$.ajax({
@@ -365,7 +396,7 @@
 					html += '<li>' +
 							'<a data-magnify="gallery"' +
 							' data-caption="Paraglider flying over Aurlandfjord, Norway by framedbythomas" href="<%=basePath%>' + res[i].URL_PIC + '">' +
-							'<img width="200;" height="200";   src="<%=basePath%>' + res[i].URL_PIC + '" alt="">' +
+							'<img width="200;" name="' + res[i].URL_PIC + '" height="200";   src="<%=basePath%>' + res[i].URL_PIC + '" alt="">' +
 							'</a>' +
 							'<p width="180;" class="center">'+res[i].NAME+'</p>'+
 							'<div style="width: 100%;height: 25px" align="center" >' +
@@ -378,7 +409,7 @@
 					html += '<li>' +
 							'<a ' +
 							' href="<%=basePath%>' + pdf[i].URL_PIC + '">' +
-							'<img width="200;" height="200";   src="<%=basePath%>static/filecatalog/images/application-pdf.png" alt="">' +
+							'<img width="200;" name="' + pdf[i].URL_PIC + '" height="200";   src="<%=basePath%>static/filecatalog/images/application-pdf.png" alt="">' +
 							'</a>' +
 							'<p width="180;" class="center">'+pdf[i].NAME+'</p>'+
 							'<div style="width: 100%;height: 25px" align="center" >' +
@@ -390,6 +421,32 @@
 
 			}
 		});
+	}
+
+	//执行下载任务
+	function downs() {
+		var file = [];
+		$("#imgList img").each(function () {
+			if ($(this).css("display") != "none") {
+				file.push($(this).attr("name"));
+			}
+		});
+		alert(file.length);
+		for (var index = 0; index < file.length; index++) {
+			var index1 = file[index].lastIndexOf("/");
+			var url = "<%=basePath%>"+file[index];
+			//alert(file[index].substring(index1 + 1, file[index].length)+"-------------"+url);
+			download(file[index].substring(index1 + 1, file[index].length), url);
+		}
+	}
+
+	function download(name, href) {
+		var a = document.createElement("a"), //创建a标签
+				e = document.createEvent("MouseEvents"); //创建鼠标事件对象
+		e.initEvent("click", false, false); //初始化事件对象
+		a.href = href; //设置下载地址
+		a.download = name; //设置下载文件名
+		a.dispatchEvent(e); //给指定的元素，执行事件click事件
 	}
 
 	function delPic(CONTRACTPICTURE_ID, CONTRACT_ID) {
