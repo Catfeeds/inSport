@@ -431,7 +431,7 @@
 				file.push($(this).attr("name"));
 			}
 		});
-		alert(file.length);
+		//alert(file.length);
 		for (var index = 0; index < file.length; index++) {
 			var index1 = file[index].lastIndexOf("/");
 			var url = "<%=basePath%>"+file[index];

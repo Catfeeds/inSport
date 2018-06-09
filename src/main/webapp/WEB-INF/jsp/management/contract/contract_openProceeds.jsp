@@ -52,15 +52,17 @@
                             </tr>
                             </tbody>
                         </table>
-                        <c:if test="${not empty listOfficeprimary}">
-                            <c:forEach items="${listOfficeprimary}" var="var" varStatus="vs">
-                                <table id="ta${var.OFFICEPRIMARY_ID}" class="table table-border table-bg table-bordered" style="margin-top: 10px">
-                                    <tbody id="tb${var.OFFICEPRIMARY_ID}">
+                        <c:if test="${not empty listProceedsprimary}">
+                            <c:forEach items="${listProceedsprimary}" var="var" varStatus="vs">
+                                <table id="ta${var.PROCEEDSPRIMARY_ID}" class="table table-border table-bg table-bordered" style="margin-top: 10px">
+                                    <tbody id="tb${var.PROCEEDSPRIMARY_ID}">
                                     <tr class="center">
                                         <td style="padding-left:2px;">时间</td>
                                         <%--<td style="padding-left:2px;">总应付金额</td>--%>
                                         <td style="padding-left:2px;">租金金额</td>
-                                        <td style="padding-left:2px;">水电费</td>
+                                        <c:if test="${pd.CONTRACTCLASSIFY == '写字楼'}">
+                                            <td style="padding-left:2px;">水电费</td>
+                                        </c:if>
                                         <td style="padding-left:2px;">滞纳金</td>
                                         <td style="padding-left:2px;">应收款金额</td>
                                         <td style="padding-left:2px;">应收款时间</td>
@@ -70,62 +72,68 @@
                                         <td style="padding-left:2px;">操作</td>
                                     </tr>
                                     <tr class="center" id="sum" >
-                                        <td id="td1${var.OFFICEPRIMARY_ID}" rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${var.STARTTIME } -- ${var.ENTTIME }</td>
-                                        <%--<td id="td2${var.OFFICEPRIMARY_ID}" rowspan="${count +1}"  style="padding-left:2px;vertical-align:middle;">
-                                            <p id="pic${var.OFFICEPRIMARY_ID}">${var.CONTRACTPIC }</p>
-                                        </td>--%>
+                                        <td id="td1${var.PROCEEDSPRIMARY_ID}" rowspan="${count +1}"
+                                            style="padding-left:2px;vertical-align:middle;">
+                                            ${var.STARTTIME } -- ${var.ENTTIME }
+
+                                        </td>
                                     </tr>
-                                    <c:if test="${not empty listOfficeDetail}">
-                                        <c:forEach items="${listOfficeDetail}" var="var1" varStatus="vs1">
-                                            <c:if test="${var1.OFFICEPRIMARY_ID == var.OFFICEPRIMARY_ID}">
+                                    <c:if test="${not empty listProceedsDetail}">
+                                        <c:forEach items="${listProceedsDetail}" var="var1" varStatus="vs1">
+                                            <c:if test="${var1.PROCEEDSPRIMARY_ID == var.PROCEEDSPRIMARY_ID}">
                                                 <tr class="center" style="background-color: #FFFFCC" >
                                                     <td style="padding-left:2px;">
                                                         <input type="number" style="width: 120px;height: 31px" value="${var1.RENT}"
-                                                               class="input-text"  name="RENT" id="re${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="RENT" id="re${var1.PROCEEDSDETAIL_ID}"
                                                         ></td>
-                                                    <td style="padding-left:2px;">
+                                                    <td style="
+                                                        <c:if test="${pd.CONTRACTCLASSIFY != '写字楼'}">
+                                                                display: none;
+                                                        </c:if>
+                                                            padding-left:2px;">
                                                         <input type="number" style="width: 120px;height: 31px" value="${var1.UTILITIES}"
-                                                               class="input-text"  name="UTILITIES" id="ut${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="UTILITIES" id="ut${var1.PROCEEDSDETAIL_ID}"
                                                         ></td>
                                                     <td style="padding-left:2px;">
                                                         <input type="number" style="width: 120px;height: 31px" value="${var1.OVERDUE}"
-                                                               class="input-text"  name="OVERDUE" id="od${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="OVERDUE" id="od${var1.PROCEEDSDETAIL_ID}"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
                                                         <input type="number" style="width: 120px;" value="${var1.RECEIVABLE}"
-                                                               class="input-text"  name="RECEIVABLE" id="r${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="RECEIVABLE" id="r${var1.PROCEEDSDETAIL_ID}"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
                                                         <input type="date" style="width: 120px;height: 31px;" value="${var1.PAYTIME}"
-                                                               class="input-text"  name="PAYTIME" id="pt${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="PAYTIME" id="pt${var1.PROCEEDSDETAIL_ID}"
                                                     >
                                                     </td>
                                                     <td style="padding-left:2px;">
                                                         <input type="number" style="width: 120px" value="${var1.RECEIVABLE_REALITY}"
-                                                               class="input-text"  name="RECEIVABLE_REALITY" id="rr${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="RECEIVABLE_REALITY" id="rr${var1.PROCEEDSDETAIL_ID}"
+                                                        onchange="toCalUncollected('${var1.PROCEEDSDETAIL_ID}')"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
                                                         <input type="date" style="width: 120px;height: 31px;" value="${var1.RECEIVABL_PAYTIME}"
-                                                               class="input-text"  name="RECEIVABL_PAYTIME" id="rpt${var1.OFFICEDETAIL_ID}"
-                                                                onchange="todoOVERDUE('${var1.OFFICEDETAIL_ID}')"
+                                                               class="input-text"  name="RECEIVABL_PAYTIME" id="rpt${var1.PROCEEDSDETAIL_ID}"
+                                                                onchange="toCalOverDue('${var1.PROCEEDSDETAIL_ID}')"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
                                                         <input type="number" style="width: 120px" value="${var1.UNCOLLECTED}"
-                                                               class="input-text"  name="UNCOLLECTED" id="uc${var1.OFFICEDETAIL_ID}"
+                                                               class="input-text"  name="UNCOLLECTED" id="uc${var1.PROCEEDSDETAIL_ID}"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
                                                         <a class="btn btn-xs btn-success" title="保存修改"
-                                                           onclick="editOfficeDetail('${var1.OFFICEDETAIL_ID}');">
+                                                           onclick="editProceedsDetailInfo('${var1.PROCEEDSDETAIL_ID}');">
                                                             <i class="ace-icon fa fa-check-square-o bigger-120"
                                                                title="保存修改"></i>
                                                         </a>
                                                         <a class="btn btn-xs btn-danger" title="删除"
-                                                           onclick="delOfficeDetail('${var1.OFFICEDETAIL_ID}');">
+                                                           onclick="delproceedsDetail('${var1.PROCEEDSDETAIL_ID}');">
                                                             <i class="ace-icon fa fa-trash-o bigger-120"
                                                                title="删除"></i>
                                                         </a>
@@ -135,11 +143,16 @@
                                             </c:if>
                                         </c:forEach>
                                     </c:if>
-                                    <tr id="${var.OFFICEPRIMARY_ID}"></tr>
+                                    <tr id="${var.PROCEEDSPRIMARY_ID}"></tr>
                                     </tbody>
                                 </table>
                                 <div class="col-md-12"  style="padding-bottom:2em;">
-                                    <button onclick="addTr('${var.OFFICEPRIMARY_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i> 添加新的明细项</button>
+                                    <button onclick="addTr('${var.PROCEEDSPRIMARY_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i> 添加新的明细项</button>
+                                    <button class="btn btn-danger" title="删除主表"
+                                       onclick="delproceedsPrimary('${var.PROCEEDSPRIMARY_ID}');">
+                                        <i class="fa fa-trash-o"
+                                           title="删除"></i>
+                                    </button>
                                 </div>
                             </c:forEach>
                         </c:if>
@@ -181,46 +194,84 @@
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
 
-    function todoOVERDUE(OFFICEDETAIL_ID){
-        var RENT = $("#re"+OFFICEDETAIL_ID).val();
-        var UTILITIES = $("#ut"+OFFICEDETAIL_ID).val();
-        var RECEIVABL_PAYTIME = $("#rpt"+OFFICEDETAIL_ID).val();
-        var PAYTIME = $("#pt"+OFFICEDETAIL_ID).val();
-        alert(new Date(RECEIVABL_PAYTIME.replace(/-/g, "/")));
+    function toCalUncollected(PROCEEDSDETAIL_ID){
+        var RECEIVABLE_REALITY = $("#rr"+PROCEEDSDETAIL_ID).val();
+        var RECEIVABLE = $("#r"+PROCEEDSDETAIL_ID).val();
+        var UNCOLLECTED = parseFloat(RECEIVABLE) - parseFloat(RECEIVABLE_REALITY);
+        $("#uc"+PROCEEDSDETAIL_ID).val(UNCOLLECTED.toFixed(2));//未收款金额
     }
 
-    function delOfficeDetail(OFFICEDETAIL_ID){
-        $.ajax({
-            type: "POST",
-            url: '<%=basePath%>officedetail/deleteDetail',
-            async: false,
-            data: {
-                OFFICEDETAIL_ID : OFFICEDETAIL_ID
-            },
-            dataType: 'json',
-            cache: false,
-            success: function (data) {
-                window.location.reload();
+    function toCalOverDue(PROCEEDSDETAIL_ID){
+        var OVERDUE = '${pd1.OVERDUE}';
+        var RENT = $("#re"+PROCEEDSDETAIL_ID).val();
+        var UTILITIES = $("#ut"+PROCEEDSDETAIL_ID).val();
+        var RECEIVABL_PAYTIME = $("#rpt"+PROCEEDSDETAIL_ID).val();
+        var PAYTIME = $("#pt"+PROCEEDSDETAIL_ID).val();
+        //alert(Date.parse(new Date(RECEIVABL_PAYTIME))+"----------------"+Date.parse(new Date(PAYTIME)));
+        var differ = (Date.parse(new Date(RECEIVABL_PAYTIME))-Date.parse(new Date(PAYTIME)))/(1000*60*60*24);
+        var OVERDUENUM = (parseFloat(RENT) + parseFloat(UTILITIES)) * OVERDUE * differ;
+        //alert(parseFloat(RENT) + parseFloat(UTILITIES));
+        $("#od"+PROCEEDSDETAIL_ID).val(OVERDUENUM.toFixed(2)); // 滞纳金
+        $("#r"+PROCEEDSDETAIL_ID).val((OVERDUENUM + parseFloat(RENT) + parseFloat(UTILITIES)).toFixed(2)); // 应收金额
+        toCalUncollected(PROCEEDSDETAIL_ID);
+    }
+
+    function delproceedsDetail(PROCEEDSDETAIL_ID){
+        bootbox.confirm("确定要删除改明细吗?删除后将无法恢复!", function(result) {
+            if(result) {
+                $.ajax({
+                    type: "POST",
+                    url: '<%=basePath%>proceedsdetail/deleteDetail',
+                    async: false,
+                    data: {
+                        PROCEEDSPRIMARY_ID : PROCEEDSPRIMARY_ID
+                    },
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        window.location.reload();
+                    }
+                });
             }
         });
     }
 
-    function editOfficeDetail(OFFICEDETAIL_ID){
-        var OFFICEDETAIL_ID = OFFICEDETAIL_ID;
-        var RENT = $("#re"+OFFICEDETAIL_ID).val();
-        var UTILITIES = $("#ut"+OFFICEDETAIL_ID).val();
-        var OVERDUE = $("#od"+OFFICEDETAIL_ID).val();
-        var RECEIVABLE =$("#r"+OFFICEDETAIL_ID).val();
-        var PAYTIME = $("#pt"+OFFICEDETAIL_ID).val();
-        var RECEIVABLE_REALITY = $("#rr"+OFFICEDETAIL_ID).val();
-        var RECEIVABL_PAYTIME = $("#rpt"+OFFICEDETAIL_ID).val();
-        var UNCOLLECTED = $("#uc"+OFFICEDETAIL_ID).val();
+    function delproceedsPrimary(PROCEEDSPRIMARY_ID){
+        bootbox.confirm("确定要删除吗?删除后将无法恢复!", function(result) {
+            if(result) {
+                $.ajax({
+                    type: "POST",
+                    url: '<%=basePath%>proceedsprimary/delproceedsPrimary',
+                    async: false,
+                    data: {
+                        PROCEEDSPRIMARY_ID : PROCEEDSPRIMARY_ID
+                    },
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+    }
+
+    function editProceedsDetailInfo(PROCEEDSDETAIL_ID){
+        var PROCEEDSDETAIL_ID = PROCEEDSDETAIL_ID;
+        var RENT = $("#re"+PROCEEDSDETAIL_ID).val();
+        var UTILITIES = $("#ut"+PROCEEDSDETAIL_ID).val();
+        var OVERDUE = $("#od"+PROCEEDSDETAIL_ID).val();
+        var RECEIVABLE =$("#r"+PROCEEDSDETAIL_ID).val();
+        var PAYTIME = $("#pt"+PROCEEDSDETAIL_ID).val();
+        var RECEIVABLE_REALITY = $("#rr"+PROCEEDSDETAIL_ID).val();
+        var RECEIVABL_PAYTIME = $("#rpt"+PROCEEDSDETAIL_ID).val();
+        var UNCOLLECTED = $("#uc"+PROCEEDSDETAIL_ID).val();
         $.ajax({
             type: "POST",
-            url: '<%=basePath%>officedetail/editOfficeDetailInfo',
+            url: '<%=basePath%>proceedsdetail/editProceedsDetailInfo',
             async: false,
             data: {
-                OFFICEDETAIL_ID : OFFICEDETAIL_ID,
+                PROCEEDSDETAIL_ID : PROCEEDSDETAIL_ID,
                 RENT : RENT,
                 UTILITIES : UTILITIES,
                 OVERDUE : OVERDUE,
@@ -238,10 +289,10 @@
         });
     }
 
-    var newOFFICEPRIMARY_ID = null;
+    var newPROCEEDSPRIMARY_ID = null;
 
     function saveTable(tuuid){
-        var con = confirm("是否保存时间和总金额?"); //在页面上弹出对话框
+        var con = confirm("是否保存时间?"); //在页面上弹出对话框
         if(con == true){
             //alert("是");
         }
@@ -249,20 +300,20 @@
             //alert("否");
             return;
         }
-       if(newOFFICEPRIMARY_ID == null || newOFFICEPRIMARY_ID == ""){
-            var OFFICEPRIMARY_ID = "${pd.OFFICEPRIMARY_ID}";
+       if(newPROCEEDSPRIMARY_ID == null || newPROCEEDSPRIMARY_ID == ""){
+            var PROCEEDSPRIMARY_ID = "${pd.PROCEEDSPRIMARY_ID}";
         }else {
-            var OFFICEPRIMARY_ID = newOFFICEPRIMARY_ID;
+            var PROCEEDSPRIMARY_ID = newPROCEEDSPRIMARY_ID;
         }
         var CONTRACT_ID = "${pd.CONTRACT_ID}";
         var STARTTIME = $("#st"+tuuid).val();
         var ENTTIME = $("#et"+tuuid).val();
         $.ajax({
             type: "POST",
-            url: '<%=basePath%>officeprimary/saveTable',
+            url: '<%=basePath%>proceedsprimary/saveTable',
             async: false,
             data: {
-                OFFICEPRIMARY_ID : OFFICEPRIMARY_ID,
+                PROCEEDSPRIMARY_ID : PROCEEDSPRIMARY_ID,
                 CONTRACT_ID : CONTRACT_ID,
                 STARTTIME : STARTTIME,
                 ENTTIME : ENTTIME
@@ -288,7 +339,7 @@
             cache: false,
             success: function (data) {
                 uuid = data.uuid;
-                newOFFICEPRIMARY_ID = data.uuid;
+                newPROCEEDSPRIMARY_ID = data.uuid;
             }
         });
         var table = "";
@@ -296,7 +347,9 @@
         table += '<tbody id="tb'+uuid+'" ><tr class="center" >';
         table += '<td style="padding-left:2px;">时间</td>';
         table += '<td style="padding-left:2px;">租金金额</td>';
-        table += '<td style="padding-left:2px;">水电费</td>';
+        if('${pd.CONTRACTCLASSIFY}' == "写字楼"){
+            table += '<td style="padding-left:2px;">水电费</td>';
+        }
         table += '<td style="padding-left:2px;">滞纳金</td>';
         table += '<td style="padding-left:2px;">应收款金额</td>';
         table += '<td style="padding-left:2px;">应收款时间</td>';
@@ -333,8 +386,13 @@
         }
         tr += '<td style="padding-left:2px;"><input id="re'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
                 'class="input-text"  name="RENT"  ></td>';
-        tr += '<td style="padding-left:2px;"><input id="ut'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
-                'class="input-text"  name="UTILITIES" ></td>';
+        if('${pd.CONTRACTCLASSIFY}' == "写字楼"){
+            tr += '<td style="padding-left:2px;"><input id="ut'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
+                    'class="input-text"  name="UTILITIES" ></td>';
+        }else {
+            tr += '<td style="display: none"><input id="ut'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
+                    'class="input-text"  name="UTILITIES" ></td>';
+        }
         tr += '<td style="padding-left:2px;"><input id="od'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
                 'class="input-text"  name="OVERDUE"  ></td>';
 
@@ -367,7 +425,7 @@
     }
     
     function saveDetail(uuid_var){
-        var OFFICEPRIMARY_ID = uuid_var;
+        var PROCEEDSPRIMARY_ID = uuid_var;
         var CONTRACT_ID =  "${pd.CONTRACT_ID}";
         var RENT = $("#re"+uuid_var).val();
         var UTILITIES = $("#ut"+uuid_var).val();
@@ -379,10 +437,10 @@
         var UNCOLLECTED = $("#uc"+uuid_var).val();
         $.ajax({
             type: "POST",
-            url: '<%=basePath%>officedetail/saveDetail',
+            url: '<%=basePath%>proceedsdetail/saveDetail',
             data: {
                 CONTRACT_ID: CONTRACT_ID,
-                OFFICEPRIMARY_ID: OFFICEPRIMARY_ID,
+                PROCEEDSPRIMARY_ID: PROCEEDSPRIMARY_ID,
                 RENT: RENT,
                 UTILITIES:UTILITIES,
                 OVERDUE:OVERDUE,

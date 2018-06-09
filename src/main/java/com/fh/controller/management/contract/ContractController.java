@@ -24,6 +24,8 @@ import com.fh.service.management.paymentcontract.PaymentContractManager;
 import com.fh.service.management.payprimary.PayPrimaryManager;
 import com.fh.service.management.paytable.PayTableManager;
 import com.fh.service.management.proceedscontract.ProceedsContractManager;
+import com.fh.service.management.proceedsdetail.ProceedsDetailManager;
+import com.fh.service.management.proceedsprimary.ProceedsPrimaryManager;
 import com.fh.service.management.taxitems.TaxItemsManager;
 import com.fh.util.*;
 import net.sf.json.JSONArray;
@@ -93,11 +95,17 @@ public class ContractController extends BaseController {
 	@Resource(name="departmentgroupService")
 	private DepartmentGroupManager departmentgroupService;
 
-	@Resource(name="officeprimaryService")
+	/*@Resource(name="officeprimaryService")
 	private OfficePrimaryManager officeprimaryService;
 
 	@Resource(name="officedetailService")
-	private OfficeDetailManager officedetailService;
+	private OfficeDetailManager officedetailService;*/
+
+	@Resource(name="proceedsdetailService")
+	private ProceedsDetailManager proceedsdetailService;
+
+	@Resource(name="proceedsprimaryService")
+	private ProceedsPrimaryManager proceedsprimaryService;
 
 	@Resource(name="depositinfoService")
 	private DepositInfoManager depositinfoService;
@@ -263,16 +271,18 @@ public class ContractController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd = contractService.findById(pd);
-		List<PageData> listOfficeprimary = officeprimaryService.listByContractId(pd); //主表
-		List<PageData> listOfficeDetail = officedetailService.listByContractId(pd);  //明细
-		if(listOfficeprimary == null || "".equals(listOfficeprimary)){
-			pd.put("OFFICEPRIMARY_ID",this.get32UUID());
+		PageData pd1 = proceedscontractService.findByContractId(pd);
+		List<PageData> listProceedsprimary = proceedsprimaryService.listByContractId(pd); //主表
+		List<PageData> listProceedsDetail = proceedsdetailService.listByContractId(pd);  //明细
+		if(listProceedsprimary == null || "".equals(listProceedsprimary)){
+			pd.put("PROCEEDSPRIMARY_ID",this.get32UUID());
 		}
-		mv.setViewName("management/contract/contract_openoffice");
+		mv.setViewName("management/contract/contract_openProceeds");
 		mv.addObject("pd", pd);
-		mv.addObject("listOfficeprimary", listOfficeprimary);
-		mv.addObject("count", listOfficeDetail.size());
-		mv.addObject("listOfficeDetail", listOfficeDetail);
+		mv.addObject("pd1", pd1);
+		mv.addObject("listProceedsprimary", listProceedsprimary);
+		mv.addObject("count", listProceedsDetail.size());
+		mv.addObject("listProceedsDetail", listProceedsDetail);
 		return mv;
 	}
 
