@@ -60,7 +60,7 @@ public class FileUpDataController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		System.out.println(pd);
+		//System.out.println(pd);
 		mv.setViewName("management/fileupdata/file_add");
 		mv.addObject("pd", pd);
 		return mv;
@@ -76,8 +76,8 @@ public class FileUpDataController extends BaseController {
 		Map<String,String> map = new HashMap<String,String>();
 		String fileOriginalName = file.getOriginalFilename();
 		String fileType = file.getContentType();
-		System.out.println("---------------文件目录："+FNAME);
-		System.out.println("原文件名字："+fileOriginalName+"，文件类别："+fileType);
+		//System.out.println("---------------文件目录："+FNAME);
+		//System.out.println("原文件名字："+fileOriginalName+"，文件类别："+fileType);
 		String  ffile = DateUtil.getDays(), fileName = "";
 		PageData pd = new PageData();
 		String filePath = "";
@@ -90,9 +90,10 @@ public class FileUpDataController extends BaseController {
 		}else{
 			System.out.println("上传失败");
 		}
+		String urlPrefix = filePath.substring(0,filePath.lastIndexOf("WEB-INF/classes/"));
 		pd.put("FILEMEANS_ID", this.get32UUID());
 		pd.put("FILENAME", fileOriginalName);
-		pd.put("FILE_URL", filePath.substring(47,filePath.length())+"/"+fileOriginalName);
+		pd.put("FILE_URL", filePath.substring(urlPrefix.length(),filePath.length())+"/"+fileOriginalName);
 		pd.put("FILE_CREATETIME", new Date());
 		pd.put("FILE_JURISDICTION", "1");
 		pd.put("FILE_TYPE", fileType);
@@ -113,7 +114,7 @@ public class FileUpDataController extends BaseController {
 	public Map<String,String> deleteFile(Page page) throws Exception{
 		Map<String,String> json = new HashMap<String,String>();
 		PageData pd = this.getPageData();
-		System.out.println(pd.getString("FILE_URL"));
+		//System.out.println(pd.getString("FILE_URL"));
 		String fileUrl= "D:/【源码】maven_sqlsever_版本/MVNFHS/target/inSport/"+pd.getString("FILE_URL");
 		File file = new File(fileUrl);
 		file.delete();
@@ -127,7 +128,7 @@ public class FileUpDataController extends BaseController {
 	public Map<String,String> deleteFileCatalog(Page page) throws Exception{
 		Map<String,String> json = new HashMap<String,String>();
 		PageData pd = this.getPageData();
-		System.out.println(pd);
+		//System.out.println(pd);
 		filecatalogService.deleteByItemid(pd);
 		filecatalogService.deleteByPid(pd);
 		pd = this.getPageData();
@@ -156,7 +157,7 @@ public class FileUpDataController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		System.out.println(pd);
+		//System.out.println(pd);
 		mv.setViewName("management/fileupdata/fileEditName");
 		mv.addObject("pd", pd);
 		return mv;
@@ -166,7 +167,7 @@ public class FileUpDataController extends BaseController {
 	public ModelAndView editFile(Page page) throws Exception{
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = this.getPageData();
-		System.out.println("pd------------------>"+pd);
+		//System.out.println("pd------------------>"+pd);
 		String oldName = pd.getString("FILE_URL");
 		String qz = "D:/【源码】maven_sqlsever_版本/MVNFHS/target/inSport/";
 		String fileUrl= qz + pd.getString("FILE_URL");
@@ -175,7 +176,7 @@ public class FileUpDataController extends BaseController {
 		String newUrl = oldName.substring(0,oldName.lastIndexOf("/")+1) + newName;
 		pd.put("FILENAME",newName);
 		pd.put("newUrl",newUrl);
-		System.out.println("pd："+pd);
+		//System.out.println("pd："+pd);
 		file.renameTo(new File(qz + newUrl));
 		filemeansService.editName(pd);
 		mv.addObject("msg","success");

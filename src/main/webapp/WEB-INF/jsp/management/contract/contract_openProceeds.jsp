@@ -83,7 +83,7 @@
                                             <c:if test="${var1.PROCEEDSPRIMARY_ID == var.PROCEEDSPRIMARY_ID}">
                                                 <tr class="center" style="background-color: #FFFFCC" >
                                                     <td style="padding-left:2px;">
-                                                        <input type="number" style="width: 120px;height: 31px" value="${var1.RENT}"
+                                                        <input type="number" style="width: 110px;height: 31px" value="${var1.RENT}"
                                                                class="input-text"  name="RENT" id="re${var1.PROCEEDSDETAIL_ID}"
                                                         ></td>
                                                     <td style="
@@ -91,38 +91,38 @@
                                                                 display: none;
                                                         </c:if>
                                                             padding-left:2px;">
-                                                        <input type="number" style="width: 120px;height: 31px" value="${var1.UTILITIES}"
+                                                        <input type="number" style="width: 110px;height: 31px" value="${var1.UTILITIES}"
                                                                class="input-text"  name="UTILITIES" id="ut${var1.PROCEEDSDETAIL_ID}"
                                                         ></td>
                                                     <td style="padding-left:2px;">
-                                                        <input type="number" style="width: 120px;height: 31px" value="${var1.OVERDUE}"
+                                                        <input type="number" style="width: 110px;height: 31px" value="${var1.OVERDUE}"
                                                                class="input-text"  name="OVERDUE" id="od${var1.PROCEEDSDETAIL_ID}"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
-                                                        <input type="number" style="width: 120px;" value="${var1.RECEIVABLE}"
+                                                        <input type="number" style="width: 110px;" value="${var1.RECEIVABLE}"
                                                                class="input-text"  name="RECEIVABLE" id="r${var1.PROCEEDSDETAIL_ID}"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
-                                                        <input type="date" style="width: 120px;height: 31px;" value="${var1.PAYTIME}"
+                                                        <input type="date" style="width: 150px;height: 31px;" value="${var1.PAYTIME}"
                                                                class="input-text"  name="PAYTIME" id="pt${var1.PROCEEDSDETAIL_ID}"
                                                     >
                                                     </td>
                                                     <td style="padding-left:2px;">
-                                                        <input type="number" style="width: 120px" value="${var1.RECEIVABLE_REALITY}"
+                                                        <input type="number" style="width: 110px" value="${var1.RECEIVABLE_REALITY}"
                                                                class="input-text"  name="RECEIVABLE_REALITY" id="rr${var1.PROCEEDSDETAIL_ID}"
                                                         onchange="toCalUncollected('${var1.PROCEEDSDETAIL_ID}')"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
-                                                        <input type="date" style="width: 120px;height: 31px;" value="${var1.RECEIVABL_PAYTIME}"
+                                                        <input type="date" style="width: 150px;height: 31px;" value="${var1.RECEIVABL_PAYTIME}"
                                                                class="input-text"  name="RECEIVABL_PAYTIME" id="rpt${var1.PROCEEDSDETAIL_ID}"
                                                                 onchange="toCalOverDue('${var1.PROCEEDSDETAIL_ID}')"
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
-                                                        <input type="number" style="width: 120px" value="${var1.UNCOLLECTED}"
+                                                        <input type="number" style="width: 110px" value="${var1.UNCOLLECTED}"
                                                                class="input-text"  name="UNCOLLECTED" id="uc${var1.PROCEEDSDETAIL_ID}"
                                                         >
                                                     </td>
@@ -132,6 +132,12 @@
                                                             <i class="ace-icon fa fa-check-square-o bigger-120"
                                                                title="保存修改"></i>
                                                         </a>
+                                                        <a class="btn btn-xs btn-warning" title="新增发单记录"
+                                                           onclick="addWarning('${var1.PROCEEDSDETAIL_ID}');">
+                                                            <i class="ace-icon fa fa-exclamation-circle bigger-120"
+                                                               title="新增发单记录"></i>
+                                                        </a>
+
                                                         <a class="btn btn-xs btn-danger" title="删除"
                                                            onclick="delproceedsDetail('${var1.PROCEEDSDETAIL_ID}');">
                                                             <i class="ace-icon fa fa-trash-o bigger-120"
@@ -193,6 +199,10 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
+
+    function addWarning(PROCEEDSDETAIL_ID) {
+        alert("发单记录功能待开发。。。");
+    }
 
     function toCalUncollected(PROCEEDSDETAIL_ID){
         var RECEIVABLE_REALITY = $("#rr"+PROCEEDSDETAIL_ID).val();
@@ -398,11 +408,11 @@
 
         tr += '<td style="padding-left:2px;"><input id="r'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
                 'class="input-text"  name="RECEIVABLE" ></td>'
-        tr += '<td style="padding-left:2px;"><input id="pt'+uuid_var+'" type="date" style="width: 110px;height: 31px" ' +
+        tr += '<td style="padding-left:2px;"><input id="pt'+uuid_var+'" type="date" style="width: 150px;height: 31px" ' +
                 ' class="input-text"  name="PAYTIME" ></td>';
         tr += '<td style="padding-left:2px;"><input id="rr'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
                 'class="input-text"  name="RECEIVABLE_REALITY"  ></td>'
-        tr += '<td style="padding-left:2px;"><input id="rpt'+uuid_var+'" type="date" style="width: 110px;height: 31px" '+
+        tr += '<td style="padding-left:2px;"><input id="rpt'+uuid_var+'" type="date" style="width: 150px;height: 31px" '+
                 'class="input-text"  name="RECEIVABL_PAYTIME" id="" ></td>';
 
         tr += ' <td style="padding-left:2px;">' +

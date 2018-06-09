@@ -563,7 +563,7 @@
         diag.Drag = true;
         diag.Title = "写字楼收款表格";
         diag.URL = '<%=basePath%>contract/openOfficeT?CONTRACT_ID='+CONTRACT_ID;
-        diag.Width = window.innerWidth * 0.9;
+        diag.Width = window.innerWidth * 1.1;
         diag.Height = window.innerHeight;
         diag.Modal = true;				//有无遮罩窗口
         diag.ShowMaxButton = true;	//最大化按钮
