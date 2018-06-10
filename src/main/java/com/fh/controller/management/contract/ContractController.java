@@ -86,20 +86,11 @@ public class ContractController extends BaseController {
 	@Resource(name="paydetailService")
 	private PayDetailManager paydetailService;
 
-	@Resource(name="officecontractService")
-	private OfficeContractManager officecontractService;
-
 	@Resource(name="operatorService")
 	private OperatorManager operatorService;
 
 	@Resource(name="departmentgroupService")
 	private DepartmentGroupManager departmentgroupService;
-
-	/*@Resource(name="officeprimaryService")
-	private OfficePrimaryManager officeprimaryService;
-
-	@Resource(name="officedetailService")
-	private OfficeDetailManager officedetailService;*/
 
 	@Resource(name="proceedsdetailService")
 	private ProceedsDetailManager proceedsdetailService;

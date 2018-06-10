@@ -7,7 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.annotation.Resource;
 
+import com.fh.service.management.departmentgroup.DepartmentGroupManager;
 import com.fh.service.management.filemeans.FileMeansManager;
+import com.fh.service.system.user.UserManager;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -37,10 +39,18 @@ public class FileCatalogController extends BaseController {
 	
 	String menuUrl = "filecatalog/list.do"; //菜单地址(权限用)
 	String meanMenuUrl = "filemeans/list.do"; //菜单地址(权限用)
+
 	@Resource(name="filecatalogService")
 	private FileCatalogManager filecatalogService;
+
 	@Resource(name="filemeansService")
 	private FileMeansManager filemeansService;
+
+	@Resource(name="departmentgroupService")
+	private DepartmentGroupManager departmentgroupService;
+
+	@Resource(name="userService")
+	private UserManager userService;
 
 	@RequestMapping(value = "/addFile")
 	public ModelAndView addFile() throws Exception {
@@ -48,9 +58,25 @@ public class FileCatalogController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd = filecatalogService.findByFitemid(pd);
-		System.out.println(pd);
 		mv.addObject("pd",pd);
 		mv.setViewName("management/filecatalog/addFile");
+		return mv;
+	}
+
+	@RequestMapping(value = "/selectFileJurisdiction")
+	public ModelAndView selectFileJurisdiction() throws Exception {
+		ModelAndView mv = new ModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = filecatalogService.findByFitemid(pd);
+		List<PageData> dept = departmentgroupService.listEmployee(pd);
+		//pd.put()Jurisdiction.getUsername());
+		pd.put("USERNAME",Jurisdiction.getUsername());
+		PageData userPd = userService.findByUsername(pd);
+		mv.addObject("dept",dept);
+		mv.addObject("pd",pd);
+		mv.addObject("userPd",userPd);
+		mv.setViewName("management/filecatalog/selectFileJurisdiction");
 		return mv;
 	}
 
@@ -85,9 +111,10 @@ public class FileCatalogController extends BaseController {
 			pd1.put("FILE_CATALOGURL_ID",1);
 		}
 		page.setPd(pd);
-		System.out.println(pd);
-		List<PageData> list_catalog = filecatalogService.list_catalog(page);
-		List<PageData> list_files = filemeansService.listByFILE_CATALOGURL_ID(pd1);
+		//System.out.println(pd);
+		List<PageData> list_catalog = filecatalogService.list_catalog(page);//文件夹对象集合
+		List<PageData> list_files_NotENCTYPT = filemeansService.listByFILE_CATALOGURL_ID_NotENCTYPT(pd1);//文件集合(不加密）
+		List<PageData> list_files_ENCTYPT = filemeansService.listByFILE_CATALOGURL_ID_ENCTYPT(pd1);//文件集合(加密）
 		if (del){
 			mv.addObject("isdel",0);//当isdel为0时则具有删除功能;1为不具有删除功能
 		}else {
@@ -95,7 +122,8 @@ public class FileCatalogController extends BaseController {
 		}
 		mv.addObject("pd",pd);
 		mv.addObject("list_catalog",list_catalog);
-		mv.addObject("list_files",list_files);
+		mv.addObject("list_files_NotENCTYPT",list_files_NotENCTYPT);
+		mv.addObject("list_files_ENCTYPT",list_files_ENCTYPT);
 		mv.setViewName("management/filecatalog/file_load");
 		return mv;
 	}

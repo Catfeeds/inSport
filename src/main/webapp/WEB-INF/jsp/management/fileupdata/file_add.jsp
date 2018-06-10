@@ -232,7 +232,11 @@
 				formData: {
 					uid: 123,
 					FNAME: '${pd.FNAME}',
-					FITEMID: '${pd.FITEMID}'
+					FITEMID: '${pd.FITEMID}',
+					FILE_READUSERS: '${pd.FILE_READUSERS}',
+					FILE_PASSWORD: '${pd.FILE_PASSWORD}',
+					FILE_ISENCTYPT: '${pd.FILE_ISENCTYPT}',
+					FILE_ISPRIVATE: '${pd.FILE_ISPRIVATE}'
 				},
 				dnd: '#dndArea',
 				paste: '#uploader',

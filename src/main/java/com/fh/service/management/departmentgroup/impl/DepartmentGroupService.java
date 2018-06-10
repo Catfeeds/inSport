@@ -66,6 +66,9 @@ public class DepartmentGroupService implements DepartmentGroupManager{
 		return (List<PageData>)dao.findForList("DepartmentGroupMapper.listTree", pd);
 	}
 
+	public List<PageData> listEmployee(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("DepartmentGroupMapper.listEmployee", pd);
+	}
 
 	/**通过id获取数据
 	 * @param pd

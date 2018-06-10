@@ -119,8 +119,8 @@
                                     </c:otherwise>--%>
                                 </c:choose>
                                 <c:choose>
-                                    <c:when test="${not empty list_files}">
-                                        <c:forEach items="${list_files}" var="var" varStatus="vs">
+                                    <c:when test="${not empty list_files_NotENCTYPT}">
+                                        <c:forEach items="${list_files_NotENCTYPT}" var="var" varStatus="vs">
                                             <c:if test="${fn:contains(var.FILE_TYPE,'image')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
@@ -241,6 +241,142 @@
                                                            class="cboxElement">
                                                             <img  width="120" height="120" alt="200x200"
                                                                  src="static/filecatalog/images/xlsx.png"/>
+                                                            <div class="text" style="margin-top: 15px">
+                                                                <div class="inner">${var.FILENAME}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </c:if>
+                                        </c:forEach>
+                                        <c:if test="${QX.cha == 0 }">
+                                            <tr>
+                                                <td colspan="100" class="center">您无权查看该文件夹内容</td>
+                                            </tr>
+                                        </c:if>
+                                    </c:when>
+                                    <c:when test="${not empty list_files_ENCTYPT}">
+                                        <c:forEach items="${list_files_ENCTYPT}" var="var" varStatus="vs">
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'image')}">
+                                                <li style="border:none;margin-top: 30px;margin-left: 15px">
+                                                    <div align="center">
+                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                             style="width: 120px;"
+                                                             data-rel="colorbox" class="cboxElement">
+                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                                 class="float_div"
+                                                                 style="display: none">
+                                                                <img src="static/images/Smile.png"
+                                                                     style="width: 35px;height: 35px"/>
+                                                            </div>
+                                                            <div  name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
+                                                                  class="delfloat_div"
+                                                                  style="display: none">
+                                                                <img src="static/images/trash_can.png"
+                                                                     style="width: 35px;height: 35px"/>
+                                                            </div>
+                                                            <img width="120" height="110";
+                                                                 src="static/filecatalog/images/locked.png" alt="">
+                                                            <a data-magnify="gallery"
+                                                               data-caption="Paraglider flying over Aurlandfjord,
+                                                            Norway by framedbythomas" href="<%=basePath%>${var.FILE_URL}">
+                                                                    ${var.FILENAME}
+                                                            </a>
+                                                                <%--  <img  width="120" height="110" alt="200x200"
+                                                                       src="<%=basePath%>${var.FILE_URL}"/>
+
+                                                                  <div onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text" style="margin-top: 15px">
+                                                                      <div class="inner">${var.FILENAME}</div>
+                                                                  </div>--%>
+                                                        </div>
+                                                            <%--<div class="text" style="margin-top: 15px">
+                                                                <div class="inner">点击预览</div>
+                                                            </div>--%>
+                                                    </div>
+
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'pdf')}">
+                                                <li style="border:none;margin-top: 30px;margin-left: 15px">
+                                                    <div align="center">
+                                                        <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                             class="float_div"
+                                                             style="display: none">
+                                                            <img src="static/images/Smile.png"
+                                                                 style="width: 35px;height: 35px"/>
+                                                        </div>
+                                                        <div name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
+                                                             class="delfloat_div"
+                                                             style="display: none">
+                                                            <img src="static/images/trash_can.png"
+                                                                 style="width: 35px;height: 35px"/>
+                                                        </div>
+                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                             data-rel="colorbox"
+                                                             class="cboxElement">
+                                                            <img   width="120" height="120" alt="200x200"
+                                                                   src="static/filecatalog/images/application-pdf.png"/>
+                                                            <a onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text"
+                                                               style="margin-top: 15px">
+                                                                <div class="inner">${var.FILENAME}</div>
+                                                            </a>
+                                                        </div>
+                                                            <%--<div style="width: 100%;height: 25px" align="center" >
+                                                                <p>${var.FILE_CATALOGURL}</p>
+                                                            </div>--%>
+                                                    </div>
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'word')}">
+                                                <li style="border:none;margin-top: 30px;margin-left: 15px">
+                                                    <div align="center">
+                                                        <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                             class="float_div"
+                                                             style="display: none">
+                                                            <img src="static/images/Smile.png"
+                                                                 style="width: 35px;height: 35px"/>
+                                                        </div>
+                                                        <div name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
+                                                             class="delfloat_div"
+                                                             style="display: none">
+                                                            <img src="static/images/trash_can.png"
+                                                                 style="width: 35px;height: 35px"/>
+                                                        </div>
+                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                             data-rel="colorbox"
+                                                             class="cboxElement">
+                                                            <img  width="120" height="120" alt="200x200"
+                                                                  src="static/filecatalog/images/file-word-icon.png"/>
+                                                            <div class="text" style="margin-top: 15px">
+                                                                <div class="inner">${var.FILENAME}</div>
+                                                            </div>
+                                                        </div>
+                                                            <%--<div style="width: 100%;height: 25px" align="center" >
+                                                                <p>${var.FILE_CATALOGURL}</p>
+                                                            </div>--%>
+                                                    </div>
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'sheet')}">
+                                                <li style="border:none;margin-top: 30px;margin-left: 15px">
+                                                    <div align="center">
+                                                        <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                             class="float_div"
+                                                             style="display: none">
+                                                            <img src="static/images/Smile.png"
+                                                                 style="width: 35px;height: 35px"/>
+                                                        </div>
+                                                        <div name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
+                                                             class="delfloat_div"
+                                                             style="display: none">
+                                                            <img src="static/images/trash_can.png"
+                                                                 style="width: 35px;height: 35px"/>
+                                                        </div>
+                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                             data-rel="colorbox"
+                                                             class="cboxElement">
+                                                            <img  width="120" height="120" alt="200x200"
+                                                                  src="static/filecatalog/images/xlsx.png"/>
                                                             <div class="text" style="margin-top: 15px">
                                                                 <div class="inner">${var.FILENAME}</div>
                                                             </div>
@@ -598,9 +734,20 @@
         });
     }
 
-    //去选择上传文件
+    //去选择上传文件  FITEMID为文件夹id  FNAME为当前文件夹名称
     function addFile(FITEMID, FNAME) {
         var diag = new top.Dialog();
+        diag.Drag = true;
+        diag.Title = "选择文件权限";
+        diag.URL = '<%=basePath%>filecatalog/selectFileJurisdiction.do?FITEMID=' + FITEMID + '&FNAME=' + FNAME;
+        diag.Width = 600;
+        diag.Height = 490;
+        diag.CancelEvent = function () { //关闭事件
+           // window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
+            diag.close();
+        };
+        diag.show();
+        /*var diag = new top.Dialog();
         diag.Drag = true;
         diag.Title = "选择上传文件";
         diag.URL = '<%=basePath%>fileupata/goAddFile.do?FITEMID=' + FITEMID + '&FNAME=' + FNAME;
@@ -610,7 +757,7 @@
             window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
             diag.close();
         };
-        diag.show();
+        diag.show();*/
     }
 </script>
 

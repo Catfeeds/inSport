@@ -60,7 +60,7 @@ public class FileUpDataController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		//System.out.println(pd);
+		System.out.println(pd);
 		mv.setViewName("management/fileupdata/file_add");
 		mv.addObject("pd", pd);
 		return mv;
@@ -71,6 +71,10 @@ public class FileUpDataController extends BaseController {
 	public Object savePic(
 			@RequestParam(required=false) MultipartFile file, @RequestParam(value="FNAME",required=false)String FNAME
 			, @RequestParam(value="FITEMID",required=false)String FITEMID
+			, @RequestParam(value="FILE_READUSERS",required=false)String FILE_READUSERS
+			, @RequestParam(value="FILE_PASSWORD",required=false)String FILE_PASSWORD
+			, @RequestParam(value="FILE_ISENCTYPT",required=false)String FILE_ISENCTYPT
+			, @RequestParam(value="FILE_ISPRIVATE",required=false)String FILE_ISPRIVATE
 	) throws Exception{
 		logBefore(logger, Jurisdiction.getUsername()+"新增图片");
 		Map<String,String> map = new HashMap<String,String>();
@@ -102,6 +106,12 @@ public class FileUpDataController extends BaseController {
 		pd.put("FILE_READ", 0);
 		pd.put("FILE_CATALOGURL", FNAME);
 		pd.put("FILE_CATALOGURL_ID",Integer.parseInt(FITEMID));
+		//------------
+
+		pd.put("FILE_READUSERS", FILE_READUSERS);
+		pd.put("FILE_PASSWORD", FILE_PASSWORD);
+		pd.put("FILE_ISENCTYPT", FILE_ISENCTYPT);
+		pd.put("FILE_ISPRIVATE", FILE_ISPRIVATE);
 		filemeansService.save(pd);
 		//contractpictureService.save(pd);
 		//Watermark.setWatemark(PathUtil.getClasspath() + Const.FILEPATHIMG + ffile + "/" + fileName);//加水印

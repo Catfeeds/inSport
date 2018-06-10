@@ -20,6 +20,10 @@
 		FILE_CATALOGURL,
 		FILE_REMARK,
 		FILE_CATALOGURL_ID,
+		FILE_READUSERS,
+		FILE_PASSWORD,
+		FILE_ISENCTYPT,
+		FILE_ISPRIVATE,
 		FILEMEANS_ID
 	</sql>
 
@@ -36,6 +40,10 @@
 		#{FILE_CATALOGURL},
 		#{FILE_REMARK},
 		#{FILE_CATALOGURL_ID},
+		#{FILE_READUSERS},
+		#{FILE_PASSWORD},
+		#{FILE_ISENCTYPT},
+		#{FILE_ISPRIVATE},
 		#{FILEMEANS_ID}
 	</sql>
 
@@ -133,12 +141,23 @@
         <include refid="tableName"></include>
     </select>
 
-    <select id="listByFILE_CATALOGURL_ID" parameterType="pd" resultType="pd">
+    <select id="listByFILE_CATALOGURL_ID_NotENCTYPT" parameterType="pd" resultType="pd">
         select
         <include refid="Field"></include>
         from
         <include refid="tableName"></include>
         WHERE FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
+        and FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%' AND FILE_ISENCTYPT = 0
+        ORDER BY FILENAME
+    </select>
+
+    <select id="listByFILE_CATALOGURL_ID_ENCTYPT" parameterType="pd" resultType="pd">
+        select
+        <include refid="Field"></include>
+        from
+        <include refid="tableName"></include>
+        WHERE FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
+        and FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%' AND FILE_ISENCTYPT = 1
         ORDER BY FILENAME
     </select>
 

@@ -68,6 +68,15 @@
 			DEPARTMENTGROUP_ID = #{DEPARTMENTGROUP_ID}
 	</select>
 
+	<select id="listEmployee" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where
+		PID <![CDATA[<> ]]> 0
+	</select>
+
 	<select id="listTree" parameterType="pd" resultType="pd">
 		select
 		<include refid="Field"></include>

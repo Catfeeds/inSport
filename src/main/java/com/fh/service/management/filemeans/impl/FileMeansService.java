@@ -70,8 +70,12 @@ public class FileMeansService implements FileMeansManager{
 		return (List<PageData>)dao.findForList("FileMeansMapper.listAll", pd);
 	}
 
-	public List<PageData> listByFILE_CATALOGURL_ID(PageData pd)throws Exception{
-		return (List<PageData>)dao.findForList("FileMeansMapper.listByFILE_CATALOGURL_ID", pd);
+	public List<PageData> listByFILE_CATALOGURL_ID_NotENCTYPT(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("FileMeansMapper.listByFILE_CATALOGURL_ID_NotENCTYPT", pd);
+	}
+
+	public List<PageData> listByFILE_CATALOGURL_ID_ENCTYPT(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("FileMeansMapper.listByFILE_CATALOGURL_ID_ENCTYPT", pd);
 	}
 
 	/**通过id获取数据

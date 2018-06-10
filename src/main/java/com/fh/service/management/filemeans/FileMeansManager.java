@@ -46,7 +46,9 @@ public interface FileMeansManager{
 	 */
 	public List<PageData> listAll(PageData pd)throws Exception;
 
-	public List<PageData> listByFILE_CATALOGURL_ID(PageData pd)throws Exception;
+	public List<PageData> listByFILE_CATALOGURL_ID_NotENCTYPT(PageData pd)throws Exception;
+
+	public List<PageData> listByFILE_CATALOGURL_ID_ENCTYPT(PageData pd)throws Exception;
 
 	/**通过id获取数据
 	 * @param pd
