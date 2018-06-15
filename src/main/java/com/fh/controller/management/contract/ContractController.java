@@ -405,7 +405,13 @@ public class ContractController extends BaseController {
 		}
 		PageData userpd = departmentgroupService.findUserlogin(pd);
 		List<PageData>	varList = null;
-		String DNAME = userpd.getString("DNAME");
+		String DNAME = null;
+		try {
+			DNAME = userpd.getString("DNAME"); //获取部门名称
+		}catch (Exception e){
+			System.out.println("-----------该员工还没分配角色，请分配角色------------");
+			pd.put("ex","该员工还没分配角色，请分配角色");
+		}
 		String keywords = pd.getString("keywords");				//关键词检索条件
 		if(null != keywords && !"".equals(keywords)){
 			keywords = URLDecoder.decode(keywords, "UTF-8");
@@ -417,7 +423,8 @@ public class ContractController extends BaseController {
 			pd.put("p_treeKey", p_treeKey.trim());
 		}
 		page.setPd(pd);
-		if("总经办".equals(DNAME) || "财务部".equals(DNAME) || "综管部".equals(DNAME) ){
+		try{
+			if("总经办".equals(DNAME) || "财务部".equals(DNAME) || "综管部".equals(DNAME) ){
 			/*String DEPTNAME = pd.getString("DEPTNAME");				//关键词检索条件
 			if(null != DEPTNAME && !"".equals(DEPTNAME)){
 				pd.put("DEPTNAME", DEPTNAME.trim());
@@ -426,12 +433,16 @@ public class ContractController extends BaseController {
 			if(null != YEAR && !"".equals(YEAR)){
 				pd.put("YEAR", YEAR.trim());
 			}*/
-			varList = contractService.list(page);	//列出Contract列表
-			List<PageData> listDept = deptnoService.listAll(pd);
-			mv.addObject("listDept", listDept);
-			mv.addObject("isDept", 1);
-		}else {
-			varList = contractService.datalistPageByDept(page);	//列出Contract列表
+				varList = contractService.list(page);	//列出Contract列表
+				List<PageData> listDept = deptnoService.listAll(pd);
+				mv.addObject("listDept", listDept);
+				mv.addObject("isDept", 1);
+			}else {
+				varList = contractService.datalistPageByDept(page);	//列出Contract列表
+			}
+		}catch (Exception e){
+			System.out.println("-----------该员工还没分配角色，请分配角色------------");
+			pd.put("ex","该员工还没分配角色，请分配角色");
 		}
 		mv.setViewName("management/contract/contract_list");
 		mv.addObject("varList", varList);

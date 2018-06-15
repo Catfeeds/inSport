@@ -112,6 +112,10 @@ public class FileCatalogController extends BaseController {
 		}
 		page.setPd(pd);
 		//System.out.println(pd);
+		pd.put("USERNAME",Jurisdiction.getUsername());
+		PageData userPd = userService.findByUsername(pd);
+		pd1.put("FILE_READUSERS",userPd.getString("USER_ID"));
+		pd1.put("USERNAME",Jurisdiction.getUsername());
 		List<PageData> list_catalog = filecatalogService.list_catalog(page);//文件夹对象集合
 		List<PageData> list_files_NotENCTYPT = filemeansService.listByFILE_CATALOGURL_ID_NotENCTYPT(pd1);//文件集合(不加密）
 		List<PageData> list_files_ENCTYPT = filemeansService.listByFILE_CATALOGURL_ID_ENCTYPT(pd1);//文件集合(加密）

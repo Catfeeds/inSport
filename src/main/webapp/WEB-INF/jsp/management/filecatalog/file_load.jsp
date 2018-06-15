@@ -144,20 +144,10 @@
                                                             <a data-magnify="gallery"
                                                             data-caption="Paraglider flying over Aurlandfjord,
                                                             Norway by framedbythomas" href="<%=basePath%>${var.FILE_URL}">
-                                                                    ${var.FILENAME}
+                                                                 <div  name="inner">   ${var.FILENAME}</div>
                                                             </a>
-                                                          <%--  <img  width="120" height="110" alt="200x200"
-                                                                 src="<%=basePath%>${var.FILE_URL}"/>
-
-                                                            <div onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text" style="margin-top: 15px">
-                                                                <div class="inner">${var.FILENAME}</div>
-                                                            </div>--%>
                                                         </div>
-                                                        <%--<div class="text" style="margin-top: 15px">
-                                                            <div class="inner">点击预览</div>
-                                                        </div>--%>
                                                     </div>
-
                                                 </li>
                                             </c:if>
                                             <c:if test="${fn:contains(var.FILE_TYPE,'pdf')}">
@@ -182,7 +172,7 @@
                                                                  src="static/filecatalog/images/application-pdf.png"/>
                                                             <a onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text"
                                                                  style="margin-top: 15px">
-                                                                <div class="inner">${var.FILENAME}</div>
+                                                                <div name="inner" class="inner">${var.FILENAME}</div>
                                                             </a>
                                                         </div>
                                                             <%--<div style="width: 100%;height: 25px" align="center" >
@@ -212,7 +202,7 @@
                                                             <img  width="120" height="120" alt="200x200"
                                                                  src="static/filecatalog/images/file-word-icon.png"/>
                                                             <div class="text" style="margin-top: 15px">
-                                                                <div class="inner">${var.FILENAME}</div>
+                                                                <div name="inner" class="inner">${var.FILENAME}</div>
                                                             </div>
                                                         </div>
                                                             <%--<div style="width: 100%;height: 25px" align="center" >
@@ -242,7 +232,7 @@
                                                             <img  width="120" height="120" alt="200x200"
                                                                  src="static/filecatalog/images/xlsx.png"/>
                                                             <div class="text" style="margin-top: 15px">
-                                                                <div class="inner">${var.FILENAME}</div>
+                                                                <div name="inner" class="inner">${var.FILENAME}</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -255,20 +245,23 @@
                                             </tr>
                                         </c:if>
                                     </c:when>
+                                </c:choose>
+                                <!-- 加密后的文件显示 -->
+                                <c:choose>
                                     <c:when test="${not empty list_files_ENCTYPT}">
                                         <c:forEach items="${list_files_ENCTYPT}" var="var" varStatus="vs">
                                             <c:if test="${fn:contains(var.FILE_TYPE,'image')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
-                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                        <div onclick="openByPW('${var.FILEMEANS_ID}');" <%--onclick="toSelect('${var.FILEMEANS_ID}')"--%>
                                                              style="width: 120px;"
                                                              data-rel="colorbox" class="cboxElement">
-                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                            <%--<div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                                  class="float_div"
                                                                  style="display: none">
                                                                 <img src="static/images/Smile.png"
                                                                      style="width: 35px;height: 35px"/>
-                                                            </div>
+                                                            </div>--%>
                                                             <div  name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
                                                                   class="delfloat_div"
                                                                   style="display: none">
@@ -277,23 +270,11 @@
                                                             </div>
                                                             <img width="120" height="110";
                                                                  src="static/filecatalog/images/locked.png" alt="">
-                                                            <a data-magnify="gallery"
-                                                               data-caption="Paraglider flying over Aurlandfjord,
-                                                            Norway by framedbythomas" href="<%=basePath%>${var.FILE_URL}">
-                                                                    ${var.FILENAME}
+                                                            <a  href="">
+                                                                <div  name="inner">${var.FILENAME}</div>
                                                             </a>
-                                                                <%--  <img  width="120" height="110" alt="200x200"
-                                                                       src="<%=basePath%>${var.FILE_URL}"/>
-
-                                                                  <div onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text" style="margin-top: 15px">
-                                                                      <div class="inner">${var.FILENAME}</div>
-                                                                  </div>--%>
                                                         </div>
-                                                            <%--<div class="text" style="margin-top: 15px">
-                                                                <div class="inner">点击预览</div>
-                                                            </div>--%>
                                                     </div>
-
                                                 </li>
                                             </c:if>
                                             <c:if test="${fn:contains(var.FILE_TYPE,'pdf')}">
@@ -314,11 +295,11 @@
                                                         <div onclick="toSelect('${var.FILEMEANS_ID}')"
                                                              data-rel="colorbox"
                                                              class="cboxElement">
-                                                            <img   width="120" height="120" alt="200x200"
-                                                                   src="static/filecatalog/images/application-pdf.png"/>
+                                                            <img   width="120" height="110" alt="200x200"
+                                                                   src="static/filecatalog/images/locked.png"/>
                                                             <a onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text"
                                                                style="margin-top: 15px">
-                                                                <div class="inner">${var.FILENAME}</div>
+                                                                <div name="inner" class="inner">${var.FILENAME}</div>
                                                             </a>
                                                         </div>
                                                             <%--<div style="width: 100%;height: 25px" align="center" >
@@ -345,10 +326,10 @@
                                                         <div onclick="toSelect('${var.FILEMEANS_ID}')"
                                                              data-rel="colorbox"
                                                              class="cboxElement">
-                                                            <img  width="120" height="120" alt="200x200"
-                                                                  src="static/filecatalog/images/file-word-icon.png"/>
+                                                            <img  width="120" height="110" alt="200x200"
+                                                                  src="static/filecatalog/images/locked.png"/>
                                                             <div class="text" style="margin-top: 15px">
-                                                                <div class="inner">${var.FILENAME}</div>
+                                                                <div name="inner" class="inner">${var.FILENAME}</div>
                                                             </div>
                                                         </div>
                                                             <%--<div style="width: 100%;height: 25px" align="center" >
@@ -375,27 +356,17 @@
                                                         <div onclick="toSelect('${var.FILEMEANS_ID}')"
                                                              data-rel="colorbox"
                                                              class="cboxElement">
-                                                            <img  width="120" height="120" alt="200x200"
-                                                                  src="static/filecatalog/images/xlsx.png"/>
-                                                            <div class="text" style="margin-top: 15px">
-                                                                <div class="inner">${var.FILENAME}</div>
-                                                            </div>
+                                                            <img  width="120" height="110" alt="200x200"
+                                                                  src="static/filecatalog/images/locked.png"/>
+                                                            <a title="${var.FILENAME}" class="text">
+                                                                <div name="inner" class="inner">${var.FILENAME}</div>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </li>
                                             </c:if>
                                         </c:forEach>
-                                        <c:if test="${QX.cha == 0 }">
-                                            <tr>
-                                                <td colspan="100" class="center">您无权查看该文件夹内容</td>
-                                            </tr>
-                                        </c:if>
                                     </c:when>
-                                    <%--<c:otherwise>
-                                        <tr class="main_info">
-                                            <td colspan="100" class="center" >文件夹为空</td>
-                                        </tr>
-                                    </c:otherwise>--%>
                                 </c:choose>
                                 <li id="downloads"
                                     style="border:none;margin-top: 30px;margin-left:35px;margin-right:20px;display: none">
@@ -474,6 +445,28 @@
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
 
+    function openByPW(value){
+        //alert("该文件为加密文件，请输入密码后查阅");
+        top.jzts();
+        var diag = new top.Dialog();
+        diag.Drag=true;
+        diag.Title ="输入密码";
+        diag.URL = '<%=basePath%>filemeans/openByPW.do?FILEMEANS_ID='+value;
+        diag.Width = 200;
+        diag.Height = 255;
+        diag.Modal = true;				//有无遮罩窗口
+        diag. ShowMaxButton = true;	//最大化按钮
+        diag.ShowMinButton = true;		//最小化按钮
+        diag.CancelEvent = function(){ //关闭事件$("#ORDER").val("yes");
+            if(diag.innerFrame.contentWindow.document.getElementById('ORDER').value == "yes"){
+                var password = diag.innerFrame.contentWindow.document.getElementById('PASSWORD').value;
+                alert(password);
+            }
+            diag.close();
+        };
+        diag.show();
+    }
+
     //图片预览效果
     $('[data-magnify]').magnify({
         headToolbar: [
@@ -498,6 +491,7 @@
                 alert("您点击了鼠标中键！");
             }
     }
+
 
     //右击菜单
     var menuJson = [
@@ -613,6 +607,10 @@
         window.open("<%=basePath%>filecatalog/wep_open?FILE_URL=" + FILE_URL +"&FILENAME="+FILENAME);
     }
 
+
+    $("[name='inner']").each(function () {
+      // alert($(this).text().length);
+    });
 
 
     //选择删除文件
@@ -743,21 +741,10 @@
         diag.Width = 600;
         diag.Height = 490;
         diag.CancelEvent = function () { //关闭事件
-           // window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
-            diag.close();
-        };
-        diag.show();
-        /*var diag = new top.Dialog();
-        diag.Drag = true;
-        diag.Title = "选择上传文件";
-        diag.URL = '<%=basePath%>fileupata/goAddFile.do?FITEMID=' + FITEMID + '&FNAME=' + FNAME;
-        diag.Width = 800;
-        diag.Height = 490;
-        diag.CancelEvent = function () { //关闭事件
             window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
             diag.close();
         };
-        diag.show();*/
+        diag.show();
     }
 </script>
 

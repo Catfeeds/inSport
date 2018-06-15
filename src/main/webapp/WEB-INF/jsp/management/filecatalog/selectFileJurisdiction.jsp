@@ -118,7 +118,7 @@
 		function MouseOut(value)
 		{
 			//alert("password");
-			$("#pw").attr("type","password");
+			$("#FILE_PASSWORD").attr("type","password");
 		}
 
 		function toPrivate(value) {

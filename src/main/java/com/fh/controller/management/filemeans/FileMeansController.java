@@ -70,7 +70,7 @@ public class FileMeansController extends BaseController {
 		out.write("success");
 		out.close();
 	}
-	
+
 	/**修改
 	 * @param
 	 * @throws Exception
@@ -87,7 +87,18 @@ public class FileMeansController extends BaseController {
 		mv.setViewName("save_result");
 		return mv;
 	}
-	
+
+	@RequestMapping(value="/openByPW")
+	public ModelAndView openByPW() throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		mv.setViewName("management/filemeans/openbypw");
+		mv.addObject("msg", "save");
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
 	/**列表
 	 * @param page
 	 * @throws Exception

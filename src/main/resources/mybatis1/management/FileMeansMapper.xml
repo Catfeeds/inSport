@@ -142,12 +142,10 @@
     </select>
 
     <select id="listByFILE_CATALOGURL_ID_NotENCTYPT" parameterType="pd" resultType="pd">
-        select
-        <include refid="Field"></include>
-        from
-        <include refid="tableName"></include>
-        WHERE FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
-        and FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%' AND FILE_ISENCTYPT = 0
+        SELECT * from
+        (select * from TB_FILEMEANS WHERE
+        FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%' AND FILE_ISENCTYPT = 0 OR FILE_CREATEUSER = #{USERNAME})
+        AS TB_FILEMEANS WHERE FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
         ORDER BY FILENAME
     </select>
 
@@ -157,7 +155,7 @@
         from
         <include refid="tableName"></include>
         WHERE FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
-        and FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%' AND FILE_ISENCTYPT = 1
+        and FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%' AND FILE_ISENCTYPT = 1 AND FILE_CREATEUSER <![CDATA[<> ]]> #{USERNAME}
         ORDER BY FILENAME
     </select>
 

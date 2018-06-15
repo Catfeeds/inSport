@@ -234,7 +234,7 @@
                                                                 </a>
                                                             </c:if>
                                                        <%-- </div>--%>
-                                                        <div class="hidden-md hidden-lg">
+                                                       <%-- <div class="hidden-md hidden-lg">
                                                             <div class="inline pos-rel">
                                                                 <button class="btn btn-minier btn-primary dropdown-toggle"
                                                                         data-toggle="dropdown" data-position="auto">
@@ -273,7 +273,7 @@
                                                                     </c:if>
                                                                 </ul>
                                                             </div>
-                                                        </div>
+                                                        </div>--%>
                                                     </td>
                                                 </tr>
 
@@ -284,11 +284,18 @@
                                                 <td colspan="100" class="center">您无权查看</td>
                                             </tr>
                                         </c:if>
+
+
                                     </c:when>
                                     <c:otherwise>
                                         <tr class="main_info">
                                             <td colspan="100" class="center">没有相关数据</td>
                                         </tr>
+                                        <c:if test="${pd.ex != null }">
+                                            <tr>
+                                                <td colspan="100" class="center">${pd.ex}</td>
+                                            </tr>
+                                        </c:if>
                                     </c:otherwise>
                                 </c:choose>
 

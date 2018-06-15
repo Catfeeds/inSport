@@ -175,7 +175,7 @@
 		<include refid="tableName"></include>
 		where OPERATOR IN
 		(SELECT DNAME from TB_DEPARTMENTGROUP WHERE PID =
-		( SELECT PID from TB_DEPARTMENTGROUP WHERE DNAME =
+		( SELECT PID from TB_DEPARTMENTGROUP WHERE DNAME in
 		( SELECT NAME  from sys_user WHERE  USERNAME = #{pd.USERNAME}  ) ))
 		<if test="pd.keywords != null and pd.keywords != ''"><!-- 关键词检索 -->
 			and
