@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ProceedsContractMapper">
+<mapper namespace="WarnMapper">
 	
 	<!--表名 -->
 	<sql id="tableName">
-		TB_PROCEEDSCONTRACT
+		TB_WARN
 	</sql>
 	
 	<!-- 字段 -->
 	<sql id="Field">
-		PRINCIPAL,	
-		ISPAY,
-		CONTRACT_ID,
-		PROCEEDSCONTRACT_ID,
-		FREMARK
+		WARNNAMEID,	
+		CONTRACT_ID,	
+		WARNTIME,	
+		ISREAD,	
+		CREATENAME,
+		ISFINISH,
+		READTIME,
+		WARN_ID
 	</sql>
 	
 	<!-- 字段值 -->
 	<sql id="FieldValue">
-		#{PRINCIPAL},	
-		#{ISPAY},
-		#{CONTRACT_ID},
-		#{PROCEEDSCONTRACT_ID},
-		#{FREMARK}
+		#{WARNNAMEID},	
+		#{CONTRACT_ID},	
+		#{WARNTIME},	
+		#{ISREAD},	
+		#{CREATENAME},
+		#{ISFINISH},
+		#{READTIME},
+		#{WARN_ID}
 	</sql>
 	
 	<!-- 新增-->
@@ -41,7 +47,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			PROCEEDSCONTRACT_ID = #{PROCEEDSCONTRACT_ID}
+			WARN_ID = #{WARN_ID}
 	</delete>
 	
 	<!-- 修改 -->
@@ -49,13 +55,10 @@
 		update
 		<include refid="tableName"></include>
 		set 
-			PRINCIPAL = #{PRINCIPAL},
-			ISPAY = #{ISPAY},
-			CONTRACT_ID = #{CONTRACT_ID},
-			FREMARK = #{FREMARK},
-		PROCEEDSCONTRACT_ID = PROCEEDSCONTRACT_ID
-		where 
-		PROCEEDSCONTRACT_ID = #{PROCEEDSCONTRACT_ID}
+			WARNNAMEID = #{WARNNAMEID},
+		WARN_ID = WARN_ID
+		where
+		CONTRACT_ID = #{CONTRACT_ID}
 	</update>
 	
 	<!-- 通过ID获取数据 -->
@@ -65,16 +68,14 @@
 		from 
 		<include refid="tableName"></include>
 		where 
-			PROCEEDSCONTRACT_ID = #{PROCEEDSCONTRACT_ID}
+			WARN_ID = #{WARN_ID}
 	</select>
 
-	<select id="findByContractId" parameterType="pd" resultType="pd">
-		select
-		<include refid="Field"></include>
-		from
-		<include refid="tableName"></include>
+	<select id="listWarnByUser" parameterType="pd" resultType="pd">
+		SELECT * from TB_WARN w LEFT JOIN TB_CONTRACT c ON w.CONTRACT_ID = c.CONTRACT_ID
 		where
-		CONTRACT_ID = #{CONTRACT_ID}
+		w.WARNNAMEID = (select NAME from sys_user WHERE USERNAME = #{USERNAME})
+		AND ISREAD = 0 AND ISFINISH = 0
 	</select>
 	
 	<!-- 列表 -->
@@ -109,7 +110,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			PROCEEDSCONTRACT_ID in
+			WARN_ID in
 		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
                  #{item}
 		</foreach>

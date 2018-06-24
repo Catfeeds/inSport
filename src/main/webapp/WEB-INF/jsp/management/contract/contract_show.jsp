@@ -139,26 +139,27 @@
 							<!-- --------------------------------------------------------------------------- -->
 							<table id="proceedsContract" style="display: none;" class="table table-border table-bg table-bordered">
 								<tbody>
-								<tr class="success">
-									<th width="15%"><label>应收金额：</label></th>
-									<th width="10%">${pd2.RECEIVABLE}</th>
-									<th ><label>应付款时间：</label></th>
-									<th >${pd2.PAYTIME}</th>
-									<th  ><label>滞纳金率：</label></th>
-									<th  >${pd2.OVERDUE}</th>
 
-								</tr>
-								<tr class="success">
-									<th width="15%"><label>实际付款金额：</label></th>
-									<th width="20%">${pd2.RECEIVABLE_REALITY}</th>
-									<th ><label>实际付款时间：</label></th>
-									<th >${pd2.RECEIVABL_PAYTIME}</th>
-									<th width="15%"><label>付款方名称：</label></th>
-									<th width="20%">${pd2.PAYERNAME}</th>
-
-								</tr>
 								<c:if test="${not empty listInvoice }">
 									<c:forEach items="${listInvoice}" var="var" varStatus="vs">
+										<tr class="success">
+											<th width="15%"><label>应收金额：</label></th>
+											<th width="10%">${var.RECEIVABLE}</th>
+											<th ><label>应付款时间：</label></th>
+											<th >${var.PAYTIME}</th>
+											<th  ><label>滞纳金率：</label></th>
+											<th  >${var.OVERDUE}</th>
+
+										</tr>
+										<tr class="success">
+											<th width="15%"><label>实际付款金额：</label></th>
+											<th width="20%">${var.RECEIVABLE_REALITY}</th>
+											<th ><label>实际付款时间：</label></th>
+											<th >${var.RECEIVABL_PAYTIME}</th>
+											<th width="15%"><label>付款方名称：</label></th>
+											<th width="20%">${var.PAYERNAME}</th>
+
+										</tr>
 										<tr id="tr${var.INVOICE_ID}" class="success">
 											<th ><label>发票名称：</label></th>
 											<th  >${var.INVOICENAME}</th>

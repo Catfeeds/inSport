@@ -104,6 +104,17 @@
         FILE_URL = #{FILE_URL}
     </update>
 
+
+    <!-- 密码认证后，修改可以查阅的人 -->
+    <update id="editPassUser" parameterType="pd">
+        update
+        <include refid="tableName"></include>
+        set
+        FILE_PASSUSER = #{FILE_PASSUSER}
+        where
+        FILEMEANS_ID = #{FILEMEANS_ID}
+    </update>
+
     <!-- 通过ID获取数据 -->
     <select id="findById" parameterType="pd" resultType="pd">
         select
@@ -142,11 +153,18 @@
     </select>
 
     <select id="listByFILE_CATALOGURL_ID_NotENCTYPT" parameterType="pd" resultType="pd">
-        SELECT * from
-        (select * from TB_FILEMEANS WHERE
-        FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%' AND FILE_ISENCTYPT = 0 OR FILE_CREATEUSER = #{USERNAME})
-        AS TB_FILEMEANS WHERE FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
-        ORDER BY FILENAME
+        SELECT * from TB_FILEMEANS WHERE FILEMEANS_ID IN
+        (SELECT FILEMEANS_ID from TB_FILEMEANS WHERE FILEMEANS_ID IN
+         (SELECT FILEMEANS_ID from TB_FILEMEANS  WHERE FILE_READUSERS  LIKE '%ALL(所有人可见)%'
+         OR FILE_READUSERS  LIKE '%'+ #{FILE_READUSERS} +'%')
+         AND FILE_ISENCTYPT = 0 AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
+        OR FILE_CREATEUSER  = #{USERNAME} AND FILE_PASSUSER LIKE '%'+ #{FILE_READUSERS} +'%'
+        UNION ALL
+        SELECT FILEMEANS_ID from TB_FILEMEANS WHERE FILEMEANS_ID IN (
+        SELECT FILEMEANS_ID from TB_FILEMEANS  WHERE FILE_READUSERS  LIKE '%ALL(所有人可见)%'
+        OR FILE_READUSERS  LIKE '%'+ #{FILE_READUSERS} +'%'
+        AND FILE_ISENCTYPT = 1 )AND FILE_PASSUSER LIKE '%'+ #{FILE_READUSERS} +'%' )
+        ORDER BY FILE_TYPE desc, FILENAME asc
     </select>
 
     <select id="listByFILE_CATALOGURL_ID_ENCTYPT" parameterType="pd" resultType="pd">
@@ -155,8 +173,10 @@
         from
         <include refid="tableName"></include>
         WHERE FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
-        and FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%' AND FILE_ISENCTYPT = 1 AND FILE_CREATEUSER <![CDATA[<> ]]> #{USERNAME}
-        ORDER BY FILENAME
+        and FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%' OR FILE_READUSERS  LIKE '%ALL(所有人可见)%'
+        AND FILE_ISENCTYPT = 1 AND FILE_CREATEUSER <![CDATA[<> ]]> #{USERNAME}
+        and FILEMEANS_ID NOT IN (SELECT FILEMEANS_ID from TB_FILEMEANS WHERE FILE_PASSUSER LIKE '%'+ #{FILE_READUSERS} +'%')
+        ORDER BY FILE_TYPE desc, FILENAME asc
     </select>
 
     <!-- 批量删除 -->

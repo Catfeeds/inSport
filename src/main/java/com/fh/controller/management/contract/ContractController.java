@@ -27,6 +27,7 @@ import com.fh.service.management.proceedscontract.ProceedsContractManager;
 import com.fh.service.management.proceedsdetail.ProceedsDetailManager;
 import com.fh.service.management.proceedsprimary.ProceedsPrimaryManager;
 import com.fh.service.management.taxitems.TaxItemsManager;
+import com.fh.service.management.warn.WarnManager;
 import com.fh.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -103,6 +104,9 @@ public class ContractController extends BaseController {
 
 	@Resource(name="invoiceService")
 	private InvoiceManager invoiceService;
+
+	@Resource(name="warnService")
+	private WarnManager warnService;
 	// 树
 	@RequestMapping(value = "/listTree")
 	public ModelAndView listTree() throws Exception {
@@ -184,7 +188,7 @@ public class ContractController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		if (pd.getString("CONTRACTTYPES") == "付款合同"){
+		if ("付款合同".equals(pd.getString("CONTRACTTYPES"))){
 			PageData pd1 = new PageData();
 			pd1.put("PAYMENTCONTRACT_ID",get32UUID());
 			pd1.put("AMOUNT",pd.get("AMOUNT").toString());
@@ -200,18 +204,20 @@ public class ContractController extends BaseController {
 			PageData pd2 = new PageData();
 			pd2.put("PROCEEDSCONTRACT_ID",get32UUID());
 			pd2.put("PRINCIPAL",pd.getString("PRINCIPAL"));
-			pd2.put("RECEIVABLE",pd.get("RECEIVABLE").toString());
-			pd2.put("PAYERNAME",pd.getString("PAYERNAME"));
-			pd2.put("PAYTIME",pd.getString("PAYTIME"));
 			//pd2.put("ISPAY",Integer.parseInt(pd.get("ISPAY").toString()));
-			pd2.put("RECEIVABLE_REALITY",pd.get("RECEIVABLE_REALITY").toString());
-			pd2.put("RECEIVABL_PAYTIME",pd.getString("RECEIVABL_PAYTIME"));
 			pd2.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
-			pd2.put("OVERDUE",pd.getString("OVERDUE"));
 			pd2.put("FREMARK",pd.getString("FREMARK"));
 			//pd.put("CONTRACT_ID", this.get32UUID());	//主键
 			proceedscontractService.save(pd2);
 		}
+		PageData pd3 = new PageData();
+		pd3.put("WARN_ID",get32UUID());
+		pd3.put("WARNNAMEID",pd.getString("OPERATOR"));
+		pd3.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
+		pd3.put("ISREAD",0);
+		pd3.put("ISFINISH",0);
+		pd3.put("WARNTIME",new Date());
+		warnService.save(pd3);
 		contractService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
@@ -382,6 +388,10 @@ public class ContractController extends BaseController {
 				proceedscontractService.edit(pd2);
 			}
 		}
+		PageData pd3 = new PageData();
+		pd3.put("WARNNAMEID",pd.getString("OPERATOR"));
+		pd3.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
+		warnService.edit(pd3);
 		contractService.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
@@ -562,7 +572,7 @@ public class ContractController extends BaseController {
 			//System.out.println("输出最大数:"+dften.format(max));
 			json.put("maxNo",dften.format(max));
 		}else {
-			json.put("maxNo","01");
+			json.put("maxNo","001");
 		}
 		return  json;
 	}

@@ -12,16 +12,28 @@
 		CONTRACT_ID,	
 		INVOICENAME,	
 		INVOICETIME,	
-		REMARK,	
+		REMARK,
+		RECEIVABLE,
+		PAYTIME,
+		OVERDUE,
+		RECEIVABLE_REALITY,
+		RECEIVABL_PAYTIME,
+		PAYERNAME,
 		INVOICE_ID
 	</sql>
-	
+
 	<!-- 字段值 -->
 	<sql id="FieldValue">
 		#{CONTRACT_ID},	
 		#{INVOICENAME},	
 		#{INVOICETIME},	
-		#{REMARK},	
+		#{REMARK},
+		#{RECEIVABLE},
+		#{PAYTIME},
+		#{OVERDUE},
+		#{RECEIVABLE_REALITY},
+		#{RECEIVABL_PAYTIME},
+		#{PAYERNAME},
 		#{INVOICE_ID}
 	</sql>
 	
@@ -43,7 +55,7 @@
 		where 
 			INVOICE_ID = #{INVOICE_ID}
 	</delete>
-	
+
 	<!-- 修改 -->
 	<update id="edit" parameterType="pd">
 		update
@@ -51,6 +63,12 @@
 		set 
 			INVOICENAME = #{INVOICENAME},
 			INVOICETIME = #{INVOICETIME},
+		RECEIVABLE = #{RECEIVABLE},
+		PAYTIME = #{PAYTIME},
+		OVERDUE = #{OVERDUE},
+		RECEIVABLE_REALITY = #{RECEIVABLE_REALITY},
+		RECEIVABL_PAYTIME = #{RECEIVABL_PAYTIME},
+		PAYERNAME = #{PAYERNAME},
 		INVOICE_ID = INVOICE_ID
 		where 
 		INVOICE_ID = #{INVOICE_ID}

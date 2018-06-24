@@ -133,15 +133,9 @@
                                                                 <img src="static/images/Smile.png"
                                                                      style="width: 35px;height: 35px"/>
                                                             </div>
-                                                            <div  name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
-                                                                 class="delfloat_div"
-                                                                 style="display: none">
-                                                                <img src="static/images/trash_can.png"
-                                                                     style="width: 35px;height: 35px"/>
-                                                            </div>
                                                             <img width="120" height="110";
                                                                  src="<%=basePath%>${var.FILE_URL}" alt="">
-                                                            <a data-magnify="gallery"
+                                                            <a title="${var.FILENAME}" data-magnify="gallery"
                                                             data-caption="Paraglider flying over Aurlandfjord,
                                                             Norway by framedbythomas" href="<%=basePath%>${var.FILE_URL}">
                                                                  <div  name="inner">   ${var.FILENAME}</div>
@@ -153,22 +147,17 @@
                                             <c:if test="${fn:contains(var.FILE_TYPE,'pdf')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
-                                                        <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
-                                                             class="float_div"
-                                                             style="display: none">
-                                                            <img src="static/images/Smile.png"
-                                                                 style="width: 35px;height: 35px"/>
-                                                        </div>
-                                                        <div name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
-                                                             class="delfloat_div"
-                                                             style="display: none">
-                                                            <img src="static/images/trash_can.png"
-                                                                 style="width: 35px;height: 35px"/>
-                                                        </div>
+
                                                         <div onclick="toSelect('${var.FILEMEANS_ID}')"
-                                                           data-rel="colorbox"
+                                                           data-rel="colorbox"  style="width: 120px;"
                                                            class="cboxElement">
-                                                            <img   width="120" height="120" alt="200x200"
+                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                                 class="float_div"
+                                                                 style="display: none">
+                                                                <img src="static/images/Smile.png"
+                                                                     style="width: 35px;height: 35px"/>
+                                                            </div>
+                                                            <img   width="120" height="110" alt="200x200"
                                                                  src="static/filecatalog/images/application-pdf.png"/>
                                                             <a onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text"
                                                                  style="margin-top: 15px">
@@ -184,26 +173,19 @@
                                             <c:if test="${fn:contains(var.FILE_TYPE,'word')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
-                                                        <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
-                                                             class="float_div"
-                                                             style="display: none">
-                                                            <img src="static/images/Smile.png"
-                                                                 style="width: 35px;height: 35px"/>
-                                                        </div>
-                                                        <div name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
-                                                             class="delfloat_div"
-                                                             style="display: none">
-                                                            <img src="static/images/trash_can.png"
-                                                                 style="width: 35px;height: 35px"/>
-                                                        </div>
+
                                                         <div onclick="toSelect('${var.FILEMEANS_ID}')"
-                                                           data-rel="colorbox"
+                                                           data-rel="colorbox"  style="width: 120px;"
                                                            class="cboxElement">
-                                                            <img  width="120" height="120" alt="200x200"
-                                                                 src="static/filecatalog/images/file-word-icon.png"/>
-                                                            <div class="text" style="margin-top: 15px">
-                                                                <div name="inner" class="inner">${var.FILENAME}</div>
+                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                                 class="float_div"
+                                                                 style="display: none">
+                                                                <img src="static/images/Smile.png"
+                                                                     style="width: 35px;height: 35px"/>
                                                             </div>
+                                                            <img  width="120" height="110" alt="200x200"
+                                                                 src="static/filecatalog/images/file-word-icon.png"/>
+                                                                <div name="inner" class="inner">${var.FILENAME}</div>
                                                         </div>
                                                             <%--<div style="width: 100%;height: 25px" align="center" >
                                                                 <p>${var.FILE_CATALOGURL}</p>
@@ -214,26 +196,19 @@
                                             <c:if test="${fn:contains(var.FILE_TYPE,'sheet')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
-                                                        <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
-                                                             class="float_div"
-                                                             style="display: none">
-                                                            <img src="static/images/Smile.png"
-                                                                 style="width: 35px;height: 35px"/>
-                                                        </div>
-                                                        <div name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
-                                                             class="delfloat_div"
-                                                             style="display: none">
-                                                            <img src="static/images/trash_can.png"
-                                                                 style="width: 35px;height: 35px"/>
-                                                        </div>
+
                                                         <div onclick="toSelect('${var.FILEMEANS_ID}')"
-                                                            data-rel="colorbox"
+                                                            data-rel="colorbox"  style="width: 120px;"
                                                            class="cboxElement">
-                                                            <img  width="120" height="120" alt="200x200"
-                                                                 src="static/filecatalog/images/xlsx.png"/>
-                                                            <div class="text" style="margin-top: 15px">
-                                                                <div name="inner" class="inner">${var.FILENAME}</div>
+                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                                 class="float_div"
+                                                                 style="display: none">
+                                                                <img src="static/images/Smile.png"
+                                                                     style="width: 35px;height: 35px"/>
                                                             </div>
+                                                            <img  width="120" height="110" alt="200x200"
+                                                                 src="static/filecatalog/images/excel.png"/>
+                                                                <div  class="inner">${var.FILENAME}</div>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -270,7 +245,7 @@
                                                             </div>
                                                             <img width="120" height="110";
                                                                  src="static/filecatalog/images/locked.png" alt="">
-                                                            <a  href="">
+                                                            <a >
                                                                 <div  name="inner">${var.FILENAME}</div>
                                                             </a>
                                                         </div>
@@ -280,19 +255,13 @@
                                             <c:if test="${fn:contains(var.FILE_TYPE,'pdf')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
-                                                        <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                        <%--<div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                              class="float_div"
                                                              style="display: none">
                                                             <img src="static/images/Smile.png"
                                                                  style="width: 35px;height: 35px"/>
-                                                        </div>
-                                                        <div name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
-                                                             class="delfloat_div"
-                                                             style="display: none">
-                                                            <img src="static/images/trash_can.png"
-                                                                 style="width: 35px;height: 35px"/>
-                                                        </div>
-                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                        </div>--%>
+                                                        <div onclick="openByPW('${var.FILEMEANS_ID}');"
                                                              data-rel="colorbox"
                                                              class="cboxElement">
                                                             <img   width="120" height="110" alt="200x200"
@@ -311,19 +280,13 @@
                                             <c:if test="${fn:contains(var.FILE_TYPE,'word')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
-                                                        <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                        <%--<div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                              class="float_div"
                                                              style="display: none">
                                                             <img src="static/images/Smile.png"
                                                                  style="width: 35px;height: 35px"/>
-                                                        </div>
-                                                        <div name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
-                                                             class="delfloat_div"
-                                                             style="display: none">
-                                                            <img src="static/images/trash_can.png"
-                                                                 style="width: 35px;height: 35px"/>
-                                                        </div>
-                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                        </div>--%>
+                                                        <div onclick="openByPW('${var.FILEMEANS_ID}');"
                                                              data-rel="colorbox"
                                                              class="cboxElement">
                                                             <img  width="120" height="110" alt="200x200"
@@ -341,19 +304,13 @@
                                             <c:if test="${fn:contains(var.FILE_TYPE,'sheet')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
-                                                        <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                        <%--<div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                              class="float_div"
                                                              style="display: none">
                                                             <img src="static/images/Smile.png"
                                                                  style="width: 35px;height: 35px"/>
-                                                        </div>
-                                                        <div name="${var.FILE_URL}" id="del${var.FILEMEANS_ID }"
-                                                             class="delfloat_div"
-                                                             style="display: none">
-                                                            <img src="static/images/trash_can.png"
-                                                                 style="width: 35px;height: 35px"/>
-                                                        </div>
-                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                        </div>--%>
+                                                        <div onclick="openByPW('${var.FILEMEANS_ID}');"
                                                              data-rel="colorbox"
                                                              class="cboxElement">
                                                             <img  width="120" height="110" alt="200x200"
@@ -445,13 +402,13 @@
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
 
-    function openByPW(value){
+    function openByPW(FILEMEANS_ID){
         //alert("该文件为加密文件，请输入密码后查阅");
         top.jzts();
         var diag = new top.Dialog();
         diag.Drag=true;
         diag.Title ="输入密码";
-        diag.URL = '<%=basePath%>filemeans/openByPW.do?FILEMEANS_ID='+value;
+        diag.URL = '<%=basePath%>filemeans/openByPW.do?FILEMEANS_ID='+FILEMEANS_ID;
         diag.Width = 200;
         diag.Height = 255;
         diag.Modal = true;				//有无遮罩窗口
@@ -460,7 +417,29 @@
         diag.CancelEvent = function(){ //关闭事件$("#ORDER").val("yes");
             if(diag.innerFrame.contentWindow.document.getElementById('ORDER').value == "yes"){
                 var password = diag.innerFrame.contentWindow.document.getElementById('PASSWORD').value;
-                alert(password);
+                //alert(password);
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: 'POST',
+                    data : {
+                        FILEMEANS_ID : FILEMEANS_ID,
+                        FILE_PASSWORD : password
+                    },
+                    url: '<%=basePath%>filemeans/writePw',
+                    success: function (data) {
+                        if(data.result == "ture"){
+                            alert("密码正确!!");
+                            window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
+                        }else {
+                            alert("密码错误!!");
+                        }
+                      //  alert(data.result);
+                    },
+                    error: function () {
+                        alert("请求失败");
+                    }
+                });
             }
             diag.close();
         };

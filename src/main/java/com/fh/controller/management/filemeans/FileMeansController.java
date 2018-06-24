@@ -2,6 +2,7 @@ package com.fh.controller.management.filemeans;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+
+import com.fh.service.system.user.UserManager;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -37,6 +40,41 @@ public class FileMeansController extends BaseController {
 	String menuUrl = "filemeans/list.do"; //菜单地址(权限用)
 	@Resource(name="filemeansService")
 	private FileMeansManager filemeansService;
+
+    @Resource(name="userService")
+    private UserManager userService;
+
+	@RequestMapping(value = "/writePw")
+	@ResponseBody
+	public Map<String, Object> writePw(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		String pw = pd.getString("FILE_PASSWORD");
+		PageData oneFile = filemeansService.findById(pd);
+		if(pw.equals(oneFile.getString("FILE_PASSWORD"))){
+			json.put("result","ture");
+			//输入密码，正确，把该用户保存到可以查阅的字段中
+            StringBuffer FILE_PASSUSER = new StringBuffer();
+            if(oneFile.getString("FILE_PASSUSER") != null && !"".equals(oneFile.getString("FILE_PASSUSER"))){
+                FILE_PASSUSER.append(oneFile.getString("FILE_PASSUSER"));
+            }
+            pd.put("USERNAME",Jurisdiction.getUsername());
+            PageData userPd = userService.findByUsername(pd);
+            if (oneFile.getString("FILE_PASSUSER") != null || !"".equals(oneFile.getString("FILE_PASSUSER"))){
+                FILE_PASSUSER.append(","+userPd.getString("USER_ID"));
+            }else {
+                FILE_PASSUSER.append(userPd.getString("USER_ID"));
+            }
+            pd.put("FILE_PASSUSER",FILE_PASSUSER.toString());
+            filemeansService.editPassUser(pd);
+		}else {
+			json.put("result","false");
+		}
+		//PageData maxNo = contractService.findMaxNo(pd);
+		//System.out.println(maxNo);
+		return  json;
+	}
 	
 	/**保存
 	 * @param

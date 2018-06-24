@@ -230,11 +230,11 @@
 							<!-- --------------------------------------------------------------------------- -->
 							<table id="proceedsContract" style="display: none;" class="table table-border table-bg table-bordered">
 								<tbody>
-								<tr class="success">
-									<%--<th width="15%"><label>项目负责人：</label></th>
+								<%--<tr class="success">
+									&lt;%&ndash;<th width="15%"><label>项目负责人：</label></th>
 									<th width="10%"><input type="text" style="width: 150px" value="${pd2.PRINCIPAL}"
 														   class="input-text"  name="PRINCIPAL"
-														   id="PRINCIPAL"></th>--%>
+														   id="PRINCIPAL"></th>&ndash;%&gt;
 									<th width="15%"><label>应收金额：</label></th>
 									<th width="10%"><input type="number" style="width: 150px" value="${pd2.RECEIVABLE}"
 														   class="input-text"  name="RECEIVABLE"
@@ -263,15 +263,46 @@
 														   class="input-text"  name="PAYERNAME"
 														   id="PAYERNAME"></th>
 
-									<%--<th  ><label>是否收款：</label></th>
+									&lt;%&ndash;<th  ><label>是否收款：</label></th>
 									<th  >
 										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio1" id="form-field-radio3" onclick="isPAY('1');" <c:if test="${pd2.ISPAY == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>
 										<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio1" id="form-field-radio4" onclick="isPAY('0');" <c:if test="${pd2.ISPAY == '0' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">否</span></label>
-									</th>--%>
+									</th>&ndash;%&gt;
 
-								</tr>
+								</tr>--%>
 								<c:if test="${not empty listInvoice }">
 									<c:forEach items="${listInvoice}" var="var" varStatus="vs">
+
+								<tr class="success">
+									<th width="15%"><label>应收金额：</label></th>
+									<th width="10%"><input type="number" style="width: 150px" value="${var.RECEIVABLE}"
+														   class="input-text"  name="RECEIVABLE"
+														   id="r${var.INVOICE_ID}"></th>
+									<th ><label>应付款时间：</label></th>
+									<th ><input type="date" style="width: 150px;height: 31px" value="${var.PAYTIME}"
+												class="input-text"  name="PAYTIME"
+												id="pt${var.INVOICE_ID}"></th>
+									<th  ><label>滞纳金率：</label></th>
+									<th  ><input type="number" style="width: 150px;height: 31px" value="${var.OVERDUE}"
+												 class="input-text"  name="OVERDUE"
+												 id="od${var.INVOICE_ID}"></th>
+
+								</tr>
+								<tr class="success">
+									<th width="15%"><label>实际付款金额：</label></th>
+									<th width="20%"><input type="number" style="width: 150px" value="${var.RECEIVABLE_REALITY}"
+														   class="input-text"  name="RECEIVABLE_REALITY"
+														   id="rr${var.INVOICE_ID}"></th>
+									<th ><label>实际付款时间：</label></th>
+									<th ><input type="date" style="width: 150px;height: 31px" value="${var.RECEIVABL_PAYTIME}"
+												class="input-text"  name="RECEIVABL_PAYTIME"
+												id="rpt${var.INVOICE_ID}"></th>
+									<th width="15%"><label>付款方名称：</label></th>
+									<th width="20%"><input type="text" style="width: 150px" value="${var.PAYERNAME}"
+														   class="input-text"  name="PAYERNAME"
+														   id="pn${var.INVOICE_ID}"></th>
+								</tr>
+
 										<tr id="tr${var.INVOICE_ID}" class="success">
 											<th ><label>发票名称：</label></th>
 											<th  ><input type="text" style="width: 150px;height: 31px" value="${var.INVOICENAME}"
@@ -589,7 +620,55 @@
 				uuid = data.uuid;
 			}
 		});
+		/*
+		 <tr class="success">
+		 <th width="15%"><label>应收金额：</label></th>
+		 <th width="10%"><input type="number" style="width: 150px" value="${pd2.RECEIVABLE}"
+		 class="input-text"  name="RECEIVABLE"
+		 id="RECEIVABLE"></th>
+		 <th ><label>应付款时间：</label></th>
+		 <th ><input type="date" style="width: 150px;height: 31px" value="${pd2.PAYTIME}"
+		 class="input-text"  name="PAYTIME"
+		 id="PAYTIME"></th>
+		 <th  ><label>滞纳金率：</label></th>
+		 <th  ><input type="number" style="width: 150px;height: 31px" value="${pd2.OVERDUE}"
+		 class="input-text"  name="OVERDUE"
+		 id="OVERDUE"></th>
+		 </tr>
+		 <tr class="success">
+		 <th width="15%"><label>实际付款金额：</label></th>
+		 <th width="20%"><input type="number" style="width: 150px" value="${pd2.RECEIVABLE_REALITY}"
+		 class="input-text"  name="RECEIVABLE_REALITY"
+		 id="RECEIVABLE_REALITY"></th>
+		 <th ><label>实际付款时间：</label></th>
+		 <th ><input type="date" style="width: 150px;height: 31px" value="${pd2.RECEIVABL_PAYTIME}"
+		 class="input-text"  name="RECEIVABL_PAYTIME"
+		 id="RECEIVABL_PAYTIME"></th>
+		 <th width="15%"><label>付款方名称：</label></th>
+		 <th width="20%"><input type="text" style="width: 150px" value="${pd2.PAYERNAME}"
+		 class="input-text"  name="PAYERNAME"
+		 id="PAYERNAME"></th>
+		 </tr>
+		 */
 		var tr = "";
+		tr += '<tr class="success"><th width="15%"><label>应收金额：</label></th>';
+		tr += '<th width="10%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE" ' +
+				'id="r'+uuid+'"></th>';
+		tr += '<th ><label>应付款时间：</label></th>';
+		tr += ' <th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="PAYTIME"' +
+				'id="pt'+uuid+'"></th>';
+		tr += '<th  ><label>滞纳金率：</label></th>';
+		tr += '<th  ><input type="number" style="width: 150px;height: 31px" class="input-text"  name="OVERDUE"' +
+				'id="od'+uuid+'"></th></tr>';
+		tr += '<tr class="success"><th width="15%"><label>实际付款金额：</label></th>';
+		tr += '<th width="20%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE_REALITY" ' +
+				'id="rr'+uuid+'"></th>';
+		tr += '<th ><label>实际付款时间：</label></th>';
+		tr += '<th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="RECEIVABL_PAYTIME" ' +
+				'id="rpt'+uuid+'"></th>';
+		tr += '<th width="15%"><label>付款方名称：</label></th>';
+		tr += '<th width="20%"><input type="text" style="width: 150px" class="input-text"  name="PAYERNAME" ' +
+				'id="pn'+uuid+'"></th> </tr>';
 		tr += '<tr class="success"><th ><label>发票名称：</label></th>';
 		tr += '<th><input type="text" style="width: 150px;height: 31px"  class="input-text"  name="INVOICENAME"'+
 		'id="in'+uuid+'"></th>';
@@ -603,6 +682,12 @@
 	}
 	
 	function saveInvoice(CONTRACT_ID,uuid) {
+		var RECEIVABLE =$("#r"+uuid).val();
+		var PAYTIME = $("#pt"+uuid).val();
+		var OVERDUE = $("#od"+uuid).val();
+		var RECEIVABLE_REALITY = $("#rr"+uuid).val();
+		var RECEIVABL_PAYTIME = $("#rpt"+uuid).val();
+		var PAYERNAME = $("#pn"+uuid).val();
 		var INVOICENAME = $("#in"+uuid).val();
 		var INVOICETIME = $("#it"+uuid).val();
 		$.ajax({
@@ -610,6 +695,12 @@
 			url: '<%=basePath%>invoice/saveDetail',
 			async: false,
 			data: {
+				RECEIVABLE : RECEIVABLE,
+				PAYTIME : PAYTIME,
+				OVERDUE : OVERDUE,
+				RECEIVABLE_REALITY : RECEIVABLE_REALITY,
+				RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
+				PAYERNAME : PAYERNAME,
 				INVOICENAME : INVOICENAME,
 				INVOICETIME : INVOICETIME,
 				CONTRACT_ID : CONTRACT_ID
@@ -625,6 +716,12 @@
 	}
 
 	function editInvoice(INVOICE_ID){
+		var RECEIVABLE =$("#r"+INVOICE_ID).val();
+		var PAYTIME = $("#pt"+INVOICE_ID).val();
+		var OVERDUE = $("#od"+INVOICE_ID).val();
+		var RECEIVABLE_REALITY = $("#rr"+INVOICE_ID).val();
+		var RECEIVABL_PAYTIME = $("#rpt"+INVOICE_ID).val();
+		var PAYERNAME = $("#pn"+INVOICE_ID).val();
 		var INVOICENAME = $("#ivn"+INVOICE_ID).val();
 		var INVOICETIME = $("#ivt"+INVOICE_ID).val();
 		$.ajax({
@@ -632,6 +729,12 @@
 			url: '<%=basePath%>invoice/editInfo',
 			async: false,
 			data: {
+				RECEIVABLE : RECEIVABLE,
+				PAYTIME : PAYTIME,
+				OVERDUE : OVERDUE,
+				RECEIVABLE_REALITY : RECEIVABLE_REALITY,
+				RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
+				PAYERNAME : PAYERNAME,
 				INVOICE_ID : INVOICE_ID,
 				INVOICENAME : INVOICENAME,
 				INVOICETIME : INVOICETIME

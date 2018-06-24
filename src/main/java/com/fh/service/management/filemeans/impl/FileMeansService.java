@@ -52,6 +52,10 @@ public class FileMeansService implements FileMeansManager{
 		dao.update("FileMeansMapper.editName", pd);
 	}
 
+	public void editPassUser(PageData pd)throws Exception{
+		dao.update("FileMeansMapper.editPassUser", pd);
+	}
+
 	/**列表
 	 * @param page
 	 * @throws Exception

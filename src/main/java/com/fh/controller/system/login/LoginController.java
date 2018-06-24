@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.fh.service.management.warn.WarnManager;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -42,7 +43,7 @@ import com.fh.util.RightsHelper;
 import com.fh.util.Tools;
 /**
  * 总入口
- * @author fh QQ 3 1 3 5 9 6 7 9 0[青苔]
+ * @author
  * 修改日期：2015/11/2
  */
 /**
@@ -70,6 +71,8 @@ public class LoginController extends BaseController {
 	private FHlogManager FHLOG;
 	@Resource(name="loginimgService")
 	private LogInImgManager loginimgService;
+	@Resource(name="warnService")
+	private WarnManager warnService;
 	
 	/**访问登录页
 	 * @return
@@ -200,6 +203,14 @@ public class LoginController extends BaseController {
 		} catch(Exception e){
 			mv.setViewName("system/index/login");
 			logger.error(e.getMessage(), e);
+		}
+		pd.put("USERNAME",Jurisdiction.getUsername());
+		try {
+			List<PageData> listWarn = warnService.listWarnByUser(pd);
+			mv.addObject("listWarn",listWarn);
+			mv.addObject("listWarnCount",listWarn.size());
+		}catch (Exception e){
+
 		}
 		pd.put("SYSNAME", Tools.readTxtFile(Const.SYSNAME)); //读取系统名称
 		mv.addObject("pd",pd);
