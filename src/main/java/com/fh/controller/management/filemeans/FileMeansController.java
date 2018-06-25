@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 
+import com.fh.service.management.departmentgroup.DepartmentGroupManager;
 import com.fh.service.system.user.UserManager;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -43,6 +44,9 @@ public class FileMeansController extends BaseController {
 
     @Resource(name="userService")
     private UserManager userService;
+
+	@Resource(name="departmentgroupService")
+	private DepartmentGroupManager departmentgroupService;
 
 	@RequestMapping(value = "/writePw")
 	@ResponseBody
@@ -190,9 +194,42 @@ public class FileMeansController extends BaseController {
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;
-	}	
-	
-	 /**批量删除
+	}
+
+	@RequestMapping(value="/toEditJurisdiction")
+	public ModelAndView toEditJurisdiction()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = filemeansService.findById(pd);	//根据ID读取
+		List<PageData> dept = departmentgroupService.listEmployee(pd);
+		pd.put("USERNAME",Jurisdiction.getUsername());
+		PageData userPd = userService.findByUsername(pd);
+		mv.setViewName("management/filemeans/editJurisdiction");
+		mv.addObject("msg", "edit");
+		mv.addObject("pd", pd);
+		mv.addObject("dept", dept);
+		mv.addObject("userPd", userPd);
+		return mv;
+	}
+
+	@RequestMapping(value="/editJurisdiction")
+	public ModelAndView editJurisdiction() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"修改FileMeans");
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		filemeansService.editJurisdiction(pd);
+		if("1".equals(pd.getString("ISCLEARS"))){
+			filemeansService.deletePassUser(pd);
+		}
+		mv.addObject("msg","success");
+		mv.setViewName("save_result");
+		return mv;
+	}
+
+	/**批量删除
 	 * @param
 	 * @throws Exception
 	 */

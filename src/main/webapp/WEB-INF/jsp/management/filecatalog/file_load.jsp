@@ -221,6 +221,111 @@
                                         </c:if>
                                     </c:when>
                                 </c:choose>
+                                <!-- 自己加密的文件 listENCTYPTByYourself-->
+                                <c:choose>
+                                    <c:when test="${not empty listENCTYPTByYourself}">
+                                        <c:forEach items="${listENCTYPTByYourself}" var="var" varStatus="vs">
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'image')}">
+                                                <li style="border:none;margin-top: 30px;margin-left: 15px">
+                                                    <div align="center">
+                                                        <div ondblclick="editJurisdiction('${var.FILEMEANS_ID}')"
+                                                             onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                             style="width: 120px;"
+                                                             data-rel="colorbox" class="cboxElement">
+                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                                 class="float_div"
+                                                                 style="display: none">
+                                                                <img src="static/images/Smile.png"
+                                                                     style="width: 35px;height: 35px"/>
+                                                            </div>
+                                                            <img width="120" height="110";
+                                                                 src="<%=basePath%>${var.FILE_URL}" alt="">
+                                                            <a title="${var.FILENAME}" data-magnify="gallery"
+                                                               data-caption="Paraglider flying over Aurlandfjord,
+                                                            Norway by framedbythomas" href="<%=basePath%>${var.FILE_URL}">
+                                                                <div style="color: red"  name="inner">${var.FILENAME}</div>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'pdf')}">
+                                                <li style="border:none;margin-top: 30px;margin-left: 15px">
+                                                    <div align="center">
+
+                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                             data-rel="colorbox"  style="width: 120px;"
+                                                             class="cboxElement">
+                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                                 class="float_div"
+                                                                 style="display: none">
+                                                                <img src="static/images/Smile.png"
+                                                                     style="width: 35px;height: 35px"/>
+                                                            </div>
+                                                            <img   width="120" height="110" alt="200x200"
+                                                                   src="static/filecatalog/images/application-pdf.png"/>
+                                                            <a onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text"
+                                                               style="margin-top: 15px">
+                                                                <div style="color: red" name="inner" class="inner">${var.FILENAME}</div>
+                                                            </a>
+                                                        </div>
+                                                            <%--<div style="width: 100%;height: 25px" align="center" >
+                                                                <p>${var.FILE_CATALOGURL}</p>
+                                                            </div>--%>
+                                                    </div>
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'word')}">
+                                                <li style="border:none;margin-top: 30px;margin-left: 15px">
+                                                    <div align="center">
+
+                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                             data-rel="colorbox"  style="width: 120px;"
+                                                             class="cboxElement">
+                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                                 class="float_div"
+                                                                 style="display: none">
+                                                                <img src="static/images/Smile.png"
+                                                                     style="width: 35px;height: 35px"/>
+                                                            </div>
+                                                            <img  width="120" height="110" alt="200x200"
+                                                                  src="static/filecatalog/images/file-word-icon.png"/>
+                                                            <div style="color: red" name="inner" class="inner">${var.FILENAME}</div>
+                                                        </div>
+                                                            <%--<div style="width: 100%;height: 25px" align="center" >
+                                                                <p>${var.FILE_CATALOGURL}</p>
+                                                            </div>--%>
+                                                    </div>
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'sheet')}">
+                                                <li style="border:none;margin-top: 30px;margin-left: 15px">
+                                                    <div align="center">
+
+                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                             data-rel="colorbox"  style="width: 120px;"
+                                                             class="cboxElement">
+                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                                 class="float_div"
+                                                                 style="display: none">
+                                                                <img src="static/images/Smile.png"
+                                                                     style="width: 35px;height: 35px"/>
+                                                            </div>
+                                                            <img  width="120" height="110" alt="200x200"
+                                                                  src="static/filecatalog/images/excel.png"/>
+                                                            <div style="color: red" class="inner">${var.FILENAME}</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </c:if>
+                                        </c:forEach>
+                                        <c:if test="${QX.cha == 0 }">
+                                            <tr>
+                                                <td colspan="100" class="center">您无权查看该文件夹内容</td>
+                                            </tr>
+                                        </c:if>
+                                    </c:when>
+                                </c:choose>
                                 <!-- 加密后的文件显示 -->
                                 <c:choose>
                                     <c:when test="${not empty list_files_ENCTYPT}">
@@ -401,6 +506,21 @@
 <script src="static/dist/jquery.magnify.js"></script>
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
+    
+    function editJurisdiction(FILEMEANS_ID) {
+        top.jzts();
+        var diag = new top.Dialog();
+        diag.Drag = true;
+        diag.Title = "选择文件权限";
+        diag.URL = '<%=basePath%>filemeans/toEditJurisdiction.do?FILEMEANS_ID='+FILEMEANS_ID;
+        diag.Width = 600;
+        diag.Height = 490;
+        diag.CancelEvent = function () { //关闭事件
+            window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
+            diag.close();
+        };
+        diag.show();
+    }
 
     function openByPW(FILEMEANS_ID){
         //alert("该文件为加密文件，请输入密码后查阅");

@@ -40,6 +40,10 @@ public class FileMeansService implements FileMeansManager{
 		dao.delete("FileMeansMapper.deleteByUrl", pd);
 	}
 
+	public void deletePassUser(PageData pd)throws Exception{
+		dao.update("FileMeansMapper.deletePassUser", pd);
+	}
+
 	/**修改
 	 * @param pd
 	 * @throws Exception
@@ -54,6 +58,10 @@ public class FileMeansService implements FileMeansManager{
 
 	public void editPassUser(PageData pd)throws Exception{
 		dao.update("FileMeansMapper.editPassUser", pd);
+	}
+
+	public void editJurisdiction(PageData pd)throws Exception{
+		dao.update("FileMeansMapper.editJurisdiction", pd);
 	}
 
 	/**列表
@@ -80,6 +88,10 @@ public class FileMeansService implements FileMeansManager{
 
 	public List<PageData> listByFILE_CATALOGURL_ID_ENCTYPT(PageData pd)throws Exception{
 		return (List<PageData>)dao.findForList("FileMeansMapper.listByFILE_CATALOGURL_ID_ENCTYPT", pd);
+	}
+
+	public List<PageData> listENCTYPTByYourself(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("FileMeansMapper.listENCTYPTByYourself", pd);
 	}
 
 	/**通过id获取数据

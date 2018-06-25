@@ -119,6 +119,7 @@ public class FileCatalogController extends BaseController {
 		List<PageData> list_catalog = filecatalogService.list_catalog(page);//文件夹对象集合
 		List<PageData> list_files_NotENCTYPT = filemeansService.listByFILE_CATALOGURL_ID_NotENCTYPT(pd1);//文件集合(不加密）
 		List<PageData> list_files_ENCTYPT = filemeansService.listByFILE_CATALOGURL_ID_ENCTYPT(pd1);//文件集合(加密）
+		List<PageData> listENCTYPTByYourself = filemeansService.listENCTYPTByYourself(pd1);//文件集合(加密）
 		if (del){
 			mv.addObject("isdel",0);//当isdel为0时则具有删除功能;1为不具有删除功能
 		}else {
@@ -126,6 +127,7 @@ public class FileCatalogController extends BaseController {
 		}
 		mv.addObject("pd",pd);
 		mv.addObject("list_catalog",list_catalog);
+		mv.addObject("listENCTYPTByYourself",listENCTYPTByYourself);
 		mv.addObject("list_files_NotENCTYPT",list_files_NotENCTYPT);
 		mv.addObject("list_files_ENCTYPT",list_files_ENCTYPT);
 		mv.setViewName("management/filecatalog/file_load");

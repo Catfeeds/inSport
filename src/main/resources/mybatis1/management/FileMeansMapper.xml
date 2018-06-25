@@ -93,6 +93,26 @@
         where
         FILEMEANS_ID = #{FILEMEANS_ID}
     </update>
+<!--修改权限用户，修改密码-->
+    <update id="editJurisdiction" parameterType="pd">
+        update
+        <include refid="tableName"></include>
+        set
+        FILE_ISENCTYPT = #{FILE_ISENCTYPT},
+        FILE_READUSERS = #{FILE_READUSERS},
+        FILE_PASSWORD = #{FILE_PASSWORD}
+        where
+        FILEMEANS_ID = #{FILEMEANS_ID}
+    </update>
+    <!--修改密码后，把已经解锁的用户删除-->
+    <update id="deletePassUser" parameterType="pd">
+        update
+        <include refid="tableName"></include>
+        set
+        FILE_PASSUSER = null
+        where
+        FILEMEANS_ID = #{FILEMEANS_ID}
+    </update>
 
     <update id="editName" parameterType="pd">
         update
@@ -104,8 +124,7 @@
         FILE_URL = #{FILE_URL}
     </update>
 
-
-    <!-- 密码认证后，修改可以查阅的人 -->
+        <!-- 密码认证后，修改可以查阅的人 -->
     <update id="editPassUser" parameterType="pd">
         update
         <include refid="tableName"></include>
@@ -152,30 +171,35 @@
         <include refid="tableName"></include>
     </select>
 
+    <!-- 查阅没有加密，有权访问，已验证的文件 -->
     <select id="listByFILE_CATALOGURL_ID_NotENCTYPT" parameterType="pd" resultType="pd">
-        SELECT * from TB_FILEMEANS WHERE FILEMEANS_ID IN
-        (SELECT FILEMEANS_ID from TB_FILEMEANS WHERE FILEMEANS_ID IN
-         (SELECT FILEMEANS_ID from TB_FILEMEANS  WHERE FILE_READUSERS  LIKE '%ALL(所有人可见)%'
-         OR FILE_READUSERS  LIKE '%'+ #{FILE_READUSERS} +'%')
-         AND FILE_ISENCTYPT = 0 AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
-        OR FILE_CREATEUSER  = #{USERNAME} AND FILE_PASSUSER LIKE '%'+ #{FILE_READUSERS} +'%'
+        SELECT * FROM TB_FILEMEANS WHERE FILEMEANS_ID IN(
+        SELECT FILEMEANS_ID FROM TB_FILEMEANS WHERE FILE_CREATEUSER <![CDATA[<> ]]> #{USERNAME}
+        AND FILE_ISENCTYPT = 0 AND FILE_READUSERS = 'ALL(所有人可见)'
         UNION ALL
-        SELECT FILEMEANS_ID from TB_FILEMEANS WHERE FILEMEANS_ID IN (
-        SELECT FILEMEANS_ID from TB_FILEMEANS  WHERE FILE_READUSERS  LIKE '%ALL(所有人可见)%'
-        OR FILE_READUSERS  LIKE '%'+ #{FILE_READUSERS} +'%'
-        AND FILE_ISENCTYPT = 1 )AND FILE_PASSUSER LIKE '%'+ #{FILE_READUSERS} +'%' )
+        SELECT FILEMEANS_ID FROM TB_FILEMEANS WHERE FILE_CREATEUSER <![CDATA[<> ]]> #{USERNAME}
+        AND FILE_ISENCTYPT = 0 AND FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%'
+        UNION ALL
+        SELECT FILEMEANS_ID FROM TB_FILEMEANS WHERE FILE_CREATEUSER <![CDATA[<> ]]> #{USERNAME}
+        AND FILE_ISENCTYPT = 1 AND FILE_PASSUSER LIKE '%'+ #{FILE_READUSERS} +'%')
+        AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
+        ORDER BY FILE_TYPE desc, FILENAME asc
+    </select>
+
+    <!-- 自己上传的文件 -->
+    <select id="listENCTYPTByYourself" parameterType="pd" resultType="pd">
+        SELECT * FROM TB_FILEMEANS WHERE FILE_CREATEUSER = #{USERNAME} AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
         ORDER BY FILE_TYPE desc, FILENAME asc
     </select>
 
     <select id="listByFILE_CATALOGURL_ID_ENCTYPT" parameterType="pd" resultType="pd">
-        select
-        <include refid="Field"></include>
-        from
-        <include refid="tableName"></include>
-        WHERE FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
-        and FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%' OR FILE_READUSERS  LIKE '%ALL(所有人可见)%'
-        AND FILE_ISENCTYPT = 1 AND FILE_CREATEUSER <![CDATA[<> ]]> #{USERNAME}
-        and FILEMEANS_ID NOT IN (SELECT FILEMEANS_ID from TB_FILEMEANS WHERE FILE_PASSUSER LIKE '%'+ #{FILE_READUSERS} +'%')
+        SELECT * FROM TB_FILEMEANS WHERE FILEMEANS_ID IN
+        (select FILEMEANS_ID FROM TB_FILEMEANS WHERE FILE_READUSERS  LIKE '%ALL(所有人可见)%'
+        OR FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%')
+        AND FILEMEANS_ID NOT IN(
+        SELECT FILEMEANS_ID FROM TB_FILEMEANS WHERE
+        FILE_PASSUSER LIKE '%'+ #{FILE_READUSERS} +'%') AND FILE_CREATEUSER <![CDATA[<> ]]> #{USERNAME}
+        AND FILE_ISENCTYPT = 1 AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
         ORDER BY FILE_TYPE desc, FILENAME asc
     </select>
 

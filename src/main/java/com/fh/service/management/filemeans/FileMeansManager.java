@@ -25,7 +25,9 @@ public interface FileMeansManager{
 	public void delete(PageData pd)throws Exception;
 
 	public void deleteByUrl(PageData pd)throws Exception;
-	
+
+	public void deletePassUser(PageData pd)throws Exception;
+
 	/**修改
 	 * @param pd
 	 * @throws Exception
@@ -35,6 +37,8 @@ public interface FileMeansManager{
 	public void editName(PageData pd)throws Exception;
 
 	public void editPassUser(PageData pd)throws Exception;
+
+	public void editJurisdiction(PageData pd)throws Exception;
 
 	/**列表
 	 * @param page
@@ -47,11 +51,12 @@ public interface FileMeansManager{
 	 * @throws Exception
 	 */
 	public List<PageData> listAll(PageData pd)throws Exception;
-
+	//无加密、已解密、有权限查阅的
 	public List<PageData> listByFILE_CATALOGURL_ID_NotENCTYPT(PageData pd)throws Exception;
-
+	//加密，有权限，未加密的
 	public List<PageData> listByFILE_CATALOGURL_ID_ENCTYPT(PageData pd)throws Exception;
-
+	//自己加密的
+	public List<PageData> listENCTYPTByYourself(PageData pd)throws Exception;
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception
