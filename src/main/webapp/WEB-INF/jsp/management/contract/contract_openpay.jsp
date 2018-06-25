@@ -95,16 +95,11 @@
                                                         >
                                                     </td>
                                                     <td style="padding-left:2px;">
-                                                        <%--<c:if test="${vs.last }">
-                                                        ${onPayPic}
-                                                    </c:if>
-                                                        <c:if test="${!vs.last }">
-                                                            ${var.NOPAY}
-                                                        </c:if>--%>
+                                                       <p>${var1.ONPAYPIC}</p>
                                                     </td>
                                                     <td style="padding-left:2px;">
                                                         <a class="btn btn-xs btn-success" title="保存修改"
-                                                           onclick="editPay('${var1.PAYDETAIL_ID}');">
+                                                           onclick="editPay('${var1.PAYPRIMARY_ID}','${var1.PAYDETAIL_ID}');">
                                                             <i class="ace-icon fa fa-check-square-o bigger-120"
                                                                title="保存修改"></i>
                                                         </a>
@@ -182,7 +177,7 @@
         });
     }
 
-    function editPay(PAYDETAIL_ID){
+    function editPay(PAYPRIMARY_ID,PAYDETAIL_ID){
         var PAYDETAIL_ID = PAYDETAIL_ID;
         var SHPAYTIME = $("#spt"+PAYDETAIL_ID).val();
         var SHPAY = $("#sp"+PAYDETAIL_ID).val();
@@ -194,6 +189,7 @@
             url: '<%=basePath%>paydetail/editPayDetailInfo',
             async: false,
             data: {
+                PAYPRIMARY_ID : PAYPRIMARY_ID,
                 PAYDETAIL_ID : PAYDETAIL_ID,
                 SHPAYTIME : SHPAYTIME,
                 SHPAY : SHPAY,

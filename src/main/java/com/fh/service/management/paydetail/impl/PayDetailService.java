@@ -43,7 +43,11 @@ public class PayDetailService implements PayDetailManager{
 	public void edit(PageData pd)throws Exception{
 		dao.update("PayDetailMapper.edit", pd);
 	}
-	
+
+	public void editNoPay(PageData pd)throws Exception{
+		dao.update("PayDetailMapper.editNoPay", pd);
+	}
+
 	/**列表
 	 * @param page
 	 * @throws Exception
@@ -64,6 +68,10 @@ public class PayDetailService implements PayDetailManager{
 
 	public List<PageData> listByContractId(PageData pd)throws Exception{
 		return (List<PageData>)dao.findForList("PayDetailMapper.listByContractId", pd);
+	}
+
+	public List<PageData> listByPayPrimaryId(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("PayDetailMapper.listByPayPrimaryId", pd);
 	}
 
 	/**通过id获取数据

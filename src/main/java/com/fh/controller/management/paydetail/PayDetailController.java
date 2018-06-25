@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+
+import com.fh.service.management.payprimary.PayPrimaryManager;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -37,6 +39,9 @@ public class PayDetailController extends BaseController {
 	String menuUrl = "paydetail/list.do"; //菜单地址(权限用)
 	@Resource(name="paydetailService")
 	private PayDetailManager paydetailService;
+
+	@Resource(name="payprimaryService")
+	private PayPrimaryManager payprimaryService;
 	
 	/**保存
 	 * @param
@@ -70,6 +75,23 @@ public class PayDetailController extends BaseController {
 		}
 		pd.put("PAYDETAIL_ID", this.get32UUID());	//主键
 		paydetailService.save(pd);
+		Double ca = 0.00;
+		//通过合同id获取到明细表，进行计算
+		PageData pd1 = new PageData();
+		PageData payprimary = payprimaryService.findById(pd); //主表
+		List<PageData> listPayDetail = paydetailService.listByPayPrimaryId(pd);  //明细
+		for (int i = 0; i < listPayDetail.size(); i++) {
+			if (i == 0){
+				ca = Double.parseDouble(payprimary.getString("CONTRACTPIC"))-Double.parseDouble(listPayDetail.get(i).getString("REALITYPAY"));
+				pd1.put("REALITYPAY",ca);
+				pd1.put("PAYDETAIL_ID",listPayDetail.get(i).getString("PAYDETAIL_ID"));
+				paydetailService.editNoPay(pd1);
+			}
+			ca = ca -Double.parseDouble(listPayDetail.get(i).getString("REALITYPAY"));
+			pd1.put("REALITYPAY",ca);
+			pd1.put("PAYDETAIL_ID",listPayDetail.get(i).getString("PAYDETAIL_ID"));
+			paydetailService.editNoPay(pd1);
+		}
 		return  json;
 	}
 
@@ -84,6 +106,23 @@ public class PayDetailController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		paydetailService.delete(pd);
+		Double ca = 0.00;
+		//通过合同id获取到明细表，进行计算
+		PageData pd1 = new PageData();
+		PageData payprimary = payprimaryService.findById(pd); //主表
+		List<PageData> listPayDetail = paydetailService.listByPayPrimaryId(pd);  //明细
+		for (int i = 0; i < listPayDetail.size(); i++) {
+			if (i == 0){
+				ca = Double.parseDouble(payprimary.getString("CONTRACTPIC"))-Double.parseDouble(listPayDetail.get(i).getString("REALITYPAY"));
+				pd1.put("REALITYPAY",ca);
+				pd1.put("PAYDETAIL_ID",listPayDetail.get(i).getString("PAYDETAIL_ID"));
+				paydetailService.editNoPay(pd1);
+			}
+			ca = ca -Double.parseDouble(listPayDetail.get(i).getString("REALITYPAY"));
+			pd1.put("REALITYPAY",ca);
+			pd1.put("PAYDETAIL_ID",listPayDetail.get(i).getString("PAYDETAIL_ID"));
+			paydetailService.editNoPay(pd1);
+		}
 		return  json;
 	}
 	
@@ -126,6 +165,26 @@ public class PayDetailController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		paydetailService.edit(pd);
+		Double ca = 0.00;
+		//通过合同id获取到明细表，进行计算
+		PageData pd1 = new PageData();
+		PageData payprimary = payprimaryService.findById(pd); //主表
+		List<PageData> listPayDetail = paydetailService.listByPayPrimaryId(pd);  //明细
+		for (int i = 0; i < listPayDetail.size(); i++) {
+			//System.out.println(listPayDetail.get(i).get("REALITYPAY"));
+			if (i < 1){
+				ca = Double.parseDouble(payprimary.get("CONTRACTPIC").toString())-Double.parseDouble(listPayDetail.get(i).get("REALITYPAY").toString());
+				pd1.put("ONPAYPIC",ca);
+				pd1.put("PAYDETAIL_ID",listPayDetail.get(i).getString("PAYDETAIL_ID"));
+				paydetailService.editNoPay(pd1);
+			}else {
+				ca = ca -Double.parseDouble(listPayDetail.get(i).get("REALITYPAY").toString());
+				pd1.put("ONPAYPIC",ca);
+				pd1.put("PAYDETAIL_ID",listPayDetail.get(i).getString("PAYDETAIL_ID"));
+				paydetailService.editNoPay(pd1);
+			}
+
+		}
 		return  json;
 	}
 

@@ -82,6 +82,15 @@
 		where 
 		PAYDETAIL_ID = #{PAYDETAIL_ID}
 	</update>
+
+	<update id="editNoPay" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set
+		ONPAYPIC = #{ONPAYPIC}
+		where
+		PAYDETAIL_ID = #{PAYDETAIL_ID}
+	</update>
 	
 	<!-- 通过ID获取数据 -->
 	<select id="findById" parameterType="pd" resultType="pd">
@@ -91,6 +100,16 @@
 		<include refid="tableName"></include>
 		where 
 			PAYDETAIL_ID = #{PAYDETAIL_ID}
+	</select>
+
+	<select id="listByPayPrimaryId" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where
+		PAYPRIMARY_ID = #{PAYPRIMARY_ID}
+		ORDER BY NUM
 	</select>
 	
 	<!-- 列表 -->

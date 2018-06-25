@@ -306,12 +306,9 @@
                                 <table style="width:100%;">
                                     <tr>
                                         <td style="vertical-align:top;">
-                                            <label class="control-label" >显示全部：</label>
+                                           <%-- <label class="control-label" >显示全部：</label>
                                             <label style="margin-top: 5px;margin-right: 15px">
                                                 <input onclick="showAlltd(this)"  name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox">	<span class="lbl"></span>
-                                            </label>
-                                            <%--<label style="margin-top: 5px;margin-right: 15px">
-                                                <input onclick="showAlltd(this)" name="switch-field-1" class="ace ace-switch ace-switch-3" type="checkbox"><span class="lbl"></span>
                                             </label>--%>
                                             <c:if test="${QX.add == 1 }">
                                                 <a class="btn btn-mini btn-success" onclick="add();">新增</a>
