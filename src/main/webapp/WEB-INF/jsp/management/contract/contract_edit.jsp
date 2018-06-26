@@ -271,8 +271,8 @@
 
 								</tr>--%>
 								<c:if test="${not empty listInvoice }">
-									<c:forEach items="${listInvoice}" var="var" varStatus="vs">
-
+								<c:forEach items="${listInvoice}" var="var" varStatus="vs">
+								<c:if test="${pd.CONTRACTCLASSIFY != '写字楼'}">
 								<tr class="success">
 									<th width="15%"><label>应收金额：</label></th>
 									<th width="10%"><input type="number" style="width: 150px" value="${var.RECEIVABLE}"
@@ -285,7 +285,7 @@
 									<th  ><label>滞纳金率：</label></th>
 									<th  ><input type="number" style="width: 150px;height: 31px" value="${var.OVERDUE}"
 												 class="input-text"  name="OVERDUE"
-												 id="od${var.INVOICE_ID}"></th>
+												 id="od${var.INVOICE_ID}">%</th>
 
 								</tr>
 								<tr class="success">
@@ -302,26 +302,27 @@
 														   class="input-text"  name="PAYERNAME"
 														   id="pn${var.INVOICE_ID}"></th>
 								</tr>
+								</c:if>
 
-										<tr id="tr${var.INVOICE_ID}" class="success">
-											<th ><label>发票名称：</label></th>
-											<th  ><input type="text" style="width: 150px;height: 31px" value="${var.INVOICENAME}"
-														 class="input-text"  name="INVOICENAME"
-														 id="ivn${var.INVOICE_ID}"></th>
-											<th  ><label>开票时间：</label></th>
-											<th  ><input type="date" style="width: 150px;height: 31px" value="${var.INVOICETIME}"
-														 class="input-text"  name="INVOICETIME"
-														 id="ivt${var.INVOICE_ID}" ></th>
-											<th  ><a class="btn btn-xs blue" title="确认修改"
-													 onclick="editInvoice('${var.INVOICE_ID}');">
-												<i class="ace-icon fa fa-pencil-square-o bigger-120" title="确认修改"></i></a>
-												<a class="btn btn-mini btn-danger" title="删除该发票项"
-												   onclick="delInvoice('${var.INVOICE_ID}');">
-												<i class="ace-icon fa fa-trash-o bigger-120" title="删除该发票项"></i></a>
-											</th>
-											<th></th>
-										</tr>
-									</c:forEach>
+								<tr id="tr${var.INVOICE_ID}" class="success">
+									<th ><label>发票名称：</label></th>
+									<th  ><input type="text" style="width: 150px;height: 31px" value="${var.INVOICENAME}"
+												 class="input-text"  name="INVOICENAME"
+												 id="ivn${var.INVOICE_ID}"></th>
+									<th  ><label>开票时间：</label></th>
+									<th  ><input type="date" style="width: 150px;height: 31px" value="${var.INVOICETIME}"
+												 class="input-text"  name="INVOICETIME"
+												 id="ivt${var.INVOICE_ID}" ></th>
+									<th  ><a class="btn btn-xs blue" title="确认修改"
+											 onclick="editInvoice('${var.INVOICE_ID}');">
+										<i class="ace-icon fa fa-pencil-square-o bigger-120" title="确认修改"></i></a>
+										<a class="btn btn-mini btn-danger" title="删除该发票项"
+										   onclick="delInvoice('${var.INVOICE_ID}');">
+											<i class="ace-icon fa fa-trash-o bigger-120" title="删除该发票项"></i></a>
+									</th>
+									<th></th>
+								</tr>
+								</c:forEach>
 								</c:if>
 								<tr id="fp${pd.CONTRACT_ID}"></tr>
 								<tr>
@@ -651,24 +652,28 @@
 		 </tr>
 		 */
 		var tr = "";
-		tr += '<tr class="success"><th width="15%"><label>应收金额：</label></th>';
-		tr += '<th width="10%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE" ' +
-				'id="r'+uuid+'"></th>';
-		tr += '<th ><label>应付款时间：</label></th>';
-		tr += ' <th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="PAYTIME"' +
-				'id="pt'+uuid+'"></th>';
-		tr += '<th  ><label>滞纳金率：</label></th>';
-		tr += '<th  ><input type="number" style="width: 150px;height: 31px" class="input-text"  name="OVERDUE"' +
-				'id="od'+uuid+'"></th></tr>';
-		tr += '<tr class="success"><th width="15%"><label>实际付款金额：</label></th>';
-		tr += '<th width="20%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE_REALITY" ' +
-				'id="rr'+uuid+'"></th>';
-		tr += '<th ><label>实际付款时间：</label></th>';
-		tr += '<th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="RECEIVABL_PAYTIME" ' +
-				'id="rpt'+uuid+'"></th>';
-		tr += '<th width="15%"><label>付款方名称：</label></th>';
-		tr += '<th width="20%"><input type="text" style="width: 150px" class="input-text"  name="PAYERNAME" ' +
-				'id="pn'+uuid+'"></th> </tr>';
+		var CONTRACTCLASSIFY = $("#CONTRACTCLASSIFY").val();
+		//alert(CONTRACTCLASSIFY == "写字楼");
+		if(CONTRACTCLASSIFY != "写字楼"){
+			tr += '<tr class="success"><th width="15%"><label>应收金额：</label></th>';
+			tr += '<th width="10%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE" ' +
+					'id="r'+uuid+'"></th>';
+			tr += '<th ><label>应付款时间：</label></th>';
+			tr += ' <th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="PAYTIME"' +
+					'id="pt'+uuid+'"></th>';
+			tr += '<th  ><label>滞纳金率：</label></th>';
+			tr += '<th  ><input type="number" style="width: 150px;height: 31px" class="input-text"  name="OVERDUE"' +
+					'id="od'+uuid+'">%</th></tr>';
+			tr += '<tr class="success"><th width="15%"><label>实际付款金额：</label></th>';
+			tr += '<th width="20%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE_REALITY" ' +
+					'id="rr'+uuid+'"></th>';
+			tr += '<th ><label>实际付款时间：</label></th>';
+			tr += '<th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="RECEIVABL_PAYTIME" ' +
+					'id="rpt'+uuid+'"></th>';
+			tr += '<th width="15%"><label>付款方名称：</label></th>';
+			tr += '<th width="20%"><input type="text" style="width: 150px" class="input-text"  name="PAYERNAME" ' +
+					'id="pn'+uuid+'"></th> </tr>';
+		}
 		tr += '<tr class="success"><th ><label>发票名称：</label></th>';
 		tr += '<th><input type="text" style="width: 150px;height: 31px"  class="input-text"  name="INVOICENAME"'+
 		'id="in'+uuid+'"></th>';

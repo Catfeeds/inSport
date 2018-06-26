@@ -29,7 +29,7 @@ import com.fh.service.management.paydetail.PayDetailManager;
 
 /** 
  * 说明：付款合同明细
- * 创建人：FH Q313596790
+ * 创建人：
  * 创建时间：2018-05-28
  */
 @Controller
@@ -82,15 +82,17 @@ public class PayDetailController extends BaseController {
 		List<PageData> listPayDetail = paydetailService.listByPayPrimaryId(pd);  //明细
 		for (int i = 0; i < listPayDetail.size(); i++) {
 			if (i == 0){
-				ca = Double.parseDouble(payprimary.getString("CONTRACTPIC"))-Double.parseDouble(listPayDetail.get(i).getString("REALITYPAY"));
-				pd1.put("REALITYPAY",ca);
+				ca = Double.parseDouble(payprimary.get("CONTRACTPIC").toString())-Double.parseDouble(listPayDetail.get(i).get("REALITYPAY").toString());
+				pd1.put("ONPAYPIC",ca);
+				pd1.put("PAYDETAIL_ID",listPayDetail.get(i).getString("PAYDETAIL_ID"));
+				paydetailService.editNoPay(pd1);
+			}else {
+				ca = ca -Double.parseDouble(listPayDetail.get(i).get("REALITYPAY").toString());
+				pd1.put("ONPAYPIC",ca);
 				pd1.put("PAYDETAIL_ID",listPayDetail.get(i).getString("PAYDETAIL_ID"));
 				paydetailService.editNoPay(pd1);
 			}
-			ca = ca -Double.parseDouble(listPayDetail.get(i).getString("REALITYPAY"));
-			pd1.put("REALITYPAY",ca);
-			pd1.put("PAYDETAIL_ID",listPayDetail.get(i).getString("PAYDETAIL_ID"));
-			paydetailService.editNoPay(pd1);
+
 		}
 		return  json;
 	}
@@ -113,15 +115,16 @@ public class PayDetailController extends BaseController {
 		List<PageData> listPayDetail = paydetailService.listByPayPrimaryId(pd);  //明细
 		for (int i = 0; i < listPayDetail.size(); i++) {
 			if (i == 0){
-				ca = Double.parseDouble(payprimary.getString("CONTRACTPIC"))-Double.parseDouble(listPayDetail.get(i).getString("REALITYPAY"));
-				pd1.put("REALITYPAY",ca);
+				ca = Double.parseDouble(payprimary.get("CONTRACTPIC").toString())-Double.parseDouble(listPayDetail.get(i).get("REALITYPAY").toString());
+				pd1.put("ONPAYPIC",ca);
+				pd1.put("PAYDETAIL_ID",listPayDetail.get(i).getString("PAYDETAIL_ID"));
+				paydetailService.editNoPay(pd1);
+			}else {
+				ca = ca -Double.parseDouble(listPayDetail.get(i).get("REALITYPAY").toString());
+				pd1.put("ONPAYPIC",ca);
 				pd1.put("PAYDETAIL_ID",listPayDetail.get(i).getString("PAYDETAIL_ID"));
 				paydetailService.editNoPay(pd1);
 			}
-			ca = ca -Double.parseDouble(listPayDetail.get(i).getString("REALITYPAY"));
-			pd1.put("REALITYPAY",ca);
-			pd1.put("PAYDETAIL_ID",listPayDetail.get(i).getString("PAYDETAIL_ID"));
-			paydetailService.editNoPay(pd1);
 		}
 		return  json;
 	}

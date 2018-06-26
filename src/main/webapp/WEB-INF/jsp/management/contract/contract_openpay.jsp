@@ -104,7 +104,7 @@
                                                                title="保存修改"></i>
                                                         </a>
                                                         <a class="btn btn-xs btn-danger" title="删除"
-                                                           onclick="delPay('${var1.PAYDETAIL_ID}');">
+                                                           onclick="delPay('${var1.PAYPRIMARY_ID}','${var1.PAYDETAIL_ID}');">
                                                             <i class="ace-icon fa fa-trash-o bigger-120"
                                                                title="删除"></i>
                                                         </a>
@@ -160,12 +160,13 @@
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
 
-    function delPay(PAYDETAIL_ID){
+    function delPay(PAYPRIMARY_ID,PAYDETAIL_ID){
         $.ajax({
             type: "POST",
             url: '<%=basePath%>paydetail/deleteDetail',
             async: false,
             data: {
+                PAYPRIMARY_ID : PAYPRIMARY_ID,
                 PAYDETAIL_ID : PAYDETAIL_ID
             },
             dataType: 'json',
