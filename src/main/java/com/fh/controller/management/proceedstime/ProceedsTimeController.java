@@ -1,4 +1,4 @@
-package com.fh.controller.management.proceedsdetail;
+package com.fh.controller.management.proceedstime;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+
+import com.fh.service.management.invoice.InvoiceManager;
+import com.fh.service.management.proceedsdetail.ProceedsDetailManager;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -23,20 +26,58 @@ import com.fh.util.ObjectExcelView;
 import com.fh.util.PageData;
 import com.fh.util.Jurisdiction;
 import com.fh.util.Tools;
-import com.fh.service.management.proceedsdetail.ProceedsDetailManager;
+import com.fh.service.management.proceedstime.ProceedsTimeManager;
 
 /** 
- * 说明：收款合同明细管理
+ * 说明：收款时间区间管理
  * 创建人：FH Q313596790
- * 创建时间：2018-06-09
+ * 创建时间：2018-06-26
  */
 @Controller
-@RequestMapping(value="/proceedsdetail")
-public class ProceedsDetailController extends BaseController {
+@RequestMapping(value="/proceedstime")
+public class ProceedsTimeController extends BaseController {
 	
-	String menuUrl = "proceedsdetail/list.do"; //菜单地址(权限用)
+	String menuUrl = "proceedstime/list.do"; //菜单地址(权限用)
+	@Resource(name="proceedstimeService")
+	private ProceedsTimeManager proceedstimeService;
+
 	@Resource(name="proceedsdetailService")
 	private ProceedsDetailManager proceedsdetailService;
+
+	@Resource(name="invoiceService")
+	private InvoiceManager invoiceService;
+
+	@RequestMapping(value = "/saveTime")
+	@ResponseBody
+	public Map<String, Object> saveTime(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		pd.put("PROCEEDSTIME_ID", this.get32UUID());	//主键
+		proceedstimeService.save(pd);
+		return  json;
+	}
+
+	@RequestMapping(value = "/editTime")
+	@ResponseBody
+	public Map<String, Object> editTime(Page page)throws Exception {
+		Map<String, Object> json = new HashMap<String, Object>();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		proceedstimeService.edit(pd);
+		return  json;
+	}
+
+	@RequestMapping(value = "/deleteTime")
+	@ResponseBody
+	public Map<String, Object> deleteTime() throws Exception{
+		Map<String, Object> json = new HashMap<String, Object>();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		proceedstimeService.delete(pd);
+		invoiceService.deleteByTimeID(pd);
+		return  json;
+	}
 	
 	/**保存
 	 * @param
@@ -44,45 +85,16 @@ public class ProceedsDetailController extends BaseController {
 	 */
 	@RequestMapping(value="/save")
 	public ModelAndView save() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"新增ProceedsDetail");
+		logBefore(logger, Jurisdiction.getUsername()+"新增ProceedsTime");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("PROCEEDSDETAIL_ID", this.get32UUID());	//主键
-		proceedsdetailService.save(pd);
+		pd.put("PROCEEDSTIME_ID", this.get32UUID());	//主键
+		proceedstimeService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
-	}
-
-	@RequestMapping(value = "/saveDetail")
-	@ResponseBody
-	public Map<String, Object> saveDetail(Page page)throws Exception {
-		PageData pd = new PageData();
-		Map<String, Object> json = new HashMap<String, Object>();
-		pd = this.getPageData();
-		if(pd.getString("RENT") == null || "".equals(pd.getString("RENT"))){
-			pd.put("RENT",0);
-		}
-		if(pd.getString("UTILITIES") == null || "".equals(pd.getString("UTILITIES"))){
-			pd.put("UTILITIES",0);
-		}
-		if(pd.getString("OVERDUE") == null || "".equals(pd.getString("OVERDUE"))){
-			pd.put("OVERDUE",0);
-		}
-		if(pd.getString("RECEIVABLE") == null || "".equals(pd.getString("RECEIVABLE"))){
-			pd.put("RECEIVABLE",0);
-		}
-		if(pd.getString("RECEIVABLE_REALITY") == null || "".equals(pd.getString("RECEIVABLE_REALITY"))){
-			pd.put("RECEIVABLE_REALITY",0);
-		}
-		if(pd.getString("UNCOLLECTED") == null || "".equals(pd.getString("UNCOLLECTED"))){
-			pd.put("UNCOLLECTED",0);
-		}
-		pd.put("PROCEEDSDETAIL_ID", this.get32UUID());	//主键
-		proceedsdetailService.save(pd);
-		return  json;
 	}
 	
 	/**删除
@@ -91,51 +103,13 @@ public class ProceedsDetailController extends BaseController {
 	 */
 	@RequestMapping(value="/delete")
 	public void delete(PrintWriter out) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"删除ProceedsDetail");
+		logBefore(logger, Jurisdiction.getUsername()+"删除ProceedsTime");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		proceedsdetailService.delete(pd);
+		proceedstimeService.delete(pd);
 		out.write("success");
 		out.close();
-	}
-
-	@RequestMapping(value = "/editProceedsDetailInfo")
-	@ResponseBody
-	public Map<String, Object> editProceedsDetailInfo(Page page)throws Exception {
-		Map<String, Object> json = new HashMap<String, Object>();
-		PageData pd = new PageData();
-		pd = this.getPageData();
-		if(pd.getString("RENT") == null || "".equals(pd.getString("RENT"))){
-			pd.put("RENT",0);
-		}
-		if(pd.getString("UTILITIES") == null || "".equals(pd.getString("UTILITIES"))){
-			pd.put("UTILITIES",0);
-		}
-		if(pd.getString("OVERDUE") == null || "".equals(pd.getString("OVERDUE"))){
-			pd.put("OVERDUE",0);
-		}
-		if(pd.getString("RECEIVABLE") == null || "".equals(pd.getString("RECEIVABLE"))){
-			pd.put("RECEIVABLE",0);
-		}
-		if(pd.getString("RECEIVABLE_REALITY") == null || "".equals(pd.getString("RECEIVABLE_REALITY"))){
-			pd.put("RECEIVABLE_REALITY",0);
-		}
-		if(pd.getString("UNCOLLECTED") == null || "".equals(pd.getString("UNCOLLECTED"))){
-			pd.put("UNCOLLECTED",0);
-		}
-		proceedsdetailService.edit(pd);
-		return  json;
-	}
-
-	@RequestMapping(value = "/deleteDetail")
-	@ResponseBody
-	public Map<String, Object> deleteDetail() throws Exception{
-		Map<String, Object> json = new HashMap<String, Object>();
-		PageData pd = new PageData();
-		pd = this.getPageData();
-		proceedsdetailService.delete(pd);
-		return  json;
 	}
 	
 	/**修改
@@ -144,12 +118,12 @@ public class ProceedsDetailController extends BaseController {
 	 */
 	@RequestMapping(value="/edit")
 	public ModelAndView edit() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"修改ProceedsDetail");
+		logBefore(logger, Jurisdiction.getUsername()+"修改ProceedsTime");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		proceedsdetailService.edit(pd);
+		proceedstimeService.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -161,7 +135,7 @@ public class ProceedsDetailController extends BaseController {
 	 */
 	@RequestMapping(value="/list")
 	public ModelAndView list(Page page) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"列表ProceedsDetail");
+		logBefore(logger, Jurisdiction.getUsername()+"列表ProceedsTime");
 		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
@@ -171,8 +145,8 @@ public class ProceedsDetailController extends BaseController {
 			pd.put("keywords", keywords.trim());
 		}
 		page.setPd(pd);
-		List<PageData>	varList = proceedsdetailService.list(page);	//列出ProceedsDetail列表
-		mv.setViewName("management/proceedsdetail/proceedsdetail_list");
+		List<PageData>	varList = proceedstimeService.list(page);	//列出ProceedsTime列表
+		mv.setViewName("management/proceedstime/proceedstime_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
@@ -188,7 +162,7 @@ public class ProceedsDetailController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		mv.setViewName("management/proceedsdetail/proceedsdetail_edit");
+		mv.setViewName("management/proceedstime/proceedstime_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
 		return mv;
@@ -203,8 +177,8 @@ public class ProceedsDetailController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd = proceedsdetailService.findById(pd);	//根据ID读取
-		mv.setViewName("management/proceedsdetail/proceedsdetail_edit");
+		pd = proceedstimeService.findById(pd);	//根据ID读取
+		mv.setViewName("management/proceedstime/proceedstime_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;
@@ -217,7 +191,7 @@ public class ProceedsDetailController extends BaseController {
 	@RequestMapping(value="/deleteAll")
 	@ResponseBody
 	public Object deleteAll() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"批量删除ProceedsDetail");
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除ProceedsTime");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
 		PageData pd = new PageData();		
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -226,7 +200,7 @@ public class ProceedsDetailController extends BaseController {
 		String DATA_IDS = pd.getString("DATA_IDS");
 		if(null != DATA_IDS && !"".equals(DATA_IDS)){
 			String ArrayDATA_IDS[] = DATA_IDS.split(",");
-			proceedsdetailService.deleteAll(ArrayDATA_IDS);
+			proceedstimeService.deleteAll(ArrayDATA_IDS);
 			pd.put("msg", "ok");
 		}else{
 			pd.put("msg", "no");
@@ -242,34 +216,28 @@ public class ProceedsDetailController extends BaseController {
 	 */
 	@RequestMapping(value="/excel")
 	public ModelAndView exportExcel() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"导出ProceedsDetail到excel");
+		logBefore(logger, Jurisdiction.getUsername()+"导出ProceedsTime到excel");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		List<String> titles = new ArrayList<String>();
-		titles.add("租金金额");	//1
-		titles.add("水电费");	//2
-		titles.add("滞纳金");	//3
-		titles.add("实际收款金额");	//4
-		titles.add("应收款金额");	//5
-		titles.add("应收款时间");	//6
-		titles.add("实际收款时间");	//7
-		titles.add("未收款金额");	//8
+		titles.add("合同id");	//1
+		titles.add("开始时间");	//2
+		titles.add("结束时间");	//3
+		titles.add("备注");	//4
+		titles.add("排序");	//5
 		dataMap.put("titles", titles);
-		List<PageData> varOList = proceedsdetailService.listAll(pd);
+		List<PageData> varOList = proceedstimeService.listAll(pd);
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
-			vpd.put("var1", varOList.get(i).get("RENT").toString());	//1
-			vpd.put("var2", varOList.get(i).get("UTILITIES").toString());	//2
-			vpd.put("var3", varOList.get(i).get("OVERDUE").toString());	//3
-			vpd.put("var4", varOList.get(i).get("RECEIVABLE_REALITY").toString());	//4
-			vpd.put("var5", varOList.get(i).get("RECEIVABLE").toString());	//5
-			vpd.put("var6", varOList.get(i).getString("PAYTIME"));	    //6
-			vpd.put("var7", varOList.get(i).getString("RECEIVABL_PAYTIME"));	    //7
-			vpd.put("var8", varOList.get(i).get("UNCOLLECTED").toString());	//8
+			vpd.put("var1", varOList.get(i).getString("CONTRACT_ID"));	    //1
+			vpd.put("var2", varOList.get(i).getString("STARTTIME"));	    //2
+			vpd.put("var3", varOList.get(i).getString("ENTTIME"));	    //3
+			vpd.put("var4", varOList.get(i).getString("REMARK"));	    //4
+			vpd.put("var5", varOList.get(i).get("NUM").toString());	//5
 			varList.add(vpd);
 		}
 		dataMap.put("varList", varList);

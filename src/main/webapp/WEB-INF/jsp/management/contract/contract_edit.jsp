@@ -209,8 +209,10 @@
 											<option  value="${pd.CONTRACTCLASSIFY}" name="${pd.CONTRACTCLASSIFY}">${pd.CONTRACTCLASSIFY}</option>
 										</select>
 									</th>
-									<th  ><label></label></th>
-									<th  ></th>
+									<th  ><label style="display: none" id="znj">滞纳金率(%)：</label></th>
+									<th  ><input style="display: none" id="znjip" type="number" style="width: 150px;height: 31px" value="${pd2.OVERDUE}"
+												 class="input-text"  name="OVERDUE"
+												 id="OVERDUE"></th>
 								</tr>
 
 								</tbody>
@@ -270,65 +272,91 @@
 									</th>&ndash;%&gt;
 
 								</tr>--%>
+								<c:if test="${not empty listPTime }">
+								<c:forEach items="${listPTime}" var="var" varStatus="vs">
+								<tr class="warning">
+									<th width="15%"><label>时间区间：</label></th>
+									<th width="10%" colspan="5"><input type="date" style="width: 150px;height: 31px" value="${var.STARTTIME}"
+																	   id="st${var.PROCEEDSTIME_ID}"  class="input-text"  >
+										--- <input type="date" style="width: 150px;height: 31px" value="${var.ENTTIME}"
+												   class="input-text" id="et${var.PROCEEDSTIME_ID}">
+										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="添加明细"
+										   onclick="addTrFp('${pd.CONTRACT_ID}','${var.PROCEEDSTIME_ID}')">
+											<i class="ace-icon fa fa-pencil-square-o bigger-120" title="添加明细">添加明细</i></a>
+										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="保存修改"
+										   onclick="editTime('${var.PROCEEDSTIME_ID}')">
+											<i class="ace-icon fa fa-cog bigger-120" title="保存修改">保存修改</i></a>
+										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="删除该时间区间"
+										   onclick="delTime('${var.PROCEEDSTIME_ID}')">
+											<i class="ace-icon fa fa-check-square-o bigger-120" title="删除该时间区间">删除该时间区间</i></a>
+
+									</th>
+
+								</tr>
 								<c:if test="${not empty listInvoice }">
-								<c:forEach items="${listInvoice}" var="var" varStatus="vs">
-								<c:if test="${pd.CONTRACTCLASSIFY != '写字楼'}">
+								<c:forEach items="${listInvoice}" var="var1" varStatus="vs">
+								<c:if test="${var1.PROCEEDSTIME_ID == var.PROCEEDSTIME_ID}">
 								<tr class="success">
 									<th width="15%"><label>应收金额：</label></th>
-									<th width="10%"><input type="number" style="width: 150px" value="${var.RECEIVABLE}"
+									<th width="10%"><input type="number" style="width: 150px" value="${var1.RECEIVABLE}"
 														   class="input-text"  name="RECEIVABLE"
-														   id="r${var.INVOICE_ID}"></th>
+														   id="r${var1.INVOICE_ID}"></th>
 									<th ><label>应付款时间：</label></th>
-									<th ><input type="date" style="width: 150px;height: 31px" value="${var.PAYTIME}"
+									<th ><input type="date" style="width: 150px;height: 31px" value="${var1.PAYTIME}"
 												class="input-text"  name="PAYTIME"
-												id="pt${var.INVOICE_ID}"></th>
-									<th  ><label>滞纳金率：</label></th>
-									<th  ><input type="number" style="width: 150px;height: 31px" value="${var.OVERDUE}"
-												 class="input-text"  name="OVERDUE"
-												 id="od${var.INVOICE_ID}">%</th>
-
+												id="pt${var1.INVOICE_ID}"></th>
+									<th  ></th>
+									<th  ></th>
 								</tr>
 								<tr class="success">
 									<th width="15%"><label>实际付款金额：</label></th>
-									<th width="20%"><input type="number" style="width: 150px" value="${var.RECEIVABLE_REALITY}"
+									<th width="20%"><input type="number" style="width: 150px" value="${var1.RECEIVABLE_REALITY}"
 														   class="input-text"  name="RECEIVABLE_REALITY"
-														   id="rr${var.INVOICE_ID}"></th>
+														   id="rr${var1.INVOICE_ID}"></th>
 									<th ><label>实际付款时间：</label></th>
-									<th ><input type="date" style="width: 150px;height: 31px" value="${var.RECEIVABL_PAYTIME}"
+									<th ><input type="date" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
 												class="input-text"  name="RECEIVABL_PAYTIME"
-												id="rpt${var.INVOICE_ID}"></th>
+												id="rpt${var1.INVOICE_ID}"></th>
 									<th width="15%"><label>付款方名称：</label></th>
-									<th width="20%"><input type="text" style="width: 150px" value="${var.PAYERNAME}"
+									<th width="20%"><input type="text" style="width: 150px" value="${var1.PAYERNAME}"
 														   class="input-text"  name="PAYERNAME"
-														   id="pn${var.INVOICE_ID}"></th>
+														   id="pn${var1.INVOICE_ID}"></th>
+								</tr>
+								<tr id="tr${var1.INVOICE_ID}" class="success">
+									<th ><label>发票名称：</label></th>
+									<th  ><input type="text" style="width: 150px;height: 31px" value="${var1.INVOICENAME}"
+												 class="input-text"  name="INVOICENAME"
+												 id="ivn${var1.INVOICE_ID}"></th>
+									<th  ><label>开票时间：</label></th>
+									<th  ><input type="date" style="width: 150px;height: 31px" value="${var1.INVOICETIME}"
+												 class="input-text"  name="INVOICETIME"
+												 id="ivt${var1.INVOICE_ID}" ></th>
+									<th  colspan="2"><a class="btn btn-xs blue" title="确认修改"
+											 onclick="editInvoice('${var1.INVOICE_ID}');">
+										<i class="ace-icon fa fa-cog bigger-120" title="确认修改">确认修改</i></a>
+										<a class="btn btn-mini btn-danger" title="删除该明细项"
+										   onclick="delInvoice('${var1.INVOICE_ID}');">
+											<i class="ace-icon fa fa-trash-o bigger-120" title="删除该明细项">删除该明细项</i></a>
+									</th>
 								</tr>
 								</c:if>
-
-								<tr id="tr${var.INVOICE_ID}" class="success">
-									<th ><label>发票名称：</label></th>
-									<th  ><input type="text" style="width: 150px;height: 31px" value="${var.INVOICENAME}"
-												 class="input-text"  name="INVOICENAME"
-												 id="ivn${var.INVOICE_ID}"></th>
-									<th  ><label>开票时间：</label></th>
-									<th  ><input type="date" style="width: 150px;height: 31px" value="${var.INVOICETIME}"
-												 class="input-text"  name="INVOICETIME"
-												 id="ivt${var.INVOICE_ID}" ></th>
-									<th  ><a class="btn btn-xs blue" title="确认修改"
-											 onclick="editInvoice('${var.INVOICE_ID}');">
-										<i class="ace-icon fa fa-pencil-square-o bigger-120" title="确认修改"></i></a>
-										<a class="btn btn-mini btn-danger" title="删除该发票项"
-										   onclick="delInvoice('${var.INVOICE_ID}');">
-											<i class="ace-icon fa fa-trash-o bigger-120" title="删除该发票项"></i></a>
-									</th>
-									<th></th>
-								</tr>
 								</c:forEach>
 								</c:if>
-								<tr id="fp${pd.CONTRACT_ID}"></tr>
+								<tr id="fp${var.PROCEEDSTIME_ID}"></tr>
+								</c:forEach>
+								</c:if>
+
+
+								<tr id="ti${pd.CONTRACT_ID}"></tr>
 								<tr>
-									<th>
+									<%--<th>
 										<div class="col-md-12"  style="padding-bottom:2em;">
 											<a onclick="addTrFp('${pd.CONTRACT_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i> 添加新的发票项</a>
+										</div>
+									</th>--%>
+									<th>
+										<div class="col-md-12"  style="padding-bottom:2em;">
+											<a onclick="addTrTime('${pd.CONTRACT_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i> 添加新的明细时间区间</a>
 										</div>
 									</th>
 								</tr>
@@ -434,7 +462,11 @@
 														   id="it${var.DEPOSITINFO_ID}">
 												</label>
 											</th>
-											<th  ><a class="btn btn-xs blue" title="确认修改"
+											<th>
+												<a class="btn btn-xs blue" title="水电费录入"
+												   onclick="addUTILITIES('${var.DEPOSITINFO_ID}');">
+													<i class="ace-icon fa fa-pencil-square-o bigger-120" title="水电费录入"></i></a>
+												<a class="btn btn-xs blue" title="确认修改"
 													 onclick="editDepositInfo('${var.DEPOSITINFO_ID}');">
 												<i class="ace-icon fa fa-pencil-square-o bigger-120" title="确认修改"></i></a>
 												<a class="btn btn-mini btn-danger" title="删除该押金项"
@@ -450,7 +482,7 @@
 								<tr>
 									<th>
 										<div class="col-md-12"  style="padding-bottom:2em;">
-											<a onclick="addTrYj('${pd.CONTRACT_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i> 添加新的押金项</a>
+											<a onclick="addTrYj('${pd.CONTRACT_ID}')" class="btn btn-info" ><i class="fa fa-plus"></i> 添加新的押金项</a>
 										</div>
 									</th>
 								</tr>
@@ -597,16 +629,34 @@
 		//alert($("input[name='form-field-radio"+num+"']:checked").val());
 	}
 
-
-	/*function isENTERPROCEDURE(value){
-		$("#ISENTERPROCEDURE").val(value);
+	function addTrTime(CONTRACT_ID){
+		var uuid = "";
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>paytable/getUUID',
+			async: false,
+			data: {
+			},
+			dataType: 'json',
+			//beforeSend: validateData,
+			cache: false,
+			success: function (data) {
+				uuid = data.uuid;
+			}
+		});
+		var tr = '';
+			tr += '<tr class="warning">';
+			tr += '<th width="15%"><label>时间区间：</label></th>';
+			tr += '<th width="10%" colspan="5"><input type="date" style="width: 150px;height: 31px" class="input-text" id="st'+uuid+'">';
+			tr += ' --- <input type="date" style="width: 150px;height: 31px" class="input-text"  id="et'+uuid+'">' +
+			' <a style="margin-left: 10px" class="btn btn-xs btn-success" title="保存" onclick="saveTime(\''+CONTRACT_ID+'\',\''+uuid+'\')">' +
+					'<i class="ace-icon fa fa-check-square-o bigger-120" title="保存">保存</i></a></th>';
+			tr += '</tr>';
+		$("#ti"+CONTRACT_ID).before(tr);
+		tr = '';
 	}
 
-	function isDRAWALPROCEDURE(value) {
-		$("#ISDRAWALPROCEDURE").val(value);
-	}*/
-
-	function addTrFp(CONTRACT_ID) {
+	function addTrFp(CONTRACT_ID,PROCEEDSTIME_ID) {
 		var uuid = "";
 		$.ajax({
 			type: "POST",
@@ -653,40 +703,59 @@
 		 */
 		var tr = "";
 		var CONTRACTCLASSIFY = $("#CONTRACTCLASSIFY").val();
-		//alert(CONTRACTCLASSIFY == "写字楼");
-		if(CONTRACTCLASSIFY != "写字楼"){
-			tr += '<tr class="success"><th width="15%"><label>应收金额：</label></th>';
-			tr += '<th width="10%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE" ' +
-					'id="r'+uuid+'"></th>';
-			tr += '<th ><label>应付款时间：</label></th>';
-			tr += ' <th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="PAYTIME"' +
-					'id="pt'+uuid+'"></th>';
-			tr += '<th  ><label>滞纳金率：</label></th>';
-			tr += '<th  ><input type="number" style="width: 150px;height: 31px" class="input-text"  name="OVERDUE"' +
-					'id="od'+uuid+'">%</th></tr>';
-			tr += '<tr class="success"><th width="15%"><label>实际付款金额：</label></th>';
-			tr += '<th width="20%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE_REALITY" ' +
-					'id="rr'+uuid+'"></th>';
-			tr += '<th ><label>实际付款时间：</label></th>';
-			tr += '<th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="RECEIVABL_PAYTIME" ' +
-					'id="rpt'+uuid+'"></th>';
-			tr += '<th width="15%"><label>付款方名称：</label></th>';
-			tr += '<th width="20%"><input type="text" style="width: 150px" class="input-text"  name="PAYERNAME" ' +
-					'id="pn'+uuid+'"></th> </tr>';
-		}
+		tr += '<tr class="success"><th width="15%"><label>应收金额：</label></th>';
+		tr += '<th width="10%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE" ' +
+				'id="r'+uuid+'"></th>';
+		tr += '<th ><label>应付款时间：</label></th>';
+		tr += ' <th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="PAYTIME"' +
+				'id="pt'+uuid+'"></th>';
+		tr += '<th  ></th>';
+		tr += '<th  ></tr>';
+		tr += '<tr class="success"><th width="15%"><label>实际付款金额：</label></th>';
+		tr += '<th width="20%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE_REALITY" ' +
+				'id="rr'+uuid+'"></th>';
+		tr += '<th ><label>实际付款时间：</label></th>';
+		tr += '<th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="RECEIVABL_PAYTIME" ' +
+				'id="rpt'+uuid+'"></th>';
+		tr += '<th width="15%"><label>付款方名称：</label></th>';
+		tr += '<th width="20%"><input type="text" style="width: 150px" class="input-text"  name="PAYERNAME" ' +
+				'id="pn'+uuid+'"></th> </tr>';
 		tr += '<tr class="success"><th ><label>发票名称：</label></th>';
 		tr += '<th><input type="text" style="width: 150px;height: 31px"  class="input-text"  name="INVOICENAME"'+
 		'id="in'+uuid+'"></th>';
 		tr += '<th><label>开票时间：</label></th>';
 		tr += '<th><input type="date" style="width: 150px;height: 31px"  class="input-text"  name="INVOICETIME" id="it'+uuid+'"></th>';
-		tr += '<th> <a class="btn btn-xs btn-success" title="保存" onclick="saveInvoice(\''+CONTRACT_ID+'\',\''+uuid+'\');">' +
-			  '<i class="ace-icon fa fa-check-square-o bigger-120" title="保存"></i></a></th>';
-		tr += '<th><label></label></th></tr>';
-		$("#fp"+CONTRACT_ID).before(tr);
+		tr += '<th colspan="2"> <a class="btn btn-xs btn-success" title="保存" onclick="saveInvoice(\''+CONTRACT_ID+'\',\''+uuid+'\',\''+PROCEEDSTIME_ID+'\');">' +
+			  '<i class="ace-icon fa fa-check-square-o bigger-120" title="保存">保存</i></a></th>';
+		tr += '</tr>';
+		tr += '<tr style="height: 3px" class="active"><th colspan="6"><label></label></th></tr>'
+		$("#fp"+PROCEEDSTIME_ID).before(tr);
 		tr = "";
 	}
+
+	function saveTime(CONTRACT_ID,uuid){
+		var STARTTIME = $("#st"+uuid).val();
+		var ENTTIME = $("#et"+uuid).val();
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>proceedstime/saveTime',
+			async: false,
+			data: {
+				STARTTIME : STARTTIME,
+				ENTTIME : ENTTIME,
+				CONTRACT_ID : CONTRACT_ID
+			},
+			dataType: 'json',
+			cache: false,
+			success: function (data) {
+				//uuid = data.uuid;
+				alert("保存成功!!");
+				window.location.reload();
+			}
+		});
+	}
 	
-	function saveInvoice(CONTRACT_ID,uuid) {
+	function saveInvoice(CONTRACT_ID,uuid,PROCEEDSTIME_ID) {
 		var RECEIVABLE =$("#r"+uuid).val();
 		var PAYTIME = $("#pt"+uuid).val();
 		var OVERDUE = $("#od"+uuid).val();
@@ -708,6 +777,7 @@
 				PAYERNAME : PAYERNAME,
 				INVOICENAME : INVOICENAME,
 				INVOICETIME : INVOICETIME,
+				PROCEEDSTIME_ID : PROCEEDSTIME_ID,
 				CONTRACT_ID : CONTRACT_ID
 			},
 			dataType: 'json',
@@ -716,6 +786,7 @@
 			success: function (data) {
 				//uuid = data.uuid;
 				alert("保存成功!!");
+				window.location.reload();
 			}
 		});
 	}
@@ -750,6 +821,55 @@
 			success: function (data) {
 				//uuid = data.uuid;
 				alert("修改成功!!");
+				window.location.reload();
+			}
+		});
+	}
+
+	function editTime(PROCEEDSTIME_ID) {
+		var STARTTIME = $("#st"+PROCEEDSTIME_ID).val();
+		var ENTTIME = $("#et"+ENTTIME).val();
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>proceedstime/editTime',
+			async: false,
+			data: {
+				STARTTIME : STARTTIME,
+				ENTTIME : ENTTIME,
+				PROCEEDSTIME_ID : PROCEEDSTIME_ID
+			},
+			dataType: 'json',
+			//beforeSend: validateData,
+			cache: false,
+			success: function (data) {
+				//uuid = data.uuid;
+				alert("修改成功!!");
+				window.location.reload();
+			}
+		});
+	}
+
+	function delTime(PROCEEDSTIME_ID) {
+		var con = confirm("是否删除该时间区间，并把明细删除?"); //在页面上弹出对话框
+		if(con == true){
+		}
+		else {
+			return;
+		}
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>proceedstime/deleteTime',
+			async: false,
+			data: {
+				PROCEEDSTIME_ID : PROCEEDSTIME_ID
+			},
+			dataType: 'json',
+			//beforeSend: validateData,
+			cache: false,
+			success: function (data) {
+				//uuid = data.uuid;
+				alert("删除成功!!");
+				window.location.reload();
 			}
 		});
 	}
@@ -774,9 +894,10 @@
 			success: function (data) {
 				//uuid = data.uuid;
 				alert("删除成功!!");
+				window.location.reload();
 			}
 		});
-		$("#tr"+INVOICE_ID).css("display","none");
+		//$("#tr"+INVOICE_ID).css("display","none");
 	}
 
 	function saveDepositInfo(uuid,CONTRACT_ID,num,num1) {
@@ -900,9 +1021,13 @@
 		if($("#CONTRACTTYPES").find("option:selected").attr("value") == "付款合同"){
 			$("#paymentContarct").css("display","");
 			$("#proceedsContract").css("display","none");
+			$("#znj").css("display","none");
+			$("#znjip").css("display","none");
 		}else if($("#CONTRACTTYPES").find("option:selected").attr("value") == "收款合同"){
 			$("#proceedsContract").css("display","");
 			$("#paymentContarct").css("display","none");
+			$("#znj").css("display","");
+			$("#znjip").css("display","");
 		}
 		var FNAME = $("#CONTRACTCLASSIFY").find("option:selected").attr("name");
 		if (FNAME == "大型体育赛事场地租赁" || FNAME == "文艺演出场地租赁"){
@@ -957,9 +1082,13 @@
 		if($("#CONTRACTTYPES").find("option:selected").attr("value") == "付款合同"){
 			$("#paymentContarct").css("display","");
 			$("#proceedsContract").css("display","none");
+			$("#znj").css("display","none");
+			$("#znjip").css("display","none");
 		}else if($("#CONTRACTTYPES").find("option:selected").attr("value") == "收款合同"){
 			$("#proceedsContract").css("display","");
 			$("#paymentContarct").css("display","none");
+			$("#znj").css("display","");
+			$("#znjip").css("display","");
 		}
 		$.ajax({
 			async: false,

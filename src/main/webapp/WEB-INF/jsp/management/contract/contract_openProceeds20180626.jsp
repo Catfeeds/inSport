@@ -52,68 +52,120 @@
                             </tr>
                             </tbody>
                         </table>
-                        <c:if test="${not empty arrYear}">
-                            <c:forEach items="${arrYear}" var="var" varStatus="vs">
-                                <table id="ta" class="table table-border table-bg table-bordered" style="margin-top: 10px">
-                                    <tbody id="tb">
+                        <c:if test="${not empty listProceedsprimary}">
+                            <c:forEach items="${listProceedsprimary}" var="var" varStatus="vs">
+                                <table id="ta${var.PROCEEDSPRIMARY_ID}" class="table table-border table-bg table-bordered" style="margin-top: 10px">
+                                    <tbody id="tb${var.PROCEEDSPRIMARY_ID}">
                                     <tr class="center">
                                         <td style="padding-left:2px;">时间</td>
+                                        <%--<td style="padding-left:2px;">总应付金额</td>--%>
                                         <td style="padding-left:2px;">租金金额</td>
-                                        <td style="padding-left:2px;">水电费</td>
-                                        <td style="padding-left:2px;">租金滞纳金</td>
-                                        <td style="padding-left:2px;">水电费滞纳金</td>
-                                        <td style="padding-left:2px;">应收款总金额</td>
-                                        <td style="padding-left:2px;">实际收款总金额</td>
+                                        <c:if test="${pd.CONTRACTCLASSIFY == '写字楼'}">
+                                            <td style="padding-left:2px;">水电费</td>
+                                        </c:if>
+                                        <td style="padding-left:2px;">滞纳金</td>
+                                        <td style="padding-left:2px;">应收款金额</td>
+                                        <td style="padding-left:2px;">应收款时间</td>
+                                        <td style="padding-left:2px;">实际收款金额</td>
+                                        <td style="padding-left:2px;">实际收款时间</td>
                                         <td style="padding-left:2px;">未收款金额</td>
-                                        <td style="padding-left:2px;">新增发单记录</td>
+                                        <td style="padding-left:2px;">操作</td>
                                     </tr>
                                     <tr class="center" id="sum" >
-                                        <td id="td1" rowspan="${count +1}"
+                                        <td id="td1${var.PROCEEDSPRIMARY_ID}" rowspan="${count +1}"
                                             style="padding-left:2px;vertical-align:middle;">
-                                                ${pd.FUSEDATESTART } -- ${pd.FUSEDATEENT }
+                                            ${var.STARTTIME } -- ${var.ENTTIME }
 
                                         </td>
                                     </tr>
-                                    <c:if test="${not empty listInvoice}">
-                                        <c:forEach items="${listInvoice}" var="var1" varStatus="vs1">
-                                            <tr class="center" style="vertical-align:middle;" >
-                                                <td style="padding-left:2px;">
-                                                    123
-                                                </td>
-                                                <td style="padding-left:2px;">
-                                                        ${var1.PROCEEDSDETAIL_ID}
-                                                </td>
-                                                <td style="padding-left:2px;">
-                                                        ${var1.PROCEEDSDETAIL_ID}
-                                                </td>
-                                                <td style="padding-left:2px;">
-                                                        ${var1.PROCEEDSDETAIL_ID}
-                                                </td>
-                                                <td style="padding-left:2px;">
-                                                        ${var1.PROCEEDSDETAIL_ID}
-                                                </td>
-                                                <td style="padding-left:2px;">
-                                                        ${var1.PROCEEDSDETAIL_ID}
-                                                </td>
-                                                <td style="padding-left:2px;">
-                                                        ${var1.PROCEEDSDETAIL_ID}
-                                                </td>
+                                    <c:if test="${not empty listProceedsDetail}">
+                                        <c:forEach items="${listProceedsDetail}" var="var1" varStatus="vs1">
+                                            <c:if test="${var1.PROCEEDSPRIMARY_ID == var.PROCEEDSPRIMARY_ID}">
+                                                <tr class="center" style="background-color: #FFFFCC" >
+                                                    <td style="padding-left:2px;">
+                                                        <input type="number" style="width: 110px;height: 31px" value="${var1.RENT}"
+                                                               class="input-text"  name="RENT" id="re${var1.PROCEEDSDETAIL_ID}"
+                                                        ></td>
+                                                    <td style="
+                                                        <c:if test="${pd.CONTRACTCLASSIFY != '写字楼'}">
+                                                                display: none;
+                                                        </c:if>
+                                                            padding-left:2px;">
+                                                        <input type="number" style="width: 110px;height: 31px" value="${var1.UTILITIES}"
+                                                               class="input-text"  name="UTILITIES" id="ut${var1.PROCEEDSDETAIL_ID}"
+                                                        ></td>
+                                                    <td style="padding-left:2px;">
+                                                        <input type="number" style="width: 110px;height: 31px" value="${var1.OVERDUE}"
+                                                               class="input-text"  name="OVERDUE" id="od${var1.PROCEEDSDETAIL_ID}"
+                                                        >
+                                                    </td>
+                                                    <td style="padding-left:2px;">
+                                                        <input type="number" style="width: 110px;" value="${var1.RECEIVABLE}"
+                                                               class="input-text"  name="RECEIVABLE" id="r${var1.PROCEEDSDETAIL_ID}"
+                                                        >
+                                                    </td>
+                                                    <td style="padding-left:2px;">
+                                                        <input type="date" style="width: 150px;height: 31px;" value="${var1.PAYTIME}"
+                                                               class="input-text"  name="PAYTIME" id="pt${var1.PROCEEDSDETAIL_ID}"
+                                                    >
+                                                    </td>
+                                                    <td style="padding-left:2px;">
+                                                        <input type="number" style="width: 110px" value="${var1.RECEIVABLE_REALITY}"
+                                                               class="input-text"  name="RECEIVABLE_REALITY" id="rr${var1.PROCEEDSDETAIL_ID}"
+                                                        onchange="toCalUncollected('${var1.PROCEEDSDETAIL_ID}')"
+                                                        >
+                                                    </td>
+                                                    <td style="padding-left:2px;">
+                                                        <input type="date" style="width: 150px;height: 31px;" value="${var1.RECEIVABL_PAYTIME}"
+                                                               class="input-text"  name="RECEIVABL_PAYTIME" id="rpt${var1.PROCEEDSDETAIL_ID}"
+                                                                onchange="toCalOverDue('${var1.PROCEEDSDETAIL_ID}')"
+                                                        >
+                                                    </td>
+                                                    <td style="padding-left:2px;">
+                                                        <input type="number" style="width: 110px" value="${var1.UNCOLLECTED}"
+                                                               class="input-text"  name="UNCOLLECTED" id="uc${var1.PROCEEDSDETAIL_ID}"
+                                                        >
+                                                    </td>
+                                                    <td style="padding-left:2px;">
+                                                        <a class="btn btn-xs btn-success" title="保存修改"
+                                                           onclick="editProceedsDetailInfo('${var1.PROCEEDSDETAIL_ID}');">
+                                                            <i class="ace-icon fa fa-check-square-o bigger-120"
+                                                               title="保存修改"></i>
+                                                        </a>
+                                                        <a class="btn btn-xs btn-warning" title="新增发单记录"
+                                                           onclick="addWarning('${var1.PROCEEDSDETAIL_ID}');">
+                                                            <i class="ace-icon fa fa-exclamation-circle bigger-120"
+                                                               title="新增发单记录"></i>
+                                                        </a>
 
-                                                <td style="padding-left:2px;">
-                                                    <a class="btn btn-xs btn-warning" title="新增发单记录"
-                                                       onclick="addWarning('${var1.PROCEEDSDETAIL_ID}');">
-                                                        <i class="ace-icon fa fa-exclamation-circle bigger-120"
-                                                           title="新增发单记录"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                                        <a class="btn btn-xs btn-danger" title="删除"
+                                                           onclick="delproceedsDetail('${var1.PROCEEDSDETAIL_ID}');">
+                                                            <i class="ace-icon fa fa-trash-o bigger-120"
+                                                               title="删除"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+
+                                            </c:if>
                                         </c:forEach>
                                     </c:if>
                                     <tr id="${var.PROCEEDSPRIMARY_ID}"></tr>
                                     </tbody>
                                 </table>
+                                <div class="col-md-12"  style="padding-bottom:2em;">
+                                    <button onclick="addTr('${var.PROCEEDSPRIMARY_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i> 添加新的明细项</button>
+                                    <button class="btn btn-danger" title="删除主表"
+                                       onclick="delproceedsPrimary('${var.PROCEEDSPRIMARY_ID}');">
+                                        <i class="fa fa-trash-o"
+                                           title="删除"></i>
+                                    </button>
+                                </div>
                             </c:forEach>
                         </c:if>
+
+                    </div>
+                    <div id="divTable" class="col-md-12"  style="padding-bottom:2em;">
+                        <button onclick="addTable()" class="btn btn-info" id="add"><i class="fa fa-plus"></i> 添加新的主表</button>
                     </div>
                 </div>
                 <!-- /.row -->

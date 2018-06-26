@@ -26,6 +26,7 @@ import com.fh.service.management.paytable.PayTableManager;
 import com.fh.service.management.proceedscontract.ProceedsContractManager;
 import com.fh.service.management.proceedsdetail.ProceedsDetailManager;
 import com.fh.service.management.proceedsprimary.ProceedsPrimaryManager;
+import com.fh.service.management.proceedstime.ProceedsTimeManager;
 import com.fh.service.management.taxitems.TaxItemsManager;
 import com.fh.service.management.warn.WarnManager;
 import com.fh.util.*;
@@ -107,6 +108,9 @@ public class ContractController extends BaseController {
 
 	@Resource(name="warnService")
 	private WarnManager warnService;
+
+	@Resource(name="proceedstimeService")
+	private ProceedsTimeManager proceedstimeService;
 	// 树
 	@RequestMapping(value = "/listTree")
 	public ModelAndView listTree() throws Exception {
@@ -206,6 +210,7 @@ public class ContractController extends BaseController {
 			pd2.put("PRINCIPAL",pd.getString("PRINCIPAL"));
 			//pd2.put("ISPAY",Integer.parseInt(pd.get("ISPAY").toString()));
 			pd2.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
+			pd2.put("OVERDUE",pd.getString("OVERDUE"));
 			pd2.put("FREMARK",pd.getString("FREMARK"));
 			//pd.put("CONTRACT_ID", this.get32UUID());	//主键
 			proceedscontractService.save(pd2);
@@ -269,6 +274,44 @@ public class ContractController extends BaseController {
 		pd = this.getPageData();
 		pd = contractService.findById(pd);
 		PageData pd1 = proceedscontractService.findByContractId(pd);
+		List<PageData> listInvoice = invoiceService.listByContractId(pd);
+		/*int firstYear = 0;
+		int lastYear = 0;
+		ArrayList<Integer> arrYear = new ArrayList<Integer>();
+		for (int i = 0; i < listInvoice.size(); i++) {
+			if(i == 0){
+				firstYear = Integer.parseInt(listInvoice.get(i).getString("PAYTIME").substring(0,4));
+			}
+			if(i == (listInvoice.size() - 1)){
+				lastYear = Integer.parseInt(listInvoice.get(listInvoice.size()-1).getString("PAYTIME").substring(0,4));
+			}
+		}
+		if((lastYear - firstYear) > 0){
+			for (int i = firstYear; i <= lastYear; i++) {
+				arrYear.add(i);
+				//System.out.println(arr.get(i));
+			}
+		}else {
+			arrYear.add(firstYear);
+		}
+		System.out.println("第一年："+firstYear+"---第二年:"+lastYear);*/
+		List<PageData> listProceedsDetail = proceedsdetailService.listByContractId(pd);  //明细
+		mv.setViewName("management/contract/contract_openProceeds");
+		mv.addObject("pd", pd);
+		mv.addObject("pd1", pd1);
+		mv.addObject("count", listProceedsDetail.size());
+		mv.addObject("listInvoice", listInvoice);
+		//mv.addObject("arrYear",arrYear);
+		return mv;
+	}
+
+	/*@RequestMapping(value="/openOfficeT")
+	public ModelAndView openOfficeT(Page page) throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = contractService.findById(pd);
+		PageData pd1 = proceedscontractService.findByContractId(pd);
 		List<PageData> listProceedsprimary = proceedsprimaryService.listByContractId(pd); //主表
 		List<PageData> listProceedsDetail = proceedsdetailService.listByContractId(pd);  //明细
 		if(listProceedsprimary == null || "".equals(listProceedsprimary)){
@@ -281,7 +324,7 @@ public class ContractController extends BaseController {
 		mv.addObject("count", listProceedsDetail.size());
 		mv.addObject("listProceedsDetail", listProceedsDetail);
 		return mv;
-	}
+	}*/
 
 	@RequestMapping(value="/savePic")
 	@ResponseBody
@@ -527,6 +570,7 @@ public class ContractController extends BaseController {
 		List<PageData> listPIdClassify = classifyService.listPIdClassify(page);
 		List<PageData> listDepositInfo = depositinfoService.listByContractId(pd);
 		List<PageData> listInvoice = invoiceService.listByContractId(pd);
+		List<PageData> listPTime = proceedstimeService.listByContractId(pd);
 		List<PageData> listMode = modeService.listAll(pd);
 		List<PageData> listOperator = operatorService.listAll(pd);
 		PageData pd1 = paymentcontractService.findByContractId(pd);
@@ -549,6 +593,7 @@ public class ContractController extends BaseController {
 		mv.addObject("listInvoice", listInvoice);
 		mv.addObject("listDepositInfo", listDepositInfo);
 		mv.addObject("listItems", listItems);
+		mv.addObject("listPTime", listPTime);
 		mv.addObject("pd", pd);
 		mv.addObject("pd1", pd1);
 		mv.addObject("pd2", pd2);

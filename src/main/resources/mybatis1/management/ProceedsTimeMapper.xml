@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ProceedsContractMapper">
+<mapper namespace="ProceedsTimeMapper">
 	
 	<!--表名 -->
 	<sql id="tableName">
-		TB_PROCEEDSCONTRACT
+		TB_PROCEEDSTIME
 	</sql>
 	
 	<!-- 字段 -->
 	<sql id="Field">
-		PRINCIPAL,	
-		ISPAY,
-		CONTRACT_ID,
-		OVERDUE,
-		PROCEEDSCONTRACT_ID,
-		FREMARK
+		CONTRACT_ID,	
+		STARTTIME,	
+		ENTTIME,	
+		REMARK,	
+		PROCEEDSTIME_ID
 	</sql>
 	
 	<!-- 字段值 -->
 	<sql id="FieldValue">
-		#{PRINCIPAL},	
-		#{ISPAY},
-		#{CONTRACT_ID},
-		#{OVERDUE},
-		#{PROCEEDSCONTRACT_ID},
-		#{FREMARK}
+		#{CONTRACT_ID},	
+		#{STARTTIME},	
+		#{ENTTIME},	
+		#{REMARK},	
+		#{PROCEEDSTIME_ID}
 	</sql>
 	
 	<!-- 新增-->
@@ -43,7 +41,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			PROCEEDSCONTRACT_ID = #{PROCEEDSCONTRACT_ID}
+			PROCEEDSTIME_ID = #{PROCEEDSTIME_ID}
 	</delete>
 	
 	<!-- 修改 -->
@@ -51,14 +49,11 @@
 		update
 		<include refid="tableName"></include>
 		set 
-			PRINCIPAL = #{PRINCIPAL},
-			ISPAY = #{ISPAY},
-			CONTRACT_ID = #{CONTRACT_ID},
-			OVERDUE = #{OVERDUE},
-			FREMARK = #{FREMARK},
-		PROCEEDSCONTRACT_ID = PROCEEDSCONTRACT_ID
+			STARTTIME = #{STARTTIME},
+			ENTTIME = #{ENTTIME},
+		PROCEEDSTIME_ID = PROCEEDSTIME_ID
 		where 
-		PROCEEDSCONTRACT_ID = #{PROCEEDSCONTRACT_ID}
+		PROCEEDSTIME_ID = #{PROCEEDSTIME_ID}
 	</update>
 	
 	<!-- 通过ID获取数据 -->
@@ -68,10 +63,10 @@
 		from 
 		<include refid="tableName"></include>
 		where 
-			PROCEEDSCONTRACT_ID = #{PROCEEDSCONTRACT_ID}
+			PROCEEDSTIME_ID = #{PROCEEDSTIME_ID}
 	</select>
 
-	<select id="findByContractId" parameterType="pd" resultType="pd">
+	<select id="listByContractId" parameterType="pd" resultType="pd">
 		select
 		<include refid="Field"></include>
 		from
@@ -112,7 +107,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			PROCEEDSCONTRACT_ID in
+			PROCEEDSTIME_ID in
 		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
                  #{item}
 		</foreach>

@@ -83,6 +83,16 @@ public class InvoiceController extends BaseController {
 		Map<String, Object> json = new HashMap<String, Object>();
 		PageData pd = new PageData();
 		pd = this.getPageData();
+		if(pd.get("RECEIVABLE").toString() != null && !"".equals(pd.get("RECEIVABLE").toString())){
+			pd.put("RECEIVABLE",Double.parseDouble(pd.get("RECEIVABLE").toString()));
+		}else {
+			pd.put("RECEIVABLE",0);
+		}
+		if(pd.get("RECEIVABLE_REALITY").toString() != null && !"".equals(pd.get("RECEIVABLE_REALITY").toString())){
+			pd.put("RECEIVABLE_REALITY",Double.parseDouble(pd.get("RECEIVABLE_REALITY").toString()));
+		}else {
+			pd.put("RECEIVABLE_REALITY",0);
+		}
 		invoiceService.edit(pd);
 		return  json;
 	}

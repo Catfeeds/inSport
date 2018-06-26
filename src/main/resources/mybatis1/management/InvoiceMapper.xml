@@ -16,6 +16,7 @@
 		RECEIVABLE,
 		PAYTIME,
 		OVERDUE,
+		PROCEEDSTIME_ID,
 		RECEIVABLE_REALITY,
 		RECEIVABL_PAYTIME,
 		PAYERNAME,
@@ -31,6 +32,7 @@
 		#{RECEIVABLE},
 		#{PAYTIME},
 		#{OVERDUE},
+		#{PROCEEDSTIME_ID},
 		#{RECEIVABLE_REALITY},
 		#{RECEIVABL_PAYTIME},
 		#{PAYERNAME},
@@ -54,6 +56,13 @@
 		<include refid="tableName"></include>
 		where 
 			INVOICE_ID = #{INVOICE_ID}
+	</delete>
+
+	<delete id="deleteByTimeID" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where
+		PROCEEDSTIME_ID = #{PROCEEDSTIME_ID}
 	</delete>
 
 	<!-- 修改 -->
