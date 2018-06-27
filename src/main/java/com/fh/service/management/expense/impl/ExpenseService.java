@@ -61,7 +61,15 @@ public class ExpenseService implements ExpenseManager{
 	public List<PageData> listAll(PageData pd)throws Exception{
 		return (List<PageData>)dao.findForList("ExpenseMapper.listAll", pd);
 	}
-	
+
+	public List<PageData> listWaByInvoiceId(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ExpenseMapper.listWaByInvoiceId", pd);
+	}
+
+	public List<PageData> listElByInvoiceId(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ExpenseMapper.listElByInvoiceId", pd);
+	}
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

@@ -75,9 +75,6 @@
 			PRICE = #{PRICE},
 			TOTAL = #{TOTAL},
 			REALITY_TOTAL = #{REALITY_TOTAL},
-			INVOICE_ID = #{INVOICE_ID},
-			CONTRACT_ID = #{CONTRACT_ID},
-			ISWATER = #{ISWATER},
 			ISLOSS = #{ISLOSS},
 			METERNUM = #{METERNUM},
 		EXPENSE_ID = EXPENSE_ID
@@ -93,6 +90,26 @@
 		<include refid="tableName"></include>
 		where 
 			EXPENSE_ID = #{EXPENSE_ID}
+	</select>
+
+	<select id="listElByInvoiceId" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where
+		INVOICE_ID = #{INVOICE_ID} AND ISWATER = '电费'
+		ORDER BY NUM
+	</select>
+
+	<select id="listWaByInvoiceId" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where
+		INVOICE_ID = #{INVOICE_ID} AND ISWATER = '水费'
+		ORDER BY NUM
 	</select>
 	
 	<!-- 列表 -->

@@ -46,13 +46,13 @@ public class ExpenseController extends BaseController {
 		pd = this.getPageData();
 		pd.put("EXPENSE_ID", this.get32UUID());	//主键
 		pd.put("ISWATER", "电费");
-		expenseService.save(pd);
 		String ISLOSS = pd.getString("ISLOSS");
 		if(ISLOSS != null && !"".equals(ISLOSS)){
 			pd.put("ISLOSS",1);
 		}else {
 			pd.put("ISLOSS",0);
 		}
+		expenseService.save(pd);
 		return json;
 	}
 
@@ -64,13 +64,33 @@ public class ExpenseController extends BaseController {
 		pd = this.getPageData();
 		pd.put("EXPENSE_ID", this.get32UUID());	//主键
 		pd.put("ISWATER", "水费");
-		expenseService.save(pd);
 		String ISLOSS = pd.getString("ISLOSS");
 		if(ISLOSS != null && !"".equals(ISLOSS)){
 			pd.put("ISLOSS",1);
 		}else {
 			pd.put("ISLOSS",0);
 		}
+		expenseService.save(pd);
+		return json;
+	}
+
+	@RequestMapping(value = "/editExpense")
+	@ResponseBody
+	public Map<String, Object> editExpense(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		expenseService.edit(pd);
+		return json;
+	}
+
+	@RequestMapping(value = "/delExpense")
+	@ResponseBody
+	public Map<String, Object> delExpense(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		expenseService.delete(pd);
 		return json;
 	}
 	
@@ -157,8 +177,12 @@ public class ExpenseController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
+		List<PageData> listEl = expenseService.listElByInvoiceId(pd);
+		List<PageData> listWa = expenseService.listWaByInvoiceId(pd);
 		mv.setViewName("management/expense/expense_edit");
 		mv.addObject("msg", "save");
+		mv.addObject("listWa", listWa);
+		mv.addObject("listEl", listEl);
 		mv.addObject("pd", pd);
 		return mv;
 	}	

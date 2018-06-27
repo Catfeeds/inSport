@@ -41,7 +41,11 @@ public interface ExpenseManager{
 	 * @throws Exception
 	 */
 	public List<PageData> listAll(PageData pd)throws Exception;
-	
+
+	public List<PageData> listWaByInvoiceId(PageData pd)throws Exception;
+
+	public List<PageData> listElByInvoiceId(PageData pd)throws Exception;
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

@@ -208,6 +208,10 @@
 												style="vertical-align:top;width: 150px;" onchange="selectType(this.value); ">
 											<option  value="${pd.CONTRACTCLASSIFY}" name="${pd.CONTRACTCLASSIFY}">${pd.CONTRACTCLASSIFY}</option>
 										</select>
+										<label id="iswe1" style="display:none;margin-left: 20px" class="control-label" >是否有水电费：</label>
+										<label id="iswe2"  style="display:none;margin-top: 5px;margin-right: 15px">
+											<input id="iswe" onclick="iswe()"  name="switch-field" class="ace ace-switch ace-switch-5" type="checkbox">	<span class="lbl"></span>
+										</label>
 									</th>
 									<th  ><label style="display: none" id="znj">滞纳金率(%)：</label></th>
 									<th  ><input style="display: none" id="znjip" type="number" style="width: 150px;height: 31px" value="${pd2.OVERDUE}"
@@ -272,8 +276,9 @@
 									</th>&ndash;%&gt;
 
 								</tr>--%>
-								<c:if test="${not empty listPTime }">
+								<c:if test="${not empty listPTime}">
 								<c:forEach items="${listPTime}" var="var" varStatus="vs">
+									<c:if test="${pd2 == '1'}">
 								<tr class="warning">
 									<th width="15%"><label>时间区间：</label></th>
 									<th colspan="5"><input type="date" style="width: 150px;height: 31px" value="${var.STARTTIME}"
@@ -296,6 +301,7 @@
 									</th>
 
 								</tr>
+								</c:if>
 								<c:if test="${not empty listInvoice }">
 								<c:forEach items="${listInvoice}" var="var1" varStatus="vs">
 								<c:if test="${var1.PROCEEDSTIME_ID == var.PROCEEDSTIME_ID}">
@@ -304,7 +310,7 @@
 									<th width="10%"><input type="number" style="width: 150px" value="${var1.RECEIVABLE}"
 														   class="input-text"  name="RECEIVABLE"
 														   id="r${var1.INVOICE_ID}"></th>
-									<th ><label>应付款时间：</label></th>
+									<th ><label>应收款时间：</label></th>
 									<th ><input type="date" style="width: 150px;height: 31px" value="${var1.PAYTIME}"
 												class="input-text"  name="PAYTIME"
 												id="pt${var1.INVOICE_ID}"></th>
@@ -312,22 +318,20 @@
 									<th width="20%"><input type="text" style="width: 150px" value="${var1.PAYERNAME}"
 														   class="input-text"  name="PAYERNAME"
 														   id="pn${var1.INVOICE_ID}"></th>
-
 								</tr>
 								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" class="success">
-									<th width="15%"><label>实际付款金额：</label></th>
+									<th width="15%"><label>实际收款金额：</label></th>
 									<th width="20%"><input type="number" style="width: 150px" value="${var1.RECEIVABLE_REALITY}"
 														   class="input-text"  name="RECEIVABLE_REALITY"
 														   id="rr${var1.INVOICE_ID}"></th>
-									<th ><label>实际付款时间：</label></th>
+									<th ><label>实际收款时间：</label></th>
 									<th ><input type="date" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
 												class="input-text"  name="RECEIVABL_PAYTIME"
 												id="rpt${var1.INVOICE_ID}"></th>
 									<th  ><label>滞纳金：</label></th>
 									<th  ><input type="number" style="width: 150px;height: 31px" value="${var1.OVERDUE}"
-												 class="input-text"  name="OVERDUE"
+												 class="input-text"
 												 id="od${var1.INVOICE_ID}"></th>
-
 								</tr>
 								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" id="tr${var1.INVOICE_ID}" class="success">
 									<th ><label>发票名称：</label></th>
@@ -746,16 +750,16 @@
 		tr += '<tr class="success"><th width="15%"><label>应收金额：</label></th>';
 		tr += '<th width="10%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE" ' +
 				'id="r'+uuid+'"></th>';
-		tr += '<th ><label>应付款时间：</label></th>';
+		tr += '<th ><label>应收款时间：</label></th>';
 		tr += ' <th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="PAYTIME"' +
 				'id="pt'+uuid+'"></th>';
 		tr += '<th width="15%"><label>付款方名称：</label></th>';
 		tr += '<th width="20%"><input type="text" style="width: 150px" class="input-text"  name="PAYERNAME" ' +
 				'id="pn'+uuid+'"></th> </tr>';
-		tr += '<tr class="success"><th width="15%"><label>实际付款金额：</label></th>';
+		tr += '<tr class="success"><th width="15%"><label>实际收款金额：</label></th>';
 		tr += '<th width="20%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE_REALITY" ' +
 				'id="rr'+uuid+'"></th>';
-		tr += '<th ><label>实际付款时间：</label></th>';
+		tr += '<th ><label>实际收款时间：</label></th>';
 		tr += '<th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="RECEIVABL_PAYTIME" ' +
 				'id="rpt'+uuid+'"></th>';
 		tr += '<th  ><label>滞纳金：</label></th>';
@@ -1064,11 +1068,15 @@
 			$("#proceedsContract").css("display","none");
 			$("#znj").css("display","none");
 			$("#znjip").css("display","none");
+			$("#iswe2").css("display","none");
+			$("#iswe1").css("display","none");
 		}else if($("#CONTRACTTYPES").find("option:selected").attr("value") == "收款合同"){
 			$("#proceedsContract").css("display","");
 			$("#paymentContarct").css("display","none");
 			$("#znj").css("display","");
 			$("#znjip").css("display","");
+			$("#iswe2").css("display","");
+			$("#iswe1").css("display","");
 		}
 		var FNAME = $("#CONTRACTCLASSIFY").find("option:selected").attr("name");
 		if (FNAME == "大型体育赛事场地租赁" || FNAME == "文艺演出场地租赁"){
@@ -1125,11 +1133,15 @@
 			$("#proceedsContract").css("display","none");
 			$("#znj").css("display","none");
 			$("#znjip").css("display","none");
+			$("#iswe2").css("display","none");
+			$("#iswe1").css("display","none");
 		}else if($("#CONTRACTTYPES").find("option:selected").attr("value") == "收款合同"){
 			$("#proceedsContract").css("display","");
 			$("#paymentContarct").css("display","none");
 			$("#znj").css("display","");
 			$("#znjip").css("display","");
+			$("#iswe2").css("display","");
+			$("#iswe1").css("display","");
 		}
 		$.ajax({
 			async: false,
