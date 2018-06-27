@@ -276,7 +276,7 @@
 								<c:forEach items="${listPTime}" var="var" varStatus="vs">
 								<tr class="warning">
 									<th width="15%"><label>时间区间：</label></th>
-									<th width="10%" colspan="5"><input type="date" style="width: 150px;height: 31px" value="${var.STARTTIME}"
+									<th colspan="5"><input type="date" style="width: 150px;height: 31px" value="${var.STARTTIME}"
 																	   id="st${var.PROCEEDSTIME_ID}"  class="input-text"  >
 										--- <input type="date" style="width: 150px;height: 31px" value="${var.ENTTIME}"
 												   class="input-text" id="et${var.PROCEEDSTIME_ID}">
@@ -289,14 +289,17 @@
 										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="删除该时间区间"
 										   onclick="delTime('${var.PROCEEDSTIME_ID}')">
 											<i class="ace-icon fa fa-check-square-o bigger-120" title="删除该时间区间">删除该时间区间</i></a>
-
+										<label style="margin-left: 20px" class="control-label" >显示全部：</label>
+										<label style="margin-top: 5px;margin-right: 15px">
+											<input id="sw${var.PROCEEDSTIME_ID}" onclick="showDetail('${var.PROCEEDSTIME_ID}')"  name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox">	<span class="lbl"></span>
+										</label>
 									</th>
 
 								</tr>
 								<c:if test="${not empty listInvoice }">
 								<c:forEach items="${listInvoice}" var="var1" varStatus="vs">
 								<c:if test="${var1.PROCEEDSTIME_ID == var.PROCEEDSTIME_ID}">
-								<tr class="success">
+								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" class="success">
 									<th width="15%"><label>应收金额：</label></th>
 									<th width="10%"><input type="number" style="width: 150px" value="${var1.RECEIVABLE}"
 														   class="input-text"  name="RECEIVABLE"
@@ -305,10 +308,13 @@
 									<th ><input type="date" style="width: 150px;height: 31px" value="${var1.PAYTIME}"
 												class="input-text"  name="PAYTIME"
 												id="pt${var1.INVOICE_ID}"></th>
-									<th  ></th>
-									<th  ></th>
+									<th width="15%"><label>付款方名称：</label></th>
+									<th width="20%"><input type="text" style="width: 150px" value="${var1.PAYERNAME}"
+														   class="input-text"  name="PAYERNAME"
+														   id="pn${var1.INVOICE_ID}"></th>
+
 								</tr>
-								<tr class="success">
+								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" class="success">
 									<th width="15%"><label>实际付款金额：</label></th>
 									<th width="20%"><input type="number" style="width: 150px" value="${var1.RECEIVABLE_REALITY}"
 														   class="input-text"  name="RECEIVABLE_REALITY"
@@ -317,12 +323,13 @@
 									<th ><input type="date" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
 												class="input-text"  name="RECEIVABL_PAYTIME"
 												id="rpt${var1.INVOICE_ID}"></th>
-									<th width="15%"><label>付款方名称：</label></th>
-									<th width="20%"><input type="text" style="width: 150px" value="${var1.PAYERNAME}"
-														   class="input-text"  name="PAYERNAME"
-														   id="pn${var1.INVOICE_ID}"></th>
+									<th  ><label>滞纳金：</label></th>
+									<th  ><input type="number" style="width: 150px;height: 31px" value="${var1.OVERDUE}"
+												 class="input-text"  name="OVERDUE"
+												 id="od${var1.INVOICE_ID}"></th>
+
 								</tr>
-								<tr id="tr${var1.INVOICE_ID}" class="success">
+								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" id="tr${var1.INVOICE_ID}" class="success">
 									<th ><label>发票名称：</label></th>
 									<th  ><input type="text" style="width: 150px;height: 31px" value="${var1.INVOICENAME}"
 												 class="input-text"  name="INVOICENAME"
@@ -331,7 +338,11 @@
 									<th  ><input type="date" style="width: 150px;height: 31px" value="${var1.INVOICETIME}"
 												 class="input-text"  name="INVOICETIME"
 												 id="ivt${var1.INVOICE_ID}" ></th>
-									<th  colspan="2"><a class="btn btn-xs blue" title="确认修改"
+									<th  colspan="2">
+										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="添加水电费项"
+										   onclick="addUtilities('${pd.CONTRACT_ID}','${var.PROCEEDSTIME_ID}','${var1.INVOICE_ID}','${pd.CONTRACTOFNAME}')">
+											<i class="ace-icon fa fa-pencil-square-o bigger-120" title="添加水电费项">添加水电费项</i></a>
+										<a class="btn btn-xs blue" title="确认修改"
 											 onclick="editInvoice('${var1.INVOICE_ID}');">
 										<i class="ace-icon fa fa-cog bigger-120" title="确认修改">确认修改</i></a>
 										<a class="btn btn-mini btn-danger" title="删除该明细项"
@@ -339,14 +350,13 @@
 											<i class="ace-icon fa fa-trash-o bigger-120" title="删除该明细项">删除该明细项</i></a>
 									</th>
 								</tr>
+								<tr name="tr${var.PROCEEDSTIME_ID}" style="display: none;height: 3px" class="active"><th colspan="6"><label></label></th></tr>
 								</c:if>
 								</c:forEach>
 								</c:if>
 								<tr id="fp${var.PROCEEDSTIME_ID}"></tr>
 								</c:forEach>
 								</c:if>
-
-
 								<tr id="ti${pd.CONTRACT_ID}"></tr>
 								<tr>
 									<%--<th>
@@ -568,6 +578,36 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
 	$(top.hangge());
+	
+	function showDetail(PROCEEDSTIME_ID) {
+		if($("#sw"+PROCEEDSTIME_ID).prop("checked")){
+			$("#proceedsContract [name='tr"+PROCEEDSTIME_ID+"']").each(function(index,item){
+				$(this).css("display","");
+			});
+		}else {
+			$("#proceedsContract [name='tr"+PROCEEDSTIME_ID+"']").each(function(index,item){
+				$(this).css("display","none");
+			});
+		}
+	}
+
+	function addUtilities(CONTRACT_ID,PROCEEDSTIME_ID,INVOICE_ID,CONTRACTOFNAME){
+		top.jzts();
+		var diag = new top.Dialog();
+		diag.Drag = true;
+		diag.Title = "添加水电费项";
+		diag.URL = '<%=basePath%>expense/goAdd?CONTRACT_ID='+CONTRACT_ID+'&PROCEEDSTIME_ID='+PROCEEDSTIME_ID+'&INVOICE_ID='+INVOICE_ID+'&CONTRACTOFNAME='+CONTRACTOFNAME;
+		diag.Width = window.innerWidth * 1.3;
+		diag.Height = 600;
+		diag.Modal = true;				//有无遮罩窗口
+		diag.ShowMaxButton = true;	//最大化按钮
+		diag.ShowMinButton = true;		//最小化按钮
+		diag.CancelEvent = function () { //关闭事件
+			//tosearch();
+			diag.close();
+		};
+		diag.show();
+	}
 
 	function addTrYj(CONTRACT_ID) {
 		var uuid = "";
@@ -709,17 +749,18 @@
 		tr += '<th ><label>应付款时间：</label></th>';
 		tr += ' <th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="PAYTIME"' +
 				'id="pt'+uuid+'"></th>';
-		tr += '<th  ></th>';
-		tr += '<th  ></tr>';
+		tr += '<th width="15%"><label>付款方名称：</label></th>';
+		tr += '<th width="20%"><input type="text" style="width: 150px" class="input-text"  name="PAYERNAME" ' +
+				'id="pn'+uuid+'"></th> </tr>';
 		tr += '<tr class="success"><th width="15%"><label>实际付款金额：</label></th>';
 		tr += '<th width="20%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE_REALITY" ' +
 				'id="rr'+uuid+'"></th>';
 		tr += '<th ><label>实际付款时间：</label></th>';
 		tr += '<th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="RECEIVABL_PAYTIME" ' +
 				'id="rpt'+uuid+'"></th>';
-		tr += '<th width="15%"><label>付款方名称：</label></th>';
-		tr += '<th width="20%"><input type="text" style="width: 150px" class="input-text"  name="PAYERNAME" ' +
-				'id="pn'+uuid+'"></th> </tr>';
+		tr += '<th  ><label>滞纳金：</label></th>';
+		tr += '<th  ><input type="number" style="width: 150px;" class="input-text"  name="OVERDUE" ' +
+				'id="od'+uuid+'"></th></tr>';
 		tr += '<tr class="success"><th ><label>发票名称：</label></th>';
 		tr += '<th><input type="text" style="width: 150px;height: 31px"  class="input-text"  name="INVOICENAME"'+
 		'id="in'+uuid+'"></th>';
@@ -828,7 +869,7 @@
 
 	function editTime(PROCEEDSTIME_ID) {
 		var STARTTIME = $("#st"+PROCEEDSTIME_ID).val();
-		var ENTTIME = $("#et"+ENTTIME).val();
+		var ENTTIME = $("#et"+PROCEEDSTIME_ID).val();
 		$.ajax({
 			type: "POST",
 			url: '<%=basePath%>proceedstime/editTime',

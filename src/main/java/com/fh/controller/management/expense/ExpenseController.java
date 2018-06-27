@@ -1,4 +1,4 @@
-package com.fh.controller.management.invoice;
+package com.fh.controller.management.expense;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -23,20 +23,56 @@ import com.fh.util.ObjectExcelView;
 import com.fh.util.PageData;
 import com.fh.util.Jurisdiction;
 import com.fh.util.Tools;
-import com.fh.service.management.invoice.InvoiceManager;
+import com.fh.service.management.expense.ExpenseManager;
 
 /** 
- * 说明：发票模块
+ * 说明：水电费
  * 创建人：FH Q313596790
- * 创建时间：2018-06-03
+ * 创建时间：2018-06-27
  */
 @Controller
-@RequestMapping(value="/invoice")
-public class InvoiceController extends BaseController {
+@RequestMapping(value="/expense")
+public class ExpenseController extends BaseController {
 	
-	String menuUrl = "invoice/list.do"; //菜单地址(权限用)
-	@Resource(name="invoiceService")
-	private InvoiceManager invoiceService;
+	String menuUrl = "expense/list.do"; //菜单地址(权限用)
+	@Resource(name="expenseService")
+	private ExpenseManager expenseService;
+
+	@RequestMapping(value = "/saveElectricity")
+	@ResponseBody
+	public Map<String, Object> saveDetail(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		pd.put("EXPENSE_ID", this.get32UUID());	//主键
+		pd.put("ISWATER", "电费");
+		expenseService.save(pd);
+		String ISLOSS = pd.getString("ISLOSS");
+		if(ISLOSS != null && !"".equals(ISLOSS)){
+			pd.put("ISLOSS",1);
+		}else {
+			pd.put("ISLOSS",0);
+		}
+		return json;
+	}
+
+	@RequestMapping(value = "/saveWater")
+	@ResponseBody
+	public Map<String, Object> saveWater(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		pd.put("EXPENSE_ID", this.get32UUID());	//主键
+		pd.put("ISWATER", "水费");
+		expenseService.save(pd);
+		String ISLOSS = pd.getString("ISLOSS");
+		if(ISLOSS != null && !"".equals(ISLOSS)){
+			pd.put("ISLOSS",1);
+		}else {
+			pd.put("ISLOSS",0);
+		}
+		return json;
+	}
 	
 	/**保存
 	 * @param
@@ -44,57 +80,16 @@ public class InvoiceController extends BaseController {
 	 */
 	@RequestMapping(value="/save")
 	public ModelAndView save() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"新增Invoice");
+		logBefore(logger, Jurisdiction.getUsername()+"新增Expense");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("INVOICE_ID", this.get32UUID());	//主键
-		invoiceService.save(pd);
+		pd.put("EXPENSE_ID", this.get32UUID());	//主键
+		expenseService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
-	}
-
-	@RequestMapping(value = "/saveDetail")
-	@ResponseBody
-	public Map<String, Object> saveDetail(Page page)throws Exception {
-		PageData pd = new PageData();
-		Map<String, Object> json = new HashMap<String, Object>();
-		pd = this.getPageData();
-		pd.put("INVOICE_ID", this.get32UUID());	//主键
-		if(pd.get("RECEIVABLE").toString() != null && !"".equals(pd.get("RECEIVABLE").toString())){
-			pd.put("RECEIVABLE",Double.parseDouble(pd.get("RECEIVABLE").toString()));
-		}else {
-			pd.put("RECEIVABLE",0);
-		}
-		if(pd.get("RECEIVABLE_REALITY").toString() != null && !"".equals(pd.get("RECEIVABLE_REALITY").toString())){
-			pd.put("RECEIVABLE_REALITY",Double.parseDouble(pd.get("RECEIVABLE_REALITY").toString()));
-		}else {
-			pd.put("RECEIVABLE_REALITY",0);
-		}
-		invoiceService.save(pd);
-		return  json;
-	}
-
-	@RequestMapping(value = "/editInfo")
-	@ResponseBody
-	public Map<String, Object> editInfo(Page page)throws Exception {
-		Map<String, Object> json = new HashMap<String, Object>();
-		PageData pd = new PageData();
-		pd = this.getPageData();
-		if(pd.get("RECEIVABLE").toString() != null && !"".equals(pd.get("RECEIVABLE").toString())){
-			pd.put("RECEIVABLE",Double.parseDouble(pd.get("RECEIVABLE").toString()));
-		}else {
-			pd.put("RECEIVABLE",0);
-		}
-		if(pd.get("RECEIVABLE_REALITY").toString() != null && !"".equals(pd.get("RECEIVABLE_REALITY").toString())){
-			pd.put("RECEIVABLE_REALITY",Double.parseDouble(pd.get("RECEIVABLE_REALITY").toString()));
-		}else {
-			pd.put("RECEIVABLE_REALITY",0);
-		}
-		invoiceService.edit(pd);
-		return  json;
 	}
 	
 	/**删除
@@ -103,11 +98,11 @@ public class InvoiceController extends BaseController {
 	 */
 	@RequestMapping(value="/delete")
 	public void delete(PrintWriter out) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"删除Invoice");
+		logBefore(logger, Jurisdiction.getUsername()+"删除Expense");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		invoiceService.delete(pd);
+		expenseService.delete(pd);
 		out.write("success");
 		out.close();
 	}
@@ -118,12 +113,12 @@ public class InvoiceController extends BaseController {
 	 */
 	@RequestMapping(value="/edit")
 	public ModelAndView edit() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"修改Invoice");
+		logBefore(logger, Jurisdiction.getUsername()+"修改Expense");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		invoiceService.edit(pd);
+		expenseService.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -135,7 +130,7 @@ public class InvoiceController extends BaseController {
 	 */
 	@RequestMapping(value="/list")
 	public ModelAndView list(Page page) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"列表Invoice");
+		logBefore(logger, Jurisdiction.getUsername()+"列表Expense");
 		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
@@ -145,8 +140,8 @@ public class InvoiceController extends BaseController {
 			pd.put("keywords", keywords.trim());
 		}
 		page.setPd(pd);
-		List<PageData>	varList = invoiceService.list(page);	//列出Invoice列表
-		mv.setViewName("management/invoice/invoice_list");
+		List<PageData>	varList = expenseService.list(page);	//列出Expense列表
+		mv.setViewName("management/expense/expense_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
@@ -162,22 +157,11 @@ public class InvoiceController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		mv.setViewName("management/invoice/invoice_edit");
+		mv.setViewName("management/expense/expense_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
 		return mv;
-	}
-
-	@RequestMapping(value="/addUtilities")
-	public ModelAndView addUtilities()throws Exception{
-		ModelAndView mv = this.getModelAndView();
-		PageData pd = new PageData();
-		pd = this.getPageData();
-		mv.setViewName("management/invoice/addUtilities");
-		mv.addObject("msg", "save");
-		mv.addObject("pd", pd);
-		return mv;
-	}
+	}	
 	
 	 /**去修改页面
 	 * @param
@@ -188,8 +172,8 @@ public class InvoiceController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd = invoiceService.findById(pd);	//根据ID读取
-		mv.setViewName("management/invoice/invoice_edit");
+		pd = expenseService.findById(pd);	//根据ID读取
+		mv.setViewName("management/expense/expense_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;
@@ -202,7 +186,7 @@ public class InvoiceController extends BaseController {
 	@RequestMapping(value="/deleteAll")
 	@ResponseBody
 	public Object deleteAll() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"批量删除Invoice");
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除Expense");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
 		PageData pd = new PageData();		
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -211,7 +195,7 @@ public class InvoiceController extends BaseController {
 		String DATA_IDS = pd.getString("DATA_IDS");
 		if(null != DATA_IDS && !"".equals(DATA_IDS)){
 			String ArrayDATA_IDS[] = DATA_IDS.split(",");
-			invoiceService.deleteAll(ArrayDATA_IDS);
+			expenseService.deleteAll(ArrayDATA_IDS);
 			pd.put("msg", "ok");
 		}else{
 			pd.put("msg", "no");
@@ -227,26 +211,44 @@ public class InvoiceController extends BaseController {
 	 */
 	@RequestMapping(value="/excel")
 	public ModelAndView exportExcel() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"导出Invoice到excel");
+		logBefore(logger, Jurisdiction.getUsername()+"导出Expense到excel");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		List<String> titles = new ArrayList<String>();
-		titles.add("CONTRACT_ID");	//1
-		titles.add("发票名称");	//2
-		titles.add("开票时间");	//3
-		titles.add("备注");	//4
+		titles.add("上月读数");	//1
+		titles.add("本月度数");	//2
+		titles.add("变比");	//3
+		titles.add("分表值");	//4
+		titles.add("度数");	//5
+		titles.add("单价");	//6
+		titles.add("总价");	//7
+		titles.add("实际总价");	//8
+		titles.add("INVOICE_ID");	//9
+		titles.add("合同id");	//10
+		titles.add("是否水电费");	//11
+		titles.add("是否计算10%线损");	//12
+		titles.add("表");	//13
 		dataMap.put("titles", titles);
-		List<PageData> varOList = invoiceService.listAll(pd);
+		List<PageData> varOList = expenseService.listAll(pd);
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
-			vpd.put("var1", varOList.get(i).getString("CONTRACT_ID"));	    //1
-			vpd.put("var2", varOList.get(i).getString("INVOICENAME"));	    //2
-			vpd.put("var3", varOList.get(i).getString("INVOICETIME"));	    //3
-			vpd.put("var4", varOList.get(i).getString("REMARK"));	    //4
+			vpd.put("var1", varOList.get(i).get("LASTMONTH").toString());	//1
+			vpd.put("var2", varOList.get(i).get("THISMONTH").toString());	//2
+			vpd.put("var3", varOList.get(i).getString("RATIO"));	    //3
+			vpd.put("var4", varOList.get(i).getString("FVALUE"));	    //4
+			vpd.put("var5", varOList.get(i).get("NUMBER").toString());	//5
+			vpd.put("var6", varOList.get(i).get("PRICE").toString());	//6
+			vpd.put("var7", varOList.get(i).get("TOTAL").toString());	//7
+			vpd.put("var8", varOList.get(i).get("REALITY_TOTAL").toString());	//8
+			vpd.put("var9", varOList.get(i).getString("INVOICE_ID"));	    //9
+			vpd.put("var10", varOList.get(i).getString("CONTRACT_ID"));	    //10
+			vpd.put("var11", varOList.get(i).get("ISWATER").toString());	//11
+			vpd.put("var12", varOList.get(i).get("ISLOSS").toString());	//12
+			vpd.put("var13", varOList.get(i).getString("METERNUM"));	    //13
 			varList.add(vpd);
 		}
 		dataMap.put("varList", varList);
