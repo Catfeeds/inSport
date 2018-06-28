@@ -185,7 +185,7 @@
 										<tr class="danger">
 											<th width="15%"><label>实际付款金额（押金）：</label></th>
 											<th width="10%">
-												"${var.REALITY}
+												${var.REALITY}
 											</th>
 											<th  ><label>实际付款时间（押金）：</label></th>
 											<th  >${var.REALITYTIME}</th>

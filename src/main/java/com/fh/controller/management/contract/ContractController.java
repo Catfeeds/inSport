@@ -210,6 +210,7 @@ public class ContractController extends BaseController {
 			pd2.put("PRINCIPAL",pd.getString("PRINCIPAL"));
 			//pd2.put("ISPAY",Integer.parseInt(pd.get("ISPAY").toString()));
 			pd2.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
+			pd2.put("ISEW",pd.getString("ISEW"));
 			pd2.put("OVERDUE",pd.getString("OVERDUE"));
 			pd2.put("FREMARK",pd.getString("FREMARK"));
 			//pd.put("CONTRACT_ID", this.get32UUID());	//主键
@@ -415,13 +416,13 @@ public class ContractController extends BaseController {
 			}else {
 				pd2.put("PROCEEDSCONTRACT_ID",pd.getString("PROCEEDSCONTRACT_ID"));
 			}
-			pd2.put("PRINCIPAL",pd.getString("PRINCIPAL"));
+			/*pd2.put("PRINCIPAL",pd.getString("PRINCIPAL"));
 			pd2.put("RECEIVABLE",pd.get("RECEIVABLE").toString());
 			pd2.put("PAYERNAME",pd.getString("PAYERNAME"));
 			pd2.put("ISPAY",1);
 			pd2.put("PAYTIME",pd.getString("PAYTIME"));
 			pd2.put("RECEIVABLE_REALITY",pd.get("RECEIVABLE_REALITY").toString());
-			pd2.put("RECEIVABL_PAYTIME",pd.getString("RECEIVABL_PAYTIME"));
+			pd2.put("RECEIVABL_PAYTIME",pd.getString("RECEIVABL_PAYTIME"));*/
 			pd2.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
 			pd2.put("OVERDUE",pd.getString("OVERDUE"));
 			pd2.put("FREMARK",pd.getString("FREMARK"));
@@ -571,6 +572,7 @@ public class ContractController extends BaseController {
 		List<PageData> listDepositInfo = depositinfoService.listByContractId(pd);
 		List<PageData> listInvoice = invoiceService.listByContractId(pd);
 		List<PageData> listPTime = proceedstimeService.listByContractId(pd);
+		List<PageData> listProceed = proceedsprimaryService.listByContractId(pd);
 		List<PageData> listMode = modeService.listAll(pd);
 		List<PageData> listOperator = operatorService.listAll(pd);
 		PageData pd1 = paymentcontractService.findByContractId(pd);
@@ -594,6 +596,7 @@ public class ContractController extends BaseController {
 		mv.addObject("listDepositInfo", listDepositInfo);
 		mv.addObject("listItems", listItems);
 		mv.addObject("listPTime", listPTime);
+		mv.addObject("listProceed", listProceed);
 		mv.addObject("pd", pd);
 		mv.addObject("pd1", pd1);
 		mv.addObject("pd2", pd2);
