@@ -335,7 +335,7 @@
 														   class="input-text"  name="RECEIVABLE_REALITY"
 														   id="rr${var1.INVOICE_ID}"></th>
 									<th ><label>实际收款时间：</label></th>
-									<th ><input type="date" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
+									<th ><input onchange="calOD('${var1.INVOICE_ID}')" type="date" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
 												class="input-text"  name="RECEIVABL_PAYTIME"
 												id="rpt${var1.INVOICE_ID}"></th>
 									<th  ><label>滞纳金：</label></th>
@@ -396,7 +396,7 @@
 														   class="input-text"  name="RECEIVABLE_REALITY"
 														   id="rr${var1.INVOICE_ID}"></th>
 									<th ><label>实际收款时间：</label></th>
-									<th ><input type="date" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
+									<th ><input onchange="calOD('${var1.INVOICE_ID}')" type="date" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
 												class="input-text"  name="RECEIVABL_PAYTIME"
 												id="rpt${var1.INVOICE_ID}"></th>
 									<th  ><label>滞纳金：</label></th>
@@ -652,6 +652,22 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
 	$(top.hangge());
+
+	function calOD(INVOICE_ID) {
+		var RECEIVABLE = $("#r"+INVOICE_ID).val();
+		var OVERDUE = $("#znjip").val();
+		var PAYTIME = $("#pt"+INVOICE_ID).val();
+		var RECEIVABL_PAYTIME = $("#rpt"+INVOICE_ID).val();
+		var differ = (Date.parse(new Date(RECEIVABL_PAYTIME))-Date.parse(new Date(PAYTIME)))/(1000*60*60*24);
+		if(differ > 0){
+			var OVERDUENUM = (parseFloat(RECEIVABLE)) * OVERDUE * differ * 0.01;
+		}else {
+			var OVERDUENUM = 0;
+		}
+		//alert(parseFloat(RECEIVABLE) +"*"+OVERDUE +"*"+ differ+"*0.01");
+		$("#od"+INVOICE_ID).val(OVERDUENUM.toFixed(2));
+		$("#rr"+INVOICE_ID).val((parseFloat(OVERDUENUM) + parseFloat(RECEIVABLE)).toFixed(2));
+	}
 
 	function isWe(){
 		if($("#iswe").prop("checked")){

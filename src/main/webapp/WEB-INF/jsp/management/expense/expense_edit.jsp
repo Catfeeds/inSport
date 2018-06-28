@@ -48,7 +48,7 @@
 								<td style="padding-left:2px;">用电数</td>
 								<td style="padding-left:2px;">电费单价</td>
 								<td style="padding-left:2px;">总价</td>
-								<td style="padding-left:2px;">10%线损</td>
+								<td style="padding-left:2px;">线损(%)</td>
 								<td style="padding-left:2px;">实总价</td>
 								<td style="padding-left:2px;">操作</td>
 							</tr>
@@ -66,7 +66,7 @@
 										   id="lm${var.EXPENSE_ID}">
 								</td>
 								<td style="padding-left:2px;">
-									<input type="number" style="width: 110px" value="${var.THISMONTH}"
+									<input type="number" onchange="calExpDif('${var.EXPENSE_ID}')" style="width: 110px" value="${var.THISMONTH}"
 										   class="input-text"  name="E_THISMONTH"
 										   id="tm${var.EXPENSE_ID}">
 								</td>
@@ -86,13 +86,13 @@
 										   id="nu${var.EXPENSE_ID}">
 								</td>
 								<td style="padding-left:2px;">
-									<input type="number" style="width: 100px" value="${var.PRICE}"
+									<input type="number" style="width: 80px" value="${var.PRICE}"
 										   class="input-text"  name="E_PRICE"
 										   id="pr${var.EXPENSE_ID}">
 								</td>
 								<td style="padding-left:2px;">
-									<input type="number" style="width: 90px" value="${var.TOTAL}"
-										   class="input-text"  name="E_TOTAL" onclick="total('${var.EXPENSE_ID}')"
+									<input type="number" style="width: 110px" value="${var.TOTAL}"
+										   class="input-text"  name="E_TOTAL" onclick="calExpDif('${var.EXPENSE_ID}')"
 										   id="to${var.EXPENSE_ID}">
 								</td>
 								<td style="padding-left:2px;">
@@ -149,7 +149,7 @@
 								<td style="padding-left:2px;">用水量</td>
 								<td style="padding-left:2px;">水费单价</td>
 								<td style="padding-left:2px;">总价</td>
-								<td style="padding-left:2px;">10%线损</td>
+								<td style="padding-left:2px;">线损(%)</td>
 								<td style="padding-left:2px;">实总价</td>
 								<td style="padding-left:2px;">操作</td>
 							</tr>
@@ -187,12 +187,12 @@
 											   id="nu${var.EXPENSE_ID}">
 									</td>
 									<td style="padding-left:2px;">
-										<input type="number" style="width: 100px" value="${var.PRICE}"
+										<input type="number" style="width: 80px" value="${var.PRICE}"
 											   class="input-text"  name="W_PRICE"
 											   id="pr${var.EXPENSE_ID}">
 									</td>
 									<td style="padding-left:2px;">
-										<input type="number" style="width: 90px" value="${var.TOTAL}"
+										<input type="number" style="width: 110px" value="${var.TOTAL}"
 											   class="input-text"  name="W_TOTAL"
 											   id="to${var.EXPENSE_ID}">
 									</td>
@@ -316,6 +316,28 @@
 			$("#TOTAL_SUM").text(TOTAL_SUM);
 			$("#REALITY_TOTAL_SUM").text(REALITY_TOTAL_SUM);
 		}
+		
+		function calExpDif(EXPENSE_ID) {
+			var LASTMONTH = $("#lm"+EXPENSE_ID).val();
+			var THISMONTH = $("#tm"+EXPENSE_ID).val();
+			var RATIO = $("#ra"+EXPENSE_ID).val();
+			//alert((parseFloat(THISMONTH) - parseFloat(LASTMONTH)).toFixed(2));
+			$("#nu"+EXPENSE_ID).val(((parseFloat(THISMONTH) - parseFloat(LASTMONTH)) * parseFloat(RATIO)).toFixed(2));
+			calTotal(EXPENSE_ID);
+		}
+
+		function calTotal(EXPENSE_ID){
+			var RATIO = $("#ra"+EXPENSE_ID).val();
+			var FVALUE = $("#va"+EXPENSE_ID).val();
+			var NUMBER = $("#nu"+EXPENSE_ID).val();
+			var PRICE = $("#pr"+EXPENSE_ID).val();
+			var TOTAL = (parseFloat(NUMBER) + parseFloat(FVALUE))* parseFloat(PRICE);
+			$("#to"+EXPENSE_ID).val(TOTAL.toFixed(2));
+		}
+
+		function calRTotal(EXPENSE_ID) {
+
+		}
 
 		function addTdEl() {
 			var uuid = "";
@@ -335,12 +357,12 @@
 			var tr = "";
 			tr += '<tr class="success center"><td><label><input type="number" style="width: 50px;"  class="input-text" id="mn_e'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 110px;"  class="input-text" id="lm_e'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 110px;"  class="input-text" id="tm_e'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 50px;"  class="input-text" id="ra_e'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 110px;" onchange="calExpDif(\'_e'+uuid+'\')" class="input-text" id="tm_e'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 50px;"   class="input-text" id="ra_e'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 50px;"  class="input-text" id="va_e'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 100px;"  class="input-text" id="nu_e'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 100px;"  class="input-text" id="pr_e'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 90px;"  class="input-text" id="to_e'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 100px;" onclick="calExpDif(\'_e'+uuid+'\')" class="input-text" id="nu_e'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 80px;"  class="input-text" id="pr_e'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 110px;"  onclick="calExpDif(\'_e'+uuid+'\')" class="input-text" id="to_e'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 80px;"  class="input-text" id="il_e'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 100px;"  class="input-text" id="rto_e'+uuid+'"></td>';
 			tr += '<td> <a class="btn btn-xs btn-success" title="保存" onclick="saveEl(\''+uuid+'\');">' +
@@ -368,12 +390,12 @@
 			var tr = "";
 			tr += '<tr class="success center"><td><label><input type="number" style="width: 50px;"  class="input-text" id="mn_w'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 110px;"  class="input-text" id="lm_w'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 110px;"  class="input-text" id="tm_w'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 110px;" onchange="calExpDif(\'_w'+uuid+'\')" class="input-text" id="tm_w'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 50px;"  class="input-text" id="ra_w'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 50px;"  class="input-text" id="va_w'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 100px;"  class="input-text" id="nu_w'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 100px;"  class="input-text" id="pr_w'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 90px;"  class="input-text" id="to_w'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 100px;" onclick="calExpDif(\'_w'+uuid+'\')" class="input-text" id="nu_w'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 80px;"  class="input-text" id="pr_w'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 110px;" onclick="calExpDif(\'_w'+uuid+'\')" class="input-text" id="to_w'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 80px;"  class="input-text" id="il_w'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 100px;"  class="input-text" id="rto_w'+uuid+'"></td>';
 			tr += '<td> <a class="btn btn-xs btn-success" title="保存" onclick="saveWa(\''+uuid+'\');">' +
@@ -392,6 +414,7 @@
 			var PRICE =$("#pr_e"+uuid).val();
 			var REALITY_TOTAL = $("#rto_e"+uuid).val();
 			var ISLOSS = $("#il_e"+uuid).val();
+			var TOTAL = $("#to"+EXPENSE_ID).val();
 			var METERNUM = $("#mn_e"+uuid).val();
 			var INVOICE_ID = $("#INVOICE_ID").val();
 			var CONTRACT_ID = $("#CONTRACT_ID").val();
@@ -406,6 +429,7 @@
 					FVALUE:FVALUE,
 					NUMBER:NUMBER,
 					PRICE:PRICE,
+					TOTAL:TOTAL,
 					REALITY_TOTAL:REALITY_TOTAL,
 					ISLOSS:ISLOSS,
 					METERNUM:METERNUM,
@@ -430,6 +454,7 @@
 			var PRICE =$("#pr_w"+uuid).val();
 			var REALITY_TOTAL = $("#rto_w"+uuid).val();
 			var ISLOSS = $("#il_w"+uuid).val();
+			var TOTAL = $("#to"+EXPENSE_ID).val();
 			var METERNUM = $("#mn_w"+uuid).val();
 			var INVOICE_ID = $("#INVOICE_ID").val();
 			var CONTRACT_ID = $("#CONTRACT_ID").val();
@@ -444,6 +469,7 @@
 					FVALUE:FVALUE,
 					NUMBER:NUMBER,
 					PRICE:PRICE,
+					TOTAL:TOTAL,
 					REALITY_TOTAL:REALITY_TOTAL,
 					ISLOSS:ISLOSS,
 					METERNUM:METERNUM,
@@ -464,6 +490,7 @@
 			var THISMONTH =  $("#tm"+EXPENSE_ID).val();
 			var RATIO = $("#ra"+EXPENSE_ID).val();
 			var FVALUE = $("#va"+EXPENSE_ID).val();
+			var TOTAL = $("#to"+EXPENSE_ID).val();
 			var NUMBER = $("#nu"+EXPENSE_ID).val();
 			var PRICE =$("#pr"+EXPENSE_ID).val();
 			var REALITY_TOTAL = $("#rto"+EXPENSE_ID).val();
@@ -479,6 +506,7 @@
 					FVALUE:FVALUE,
 					NUMBER:NUMBER,
 					PRICE:PRICE,
+					TOTAL:TOTAL,
 					REALITY_TOTAL:REALITY_TOTAL,
 					ISLOSS:ISLOSS,
 					METERNUM:METERNUM,
