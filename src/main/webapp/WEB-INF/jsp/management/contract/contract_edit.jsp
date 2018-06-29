@@ -354,7 +354,7 @@
 												 id="ivt${var1.INVOICE_ID}" ></th>
 									<th  colspan="2">
 										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="添加水电费项"
-										   onclick="addUtilities('${pd.CONTRACT_ID}','${var.PROCEEDSTIME_ID}','${var1.INVOICE_ID}','${pd.CONTRACTOFNAME}')">
+										   onclick="addUtilities('${pd.CONTRACT_ID}','${var.PROCEEDSTIME_ID}','${var1.INVOICE_ID}','${pd.CONTRACTOFNAME}','${pd2.OVERDUE}','${var1.PAYERNAME}')">
 											<i class="ace-icon fa fa-pencil-square-o bigger-120" title="添加水电费项">添加水电费项</i></a>
 										<a class="btn btn-xs blue" title="确认修改"
 											 onclick="editInvoice('${var1.INVOICE_ID}');">
@@ -547,9 +547,9 @@
 												</label>
 											</th>
 											<th>
-												<a class="btn btn-xs blue" title="水电费录入"
+												<%--<a class="btn btn-xs blue" title="水电费录入"
 												   onclick="addUTILITIES('${var.DEPOSITINFO_ID}');">
-													<i class="ace-icon fa fa-pencil-square-o bigger-120" title="水电费录入"></i></a>
+													<i class="ace-icon fa fa-pencil-square-o bigger-120" title="水电费录入"></i></a>--%>
 												<a class="btn btn-xs blue" title="确认修改"
 													 onclick="editDepositInfo('${var.DEPOSITINFO_ID}');">
 												<i class="ace-icon fa fa-pencil-square-o bigger-120" title="确认修改"></i></a>
@@ -693,14 +693,14 @@
 		}
 	}
 
-	function addUtilities(CONTRACT_ID,PROCEEDSTIME_ID,INVOICE_ID,CONTRACTOFNAME){
+	function addUtilities(CONTRACT_ID,PROCEEDSTIME_ID,INVOICE_ID,CONTRACTOFNAME,OVERDUE,PAYERNAME){
 		top.jzts();
 		var diag = new top.Dialog();
 		diag.Drag = true;
 		diag.Title = "添加水电费项";
-		diag.URL = '<%=basePath%>expense/goAdd?CONTRACT_ID='+CONTRACT_ID+'&PROCEEDSTIME_ID='+PROCEEDSTIME_ID+'&INVOICE_ID='+INVOICE_ID+'&CONTRACTOFNAME='+CONTRACTOFNAME;
+		diag.URL = '<%=basePath%>expense/goAdd?CONTRACT_ID='+CONTRACT_ID+'&PROCEEDSTIME_ID='+PROCEEDSTIME_ID+'&INVOICE_ID='+INVOICE_ID+'&CONTRACTOFNAME='+CONTRACTOFNAME+'&OVERDUE='+OVERDUE+'&PAYERNAME='+PAYERNAME;
 		diag.Width = window.innerWidth * 1.3;
-		diag.Height = 600;
+		diag.Height = 700;
 		diag.Modal = true;				//有无遮罩窗口
 		diag.ShowMaxButton = true;	//最大化按钮
 		diag.ShowMinButton = true;		//最小化按钮

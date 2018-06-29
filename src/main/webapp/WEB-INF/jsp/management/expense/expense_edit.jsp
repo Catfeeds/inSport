@@ -96,12 +96,12 @@
 										   id="to${var.EXPENSE_ID}">
 								</td>
 								<td style="padding-left:2px;">
-									<input type="number" style="width: 80px" value="${var.ISLOSS}"
-										   class="input-text"  name="E_ISLOSS"
+									<input type="number" style="width: 50px" value="${var.ISLOSS}"
+										   class="input-text"  name="E_ISLOSS" onchange="calExpDif('${var.EXPENSE_ID}')"
 										   id="il${var.EXPENSE_ID}">
 								</td>
 								<td style="padding-left:2px;">
-									<input type="number" style="width: 100px" value="${var.REALITY_TOTAL}"
+									<input type="number" style="width: 110px" value="${var.REALITY_TOTAL}"
 										   class="input-text"  name="E_REALITY_TOTAL"
 										   id="rto${var.EXPENSE_ID}">
 								</td>
@@ -118,15 +118,15 @@
 							</c:if>
 							<tr class="center" id="el">
 								<td onclick="calculate('E')" style="padding-left:2px;"><a >合计</a></td>
-								<td style="padding-left:2px;"><p id="LASTMONTH_SUM"></p></td>
-								<td style="padding-left:2px;"><p id="THISMONTH_SUM"></p></td>
+								<td style="padding-left:2px;"><p id="LASTMONTH_SUM_E"></p></td>
+								<td style="padding-left:2px;"><p id="THISMONTH_SUM_E"></p></td>
 								<td style="padding-left:2px;"></td>
 								<td style="padding-left:2px;"></td>
-								<td style="padding-left:2px;"><p id="NUMBER_SUM"></p></td>
+								<td style="padding-left:2px;"><p id="NUMBER_SUM_E"></p></td>
 								<td style="padding-left:2px;"></td>
-								<td style="padding-left:2px;"><p id="TOTAL_SUM"></p></td>
+								<td style="padding-left:2px;"><p id="TOTAL_SUM_E"></p></td>
 								<td style="padding-left:2px;"></td>
-								<td style="padding-left:2px;"><p id="REALITY_TOTAL_SUM"></p></td>
+								<td style="padding-left:2px;"><p id="REALITY_TOTAL_SUM_E"></p></td>
 								<td style="padding-left:2px;"></td>
 							</tr>
 							</tbody>
@@ -168,8 +168,8 @@
 									</td>
 									<td style="padding-left:2px;">
 										<input type="number" style="width: 110px" value="${var.THISMONTH}"
-											   class="input-text"  name="W_THISMONTH"
-											   id="tm_e${var.EXPENSE_ID}">
+											   class="input-text"  name="W_THISMONTH"  onchange="calExpDif('${var.EXPENSE_ID}')"
+											   id="tm${var.EXPENSE_ID}">
 									</td>
 									<td style="padding-left:2px;">
 										<input type="number" style="width: 50px" value="${var.RATIO}"
@@ -183,7 +183,7 @@
 									</td>
 									<td style="padding-left:2px;">
 										<input type="number" style="width: 100px" value="${var.NUMBER}"
-											   class="input-text"  name="W_NUMBER"
+											   class="input-text"  name="W_NUMBER" onclick="calExpDif('${var.EXPENSE_ID}')"
 											   id="nu${var.EXPENSE_ID}">
 									</td>
 									<td style="padding-left:2px;">
@@ -193,16 +193,16 @@
 									</td>
 									<td style="padding-left:2px;">
 										<input type="number" style="width: 110px" value="${var.TOTAL}"
-											   class="input-text"  name="W_TOTAL"
+											   class="input-text"  name="W_TOTAL" onclick="calExpDif('${var.EXPENSE_ID}')"
 											   id="to${var.EXPENSE_ID}">
 									</td>
 									<td style="padding-left:2px;">
-										<input type="number" style="width: 80px" value="${var.ISLOSS}"
-											   class="input-text"  name="W_ISLOSS"
+										<input type="number" style="width: 50px" value="${var.ISLOSS}"
+											   class="input-text"  name="W_ISLOSS" onchange="calExpDif('${var.EXPENSE_ID}')"
 											   id="il${var.EXPENSE_ID}">
 									</td>
 									<td style="padding-left:2px;">
-										<input type="number" style="width: 100px" value="${var.REALITY_TOTAL}"
+										<input type="number" style="width: 110px" value="${var.REALITY_TOTAL}"
 											   class="input-text"  name="W_REALITY_TOTAL"
 											   id="rto${var.EXPENSE_ID}">
 									</td>
@@ -219,48 +219,53 @@
 							</c:if>
 							<tr class="center" id="wa">
 								<td  onclick="calculate('W')" style="padding-left:2px;"><a>合计</a></td>
+								<td style="padding-left:2px;"><p id="LASTMONTH_SUM_W"></p></td>
+								<td style="padding-left:2px;"><p id="THISMONTH_SUM_W"></p></td>
 								<td style="padding-left:2px;"></td>
 								<td style="padding-left:2px;"></td>
+								<td style="padding-left:2px;"><p id="NUMBER_SUM_W"></p></td>
 								<td style="padding-left:2px;"></td>
+								<td style="padding-left:2px;"><p id="TOTAL_SUM_W"></p></td>
 								<td style="padding-left:2px;"></td>
-								<td style="padding-left:2px;"></td>
-								<td style="padding-left:2px;"></td>
-								<td style="padding-left:2px;"></td>
-								<td style="padding-left:2px;"></td>
-								<td style="padding-left:2px;"></td>
+								<td style="padding-left:2px;"><p id="REALITY_TOTAL_SUM_W"></p></td>
 								<td style="padding-left:2px;"></td>
 							</tr>
 						</table>
 						<table class="table table-border table-bg table-bordered">
 							<tbody>
 							<tr class="success">
-								<th width="15%"><label>应收金额(水电费)：</label></th>
-								<th width="10%"><input type="number" style="width: 150px" value="${var1.RECEIVABLE}"
-													   class="input-text"  name="RECEIVABLE"
-													   id="r${var1.INVOICE_ID}"></th>
-								<th ><label>应收款时间(水电费)：</label></th>
-								<th ><input type="date" style="width: 150px;height: 31px" value="${var1.PAYTIME}"
+								<th class="center"><label>应收金额(水电费)：</label></th>
+								<th class="center"><input type="number" style="width: 150px" value=""
+													   class="input-text"  name="RECEIVABLE" onclick="calRece()"
+													   id="RECEIVABLE"></th>
+								<th class="center"><label>应收款时间(水电费)：</label></th>
+								<th class="center"><input type="date" style="width: 150px;height: 31px" value=""
 											class="input-text"  name="PAYTIME"
-											id="pt${var1.INVOICE_ID}"></th>
-								<th width="15%"><label>付款方名称(水电费)：</label></th>
-								<th width="20%"><input type="text" style="width: 150px" value="${var1.PAYERNAME}"
+											id="PAYTIME"></th>
+								<th class="center"><label>付款方名称(水电费)：</label></th>
+								<th class="center"><input type="text" style="width: 150px" value="${pd.PAYERNAME}"
 													   class="input-text"  name="PAYERNAME"
-													   id="pn${var1.INVOICE_ID}"></th>
-
+													   id="PAYERNAME"></th>
+								<th width="20%"></th>
 							</tr>
 							<tr class="success">
-								<th width="15%"><label>实际收款金额(水电费)：</label></th>
-								<th width="20%"><input type="number" style="width: 150px" value="${var1.RECEIVABLE_REALITY}"
+								<th class="center"><label>实际收款金额(水电费)：</label></th>
+								<th class="center"><input type="number" style="width: 150px" value=""
 													   class="input-text"  name="RECEIVABLE_REALITY"
-													   id="rr${var1.INVOICE_ID}"></th>
-								<th ><label>实际收款时间(水电费)：</label></th>
-								<th ><input type="date" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
-											class="input-text"  name="RECEIVABL_PAYTIME"
-											id="rpt${var1.INVOICE_ID}"></th>
-								<th  ><label>滞纳金:</label></th>
-								<th  ><input type="number" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
-											 class="input-text"  name="RECEIVABL_PAYTIME"
-											 id="rpt${var1.INVOICE_ID}"></th>
+													   id="RECEIVABLE_REALITY"></th>
+								<th class="center"><label>实际收款时间(水电费)：</label></th>
+								<th class="center"><input type="date" style="width: 150px;height: 31px" value=""
+											class="input-text"  name="RECEIVABL_PAYTIME" onchange="rece_rea()"
+											id="RECEIVABL_PAYTIME"></th>
+								<th  class="center"><label>滞纳金:</label></th>
+								<th  class="center"><input type="number" style="width: 150px;height: 31px" value="${pd.OVERDUE}"
+											 class="input-text"  name="OVERDUE"
+											 id="OVERDUE"></th>
+								<th class="center">
+									<a class="btn btn-xs btn-success" title="保存" onclick="saveUtilities('${pd.CONTRACT_ID}','${pd.PROCEEDSTIME_ID}','${pd.INVOICE_ID}');">
+										<i class="ace-icon fa fa-check-square-o bigger-120" title="保存">保存</i>
+									</a>
+								</th>
 							</tr>
 							</tbody>
 						</table>
@@ -288,7 +293,40 @@
 	<script type="text/javascript" src="static/js/jquery.tips.js"></script>
 		<script type="text/javascript">
 		$(top.hangge());
-		
+
+		function saveUtilities(CONTRACT_ID,PROCEEDSTIME_ID,INVOICE_ID){
+
+		}
+
+		//计算实收水电费
+		function rece_rea(){
+			if($("#RECEIVABLE").val() == null || $("#RECEIVABLE").val() == ""){
+				calRece();
+			}
+			var OVERDUE = $("#OVERDUE").val();
+			var RECEIVABLE =  $("#RECEIVABLE").val();
+			var PAYTIME = $("#PAYTIME").val();
+			var RECEIVABL_PAYTIME = $("#RECEIVABL_PAYTIME").val();
+			var differ = (Date.parse(new Date(RECEIVABL_PAYTIME))-Date.parse(new Date(PAYTIME)))/(1000*60*60*24);
+			if(differ > 0){
+				var OVERDUENUM =differ * parseFloat(OVERDUE) * parseFloat(RECEIVABLE)*0.01;
+			}else {
+				var OVERDUENUM = 0;
+			}
+			$("#RECEIVABLE_REALITY").val(( OVERDUENUM + parseFloat(RECEIVABLE)).toFixed(2));
+		}
+
+		//计算应收水电费
+		function calRece() {
+			calculate('E');
+			calculate('W');
+			var REALITY_TOTAL_SUM_E = $("#REALITY_TOTAL_SUM_E").text();
+			//alert(REALITY_TOTAL_SUM_E);
+			var REALITY_TOTAL_SUM_W = $("#REALITY_TOTAL_SUM_W").text();
+			$("#RECEIVABLE").val((parseFloat(REALITY_TOTAL_SUM_E) + parseFloat(REALITY_TOTAL_SUM_W)).toFixed(2));
+		}
+
+		//合计
 		function calculate(value) {
 			var LASTMONTH_SUM = 0.00;
 			var THISMONTH_SUM = 0.00;
@@ -310,13 +348,14 @@
 			$("[name='"+value+"_REALITY_TOTAL']").each(function(index,item){
 				REALITY_TOTAL_SUM += parseFloat($(this).val());
 			});
-			$("#LASTMONTH_SUM").text(LASTMONTH_SUM);
-			$("#THISMONTH_SUM").text(THISMONTH_SUM);
-			$("#NUMBER_SUM").text(NUMBER_SUM);
-			$("#TOTAL_SUM").text(TOTAL_SUM);
-			$("#REALITY_TOTAL_SUM").text(REALITY_TOTAL_SUM);
+			$("#LASTMONTH_SUM_"+value).text(LASTMONTH_SUM.toFixed(2));
+			$("#THISMONTH_SUM_"+value).text(THISMONTH_SUM.toFixed(2));
+			$("#NUMBER_SUM_"+value).text(NUMBER_SUM.toFixed(2));
+			$("#TOTAL_SUM_"+value).text(TOTAL_SUM.toFixed(2));
+			$("#REALITY_TOTAL_SUM_"+value).text(REALITY_TOTAL_SUM.toFixed(2));
 		}
-		
+
+		//计算用量
 		function calExpDif(EXPENSE_ID) {
 			var LASTMONTH = $("#lm"+EXPENSE_ID).val();
 			var THISMONTH = $("#tm"+EXPENSE_ID).val();
@@ -326,19 +365,22 @@
 			calTotal(EXPENSE_ID);
 		}
 
+		//计算总价
 		function calTotal(EXPENSE_ID){
 			var RATIO = $("#ra"+EXPENSE_ID).val();
 			var FVALUE = $("#va"+EXPENSE_ID).val();
 			var NUMBER = $("#nu"+EXPENSE_ID).val();
 			var PRICE = $("#pr"+EXPENSE_ID).val();
-			var TOTAL = (parseFloat(NUMBER) + parseFloat(FVALUE))* parseFloat(PRICE);
+			var ISLOSS= $("#il"+EXPENSE_ID).val();
+			if(ISLOSS == null || ISLOSS == ""){
+				ISLOSS = 0.00;
+			}
+			var TOTAL = (parseFloat(NUMBER) + parseFloat(FVALUE))* parseFloat(PRICE) * (parseFloat(ISLOSS)*0.01+1);
 			$("#to"+EXPENSE_ID).val(TOTAL.toFixed(2));
+			$("#rto"+EXPENSE_ID).val(TOTAL.toFixed(2));
 		}
 
-		function calRTotal(EXPENSE_ID) {
-
-		}
-
+		//添加电费的表单
 		function addTdEl() {
 			var uuid = "";
 			$.ajax({
@@ -363,8 +405,8 @@
 			tr += '<td><label><input type="number" style="width: 100px;" onclick="calExpDif(\'_e'+uuid+'\')" class="input-text" id="nu_e'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 80px;"  class="input-text" id="pr_e'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 110px;"  onclick="calExpDif(\'_e'+uuid+'\')" class="input-text" id="to_e'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 80px;"  class="input-text" id="il_e'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 100px;"  class="input-text" id="rto_e'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 50px;" onchange="calExpDif(\'_e'+uuid+'\')" class="input-text" id="il_e'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 110px;"  class="input-text" id="rto_e'+uuid+'"></td>';
 			tr += '<td> <a class="btn btn-xs btn-success" title="保存" onclick="saveEl(\''+uuid+'\');">' +
 					'<i class="ace-icon fa fa-check-square-o bigger-110" title="保存">保存</i></a></th>';
 			tr += '</tr>';
@@ -372,6 +414,7 @@
 			tr = "";
 		}
 
+		//添加水费表单
 		function addTdWa() {
 			var uuid = "";
 			$.ajax({
@@ -396,15 +439,16 @@
 			tr += '<td><label><input type="number" style="width: 100px;" onclick="calExpDif(\'_w'+uuid+'\')" class="input-text" id="nu_w'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 80px;"  class="input-text" id="pr_w'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 110px;" onclick="calExpDif(\'_w'+uuid+'\')" class="input-text" id="to_w'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 80px;"  class="input-text" id="il_w'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 100px;"  class="input-text" id="rto_w'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 50px;" onchange="calExpDif(\'_w'+uuid+'\')" class="input-text" id="il_w'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 110px;"  class="input-text" id="rto_w'+uuid+'"></td>';
 			tr += '<td> <a class="btn btn-xs btn-success" title="保存" onclick="saveWa(\''+uuid+'\');">' +
 					'<i class="ace-icon fa fa-check-square-o bigger-110" title="保存">保存</i></a></th>';
 			tr += '</tr>';
 			$("#wa").before(tr);
 			tr = "";
 		}
-		
+
+		//保存电费
 		function saveEl(uuid) {
 			var LASTMONTH = $("#lm_e"+uuid).val();
 			var THISMONTH =  $("#tm_e"+uuid).val();
@@ -414,7 +458,7 @@
 			var PRICE =$("#pr_e"+uuid).val();
 			var REALITY_TOTAL = $("#rto_e"+uuid).val();
 			var ISLOSS = $("#il_e"+uuid).val();
-			var TOTAL = $("#to"+EXPENSE_ID).val();
+			var TOTAL = $("#to_e"+uuid).val();
 			var METERNUM = $("#mn_e"+uuid).val();
 			var INVOICE_ID = $("#INVOICE_ID").val();
 			var CONTRACT_ID = $("#CONTRACT_ID").val();
@@ -445,6 +489,7 @@
 			});
 		}
 
+		//保存水费
 		function saveWa(uuid) {
 			var LASTMONTH = $("#lm_w"+uuid).val();
 			var THISMONTH =  $("#tm_w"+uuid).val();
@@ -454,7 +499,7 @@
 			var PRICE =$("#pr_w"+uuid).val();
 			var REALITY_TOTAL = $("#rto_w"+uuid).val();
 			var ISLOSS = $("#il_w"+uuid).val();
-			var TOTAL = $("#to"+EXPENSE_ID).val();
+			var TOTAL = $("#to_w"+uuid).val();
 			var METERNUM = $("#mn_w"+uuid).val();
 			var INVOICE_ID = $("#INVOICE_ID").val();
 			var CONTRACT_ID = $("#CONTRACT_ID").val();
@@ -484,7 +529,8 @@
 				}
 			});
 		}
-		
+
+		//修改
 		function editExpense(EXPENSE_ID) {
 			var LASTMONTH = $("#lm"+EXPENSE_ID).val();
 			var THISMONTH =  $("#tm"+EXPENSE_ID).val();
