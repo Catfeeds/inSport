@@ -31,7 +31,8 @@
 		FREMARK,
 		CLIENT,
 		TELEPHONE,
-		DEPTNAME
+		DEPTNAME,
+		RELEVANCE_ID
 	</sql>
 	
 	<!-- 字段值 -->
@@ -58,7 +59,8 @@
 		#{FREMARK},
 		#{CLIENT},
 		#{TELEPHONE},
-		#{DEPTNAME}
+		#{DEPTNAME},
+		#{RELEVANCE_ID}
 	</sql>
 	
 	<!-- 新增-->

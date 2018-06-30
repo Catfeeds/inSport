@@ -1,4 +1,4 @@
-package com.fh.service.management.expense.impl;
+package com.fh.service.management.utilitiesstate.impl;
 
 import java.util.List;
 import javax.annotation.Resource;
@@ -6,16 +6,16 @@ import org.springframework.stereotype.Service;
 import com.fh.dao.DaoSupport;
 import com.fh.entity.Page;
 import com.fh.util.PageData;
-import com.fh.service.management.expense.ExpenseManager;
+import com.fh.service.management.utilitiesstate.UtilitiesStateManager;
 
 /** 
- * 说明： 水电费
+ * 说明： 水电费收款情况
  * 创建人：FH Q313596790
- * 创建时间：2018-06-27
+ * 创建时间：2018-06-30
  * @version
  */
-@Service("expenseService")
-public class ExpenseService implements ExpenseManager{
+@Service("utilitiesstateService")
+public class UtilitiesStateService implements UtilitiesStateManager{
 
 	@Resource(name = "daoSupport")
 	private DaoSupport dao;
@@ -25,7 +25,7 @@ public class ExpenseService implements ExpenseManager{
 	 * @throws Exception
 	 */
 	public void save(PageData pd)throws Exception{
-		dao.save("ExpenseMapper.save", pd);
+		dao.save("UtilitiesStateMapper.save", pd);
 	}
 	
 	/**删除
@@ -33,19 +33,15 @@ public class ExpenseService implements ExpenseManager{
 	 * @throws Exception
 	 */
 	public void delete(PageData pd)throws Exception{
-		dao.delete("ExpenseMapper.delete", pd);
+		dao.delete("UtilitiesStateMapper.delete", pd);
 	}
-
-	public void deleteByEWAndINvID(PageData pd)throws Exception{
-		dao.delete("ExpenseMapper.deleteByEWAndINvID", pd);
-	}
-
+	
 	/**修改
 	 * @param pd
 	 * @throws Exception
 	 */
 	public void edit(PageData pd)throws Exception{
-		dao.update("ExpenseMapper.edit", pd);
+		dao.update("UtilitiesStateMapper.edit", pd);
 	}
 	
 	/**列表
@@ -54,7 +50,7 @@ public class ExpenseService implements ExpenseManager{
 	 */
 	@SuppressWarnings("unchecked")
 	public List<PageData> list(Page page)throws Exception{
-		return (List<PageData>)dao.findForList("ExpenseMapper.datalistPage", page);
+		return (List<PageData>)dao.findForList("UtilitiesStateMapper.datalistPage", page);
 	}
 	
 	/**列表(全部)
@@ -63,31 +59,31 @@ public class ExpenseService implements ExpenseManager{
 	 */
 	@SuppressWarnings("unchecked")
 	public List<PageData> listAll(PageData pd)throws Exception{
-		return (List<PageData>)dao.findForList("ExpenseMapper.listAll", pd);
+		return (List<PageData>)dao.findForList("UtilitiesStateMapper.listAll", pd);
 	}
-
-	public List<PageData> listWaByInvoiceId(PageData pd)throws Exception{
-		return (List<PageData>)dao.findForList("ExpenseMapper.listWaByInvoiceId", pd);
-	}
-
-	public List<PageData> listElByInvoiceId(PageData pd)throws Exception{
-		return (List<PageData>)dao.findForList("ExpenseMapper.listElByInvoiceId", pd);
-	}
-
+	
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception
 	 */
 	public PageData findById(PageData pd)throws Exception{
-		return (PageData)dao.findForObject("ExpenseMapper.findById", pd);
+		return (PageData)dao.findForObject("UtilitiesStateMapper.findById", pd);
 	}
-	
+
+	public PageData findByInvoiceId(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("UtilitiesStateMapper.findByInvoiceId", pd);
+	}
+
+	public PageData findByIdWithPname(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("UtilitiesStateMapper.findByIdWithPname", pd);
+	}
+
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception
 	 */
 	public void deleteAll(String[] ArrayDATA_IDS)throws Exception{
-		dao.delete("ExpenseMapper.deleteAll", ArrayDATA_IDS);
+		dao.delete("UtilitiesStateMapper.deleteAll", ArrayDATA_IDS);
 	}
 	
 }

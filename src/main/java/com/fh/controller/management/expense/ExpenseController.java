@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+
+import com.fh.service.management.utilitiesstate.UtilitiesStateManager;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -38,6 +40,9 @@ public class ExpenseController extends BaseController {
 	@Resource(name="expenseService")
 	private ExpenseManager expenseService;
 
+	@Resource(name="utilitiesstateService")
+	private UtilitiesStateManager utilitiesstateService;
+
 	@RequestMapping(value = "/saveElectricity")
 	@ResponseBody
 	public Map<String, Object> saveDetail(Page page)throws Exception {
@@ -55,6 +60,7 @@ public class ExpenseController extends BaseController {
 		expenseService.save(pd);
 		return json;
 	}
+
 
 	@RequestMapping(value = "/saveWater")
 	@ResponseBody
@@ -167,7 +173,166 @@ public class ExpenseController extends BaseController {
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
 		return mv;
 	}
-	
+
+	@RequestMapping(value = "/addUtilitiesByCopy")
+	@ResponseBody
+	public Map<String, Object> addUtilitiesByCopy(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		List<PageData> listEl;
+		List<PageData> listWa;
+		String CONTRACT_ID = pd.getString("CONTRACT_ID");
+		String INVOICE_ID = pd.getString("INVOICE_ID");
+		String LINVOICE_ID = pd.getString("LINVOICE_ID");
+		if(LINVOICE_ID == null || "".equals(LINVOICE_ID)){
+			return  json;
+		}else {
+			listEl = expenseService.listElByInvoiceId(pd);//搜索该月电费情况，看是否已经有值
+			listWa = expenseService.listWaByInvoiceId(pd);//搜索该月水费情况，看是否已经有值
+			if(listEl.size() > 0){ // 电费有数据
+				//todo
+			}else { // 电费无数据
+				pd.put("INVOICE_ID",LINVOICE_ID);
+				listEl = expenseService.listElByInvoiceId(pd);
+				PageData ePd = new PageData();
+				for (int i = 0; i < listEl.size(); i++) {
+					ePd.put("EXPENSE_ID", this.get32UUID());
+					ePd.put("LASTMONTH", listEl.get(i).getString("THISMONTH"));
+					ePd.put("RATIO", listEl.get(i).getString("RATIO"));
+					ePd.put("FVALUE", listEl.get(i).getString("FVALUE"));
+					ePd.put("PRICE", listEl.get(i).getString("PRICE"));
+					ePd.put("ISLOSS", Integer.parseInt(listEl.get(i).get("ISLOSS").toString()));
+					ePd.put("METERNUM", listEl.get(i).getString("METERNUM"));
+					ePd.put("ISWATER", listEl.get(i).getString("ISWATER"));
+					ePd.put("NUMBER", "0");
+					ePd.put("TOTAL", "0");
+					ePd.put("REALITY_TOTAL", "0");
+					ePd.put("INVOICE_ID", INVOICE_ID);
+					ePd.put("CONTRACT_ID", CONTRACT_ID);
+					expenseService.save(ePd);
+				}
+			}
+			if(listWa.size() > 0) { // 水费有数据
+				//todo
+				/*pd.put("INVOICE_ID",INVOICE_ID);
+				pd.put("ISWATER","电费");//
+				expenseService.deleteByEWAndINvID(pd);//先删除
+				pd.put("INVOICE_ID",LINVOICE_ID);
+				listWa = expenseService.listWaByInvoiceId(pd);
+				PageData wPd = new PageData();
+				for (int i = 0; i < listWa.size(); i++) {
+					wPd.put("EXPENSE_ID", this.get32UUID());
+					wPd.put("LASTMONTH", listWa.get(i).getString("THISMONTH"));
+					wPd.put("RATIO", listWa.get(i).getString("RATIO"));
+					wPd.put("FVALUE", listWa.get(i).getString("FVALUE"));
+					wPd.put("PRICE", listWa.get(i).getString("PRICE"));
+					wPd.put("ISLOSS",Integer.parseInt(listWa.get(i).get("ISLOSS").toString()));
+					wPd.put("METERNUM", listWa.get(i).getString("METERNUM"));
+					wPd.put("ISWATER", listWa.get(i).getString("ISWATER"));
+					wPd.put("INVOICE_ID", INVOICE_ID);
+					wPd.put("CONTRACT_ID", CONTRACT_ID);
+					expenseService.save(wPd);
+				}*/
+			}else { //水费无数据
+				pd.put("INVOICE_ID",LINVOICE_ID);
+				listWa = expenseService.listWaByInvoiceId(pd);
+				PageData wPd = new PageData();
+				for (int i = 0; i < listWa.size(); i++) {
+					wPd.put("EXPENSE_ID", this.get32UUID());
+					wPd.put("LASTMONTH", listWa.get(i).getString("THISMONTH"));
+					wPd.put("RATIO", listWa.get(i).getString("RATIO"));
+					wPd.put("FVALUE", listWa.get(i).getString("FVALUE"));
+					wPd.put("PRICE", listWa.get(i).getString("PRICE"));
+					wPd.put("ISLOSS",Integer.parseInt(listWa.get(i).get("ISLOSS").toString()));
+					wPd.put("METERNUM", listWa.get(i).getString("METERNUM"));
+					wPd.put("ISWATER", listWa.get(i).getString("ISWATER"));
+					wPd.put("NUMBER", "0");
+					wPd.put("TOTAL", "0");
+					wPd.put("REALITY_TOTAL", "0");
+					wPd.put("INVOICE_ID", INVOICE_ID);
+					wPd.put("CONTRACT_ID", CONTRACT_ID);
+					expenseService.save(wPd);
+				}
+			}
+		}
+
+		/*if(listEl.size() > 0){
+			return  json;
+		}else {
+			String LINVOICE_ID = pd.getString("LINVOICE_ID");
+			if(LINVOICE_ID == null || "".equals(LINVOICE_ID)){
+				return  json;
+			}else {
+				pd.put("INVOICE_ID",LINVOICE_ID);
+				listEl = expenseService.listElByInvoiceId(pd);
+				PageData ePd = new PageData();
+				for (int i = 0; i < listEl.size(); i++) {
+					ePd.put("EXPENSE_ID", this.get32UUID());
+					ePd.put("LASTMONTH", listEl.get(i).getString("THISMONTH"));
+					ePd.put("RATIO", listEl.get(i).getString("RATIO"));
+					ePd.put("FVALUE", listEl.get(i).getString("FVALUE"));
+					ePd.put("PRICE", listEl.get(i).getString("PRICE"));
+					ePd.put("ISLOSS", Integer.parseInt(listEl.get(i).get("ISLOSS").toString()));
+					ePd.put("METERNUM", listEl.get(i).getString("METERNUM"));
+					ePd.put("ISWATER", listEl.get(i).getString("ISWATER"));
+					ePd.put("INVOICE_ID", INVOICE_ID);
+					ePd.put("PROCEEDSTIME_ID", PROCEEDSTIME_ID);
+					ePd.put("CONTRACT_ID", CONTRACT_ID);
+					expenseService.save(ePd);
+				}
+			}
+		}
+		if(listWa.size() > 0){
+			String LINVOICE_ID = pd.getString("LINVOICE_ID");
+			if(LINVOICE_ID == null || "".equals(LINVOICE_ID)){
+				return  json;
+			}else {
+				pd.put("INVOICE_ID",LINVOICE_ID);
+				listWa = expenseService.listWaByInvoiceId(pd);
+				PageData wPd = new PageData();
+				for (int i = 0; i < listWa.size(); i++) {
+					wPd.put("EXPENSE_ID", this.get32UUID());
+					wPd.put("LASTMONTH", listWa.get(i).getString("THISMONTH"));
+					wPd.put("RATIO", listWa.get(i).getString("RATIO"));
+					wPd.put("FVALUE", listWa.get(i).getString("FVALUE"));
+					wPd.put("PRICE", listWa.get(i).getString("PRICE"));
+					wPd.put("ISLOSS",Integer.parseInt(listWa.get(i).get("ISLOSS").toString()));
+					wPd.put("METERNUM", listWa.get(i).getString("METERNUM"));
+					wPd.put("ISWATER", listWa.get(i).getString("ISWATER"));
+					wPd.put("INVOICE_ID", INVOICE_ID);
+					wPd.put("PROCEEDSTIME_ID", PROCEEDSTIME_ID);
+					wPd.put("CONTRACT_ID", CONTRACT_ID);
+					expenseService.edit(wPd);
+				}
+			}
+		}else {
+			String LINVOICE_ID = pd.getString("LINVOICE_ID");
+			if(LINVOICE_ID == null || "".equals(LINVOICE_ID)){
+				return  json;
+			}else {
+				pd.put("INVOICE_ID",LINVOICE_ID);
+				listWa = expenseService.listWaByInvoiceId(pd);
+				PageData wPd = new PageData();
+				for (int i = 0; i < listWa.size(); i++) {
+					wPd.put("EXPENSE_ID", this.get32UUID());
+					wPd.put("LASTMONTH", listWa.get(i).getString("THISMONTH"));
+					wPd.put("RATIO", listWa.get(i).getString("RATIO"));
+					wPd.put("FVALUE", listWa.get(i).getString("FVALUE"));
+					wPd.put("PRICE", listWa.get(i).getString("PRICE"));
+					wPd.put("ISLOSS",Integer.parseInt(listWa.get(i).get("ISLOSS").toString()));
+					wPd.put("METERNUM", listWa.get(i).getString("METERNUM"));
+					wPd.put("ISWATER", listWa.get(i).getString("ISWATER"));
+					wPd.put("INVOICE_ID", INVOICE_ID);
+					wPd.put("PROCEEDSTIME_ID", PROCEEDSTIME_ID);
+					wPd.put("CONTRACT_ID", CONTRACT_ID);
+					expenseService.save(wPd);
+				}
+			}
+		}*/
+		return json;
+	}
+
 	/**去新增页面
 	 * @param
 	 * @throws Exception
@@ -179,11 +344,13 @@ public class ExpenseController extends BaseController {
 		pd = this.getPageData();
 		List<PageData> listEl = expenseService.listElByInvoiceId(pd);
 		List<PageData> listWa = expenseService.listWaByInvoiceId(pd);
+		PageData utiPd = utilitiesstateService.findByInvoiceId(pd);
 		mv.setViewName("management/expense/expense_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("listWa", listWa);
 		mv.addObject("listEl", listEl);
 		mv.addObject("pd", pd);
+		mv.addObject("utiPd", utiPd);
 		return mv;
 	}	
 	

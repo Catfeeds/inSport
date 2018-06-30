@@ -1,4 +1,4 @@
-package com.fh.controller.management.invoice;
+package com.fh.controller.management.utilitiesstate;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -23,20 +23,32 @@ import com.fh.util.ObjectExcelView;
 import com.fh.util.PageData;
 import com.fh.util.Jurisdiction;
 import com.fh.util.Tools;
-import com.fh.service.management.invoice.InvoiceManager;
+import com.fh.service.management.utilitiesstate.UtilitiesStateManager;
 
 /** 
- * 说明：发票模块
+ * 说明：水电费收款情况
  * 创建人：FH Q313596790
- * 创建时间：2018-06-03
+ * 创建时间：2018-06-30
  */
 @Controller
-@RequestMapping(value="/invoice")
-public class InvoiceController extends BaseController {
+@RequestMapping(value="/utilitiesstate")
+public class UtilitiesStateController extends BaseController {
 	
-	String menuUrl = "invoice/list.do"; //菜单地址(权限用)
-	@Resource(name="invoiceService")
-	private InvoiceManager invoiceService;
+	String menuUrl = "utilitiesstate/list.do"; //菜单地址(权限用)
+	@Resource(name="utilitiesstateService")
+	private UtilitiesStateManager utilitiesstateService;
+
+	//打印页面
+	@RequestMapping(value="/printPage")
+	public ModelAndView printPage() throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = utilitiesstateService.findByIdWithPname(pd);	//根据ID读取
+		mv.setViewName("management/utilitiesstate/printPage");
+		mv.addObject("pd", pd);
+		return mv;
+	}
 	
 	/**保存
 	 * @param
@@ -44,53 +56,37 @@ public class InvoiceController extends BaseController {
 	 */
 	@RequestMapping(value="/save")
 	public ModelAndView save() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"新增Invoice");
+		logBefore(logger, Jurisdiction.getUsername()+"新增UtilitiesState");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("INVOICE_ID", this.get32UUID());	//主键
-		invoiceService.save(pd);
+		pd.put("UTILITIESSTATE_ID", this.get32UUID());	//主键
+		utilitiesstateService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
 	}
 
-	@RequestMapping(value = "/saveDetail")
+	@RequestMapping(value = "/saveUtilitiesState")
 	@ResponseBody
-	public Map<String, Object> saveDetail(Page page)throws Exception {
+	public Map<String, Object> saveUtilitiesState(Page page)throws Exception {
 		PageData pd = new PageData();
 		Map<String, Object> json = new HashMap<String, Object>();
 		pd = this.getPageData();
-		pd.put("INVOICE_ID", this.get32UUID());	//主键
-		if(pd.getString("RECEIVABLE") == null && "".equals(pd.getString("RECEIVABLE"))){
-			pd.put("RECEIVABLE","0");
-		}else {
-
-		}
-		if(pd.getString("RECEIVABLE_REALITY") == null && "".equals(pd.getString("RECEIVABLE_REALITY"))){
-			pd.put("RECEIVABLE_REALITY","0");
-		}
-		invoiceService.save(pd);
-		return  json;
+		pd.put("UTILITIESSTATE_ID", this.get32UUID());	//主键
+		utilitiesstateService.save(pd);
+		return json;
 	}
 
-	@RequestMapping(value = "/editInfo")
+	@RequestMapping(value = "/editUtilitiesState")
 	@ResponseBody
-	public Map<String, Object> editInfo(Page page)throws Exception {
-		Map<String, Object> json = new HashMap<String, Object>();
+	public Map<String, Object> editUtilitiesState(Page page)throws Exception {
 		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
 		pd = this.getPageData();
-		if(pd.getString("RECEIVABLE") == null && "".equals(pd.getString("RECEIVABLE"))){
-			pd.put("RECEIVABLE","0");
-		}else {
-
-		}
-		if(pd.getString("RECEIVABLE_REALITY") == null && "".equals(pd.getString("RECEIVABLE_REALITY"))){
-			pd.put("RECEIVABLE_REALITY","0");
-		}
-		invoiceService.edit(pd);
-		return  json;
+		utilitiesstateService.edit(pd);
+		return json;
 	}
 	
 	/**删除
@@ -99,11 +95,11 @@ public class InvoiceController extends BaseController {
 	 */
 	@RequestMapping(value="/delete")
 	public void delete(PrintWriter out) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"删除Invoice");
+		logBefore(logger, Jurisdiction.getUsername()+"删除UtilitiesState");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		invoiceService.delete(pd);
+		utilitiesstateService.delete(pd);
 		out.write("success");
 		out.close();
 	}
@@ -114,12 +110,12 @@ public class InvoiceController extends BaseController {
 	 */
 	@RequestMapping(value="/edit")
 	public ModelAndView edit() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"修改Invoice");
+		logBefore(logger, Jurisdiction.getUsername()+"修改UtilitiesState");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		invoiceService.edit(pd);
+		utilitiesstateService.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -131,7 +127,7 @@ public class InvoiceController extends BaseController {
 	 */
 	@RequestMapping(value="/list")
 	public ModelAndView list(Page page) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"列表Invoice");
+		logBefore(logger, Jurisdiction.getUsername()+"列表UtilitiesState");
 		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
@@ -141,8 +137,8 @@ public class InvoiceController extends BaseController {
 			pd.put("keywords", keywords.trim());
 		}
 		page.setPd(pd);
-		List<PageData>	varList = invoiceService.list(page);	//列出Invoice列表
-		mv.setViewName("management/invoice/invoice_list");
+		List<PageData>	varList = utilitiesstateService.list(page);	//列出UtilitiesState列表
+		mv.setViewName("management/utilitiesstate/utilitiesstate_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
@@ -158,22 +154,11 @@ public class InvoiceController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		mv.setViewName("management/invoice/invoice_edit");
+		mv.setViewName("management/utilitiesstate/utilitiesstate_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
 		return mv;
-	}
-
-	@RequestMapping(value="/addUtilities")
-	public ModelAndView addUtilities()throws Exception{
-		ModelAndView mv = this.getModelAndView();
-		PageData pd = new PageData();
-		pd = this.getPageData();
-		mv.setViewName("management/invoice/addUtilities");
-		mv.addObject("msg", "save");
-		mv.addObject("pd", pd);
-		return mv;
-	}
+	}	
 	
 	 /**去修改页面
 	 * @param
@@ -184,8 +169,8 @@ public class InvoiceController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd = invoiceService.findById(pd);	//根据ID读取
-		mv.setViewName("management/invoice/invoice_edit");
+		pd = utilitiesstateService.findById(pd);	//根据ID读取
+		mv.setViewName("management/utilitiesstate/utilitiesstate_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;
@@ -198,7 +183,7 @@ public class InvoiceController extends BaseController {
 	@RequestMapping(value="/deleteAll")
 	@ResponseBody
 	public Object deleteAll() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"批量删除Invoice");
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除UtilitiesState");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
 		PageData pd = new PageData();		
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -207,7 +192,7 @@ public class InvoiceController extends BaseController {
 		String DATA_IDS = pd.getString("DATA_IDS");
 		if(null != DATA_IDS && !"".equals(DATA_IDS)){
 			String ArrayDATA_IDS[] = DATA_IDS.split(",");
-			invoiceService.deleteAll(ArrayDATA_IDS);
+			utilitiesstateService.deleteAll(ArrayDATA_IDS);
 			pd.put("msg", "ok");
 		}else{
 			pd.put("msg", "no");
@@ -223,26 +208,58 @@ public class InvoiceController extends BaseController {
 	 */
 	@RequestMapping(value="/excel")
 	public ModelAndView exportExcel() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"导出Invoice到excel");
+		logBefore(logger, Jurisdiction.getUsername()+"导出UtilitiesState到excel");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		List<String> titles = new ArrayList<String>();
-		titles.add("CONTRACT_ID");	//1
-		titles.add("发票名称");	//2
-		titles.add("开票时间");	//3
-		titles.add("备注");	//4
+		titles.add("付款方名称(水电费)");	//1
+		titles.add("应收款时间(水电费)");	//2
+		titles.add("应收金额(水电费)");	//3
+		titles.add("滞纳金率");	//4
+		titles.add("实际收款时间(水电费)");	//5
+		titles.add("实际收款金额(水电费)");	//6
+		titles.add("上个月总电量读数");	//7
+		titles.add("本月总电量读数");	//8
+		titles.add("本月总用电量");	//9
+		titles.add("本月电费");	//10
+		titles.add("实总价");	//11
+		titles.add("上个月水量总读数");	//12
+		titles.add("本月水量总读数");	//13
+		titles.add("本月总用水量");	//14
+		titles.add("本月水费费用");	//15
+		titles.add("本月水费总费用");	//16
+		titles.add("滞纳金");	//17
+		titles.add("合同id");	//18
+		titles.add("时间段id");	//19
+		titles.add("发票项id");	//20
 		dataMap.put("titles", titles);
-		List<PageData> varOList = invoiceService.listAll(pd);
+		List<PageData> varOList = utilitiesstateService.listAll(pd);
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
-			vpd.put("var1", varOList.get(i).getString("CONTRACT_ID"));	    //1
-			vpd.put("var2", varOList.get(i).getString("INVOICENAME"));	    //2
-			vpd.put("var3", varOList.get(i).getString("INVOICETIME"));	    //3
-			vpd.put("var4", varOList.get(i).getString("REMARK"));	    //4
+			vpd.put("var1", varOList.get(i).getString("PAYERNAME"));	    //1
+			vpd.put("var2", varOList.get(i).getString("PAYTIME"));	    //2
+			vpd.put("var3", varOList.get(i).get("RECEIVABLE").toString());	//3
+			vpd.put("var4", varOList.get(i).get("OVERDUE").toString());	//4
+			vpd.put("var5", varOList.get(i).getString("RECEIVABL_PAYTIME"));	    //5
+			vpd.put("var6", varOList.get(i).get("RECEIVABLE_REALITY").toString());	//6
+			vpd.put("var7", varOList.get(i).get("LASTMONTH_SUM_E").toString());	//7
+			vpd.put("var8", varOList.get(i).get("THISMONTH_SUM_E").toString());	//8
+			vpd.put("var9", varOList.get(i).get("NUMBER_SUM_E").toString());	//9
+			vpd.put("var10", varOList.get(i).get("TOTAL_SUM_E").toString());	//10
+			vpd.put("var11", varOList.get(i).get("REALITY_TOTAL_SUM_E").toString());	//11
+			vpd.put("var12", varOList.get(i).get("LASTMONTH_SUM_W").toString());	//12
+			vpd.put("var13", varOList.get(i).get("THISMONTH_SUM_W").toString());	//13
+			vpd.put("var14", varOList.get(i).get("NUMBER_SUM_W").toString());	//14
+			vpd.put("var15", varOList.get(i).get("TOTAL_SUM_W").toString());	//15
+			vpd.put("var16", varOList.get(i).get("REALITY_TOTAL_SUM_W").toString());	//16
+			vpd.put("var17", varOList.get(i).get("OVERDUENUM").toString());	//17
+			vpd.put("var18", varOList.get(i).getString("CONTRACT_ID"));	    //18
+			vpd.put("var19", varOList.get(i).getString("PROCEEDSTIME_ID"));	    //19
+			vpd.put("var20", varOList.get(i).getString("INVOICE_ID"));	    //20
 			varList.add(vpd);
 		}
 		dataMap.put("varList", varList);

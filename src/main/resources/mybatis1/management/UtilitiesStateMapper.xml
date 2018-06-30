@@ -1,46 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ExpenseMapper">
+<mapper namespace="UtilitiesStateMapper">
 	
 	<!--表名 -->
 	<sql id="tableName">
-		TB_EXPENSE
+		TB_UTILITIESSTATE
 	</sql>
 	
 	<!-- 字段 -->
 	<sql id="Field">
-		LASTMONTH,	
-		THISMONTH,	
-		RATIO,	
-		FVALUE,	
-		NUMBER,	
-		PRICE,	
-		TOTAL,	
-		REALITY_TOTAL,	
-		INVOICE_ID,	
+		PAYERNAME,	
+		PAYTIME,	
+		RECEIVABLE,	
+		OVERDUE,	
+		RECEIVABL_PAYTIME,	
+		RECEIVABLE_REALITY,	
+		LASTMONTH_SUM_E,	
+		THISMONTH_SUM_E,	
+		NUMBER_SUM_E,	
+		TOTAL_SUM_E,	
+		REALITY_TOTAL_SUM_E,	
+		LASTMONTH_SUM_W,	
+		THISMONTH_SUM_W,	
+		NUMBER_SUM_W,	
+		TOTAL_SUM_W,	
+		REALITY_TOTAL_SUM_W,	
+		OVERDUENUM,	
 		CONTRACT_ID,	
-		ISWATER,	
-		ISLOSS,	
-		METERNUM,	
-		EXPENSE_ID
+		PROCEEDSTIME_ID,	
+		INVOICE_ID,	
+		UTILITIESSTATE_ID
 	</sql>
 	
 	<!-- 字段值 -->
 	<sql id="FieldValue">
-		#{LASTMONTH},	
-		#{THISMONTH},	
-		#{RATIO},	
-		#{FVALUE},	
-		#{NUMBER},	
-		#{PRICE},	
-		#{TOTAL},	
-		#{REALITY_TOTAL},	
-		#{INVOICE_ID},	
+		#{PAYERNAME},	
+		#{PAYTIME},	
+		#{RECEIVABLE},	
+		#{OVERDUE},	
+		#{RECEIVABL_PAYTIME},	
+		#{RECEIVABLE_REALITY},	
+		#{LASTMONTH_SUM_E},	
+		#{THISMONTH_SUM_E},	
+		#{NUMBER_SUM_E},	
+		#{TOTAL_SUM_E},	
+		#{REALITY_TOTAL_SUM_E},	
+		#{LASTMONTH_SUM_W},	
+		#{THISMONTH_SUM_W},	
+		#{NUMBER_SUM_W},	
+		#{TOTAL_SUM_W},	
+		#{REALITY_TOTAL_SUM_W},	
+		#{OVERDUENUM},	
 		#{CONTRACT_ID},	
-		#{ISWATER},	
-		#{ISLOSS},	
-		#{METERNUM},	
-		#{EXPENSE_ID}
+		#{PROCEEDSTIME_ID},	
+		#{INVOICE_ID},	
+		#{UTILITIESSTATE_ID}
 	</sql>
 	
 	<!-- 新增-->
@@ -59,14 +73,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			EXPENSE_ID = #{EXPENSE_ID}
-	</delete>
-
-	<delete id="deleteByEWAndINvID" parameterType="pd">
-		delete from
-		<include refid="tableName"></include>
-		where
-		INVOICE_ID = #{INVOICE_ID} AND ISWATER = #{ISWATER}
+			UTILITIESSTATE_ID = #{UTILITIESSTATE_ID}
 	</delete>
 	
 	<!-- 修改 -->
@@ -74,21 +81,28 @@
 		update
 		<include refid="tableName"></include>
 		set 
-			LASTMONTH = #{LASTMONTH},
-			THISMONTH = #{THISMONTH},
-			RATIO = #{RATIO},
-			FVALUE = #{FVALUE},
-			NUMBER = #{NUMBER},
-			PRICE = #{PRICE},
-			TOTAL = #{TOTAL},
-			REALITY_TOTAL = #{REALITY_TOTAL},
-			ISLOSS = #{ISLOSS},
-			METERNUM = #{METERNUM},
-		EXPENSE_ID = EXPENSE_ID
+			PAYERNAME = #{PAYERNAME},
+			PAYTIME = #{PAYTIME},
+			RECEIVABLE = #{RECEIVABLE},
+			OVERDUE = #{OVERDUE},
+			RECEIVABL_PAYTIME = #{RECEIVABL_PAYTIME},
+			RECEIVABLE_REALITY = #{RECEIVABLE_REALITY},
+			LASTMONTH_SUM_E = #{LASTMONTH_SUM_E},
+			THISMONTH_SUM_E = #{THISMONTH_SUM_E},
+			NUMBER_SUM_E = #{NUMBER_SUM_E},
+			TOTAL_SUM_E = #{TOTAL_SUM_E},
+			REALITY_TOTAL_SUM_E = #{REALITY_TOTAL_SUM_E},
+			LASTMONTH_SUM_W = #{LASTMONTH_SUM_W},
+			THISMONTH_SUM_W = #{THISMONTH_SUM_W},
+			NUMBER_SUM_W = #{NUMBER_SUM_W},
+			TOTAL_SUM_W = #{TOTAL_SUM_W},
+			REALITY_TOTAL_SUM_W = #{REALITY_TOTAL_SUM_W},
+			OVERDUENUM = #{OVERDUENUM},
+		UTILITIESSTATE_ID = UTILITIESSTATE_ID
 		where 
-		EXPENSE_ID = #{EXPENSE_ID}
+		UTILITIESSTATE_ID = #{UTILITIESSTATE_ID}
 	</update>
-
+	
 	<!-- 通过ID获取数据 -->
 	<select id="findById" parameterType="pd" resultType="pd">
 		select 
@@ -96,29 +110,24 @@
 		from 
 		<include refid="tableName"></include>
 		where 
-			EXPENSE_ID = #{EXPENSE_ID}
+			UTILITIESSTATE_ID = #{UTILITIESSTATE_ID}
 	</select>
 
-	<select id="listElByInvoiceId" parameterType="pd" resultType="pd">
+	<select id="findByIdWithPname" parameterType="pd" resultType="pd">
+		SELECT i.PAYERNAME, u.* from TB_UTILITIESSTATE u LEFT JOIN TB_INVOICE i ON u.INVOICE_ID = i.INVOICE_ID
+		where
+		u.UTILITIESSTATE_ID = #{UTILITIESSTATE_ID}
+	</select>
+
+	<select id="findByInvoiceId" parameterType="pd" resultType="pd">
 		select
 		<include refid="Field"></include>
 		from
 		<include refid="tableName"></include>
 		where
-		INVOICE_ID = #{INVOICE_ID} AND ISWATER = '电费'
-		ORDER BY NUM
+		INVOICE_ID = #{INVOICE_ID}
 	</select>
 
-	<select id="listWaByInvoiceId" parameterType="pd" resultType="pd">
-		select
-		<include refid="Field"></include>
-		from
-		<include refid="tableName"></include>
-		where
-		INVOICE_ID = #{INVOICE_ID} AND ISWATER = '水费'
-		ORDER BY NUM
-	</select>
-	
 	<!-- 列表 -->
 	<select id="datalistPage" parameterType="page" resultType="pd">
 		select
@@ -151,7 +160,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			EXPENSE_ID in
+			UTILITIESSTATE_ID in
 		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
                  #{item}
 		</foreach>

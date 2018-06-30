@@ -43,6 +43,15 @@
 							<option id="${var.DEPTNAME}" value="${var.DEPTNAME}" name="${var.FRULE}">${var.DEPTNAME}</option>
 						</c:forEach>
 					</select>
+					<label style="margin-left: 30px">关联合同：</label>
+					<label class="nav-search">
+						<span class="input-icon">
+						<input type="text" placeholder="这里输入关键词" class="nav-search-input"
+							   id="nav-search-input" autocomplete="off" name="RELEVANCE_ID" onclick="toRelevance('${pd.CONTRACT_ID}')"
+							   value="" placeholder="搜索合同进行关联"/>
+						<i class="ace-icon fa fa-search nav-search-icon"></i>
+						</span>
+					</label>
 					<!-- </td> -->
 				</div>
 				<br>
@@ -352,9 +361,12 @@
 									<th  ><input type="date" style="width: 150px;height: 31px" value="${var1.INVOICETIME}"
 												 class="input-text"  name="INVOICETIME"
 												 id="ivt${var1.INVOICE_ID}" ></th>
+									<c:if test="${vs.index} == 0 || ${vs.index} == '0'">
+										<c:set var="LINVOICE_ID" value="0"/>
+									</c:if>
 									<th  colspan="2">
 										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="添加水电费项"
-										   onclick="addUtilities('${pd.CONTRACT_ID}','${var.PROCEEDSTIME_ID}','${var1.INVOICE_ID}','${pd.CONTRACTOFNAME}','${pd2.OVERDUE}','${var1.PAYERNAME}')">
+										   onclick="addUtilities('${pd.CONTRACT_ID}','${var.PROCEEDSTIME_ID}','${var1.INVOICE_ID}','${LINVOICE_ID}','${pd.CONTRACTOFNAME}','${pd2.OVERDUE}','${var1.PAYERNAME}')">
 											<i class="ace-icon fa fa-pencil-square-o bigger-120" title="添加水电费项">添加水电费项</i></a>
 										<a class="btn btn-xs blue" title="确认修改"
 											 onclick="editInvoice('${var1.INVOICE_ID}');">
@@ -363,6 +375,7 @@
 										   onclick="delInvoice('${var1.INVOICE_ID}');">
 											<i class="ace-icon fa fa-trash-o bigger-120" title="删除该明细项">删除该明细项</i></a>
 									</th>
+									<c:set var="LINVOICE_ID" value="${var1.INVOICE_ID}"/>
 								</tr>
 								<tr name="tr${var.PROCEEDSTIME_ID}" style="display: none;height: 3px" class="active"><th colspan="6"><label></label></th></tr>
 								</c:if>
@@ -653,6 +666,24 @@
 <script type="text/javascript">
 	$(top.hangge());
 
+	function toRelevance(CONTRACT_ID){
+		top.jzts();
+		var diag = new top.Dialog();
+		diag.Drag = true;
+		diag.Title = "添加水电费项";
+		diag.URL = '<%=basePath%>contract/toRelevance?CONTRACT_ID='+CONTRACT_ID;
+		diag.Width = window.innerWidth * 0.9;
+		diag.Height = window.innerWidth * 0.9;
+		diag.Modal = true;				//有无遮罩窗口
+		diag.ShowMaxButton = true;	//最大化按钮
+		diag.ShowMinButton = true;		//最小化按钮
+		diag.CancelEvent = function () { //关闭事件
+			//tosearch();
+			diag.close();
+		};
+		diag.show();
+	}
+
 	function calOD(INVOICE_ID) {
 		var RECEIVABLE = $("#r"+INVOICE_ID).val();
 		var OVERDUE = $("#znjip").val();
@@ -693,7 +724,24 @@
 		}
 	}
 
-	function addUtilities(CONTRACT_ID,PROCEEDSTIME_ID,INVOICE_ID,CONTRACTOFNAME,OVERDUE,PAYERNAME){
+	function addUtilities(CONTRACT_ID,PROCEEDSTIME_ID,INVOICE_ID,LINVOICE_ID,CONTRACTOFNAME,OVERDUE,PAYERNAME){
+		//alert(LINVOICE_ID);
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>expense/addUtilitiesByCopy',
+			async: false,
+			data: {
+				CONTRACT_ID : CONTRACT_ID,
+				INVOICE_ID : INVOICE_ID,
+				LINVOICE_ID : LINVOICE_ID
+			},
+			dataType: 'json',
+			//beforeSend: validateData,
+			cache: false,
+			success: function (data) {
+				//uuid = data.uuid;
+			}
+		});
 		top.jzts();
 		var diag = new top.Dialog();
 		diag.Drag = true;

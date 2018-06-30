@@ -106,9 +106,9 @@
 										   id="rto${var.EXPENSE_ID}">
 								</td>
 								<td style="padding-left:2px;">
-									<a style="margin-left: 10px" class="btn btn-xs btn-success" title="修改"
+									<a style="margin-left: 10px" class="btn btn-xs btn-success" title="保存"
 									   onclick="editExpense('${var.EXPENSE_ID}')">
-										<i class="ace-icon fa fa-cog bigger-120" title="修改">修改</i></a>
+										<i class="ace-icon fa fa-cog bigger-120" title="保存">保存</i></a>
 									<a style="margin-left: 10px" class="btn btn-xs btn-danger" title="删除"
 									   onclick="delExpense('${var.EXPENSE_ID}')">
 										<i class="ace-icon fa fa-check-square-o bigger-120" title="删除">删除</i></a>
@@ -118,15 +118,15 @@
 							</c:if>
 							<tr class="center" id="el">
 								<td onclick="calculate('E')" style="padding-left:2px;"><a >合计</a></td>
-								<td style="padding-left:2px;"><p id="LASTMONTH_SUM_E"></p></td>
-								<td style="padding-left:2px;"><p id="THISMONTH_SUM_E"></p></td>
+								<td style="padding-left:2px;"><p id="LASTMONTH_SUM_E">${utiPd.LASTMONTH_SUM_E}</p></td>
+								<td style="padding-left:2px;"><p id="THISMONTH_SUM_E">${utiPd.THISMONTH_SUM_E}</p></td>
 								<td style="padding-left:2px;"></td>
 								<td style="padding-left:2px;"></td>
-								<td style="padding-left:2px;"><p id="NUMBER_SUM_E"></p></td>
+								<td style="padding-left:2px;"><p id="NUMBER_SUM_E">${utiPd.NUMBER_SUM_E}</p></td>
 								<td style="padding-left:2px;"></td>
-								<td style="padding-left:2px;"><p id="TOTAL_SUM_E"></p></td>
+								<td style="padding-left:2px;"><p id="TOTAL_SUM_E">${utiPd.TOTAL_SUM_E}</p></td>
 								<td style="padding-left:2px;"></td>
-								<td style="padding-left:2px;"><p id="REALITY_TOTAL_SUM_E"></p></td>
+								<td style="padding-left:2px;"><p id="REALITY_TOTAL_SUM_E">${utiPd.REALITY_TOTAL_SUM_E}</p></td>
 								<td style="padding-left:2px;"></td>
 							</tr>
 							</tbody>
@@ -207,9 +207,9 @@
 											   id="rto${var.EXPENSE_ID}">
 									</td>
 									<td style="padding-left:2px;">
-										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="修改"
+										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="保存"
 										   onclick="editExpense('${var.EXPENSE_ID}')">
-											<i class="ace-icon fa fa-cog bigger-120" title="修改">修改</i></a>
+											<i class="ace-icon fa fa-cog bigger-120" title="保存">保存</i></a>
 										<a style="margin-left: 10px" class="btn btn-xs btn-danger" title="删除"
 										   onclick="delExpense('${var.EXPENSE_ID}')">
 											<i class="ace-icon fa fa-check-square-o bigger-120" title="删除">删除</i></a>
@@ -219,52 +219,66 @@
 							</c:if>
 							<tr class="center" id="wa">
 								<td  onclick="calculate('W')" style="padding-left:2px;"><a>合计</a></td>
-								<td style="padding-left:2px;"><p id="LASTMONTH_SUM_W"></p></td>
-								<td style="padding-left:2px;"><p id="THISMONTH_SUM_W"></p></td>
+								<td style="padding-left:2px;"><p id="LASTMONTH_SUM_W">${utiPd.LASTMONTH_SUM_W}</p></td>
+								<td style="padding-left:2px;"><p id="THISMONTH_SUM_W">${utiPd.THISMONTH_SUM_W}</p></td>
 								<td style="padding-left:2px;"></td>
 								<td style="padding-left:2px;"></td>
-								<td style="padding-left:2px;"><p id="NUMBER_SUM_W"></p></td>
+								<td style="padding-left:2px;"><p id="NUMBER_SUM_W">${utiPd.NUMBER_SUM_W}</p></td>
 								<td style="padding-left:2px;"></td>
-								<td style="padding-left:2px;"><p id="TOTAL_SUM_W"></p></td>
+								<td style="padding-left:2px;"><p id="TOTAL_SUM_W">${utiPd.TOTAL_SUM_W}</p></td>
 								<td style="padding-left:2px;"></td>
-								<td style="padding-left:2px;"><p id="REALITY_TOTAL_SUM_W"></p></td>
+								<td style="padding-left:2px;"><p id="REALITY_TOTAL_SUM_W">${utiPd.REALITY_TOTAL_SUM_W}</p></td>
 								<td style="padding-left:2px;"></td>
 							</tr>
 						</table>
 						<table class="table table-border table-bg table-bordered">
 							<tbody>
 							<tr class="success">
-								<th class="center"><label>应收金额(水电费)：</label></th>
-								<th class="center"><input type="number" style="width: 150px" value=""
-													   class="input-text"  name="RECEIVABLE" onclick="calRece()"
-													   id="RECEIVABLE"></th>
-								<th class="center"><label>应收款时间(水电费)：</label></th>
-								<th class="center"><input type="date" style="width: 150px;height: 31px" value=""
-											class="input-text"  name="PAYTIME"
-											id="PAYTIME"></th>
 								<th class="center"><label>付款方名称(水电费)：</label></th>
 								<th class="center"><input type="text" style="width: 150px" value="${pd.PAYERNAME}"
-													   class="input-text"  name="PAYERNAME"
-													   id="PAYERNAME"></th>
-								<th width="20%"></th>
+														  class="input-text"  name="PAYERNAME"
+														  id="PAYERNAME"></th>
+
+								<th class="center"><label>应收款时间(水电费)：</label></th>
+								<th class="center"><input type="date" style="width: 150px;height: 31px" value="${utiPd.PAYTIME}"
+											class="input-text"  name="PAYTIME"
+											id="PAYTIME"></th>
+								<th class="center"><label>应收金额(水电费)：</label></th>
+								<th class="center"><input type="number" style="width: 150px" value="${utiPd.RECEIVABLE}"
+														  class="input-text"  name="RECEIVABLE" onclick="calRece()"
+														  id="RECEIVABLE"></th>
+								<th width="20%">滞纳金率：${pd.OVERDUE}</th>
 							</tr>
 							<tr class="success">
-								<th class="center"><label>实际收款金额(水电费)：</label></th>
-								<th class="center"><input type="number" style="width: 150px" value=""
-													   class="input-text"  name="RECEIVABLE_REALITY"
-													   id="RECEIVABLE_REALITY"></th>
+								<th  class="center"><label>滞纳金:</label></th>
+								<th  class="center"><input type="number" style="width: 150px;height: 31px" onchange="odAndRec()"
+														   class="input-text"  name="OVERDUE" value="${utiPd.OVERDUENUM}"
+														   id="OVERDUE"></th>
+
 								<th class="center"><label>实际收款时间(水电费)：</label></th>
-								<th class="center"><input type="date" style="width: 150px;height: 31px" value=""
+								<th class="center"><input type="date" style="width: 150px;height: 31px" value="${utiPd.RECEIVABL_PAYTIME}"
 											class="input-text"  name="RECEIVABL_PAYTIME" onchange="rece_rea()"
 											id="RECEIVABL_PAYTIME"></th>
-								<th  class="center"><label>滞纳金:</label></th>
-								<th  class="center"><input type="number" style="width: 150px;height: 31px" value="${pd.OVERDUE}"
-											 class="input-text"  name="OVERDUE"
-											 id="OVERDUE"></th>
+								<th class="center"><label>实际收款金额(水电费)：</label></th>
+								<th class="center"><input type="number" style="width: 150px"  onclick="odAndRec()"
+														  class="input-text"  name="RECEIVABLE_REALITY" value="${utiPd.RECEIVABLE_REALITY}"
+														  id="RECEIVABLE_REALITY"></th>
+
 								<th class="center">
-									<a class="btn btn-xs btn-success" title="保存" onclick="saveUtilities('${pd.CONTRACT_ID}','${pd.PROCEEDSTIME_ID}','${pd.INVOICE_ID}');">
-										<i class="ace-icon fa fa-check-square-o bigger-120" title="保存">保存</i>
-									</a>
+									<c:if test="${not empty utiPd}">
+										<a class="btn btn-xs " title="打印通知单" onclick="print('${utiPd.UTILITIESSTATE_ID}');">
+											<i class="ace-icon glyphicon glyphicon-print bigger-120" title="打印通知单">打印通知单</i>
+										</a>
+										<a class="btn btn-xs btn-info" title="修改" onclick="editUtilities('${utiPd.UTILITIESSTATE_ID}');">
+											<i class="ace-icon fa fa-check-square-o bigger-120" title="修改">修改</i>
+										</a>
+									</c:if>
+									<c:if test="${utiPd == null}">
+										<a class="btn btn-xs btn-success" title="保存" onclick="saveUtilities('${pd.CONTRACT_ID}','${pd.PROCEEDSTIME_ID}','${pd.INVOICE_ID}');">
+											<i class="ace-icon fa fa-check-square-o bigger-120" title="保存">保存</i>
+										</a>
+									</c:if>
+
 								</th>
 							</tr>
 							</tbody>
@@ -294,8 +308,126 @@
 		<script type="text/javascript">
 		$(top.hangge());
 
-		function saveUtilities(CONTRACT_ID,PROCEEDSTIME_ID,INVOICE_ID){
+		function print(UTILITIESSTATE_ID){
+			window.open("<%=basePath%>/utilitiesstate/printPage.do?UTILITIESSTATE_ID="+UTILITIESSTATE_ID, "", 'left=250,top=150,width=950,height=700,toolbar=no,menubar=no,status=no,scrollbars=yes,resizable=yes');
+		}
 
+		//修改水电费情况
+		function editUtilities(UTILITIESSTATE_ID){
+			var RECEIVABLE_REALITY = $("#RECEIVABLE_REALITY").val();
+			var PAYERNAME = $("#PAYERNAME").val();
+			var PAYTIME = $("#PAYTIME").val();
+			var RECEIVABLE = $("#RECEIVABLE").val();
+			var OVERDUENUM = $("#OVERDUE").val();
+			var RECEIVABL_PAYTIME = $("#RECEIVABL_PAYTIME").val();
+			var LASTMONTH_SUM_E = $("#LASTMONTH_SUM_E").text();
+			var THISMONTH_SUM_E = $("#THISMONTH_SUM_E").text();
+			var NUMBER_SUM_E = $("#NUMBER_SUM_E").text();
+			var TOTAL_SUM_E = $("#TOTAL_SUM_E").text();
+			var REALITY_TOTAL_SUM_E = $("#REALITY_TOTAL_SUM_E").text();
+			var LASTMONTH_SUM_W = $("#LASTMONTH_SUM_W").text();
+			var THISMONTH_SUM_W = $("#THISMONTH_SUM_W").text();
+			var NUMBER_SUM_W = $("#NUMBER_SUM_W").text();
+			var TOTAL_SUM_W = $("#TOTAL_SUM_W").text();
+			var REALITY_TOTAL_SUM_W = $("#REALITY_TOTAL_SUM_W").text();
+			var OVERDUE = '${pd.OVERDUE}';
+			$.ajax({
+				type: "POST",
+				url: '<%=basePath%>utilitiesstate/editUtilitiesState',
+				async: false,
+				data: {
+					RECEIVABLE_REALITY : RECEIVABLE_REALITY,
+					PAYERNAME : PAYERNAME,
+					PAYTIME : PAYTIME,
+					RECEIVABLE : RECEIVABLE,
+					OVERDUENUM : OVERDUENUM,
+					RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
+					LASTMONTH_SUM_E : LASTMONTH_SUM_E,
+					THISMONTH_SUM_E : THISMONTH_SUM_E,
+					NUMBER_SUM_E : NUMBER_SUM_E,
+					TOTAL_SUM_E : TOTAL_SUM_E,
+					REALITY_TOTAL_SUM_E : REALITY_TOTAL_SUM_E,
+					LASTMONTH_SUM_W : LASTMONTH_SUM_W,
+					THISMONTH_SUM_W : THISMONTH_SUM_W,
+					NUMBER_SUM_W : NUMBER_SUM_W,
+					TOTAL_SUM_W : TOTAL_SUM_W,
+					REALITY_TOTAL_SUM_W : REALITY_TOTAL_SUM_W,
+					OVERDUE : OVERDUE,
+					UTILITIESSTATE_ID : UTILITIESSTATE_ID
+				},
+				dataType: 'json',
+				//beforeSend: validateData,
+				cache: false,
+				success: function (data) {
+					window.location.reload();
+				}
+			});
+		}
+
+		//保存水电费
+		function saveUtilities(CONTRACT_ID,PROCEEDSTIME_ID,INVOICE_ID){
+			var RECEIVABLE_REALITY = $("#RECEIVABLE_REALITY").val();
+			var PAYERNAME = $("#PAYERNAME").val();
+			var PAYTIME = $("#PAYTIME").val();
+			var RECEIVABLE = $("#RECEIVABLE").val();
+			var OVERDUENUM = $("#OVERDUE").val();
+			var RECEIVABL_PAYTIME = $("#RECEIVABL_PAYTIME").val();
+			var LASTMONTH_SUM_E = $("#LASTMONTH_SUM_E").text();
+			var THISMONTH_SUM_E = $("#THISMONTH_SUM_E").text();
+			var NUMBER_SUM_E = $("#NUMBER_SUM_E").text();
+			var TOTAL_SUM_E = $("#TOTAL_SUM_E").text();
+			var REALITY_TOTAL_SUM_E = $("#REALITY_TOTAL_SUM_E").text();
+			var LASTMONTH_SUM_W = $("#LASTMONTH_SUM_W").text();
+			var THISMONTH_SUM_W = $("#THISMONTH_SUM_W").text();
+			var NUMBER_SUM_W = $("#NUMBER_SUM_W").text();
+			var TOTAL_SUM_W = $("#TOTAL_SUM_W").text();
+			var REALITY_TOTAL_SUM_W = $("#REALITY_TOTAL_SUM_W").text();
+			var OVERDUE = '${pd.OVERDUE}';
+			$.ajax({
+				type: "POST",
+				url: '<%=basePath%>utilitiesstate/saveUtilitiesState',
+				async: false,
+				data: {
+					RECEIVABLE_REALITY : RECEIVABLE_REALITY,
+					PAYERNAME : PAYERNAME,
+					PAYTIME : PAYTIME,
+					RECEIVABLE : RECEIVABLE,
+					OVERDUENUM : OVERDUENUM,
+					RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
+					LASTMONTH_SUM_E : LASTMONTH_SUM_E,
+					THISMONTH_SUM_E : THISMONTH_SUM_E,
+					NUMBER_SUM_E : NUMBER_SUM_E,
+					TOTAL_SUM_E : TOTAL_SUM_E,
+					REALITY_TOTAL_SUM_E : REALITY_TOTAL_SUM_E,
+					LASTMONTH_SUM_W : LASTMONTH_SUM_W,
+					THISMONTH_SUM_W : THISMONTH_SUM_W,
+					NUMBER_SUM_W : NUMBER_SUM_W,
+					TOTAL_SUM_W : TOTAL_SUM_W,
+					REALITY_TOTAL_SUM_W : REALITY_TOTAL_SUM_W,
+					OVERDUE : OVERDUE,
+					CONTRACT_ID : CONTRACT_ID,
+					PROCEEDSTIME_ID : PROCEEDSTIME_ID,
+					INVOICE_ID : INVOICE_ID
+				},
+				dataType: 'json',
+				//beforeSend: validateData,
+				cache: false,
+				success: function (data) {
+					window.location.reload();
+				}
+			});
+		}
+
+		function odAndRec(){
+			if($("#RECEIVABLE").val() == null || $("#RECEIVABLE").val() == ""){
+				calRece();
+			}
+			if($("#OVERDUE").val() == null || $("#OVERDUE").val() == ""){
+				alert("请输入滞纳金，滞纳金不能为空！！");
+			}
+			var RECEIVABLE =  $("#RECEIVABLE").val();
+			var OVERDUE = $("#OVERDUE").val();
+			$("#RECEIVABLE_REALITY").val((parseFloat(OVERDUE) + parseFloat(RECEIVABLE)).toFixed(2));
 		}
 
 		//计算实收水电费
@@ -303,15 +435,17 @@
 			if($("#RECEIVABLE").val() == null || $("#RECEIVABLE").val() == ""){
 				calRece();
 			}
-			var OVERDUE = $("#OVERDUE").val();
+			var OVERDUE = '${pd.OVERDUE}';
 			var RECEIVABLE =  $("#RECEIVABLE").val();
 			var PAYTIME = $("#PAYTIME").val();
 			var RECEIVABL_PAYTIME = $("#RECEIVABL_PAYTIME").val();
 			var differ = (Date.parse(new Date(RECEIVABL_PAYTIME))-Date.parse(new Date(PAYTIME)))/(1000*60*60*24);
 			if(differ > 0){
 				var OVERDUENUM =differ * parseFloat(OVERDUE) * parseFloat(RECEIVABLE)*0.01;
+				$("#OVERDUE").val(OVERDUENUM.toFixed(2));
 			}else {
 				var OVERDUENUM = 0;
+				$("#OVERDUE").val(0.00);
 			}
 			$("#RECEIVABLE_REALITY").val(( OVERDUENUM + parseFloat(RECEIVABLE)).toFixed(2));
 		}
@@ -321,8 +455,14 @@
 			calculate('E');
 			calculate('W');
 			var REALITY_TOTAL_SUM_E = $("#REALITY_TOTAL_SUM_E").text();
+			if(REALITY_TOTAL_SUM_E == null ||　REALITY_TOTAL_SUM_E　== ""){
+				REALITY_TOTAL_SUM_E = 0;
+			}
 			//alert(REALITY_TOTAL_SUM_E);
 			var REALITY_TOTAL_SUM_W = $("#REALITY_TOTAL_SUM_W").text();
+			if(REALITY_TOTAL_SUM_W == null ||　REALITY_TOTAL_SUM_W　== ""){
+				REALITY_TOTAL_SUM_W = 0;
+			}
 			$("#RECEIVABLE").val((parseFloat(REALITY_TOTAL_SUM_E) + parseFloat(REALITY_TOTAL_SUM_W)).toFixed(2));
 		}
 
@@ -484,7 +624,7 @@
 				cache: false,
 				success: function (data) {
 					//alert(uuid_var);
-					window.location.reload();
+					//window.location.reload();
 				}
 			});
 		}
@@ -525,7 +665,7 @@
 				cache: false,
 				success: function (data) {
 					//alert(uuid_var);
-					window.location.reload();
+					//window.location.reload();
 				}
 			});
 		}
@@ -562,12 +702,18 @@
 				cache: false,
 				success: function (data) {
 					alert("修改成功");
-					window.location.reload();
+					//window.location.reload();
 				}
 			});
 		}
 
 		function delExpense(EXPENSE_ID) {
+			var con = confirm("是否删除该表数据?"); //在页面上弹出对话框
+			if(con == true){
+			}
+			else {
+				return;
+			}
 			$.ajax({
 				type: "POST",
 				url: '<%=basePath%>expense/delExpense',
