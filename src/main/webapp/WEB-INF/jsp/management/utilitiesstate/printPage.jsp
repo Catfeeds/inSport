@@ -14,13 +14,7 @@
     <title></title>
     <meta name="description" content="overview & stats" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="static/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="static/css/bootstrap-responsive.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="static/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="static/css/ace.min.css" />
-    <link rel="stylesheet" href="static/css/ace-responsive.min.css" />
-    <link rel="stylesheet" href="static/css/ace-skins.min.css" />
-    <script type="text/javascript" src="static/js/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="static/js/jquery-2.1.1.js"></script>
 
     <script language="javascript" src="static/js/jquery.jqprint-0.3.js"></script>
 
@@ -39,12 +33,11 @@
             size: auto;  /* auto is the initial value */
             margin: 5mm; /* this affects the margin in the printer settings */
         }
-
     </style>
 
 </head>
 <body>
-<div id="zhongxin">
+<div id="zhongxin" style="padding-right: 10%;padding-left: 10%">
     <p align="center" style="font-size: 20px">电费水费温馨提示</p>
     <p align="left" style="font-size: 15px">尊敬的租户：${pd.PAYERNAME}</p>
     <p align="left" style="font-size: 15px;text-indent:2em">
@@ -54,111 +47,98 @@
         缴纳电费及水费，逾期缴纳每天按欠款总额的${pd.OVERDUE}%缴纳滞纳金。谢谢合作！
     </p>
     <table width="650" height="30" border="0" align="center" cellpadding="0" cellspacing="0">
-
         <tr>
-            <td align="center">合同编号</td>
-            <td align="center">名称</td>
-            <td align="center">签约方</td>
-            <td align="center">项目</td>
-            <td align="center">合同签订使用时间</td>
+            <td colspan="5">
+                ${fn:substring(pd.PAYTIME, 0, 4)}年${fn:substring(pd.PAYTIME,5, 7)}月 电费如下
+            </td>
         </tr>
         <tr>
-            <td align="center">ZHGLB-2018-23</td>
-            <td align="center">其他合同</td>
-            <td align="center">乙公司</td>
-            <td align="center">乙工程</td>
-            <td align="center">12312321</td>
+            <td align="center">序号</td>
+            <td align="center">上期读数</td>
+            <td align="center">本期读数</td>
+            <td align="center">用电量（度）</td>
+            <td align="center">金额</td>
         </tr>
-    </table>
-    <br>
-    <table width="650" height="30" border="0" align="center" cellpadding="0" cellspacing="0">
-
+        <c:if test="${not empty listEl}">
+        <c:forEach items="${listEl}" var="var" varStatus="vs">
+            <tr>
+                <td align="center">${var.METERNUM}</td>
+                <td align="center">${var.LASTMONTH}</td>
+                <td align="center">${var.THISMONTH}</td>
+                <td align="center">${var.NUMBER}</td>
+                <td align="center">${var.TOTAL}</td>
+            </tr>
+        </c:forEach>
+        </c:if>
         <tr>
-            <td align="center">单元：乙有限公司</td>
-            <td align="center">制单日期：2018-03-21</td>
-        </tr>
-        <tr>
-            <td align="center">客户：李先生（办公室）</td>
+            <td align="center">合计</td>
             <td align="center"></td>
+            <td align="center"></td>
+            <td align="center">${pd.NUMBER_SUM_E}</td>
+            <td align="center">${pd.TOTAL_SUM_E}</td>
         </tr>
     </table>
     <br>
-    <table width="650"    border="1" align="center" cellspacing="0" cellpadding="0"  bgcolor="#221144"  bordercolordark="#ffffff" bordercolorlight="#000000">
-        <tr bgcolor="#EFEFFF">
-            <td width="37" height="27" align="center">收款项</td>
-            <td width="106" align="center">月份</td>
-            <td width="106" align="center">应付金额</td>
-            <td width="106" align="center">尚未付款金额</td>
-        </tr>
-        <tr>
-            <td height="30" align="center" bgcolor="#FFFFFF">租用费用</td>
-            <td height="30" align="center" bgcolor="#FFFFFF">2017-01</td>
-            <td align="center" bgcolor="#FFFFFF">1000&nbsp;</td>
-            <td align="center" bgcolor="#FFFFFF">&nbsp;100000</td>
-        </tr>
-        <tr>
-            <td height="30" align="center" bgcolor="#FFFFFF">租用费用</td>
-            <td height="30" align="center" bgcolor="#FFFFFF">2017-02</td>
-            <td align="center" bgcolor="#FFFFFF">1000&nbsp;</td>
-            <td align="center" bgcolor="#FFFFFF">&nbsp;100000</td>
-        </tr>
-        <tr>
-            <td height="30" align="center" bgcolor="#FFFFFF">租用费用</td>
-            <td height="30" align="center" bgcolor="#FFFFFF">2017-03</td>
-            <td align="center" bgcolor="#FFFFFF">1000&nbsp;</td>
-            <td align="center" bgcolor="#FFFFFF">&nbsp;100000</td>
-        </tr>
-        <tr>
-            <td height="30" align="center" bgcolor="#FFFFFF">租用费用</td>
-            <td height="30" align="center" bgcolor="#FFFFFF">2017-04</td>
-            <td align="center" bgcolor="#FFFFFF">1000&nbsp;</td>
-            <td align="center" bgcolor="#FFFFFF">&nbsp;100000</td>
-        </tr>
-        <tr>
-            <td height="30" align="center" bgcolor="#FFFFFF">租用费用</td>
-            <td height="30" align="center" bgcolor="#FFFFFF">2017-05</td>
-            <td align="center" bgcolor="#FFFFFF">1000&nbsp;</td>
-            <td align="center" bgcolor="#FFFFFF">&nbsp;100000</td>
-        </tr>
-        <tr>
-            <td height="30" align="center" bgcolor="#FFFFFF">租用费用</td>
-            <td height="30" align="center" bgcolor="#FFFFFF">2017-06</td>
-            <td align="center" bgcolor="#FFFFFF">1000&nbsp;</td>
-            <td align="center" bgcolor="#FFFFFF">&nbsp;100000</td>
-        </tr>
-        <tr>
-            <td height="30" align="center" bgcolor="#FFFFFF">租用费用</td>
-            <td height="30" align="center" bgcolor="#FFFFFF">2017-07</td>
-            <td align="center" bgcolor="#FFFFFF">1000&nbsp;</td>
-            <td align="center" bgcolor="#FFFFFF">&nbsp;100000</td>
-        </tr>
-        <tr>
-            <td height="30" align="center" bgcolor="#FFFFFF">租用费用</td>
-            <td height="30" align="center" bgcolor="#FFFFFF">2017-08</td>
-            <td align="center" bgcolor="#FFFFFF">1000&nbsp;</td>
-            <td align="center" bgcolor="#FFFFFF">&nbsp;100000</td>
-        </tr>
-
-    </table>
     <table width="650" height="30" border="0" align="center" cellpadding="0" cellspacing="0">
         <tr>
-            <td align="right"><button onClick="window.print()">打印</button>&nbsp;</td>
+            <td colspan="5">
+                ${fn:substring(pd.PAYTIME, 0, 4)}年${fn:substring(pd.PAYTIME,5, 7)}月 水费如下
+            </td>
+        </tr>
+        <tr>
+            <td align="center">序号</td>
+            <td align="center">上期读数</td>
+            <td align="center">本期读数</td>
+            <td align="center">用水量（吨）</td>
+            <td align="center">金额</td>
+        </tr>
+        <c:if test="${not empty listWa}">
+            <c:forEach items="${listWa}" var="var" varStatus="vs">
+                <tr>
+                    <td align="center">${var.METERNUM}</td>
+                    <td align="center">${var.LASTMONTH}</td>
+                    <td align="center">${var.THISMONTH}</td>
+                    <td align="center">${var.NUMBER}</td>
+                    <td align="center">${var.TOTAL}</td>
+                </tr>
+            </c:forEach>
+        </c:if>
+        <tr>
+            <td align="center">合计</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center">${pd.NUMBER_SUM_W}</td>
+            <td align="center">${pd.TOTAL_SUM_W}</td>
         </tr>
     </table>
-
-
+    <br>
+    <div align="right" style="margin-right: 100px">
+    <p  style="font-size: 15px">佛山中奥广场管理有限公司</p>
+    <p  id="FCREATETIME" style="margin-right:30px;font-size: 15px"></p>
+    </div>
+    <hr>
+    <div id="print" style="margin-bottom: 10%;margin-right: 20%">
+        <button align="right" style="" onClick="printAndNone()">打印</button>&nbsp;</td>
+    </div>
 </div>
-
-<div id="zhongxin2" class="center" style="display:none"><br/><br/><br/><br/><br/><img src="static/images/jiazai.gif" /><br/><h4 class="lighter block green">提交中...</h4></div>
-
 <!-- 引入 -->
-<script type="text/javascript">window.jQuery || document.write("<script src='static/js/jquery-1.9.1.min.js'>\x3C/script>");</script>
-<script src="static/js/bootstrap.min.js"></script>
-<script src="static/js/ace-elements.min.js"></script>
-<script src="static/js/ace.min.js"></script>
-
 <script type="text/javascript">
-    $(top.hangge());
+
+    function printAndNone() {
+        $("#print").css("display","none");
+        window.print();
+        $("#print").css("display","");
+    }
+
+    $(function() {
+        var myDate = new Date();
+        var year = myDate.getFullYear();
+        var month = myDate.getMonth()+1;
+        var day = myDate.getDate();
+        //alert(year+"-"+month+"-"+day);
+        $("#FCREATETIME").html(year+"年"+month+"月"+day+"日");
+       // window.print();
+    });
 </script>
 </body>
 </html>

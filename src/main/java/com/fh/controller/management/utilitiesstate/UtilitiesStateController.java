@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+
+import com.fh.service.management.expense.ExpenseManager;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -38,6 +40,9 @@ public class UtilitiesStateController extends BaseController {
 	@Resource(name="utilitiesstateService")
 	private UtilitiesStateManager utilitiesstateService;
 
+	@Resource(name="expenseService")
+	private ExpenseManager expenseService;
+
 	//打印页面
 	@RequestMapping(value="/printPage")
 	public ModelAndView printPage() throws Exception{
@@ -45,8 +50,12 @@ public class UtilitiesStateController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd = utilitiesstateService.findByIdWithPname(pd);	//根据ID读取
+		List<PageData> listEl = expenseService.listElByInvoiceId(pd);
+		List<PageData> listWa = expenseService.listWaByInvoiceId(pd);
 		mv.setViewName("management/utilitiesstate/printPage");
 		mv.addObject("pd", pd);
+		mv.addObject("listWa", listWa);
+		mv.addObject("listEl", listEl);
 		return mv;
 	}
 	

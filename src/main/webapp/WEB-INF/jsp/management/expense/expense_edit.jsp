@@ -266,7 +266,7 @@
 
 								<th class="center">
 									<c:if test="${not empty utiPd}">
-										<a class="btn btn-xs " title="打印通知单" onclick="print('${utiPd.UTILITIESSTATE_ID}');">
+										<a class="btn btn-xs " title="打印通知单" onclick="print('${utiPd.UTILITIESSTATE_ID}','${pd.INVOICE_ID}');">
 											<i class="ace-icon glyphicon glyphicon-print bigger-120" title="打印通知单">打印通知单</i>
 										</a>
 										<a class="btn btn-xs btn-info" title="修改" onclick="editUtilities('${utiPd.UTILITIESSTATE_ID}');">
@@ -308,8 +308,8 @@
 		<script type="text/javascript">
 		$(top.hangge());
 
-		function print(UTILITIESSTATE_ID){
-			window.open("<%=basePath%>/utilitiesstate/printPage.do?UTILITIESSTATE_ID="+UTILITIESSTATE_ID, "", 'left=250,top=150,width=950,height=700,toolbar=no,menubar=no,status=no,scrollbars=yes,resizable=yes');
+		function print(UTILITIESSTATE_ID,INVOICE_ID){
+			window.open("<%=basePath%>/utilitiesstate/printPage.do?UTILITIESSTATE_ID="+UTILITIESSTATE_ID+"&INVOICE_ID="+INVOICE_ID, "", 'left=250,top=150,width=1150,height=700,toolbar=no,menubar=no,status=no,scrollbars=yes,resizable=yes');
 		}
 
 		//修改水电费情况

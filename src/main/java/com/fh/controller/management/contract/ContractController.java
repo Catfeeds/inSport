@@ -546,11 +546,13 @@ public class ContractController extends BaseController {
 		page.setPd(pd);
 		List<PageData> listDepositInfo = depositinfoService.listByContractId(pd);
 		List<PageData> listInvoice = invoiceService.listByContractId(pd);
+		List<PageData> listPTime = proceedstimeService.listByContractId(pd);
 		PageData pd1 = paymentcontractService.findByContractId(pd);
 		PageData pd2 = proceedscontractService.findByContractId(pd);
 		mv.setViewName("management/contract/contract_show");
 		mv.addObject("listInvoice", listInvoice);
 		mv.addObject("listDepositInfo", listDepositInfo);
+		mv.addObject("listPTime", listPTime);
 		mv.addObject("pd", pd);
 		mv.addObject("pd1", pd1);
 		mv.addObject("pd2", pd2);

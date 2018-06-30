@@ -43,6 +43,15 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<!-- ------------------------------------------------------------------------------- -->
+						<label style="margin-left: 30px">关联合同：</label>
+						<label class="nav-search">
+						<span class="input-icon">
+						<input type="text" placeholder="这里输入关键词" class="nav-search-input"
+							   id="nav-search-input" autocomplete="off" name="RELEVANCE_ID" onclick="toRelevance('${pd.CONTRACT_ID}')"
+							   value="" placeholder="搜索合同进行关联"/>
+						<i class="ace-icon fa fa-search nav-search-icon"></i>
+						</span>
+						</label>
 							<table class="table table-border table-bg table-bordered">
 								<tbody>
 								<tr class="warning">
@@ -139,37 +148,57 @@
 							<!-- --------------------------------------------------------------------------- -->
 							<table id="proceedsContract" style="display: none;" class="table table-border table-bg table-bordered">
 								<tbody>
+								<c:if test="${pd2.ISEW == '1'}">
+								<c:if test="${not empty listPTime}">
+								<c:forEach items="${listPTime}" var="var" varStatus="vs">
 
+								<tr class="warning">
+									<th width="15%"><label>时间区间：</label></th>
+									<th colspan="5">${var.STARTTIME} --- ${var.ENTTIME}
+										<label style="margin-left: 20px" class="control-label" >显示全部：</label>
+										<label style="margin-top: 5px;margin-right: 15px">
+											<input id="sw${var.PROCEEDSTIME_ID}" onclick="showDetail('${var.PROCEEDSTIME_ID}')"
+												   name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox">
+											<span class="lbl"></span>
+										</label>
+									</th>
+
+								</tr>
 								<c:if test="${not empty listInvoice }">
-									<c:forEach items="${listInvoice}" var="var" varStatus="vs">
-										<tr class="success">
-											<th width="15%"><label>应收金额：</label></th>
-											<th width="10%">${var.RECEIVABLE}</th>
-											<th ><label>应付款时间：</label></th>
-											<th >${var.PAYTIME}</th>
-											<th  ><label>滞纳金率：</label></th>
-											<th  >${var.OVERDUE}</th>
-
-										</tr>
-										<tr class="success">
-											<th width="15%"><label>实际付款金额：</label></th>
-											<th width="20%">${var.RECEIVABLE_REALITY}</th>
-											<th ><label>实际付款时间：</label></th>
-											<th >${var.RECEIVABL_PAYTIME}</th>
-											<th width="15%"><label>付款方名称：</label></th>
-											<th width="20%">${var.PAYERNAME}</th>
-
-										</tr>
-										<tr id="tr${var.INVOICE_ID}" class="success">
-											<th ><label>发票名称：</label></th>
-											<th  >${var.INVOICENAME}</th>
-											<th  ><label>开票时间：</label></th>
-											<th  >${var.INVOICETIME}</th>
-											<th  >
-											</th>
-											<th></th>
-										</tr>
-									</c:forEach>
+								<c:forEach items="${listInvoice}" var="var1" varStatus="vs">
+								<c:if test="${var1.PROCEEDSTIME_ID == var.PROCEEDSTIME_ID}">
+								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" class="success">
+									<th width="15%"><label>应收金额：</label></th>
+									<th >${var1.RECEIVABLE}</th>
+									<th ><label>应收款时间：</label></th>
+									<th >${var1.PAYTIME}</th>
+									<th width="15%"><label>付款方名称：</label></th>
+									<th width="20%">${var1.PAYERNAME}</th>
+								</tr>
+								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" class="success">
+									<th width="15%"><label>实际收款金额：</label></th>
+									<th width="20%">${var1.RECEIVABLE_REALITY}</th>
+									<th ><label>实际收款时间：</label></th>
+									<th >${var1.RECEIVABL_PAYTIME}</th>
+									<th  ><label>滞纳金：</label></th>
+									<th  >${var1.OVERDUE}</th>
+								</tr>
+								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" id="tr${var1.INVOICE_ID}" class="success">
+									<th ><label>发票名称：</label></th>
+									<th  >${var1.INVOICENAME}</th>
+									<th  ><label>开票时间：</label></th>
+									<th  >${var1.INVOICETIME}</th>
+									<th  colspan="2">
+									</th>
+									<c:set var="LINVOICE_ID" value="${var1.INVOICE_ID}"/>
+								</tr>
+								<tr name="tr${var.PROCEEDSTIME_ID}" style="display: none;height: 3px" class="active"><th colspan="6"><label></label></th></tr>
+								</c:if>
+								</c:forEach>
+								</c:if>
+								<tr id="fp${var.PROCEEDSTIME_ID}"></tr>
+								</c:forEach>
+								</c:if>
 								</c:if>
 								<c:if test="${not empty listDepositInfo }">
 									<c:forEach items="${listDepositInfo}" var="var" varStatus="vs">
@@ -343,6 +372,18 @@
 <script src="static/dist/jquery.magnify.js"></script>
 <script type="text/javascript">
 	$(top.hangge());
+
+	function showDetail(PROCEEDSTIME_ID) {
+		if($("#sw"+PROCEEDSTIME_ID).prop("checked")){
+			$("#proceedsContract [name='tr"+PROCEEDSTIME_ID+"']").each(function(index,item){
+				$(this).css("display","");
+			});
+		}else {
+			$("#proceedsContract [name='tr"+PROCEEDSTIME_ID+"']").each(function(index,item){
+				$(this).css("display","none");
+			});
+		}
+	}
 
 	$(function () {
 		if($("#CONTRACTTYPES").find("option:selected").attr("value") == "付款合同"){
