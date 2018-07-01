@@ -656,7 +656,7 @@
         diag.ShowMaxButton = true;	//最大化按钮
         diag.ShowMinButton = true;		//最小化按钮
         diag.CancelEvent = function () { //关闭事件
-            tosearch();
+           //tosearch();
             diag.close();
         };
         diag.show();

@@ -47,7 +47,13 @@
 								<tbody>
 								<tr class="warning">
 									<th colspan="6">
-										<label style="margin-left: 30px">关联合同：</label>已关联合同  《${pd.CONTRACTNUM_T}》
+										<c:if test="${pd.CONTRACTNUM_T != '' && pd.CONTRACTNUM_T != null}">
+											<label style="margin-left: 30px">关联合同：</label>已关联合同
+											<a onclick="show_contract('${pd.CONTRACT_ID_T}')">《${pd.CONTRACTNUM_T}》</a>
+										</c:if>
+										<c:if test="${pd.CONTRACTNUM_T == '' || pd.CONTRACTNUM_T == null}">
+											<label style="margin-left: 30px">关联合同：</label>无关联合同
+										</c:if>
 									</th>
 								</tr>
 								<tr class="warning">
@@ -369,6 +375,24 @@
 <script src="static/dist/jquery.magnify.js"></script>
 <script type="text/javascript">
 	$(top.hangge());
+
+	function show_contract(CONTRACT_ID){
+		top.jzts();
+		var diag = new top.Dialog();
+		diag.Drag = true;
+		diag.Title = "查阅合同信息";
+		diag.URL = '<%=basePath%>contract/toShowContrct.do?CONTRACT_ID=' + CONTRACT_ID;
+		diag.Width = window.innerWidth * 1.2;
+		diag.Height = window.innerHeight * 1.2;
+		diag.Modal = true;				//有无遮罩窗口
+		diag.ShowMaxButton = true;	//最大化按钮
+		diag.ShowMinButton = true;		//最小化按钮
+		diag.CancelEvent = function () { //关闭事件
+			//tosearch();
+			diag.close();
+		};
+		diag.show();
+	}
 	
 	function readUtili(INVOICE_ID) {
 		top.jzts();

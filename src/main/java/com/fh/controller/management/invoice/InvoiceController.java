@@ -63,14 +63,14 @@ public class InvoiceController extends BaseController {
 		Map<String, Object> json = new HashMap<String, Object>();
 		pd = this.getPageData();
 		pd.put("INVOICE_ID", this.get32UUID());	//主键
-		if(pd.getString("RECEIVABLE") == null && "".equals(pd.getString("RECEIVABLE"))){
+		/*if(pd.getString("RECEIVABLE") == null && "".equals(pd.getString("RECEIVABLE"))){
 			pd.put("RECEIVABLE","0");
 		}else {
 
 		}
 		if(pd.getString("RECEIVABLE_REALITY") == null && "".equals(pd.getString("RECEIVABLE_REALITY"))){
 			pd.put("RECEIVABLE_REALITY","0");
-		}
+		}*/
 		invoiceService.save(pd);
 		return  json;
 	}

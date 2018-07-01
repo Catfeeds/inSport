@@ -1006,8 +1006,8 @@
 		var RECEIVABLE =$("#r"+uuid).val();
 		var PAYTIME = $("#pt"+uuid).val();
 		var OVERDUE = $("#od"+uuid).val();
-		var RECEIVABLE_REALITY = $("#rr"+uuid).val();
-		var RECEIVABL_PAYTIME = $("#rpt"+uuid).val();
+		//var RECEIVABLE_REALITY = $("#rr"+uuid).val();
+		//var RECEIVABL_PAYTIME = $("#rpt"+uuid).val();
 		var PAYERNAME = $("#pn"+uuid).val();
 		var INVOICENAME = $("#in"+uuid).val();
 		var INVOICETIME = $("#it"+uuid).val();
@@ -1019,8 +1019,8 @@
 				RECEIVABLE : RECEIVABLE,
 				PAYTIME : PAYTIME,
 				OVERDUE : OVERDUE,
-				RECEIVABLE_REALITY : RECEIVABLE_REALITY,
-				RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
+				//RECEIVABLE_REALITY : RECEIVABLE_REALITY,
+				//RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
 				PAYERNAME : PAYERNAME,
 				INVOICENAME : INVOICENAME,
 				INVOICETIME : INVOICETIME,

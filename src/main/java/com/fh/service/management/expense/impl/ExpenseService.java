@@ -47,7 +47,15 @@ public class ExpenseService implements ExpenseManager{
 	public void edit(PageData pd)throws Exception{
 		dao.update("ExpenseMapper.edit", pd);
 	}
-	
+
+	public void editState(PageData pd)throws Exception{
+		dao.update("ExpenseMapper.editState", pd);
+	}
+
+	public void editThisMonth(PageData pd)throws Exception{
+		dao.update("ExpenseMapper.editThisMonth", pd);
+	}
+
 	/**列表
 	 * @param page
 	 * @throws Exception

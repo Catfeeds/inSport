@@ -399,6 +399,9 @@ public class ContractController extends BaseController {
 			}else {
 				pd2.put("PROCEEDSCONTRACT_ID",pd.getString("PROCEEDSCONTRACT_ID"));
 			}
+			if(pd.getString("ISEW") == null || "".equals(pd.getString("ISEW"))){
+				pd2.put("ISEW","0");
+			}
 			/*pd2.put("PRINCIPAL",pd.getString("PRINCIPAL"));
 			pd2.put("RECEIVABLE",pd.get("RECEIVABLE").toString());
 			pd2.put("PAYERNAME",pd.getString("PAYERNAME"));

@@ -21,7 +21,8 @@
 		CONTRACT_ID,	
 		ISWATER,	
 		ISLOSS,	
-		METERNUM,	
+		METERNUM,
+		ISCHANGE,
 		EXPENSE_ID
 	</sql>
 	
@@ -39,10 +40,11 @@
 		#{CONTRACT_ID},	
 		#{ISWATER},	
 		#{ISLOSS},	
-		#{METERNUM},	
+		#{METERNUM},
+		#{ISCHANGE},
 		#{EXPENSE_ID}
 	</sql>
-	
+
 	<!-- 新增-->
 	<insert id="save" parameterType="pd">
 		insert into 
@@ -89,6 +91,31 @@
 		EXPENSE_ID = #{EXPENSE_ID}
 	</update>
 
+	<update id="editThisMonth" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set
+		LASTMONTH = #{LASTMONTH},
+		RATIO = #{RATIO},
+		FVALUE = #{FVALUE},
+		PRICE = #{PRICE},
+		ISLOSS = #{ISLOSS},
+		METERNUM = #{METERNUM},
+		EXPENSE_ID = EXPENSE_ID
+		where
+		EXPENSE_ID = #{EXPENSE_ID}
+	</update>
+
+	<update id="editState" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set
+		ISCHANGE = #{ISCHANGE},
+		N_EXPENSE_ID = #{N_EXPENSE_ID}
+		where
+		EXPENSE_ID = #{EXPENSE_ID}
+	</update>
+
 	<!-- 通过ID获取数据 -->
 	<select id="findById" parameterType="pd" resultType="pd">
 		select 
@@ -106,6 +133,9 @@
 		<include refid="tableName"></include>
 		where
 		INVOICE_ID = #{INVOICE_ID} AND ISWATER = '电费'
+		<if test="ISCHANGE != null and ISCHANGE != ''">
+		AND ISCHANGE = #{ISCHANGE}
+		</if>
 		ORDER BY NUM
 	</select>
 
