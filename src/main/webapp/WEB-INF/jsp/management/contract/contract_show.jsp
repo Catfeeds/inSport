@@ -43,17 +43,13 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<!-- ------------------------------------------------------------------------------- -->
-						<label style="margin-left: 30px">关联合同：</label>
-						<label class="nav-search">
-						<span class="input-icon">
-						<input type="text" placeholder="这里输入关键词" class="nav-search-input"
-							   id="nav-search-input" autocomplete="off" name="RELEVANCE_ID" onclick="toRelevance('${pd.CONTRACT_ID}')"
-							   value="" placeholder="搜索合同进行关联"/>
-						<i class="ace-icon fa fa-search nav-search-icon"></i>
-						</span>
-						</label>
 							<table class="table table-border table-bg table-bordered">
 								<tbody>
+								<tr class="warning">
+									<th colspan="6">
+										<label style="margin-left: 30px">关联合同：</label>已关联合同  《${pd.CONTRACTNUM_T}》
+									</th>
+								</tr>
 								<tr class="warning">
 									<th width="15%"><label>合同编号：</label></th>
 									<th width="10%">${pd.CONTRACTNUM}</th>
@@ -189,14 +185,15 @@
 									<th  ><label>开票时间：</label></th>
 									<th  >${var1.INVOICETIME}</th>
 									<th  colspan="2">
+										<a class="btn btn-xs blue" title="查看水电费用情况"
+										   onclick="readUtili('${var1.INVOICE_ID}');">
+											<i class="ace-icon fa fa-cog bigger-120" title="查看水电费用情况">查看水电费用情况</i></a>
 									</th>
-									<c:set var="LINVOICE_ID" value="${var1.INVOICE_ID}"/>
 								</tr>
 								<tr name="tr${var.PROCEEDSTIME_ID}" style="display: none;height: 3px" class="active"><th colspan="6"><label></label></th></tr>
 								</c:if>
 								</c:forEach>
 								</c:if>
-								<tr id="fp${var.PROCEEDSTIME_ID}"></tr>
 								</c:forEach>
 								</c:if>
 								</c:if>
@@ -372,6 +369,24 @@
 <script src="static/dist/jquery.magnify.js"></script>
 <script type="text/javascript">
 	$(top.hangge());
+	
+	function readUtili(INVOICE_ID) {
+		top.jzts();
+		var diag = new top.Dialog();
+		diag.Drag = true;
+		diag.Title = "水电情况表";
+		diag.URL = '<%=basePath%>expense/readUtili?INVOICE_ID=' + INVOICE_ID;
+		diag.Width = window.innerWidth * 1.3;
+		diag.Height = 700;
+		diag.Modal = true;				//有无遮罩窗口
+		diag.ShowMaxButton = true;	//最大化按钮
+		diag.ShowMinButton = true;		//最小化按钮
+		diag.CancelEvent = function () { //关闭事件
+			diag.close();
+			//tosearch();
+		};
+		diag.show();
+	}
 
 	function showDetail(PROCEEDSTIME_ID) {
 		if($("#sw"+PROCEEDSTIME_ID).prop("checked")){

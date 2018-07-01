@@ -275,33 +275,16 @@ public class ContractController extends BaseController {
 		pd = this.getPageData();
 		pd = contractService.findById(pd);
 		PageData pd1 = proceedscontractService.findByContractId(pd);
-		List<PageData> listInvoice = invoiceService.listByContractId(pd);
-		/*int firstYear = 0;
-		int lastYear = 0;
-		ArrayList<Integer> arrYear = new ArrayList<Integer>();
-		for (int i = 0; i < listInvoice.size(); i++) {
-			if(i == 0){
-				firstYear = Integer.parseInt(listInvoice.get(i).getString("PAYTIME").substring(0,4));
-			}
-			if(i == (listInvoice.size() - 1)){
-				lastYear = Integer.parseInt(listInvoice.get(listInvoice.size()-1).getString("PAYTIME").substring(0,4));
-			}
-		}
-		if((lastYear - firstYear) > 0){
-			for (int i = firstYear; i <= lastYear; i++) {
-				arrYear.add(i);
-				//System.out.println(arr.get(i));
-			}
-		}else {
-			arrYear.add(firstYear);
-		}
-		System.out.println("第一年："+firstYear+"---第二年:"+lastYear);*/
+		List<PageData> listInvoice = invoiceService.listByContractIdWithUre(pd);
+		//System.out.println(listInvoice);
+		List<PageData> listProTime = proceedstimeService.listByContractId(pd);
 		List<PageData> listProceedsDetail = proceedsdetailService.listByContractId(pd);  //明细
 		mv.setViewName("management/contract/contract_openProceeds");
 		mv.addObject("pd", pd);
 		mv.addObject("pd1", pd1);
 		mv.addObject("count", listProceedsDetail.size());
 		mv.addObject("listInvoice", listInvoice);
+		mv.addObject("listProTime", listProTime);
 		//mv.addObject("arrYear",arrYear);
 		return mv;
 	}
@@ -504,7 +487,35 @@ public class ContractController extends BaseController {
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
 		return mv;
 	}
-	
+
+
+	@RequestMapping(value="/toRelevance")
+	public ModelAndView toRelevance(Page page) throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			keywords = URLDecoder.decode(keywords, "UTF-8");
+			pd.put("keywords", keywords.trim());
+		}
+		page.setPd(pd);
+		List<PageData> varList  = contractService.list(page);	//列出Contract列表
+		mv.setViewName("management/contract/toRelevance");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
+		return mv;
+	}
+	@RequestMapping(value = "/relevance")
+	@ResponseBody
+	public Map<String, Object> relevance(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		contractService.editRelevance(pd);
+		return json;
+	}
 	/**去新增页面
 	 * @param
 	 * @throws Exception

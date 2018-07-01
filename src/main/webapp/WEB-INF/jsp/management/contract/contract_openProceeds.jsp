@@ -52,8 +52,8 @@
                             </tr>
                             </tbody>
                         </table>
-                        <c:if test="${not empty arrYear}">
-                            <c:forEach items="${arrYear}" var="var" varStatus="vs">
+                        <c:if test="${not empty listProTime}">
+                            <c:forEach items="${listProTime}" var="var" varStatus="vs">
                                 <table id="ta" class="table table-border table-bg table-bordered" style="margin-top: 10px">
                                     <tbody id="tb">
                                     <tr class="center">
@@ -70,33 +70,33 @@
                                     <tr class="center" id="sum" >
                                         <td id="td1" rowspan="${count +1}"
                                             style="padding-left:2px;vertical-align:middle;">
-                                                ${pd.FUSEDATESTART } -- ${pd.FUSEDATEENT }
-
+                                                ${var.STARTTIME } -- ${var.ENTTIME }
                                         </td>
                                     </tr>
                                     <c:if test="${not empty listInvoice}">
                                         <c:forEach items="${listInvoice}" var="var1" varStatus="vs1">
+                                            <c:if test="${var.PROCEEDSTIME_ID == var1.PROCEEDSTIME_ID}">
                                             <tr class="center" style="vertical-align:middle;" >
                                                 <td style="padding-left:2px;">
-                                                    123
+                                                        <p>${var1.RECEIVABLE}</p>
                                                 </td>
                                                 <td style="padding-left:2px;">
-                                                        ${var1.PROCEEDSDETAIL_ID}
+                                                    <p> ${var1.URECEIVABLE}</p>
                                                 </td>
                                                 <td style="padding-left:2px;">
-                                                        ${var1.PROCEEDSDETAIL_ID}
+                                                    <p>  ${var1.OVERDUE}</p>
                                                 </td>
                                                 <td style="padding-left:2px;">
-                                                        ${var1.PROCEEDSDETAIL_ID}
+                                                    <p>   ${var1.UOVERDUENUM}</p>
                                                 </td>
                                                 <td style="padding-left:2px;">
-                                                        ${var1.PROCEEDSDETAIL_ID}
+                                                    <p>   ${var1.PROCEEDSDETAIL_ID}</p>
                                                 </td>
                                                 <td style="padding-left:2px;">
-                                                        ${var1.PROCEEDSDETAIL_ID}
+                                                    <p>  ${var1.PROCEEDSDETAIL_ID}</p>
                                                 </td>
                                                 <td style="padding-left:2px;">
-                                                        ${var1.PROCEEDSDETAIL_ID}
+                                                    <p>   ${var1.PROCEEDSDETAIL_ID}</p>
                                                 </td>
 
                                                 <td style="padding-left:2px;">
@@ -107,6 +107,7 @@
                                                     </a>
                                                 </td>
                                             </tr>
+                                            </c:if>
                                         </c:forEach>
                                     </c:if>
                                     <tr id="${var.PROCEEDSPRIMARY_ID}"></tr>

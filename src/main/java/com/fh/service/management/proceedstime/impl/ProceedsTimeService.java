@@ -66,6 +66,10 @@ public class ProceedsTimeService implements ProceedsTimeManager{
 		return (List<PageData>)dao.findForList("ProceedsTimeMapper.listByContractId", pd);
 	}
 
+	public List<PageData> listByContractIdWithUre(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ProceedsTimeMapper.listByContractIdWithUre", pd);
+	}
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

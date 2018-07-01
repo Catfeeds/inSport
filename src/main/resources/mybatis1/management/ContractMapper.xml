@@ -113,15 +113,21 @@
 		where 
 		CONTRACT_ID = #{CONTRACT_ID}
 	</update>
+
+	<update id="editRelevance" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set
+		RELEVANCE_ID = #{CONTRACT_ID_T}
+		where
+		CONTRACT_ID = #{CONTRACT_ID_F}
+	</update>
 	
 	<!-- 通过ID获取数据 -->
 	<select id="findById" parameterType="pd" resultType="pd">
-		select 
-		<include refid="Field"></include>
-		from 
-		<include refid="tableName"></include>
+		SELECT c2.CONTRACTNUM AS CONTRACTNUM_T, c1.* from TB_CONTRACT c1 LEFT JOIN TB_CONTRACT c2 ON c1.RELEVANCE_ID = c2.CONTRACT_ID
 		where 
-			CONTRACT_ID = #{CONTRACT_ID}
+			c1.CONTRACT_ID = #{CONTRACT_ID}
 	</select>
 
 	<select id="findMaxNo" parameterType="pd" resultType="pd">

@@ -212,12 +212,8 @@
                                                                     <i class="ace-icon fa fa-calendar bigger-120" title="打开收款表格"></i>
                                                                 </a>
                                                             </c:if>
-                                                            <a class="btn btn-xs btn-info" title="预览图片"
+                                                            <%--<a class="btn btn-xs btn-info" title="预览图片"
                                                                onclick="show_contract('${var.CONTRACT_ID}')">
-                                                                <i class="ace-icon fa fa-laptop bigger-120" title="预览图片"></i>
-                                                            </a>
-                                                           <%-- <a class="btn btn-xs btn-info" title="预览图片"
-                                                               onclick="showPic('${var.CONTRACT_ID}')">
                                                                 <i class="ace-icon fa fa-laptop bigger-120" title="预览图片"></i>
                                                             </a>--%>
                                                             <c:if test="${QX.edit == 1 }">

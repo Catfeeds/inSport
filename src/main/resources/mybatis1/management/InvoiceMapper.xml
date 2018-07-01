@@ -127,6 +127,13 @@
 		<include refid="tableName"></include>
 		WHERE CONTRACT_ID = #{CONTRACT_ID} ORDER BY NUM
 	</select>
+
+	<select id="listByContractIdWithUre" parameterType="pd" resultType="pd">
+		SELECT u.OVERDUENUM AS UOVERDUENUM,u.RECEIVABLE_REALITY AS URECEIVABLE_REALITY,u.RECEIVABLE AS URECEIVABLE,
+		u.TOTAL_SUM_E,u.TOTAL_SUM_W, i.* FROM TB_INVOICE i LEFT JOIN TB_UTILITIESSTATE u ON i.INVOICE_ID = u.INVOICE_ID
+		where
+		i.CONTRACT_ID = #{CONTRACT_ID} ORDER BY NUM
+	</select>
 	
 	<!-- 批量删除 -->
 	<delete id="deleteAll" parameterType="String">

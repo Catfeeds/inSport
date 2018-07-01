@@ -38,6 +38,7 @@ public interface ProceedsTimeManager{
 
 	public List<PageData> listByContractId(PageData pd)throws Exception;
 
+
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception

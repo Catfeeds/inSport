@@ -70,6 +70,10 @@ public class InvoiceService implements InvoiceManager{
 		return (List<PageData>)dao.findForList("InvoiceMapper.listByContractId", pd);
 	}
 
+	public List<PageData> listByContractIdWithUre(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("InvoiceMapper.listByContractIdWithUre", pd);
+	}
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

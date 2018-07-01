@@ -44,14 +44,22 @@
 						</c:forEach>
 					</select>
 					<label style="margin-left: 30px">关联合同：</label>
-					<label class="nav-search">
+					<c:if test="${pd.RELEVANCE_ID != null && pd.RELEVANCE_ID != ''}">
+						<label class="nav-search">已关联合同  《${pd.CONTRACTNUM_T}》</label>
+						<a style="margin-left: 10px" class="btn btn-xs" onclick="toRelevance('${pd.CONTRACT_ID}')">
+							<i class="ace-icon fa fa-exchange bigger-110 nav-search-icon yellow"></i>修改关联
+						</a>
+					</c:if>
+					<c:if test="${pd.RELEVANCE_ID == null || pd.RELEVANCE_ID == ''}">
+						<label class="nav-search">
 						<span class="input-icon">
 						<input type="text" placeholder="这里输入关键词" class="nav-search-input"
 							   id="nav-search-input" autocomplete="off" name="RELEVANCE_ID" onclick="toRelevance('${pd.CONTRACT_ID}')"
 							   value="" placeholder="搜索合同进行关联"/>
 						<i class="ace-icon fa fa-search nav-search-icon"></i>
 						</span>
-					</label>
+						</label>
+					</c:if>
 					<!-- </td> -->
 				</div>
 				<br>
@@ -670,7 +678,7 @@
 		top.jzts();
 		var diag = new top.Dialog();
 		diag.Drag = true;
-		diag.Title = "添加水电费项";
+		diag.Title = "关联合同";
 		diag.URL = '<%=basePath%>contract/toRelevance?CONTRACT_ID='+CONTRACT_ID;
 		diag.Width = window.innerWidth * 0.9;
 		diag.Height = window.innerWidth * 0.9;
@@ -680,6 +688,7 @@
 		diag.CancelEvent = function () { //关闭事件
 			//tosearch();
 			diag.close();
+			window.location.reload();
 		};
 		diag.show();
 	}

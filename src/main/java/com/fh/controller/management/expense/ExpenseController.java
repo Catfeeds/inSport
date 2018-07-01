@@ -278,9 +278,25 @@ public class ExpenseController extends BaseController {
 		mv.addObject("pd", pd);
 		mv.addObject("utiPd", utiPd);
 		return mv;
-	}	
-	
-	 /**去修改页面
+	}
+
+	@RequestMapping(value="/readUtili")
+	public ModelAndView readUtili()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		List<PageData> listEl = expenseService.listElByInvoiceId(pd);
+		List<PageData> listWa = expenseService.listWaByInvoiceId(pd);
+		PageData utiPd = utilitiesstateService.findByInvoiceId(pd);
+		mv.setViewName("management/expense/readUtili");
+		mv.addObject("listWa", listWa);
+		mv.addObject("listEl", listEl);
+		mv.addObject("pd", pd);
+		mv.addObject("utiPd", utiPd);
+		return mv;
+	}
+
+	/**去修改页面
 	 * @param
 	 * @throws Exception
 	 */

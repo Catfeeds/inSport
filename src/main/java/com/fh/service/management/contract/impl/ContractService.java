@@ -43,7 +43,11 @@ public class ContractService implements ContractManager{
 	public void edit(PageData pd)throws Exception{
 		dao.update("ContractMapper.edit", pd);
 	}
-	
+
+	public void editRelevance(PageData pd)throws Exception{
+		dao.update("ContractMapper.editRelevance", pd);
+	}
+
 	/**列表
 	 * @param page
 	 * @throws Exception
