@@ -23,6 +23,7 @@
 		ISLOSS,	
 		METERNUM,
 		ISCHANGE,
+		N_EXPENSE_ID,
 		EXPENSE_ID
 	</sql>
 	
@@ -42,6 +43,7 @@
 		#{ISLOSS},	
 		#{METERNUM},
 		#{ISCHANGE},
+		#{N_EXPENSE_ID},
 		#{EXPENSE_ID}
 	</sql>
 
@@ -83,6 +85,7 @@
 			NUMBER = #{NUMBER},
 			PRICE = #{PRICE},
 			TOTAL = #{TOTAL},
+			ISCHANGE = #{ISCHANGE},
 			REALITY_TOTAL = #{REALITY_TOTAL},
 			ISLOSS = #{ISLOSS},
 			METERNUM = #{METERNUM},
@@ -100,6 +103,7 @@
 		FVALUE = #{FVALUE},
 		PRICE = #{PRICE},
 		ISLOSS = #{ISLOSS},
+		ISCHANGE = #{ISCHANGE},
 		METERNUM = #{METERNUM},
 		EXPENSE_ID = EXPENSE_ID
 		where
@@ -146,6 +150,9 @@
 		<include refid="tableName"></include>
 		where
 		INVOICE_ID = #{INVOICE_ID} AND ISWATER = '水费'
+		<if test="ISCHANGE != null and ISCHANGE != ''">
+			AND ISCHANGE = #{ISCHANGE}
+		</if>
 		ORDER BY NUM
 	</select>
 	

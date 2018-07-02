@@ -125,8 +125,9 @@
 	
 	<!-- 通过ID获取数据 -->
 	<select id="findById" parameterType="pd" resultType="pd">
-		SELECT c2.CONTRACTNUM AS CONTRACTNUM_T,c2.CONTRACT_ID AS CONTRACT_ID_T ,
+		SELECT c3.*, c2.CONTRACTNUM AS CONTRACTNUM_T,c2.CONTRACT_ID AS CONTRACT_ID_T ,
 		c1.* from TB_CONTRACT c1 LEFT JOIN TB_CONTRACT c2 ON c1.RELEVANCE_ID = c2.CONTRACT_ID
+		LEFT JOIN TB_CLIENT c3 ON c1.CLIENT = c3.CLIENT_ID
 		where 
 			c1.CONTRACT_ID = #{CONTRACT_ID}
 	</select>
@@ -138,9 +139,10 @@
 	<!-- 列表 -->
 	<select id="datalistPage" parameterType="page" resultType="pd">
 		select top 1000000000
-		<include refid="Field"></include>
-		from 
-		<include refid="tableName"></include>
+		c3.*,c1.*
+		from
+		TB_CONTRACT c1
+		LEFT JOIN TB_CLIENT c3 ON c1.CLIENT = c3.CLIENT_ID
 		where 1=1
 		<if test="pd.keywords != null and pd.keywords != ''"><!-- 关键词检索 -->
 			and

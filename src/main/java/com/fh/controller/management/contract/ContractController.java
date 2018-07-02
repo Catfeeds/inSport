@@ -9,6 +9,7 @@ import java.util.*;
 import javax.annotation.Resource;
 
 import com.fh.service.management.classify.ClassifyManager;
+import com.fh.service.management.client.ClientManager;
 import com.fh.service.management.contractpicture.ContractPictureManager;
 import com.fh.service.management.departmentgroup.DepartmentGroupManager;
 import com.fh.service.management.depositinfo.DepositInfoManager;
@@ -111,6 +112,9 @@ public class ContractController extends BaseController {
 
 	@Resource(name="proceedstimeService")
 	private ProceedsTimeManager proceedstimeService;
+
+	@Resource(name="clientService")
+	private ClientManager clientService;
 	// 树
 	@RequestMapping(value = "/listTree")
 	public ModelAndView listTree() throws Exception {
@@ -411,6 +415,7 @@ public class ContractController extends BaseController {
 			pd2.put("RECEIVABL_PAYTIME",pd.getString("RECEIVABL_PAYTIME"));*/
 			pd2.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
 			pd2.put("OVERDUE",pd.getString("OVERDUE"));
+			pd2.put("ISEW",pd.getString("ISEW"));
 			pd2.put("FREMARK",pd.getString("FREMARK"));
 			if (findProPd == null){
 				proceedscontractService.save(pd2);
@@ -533,6 +538,7 @@ public class ContractController extends BaseController {
 		List<PageData> listOperator = operatorService.listAll(pd);
 		List<PageData> listMode = modeService.listAll(pd);
 		List<PageData> listItems = taxitemsService.listAll(pd);
+		List<PageData> listClients = clientService.listAll(pd);
 		ArrayList<String> listmonth = new ArrayList<String>();
 		List<PageData> listDeptNo = deptnoService.listAll(pd);
 		DecimalFormat dften = new DecimalFormat("00");
@@ -547,6 +553,7 @@ public class ContractController extends BaseController {
 		mv.addObject("listmonth", listmonth);
 		mv.addObject("listItems", listItems);
 		mv.addObject("listMode", listMode);
+		mv.addObject("listClients", listClients);
 		mv.addObject("pd", pd);
 		return mv;
 	}
@@ -591,6 +598,8 @@ public class ContractController extends BaseController {
 		List<PageData> listProceed = proceedsprimaryService.listByContractId(pd);
 		List<PageData> listMode = modeService.listAll(pd);
 		List<PageData> listOperator = operatorService.listAll(pd);
+		List<PageData> listClients = clientService.listAll(pd);
+		//System.out.println(listClients);
 		PageData pd1 = paymentcontractService.findByContractId(pd);
 		PageData pd2 = proceedscontractService.findByContractId(pd);
 		//PageData pd3 = officecontractService.findByContractId(pd);
@@ -613,6 +622,7 @@ public class ContractController extends BaseController {
 		mv.addObject("listItems", listItems);
 		mv.addObject("listPTime", listPTime);
 		mv.addObject("listProceed", listProceed);
+		mv.addObject("listClients", listClients);
 		mv.addObject("pd", pd);
 		mv.addObject("pd1", pd1);
 		mv.addObject("pd2", pd2);

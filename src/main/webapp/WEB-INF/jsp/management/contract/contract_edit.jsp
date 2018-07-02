@@ -106,12 +106,18 @@
 								</tr>
 								<tr class="success">
 									<th ><label>客户联系人姓名：</label></th>
-									<th ><input type="text" style="width: 150px" value="${pd.CLIENT}"
-												class="input-text"  name="CLIENT"
-												id="CLIENT"></th>
+									<th >
+										<select name="CLIENT" id="CLIENT" data-placeholder=""
+												style="vertical-align:top;width: 150px;">
+											<option value="${pd.CLIENT}" name="${pd.CLIENT}">${pd.FNAME}</option>
+											<c:forEach items="${listClients}" var="var" varStatus="vs">
+												<option value="${var.CLIENT_ID}" name="${var.CLIENT_ID}">${var.FNAME}</option>
+											</c:forEach>
+										</select>
+									</th>
 									<th  ><label>联系电话：</label></th>
 									<th  >
-										<input type="text" style="width: 150px" value="${pd.TELEPHONE}"
+										<input type="text" style="width: 150px" value="${pd.PHONENUMBER}"
 											   class="input-text"  name="TELEPHONE"
 											   id="TELEPHONE"></th>
 									<th  ><label></label></th>
@@ -349,15 +355,15 @@
 								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" class="success">
 									<th width="15%"><label>实际收款金额：</label></th>
 									<th width="20%"><input type="number" style="width: 150px" value="${var1.RECEIVABLE_REALITY}"
-														   class="input-text"  name="RECEIVABLE_REALITY"
+														   class="input-text"  name="RECEIVABLE_REALITY" readonly
 														   id="rr${var1.INVOICE_ID}"></th>
 									<th ><label>实际收款时间：</label></th>
 									<th ><input onchange="calOD('${var1.INVOICE_ID}')" type="date" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
-												class="input-text"  name="RECEIVABL_PAYTIME"
+												class="input-text"  name="RECEIVABL_PAYTIME" readonly
 												id="rpt${var1.INVOICE_ID}"></th>
 									<th  ><label>滞纳金：</label></th>
 									<th  ><input type="number" style="width: 150px;height: 31px" value="${var1.OVERDUE}"
-												 class="input-text"
+												 class="input-text" readonly
 												 id="od${var1.INVOICE_ID}"></th>
 								</tr>
 								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" id="tr${var1.INVOICE_ID}" class="success">
@@ -375,7 +381,7 @@
 									<th  colspan="2">
 										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="添加水电费项"
 										   onclick="addUtilities('${pd.CONTRACT_ID}','${var.PROCEEDSTIME_ID}','${var1.INVOICE_ID}','${LINVOICE_ID}','${pd.CONTRACTOFNAME}','${pd2.OVERDUE}','${var1.PAYERNAME}')">
-											<i class="ace-icon fa fa-pencil-square-o bigger-120" title="添加水电费项">添加水电费项</i></a>
+											<i class="ace-icon fa fa-pencil-square-o bigger-120" title="添加水电费项">查看水电费项</i></a>
 										<a class="btn btn-xs blue" title="确认修改"
 											 onclick="editInvoice('${var1.INVOICE_ID}');">
 										<i class="ace-icon fa fa-cog bigger-120" title="确认修改">确认修改</i></a>
@@ -414,15 +420,15 @@
 								<tr class="success">
 									<th width="15%"><label>实际收款金额：</label></th>
 									<th width="20%"><input type="number" style="width: 150px" value="${var1.RECEIVABLE_REALITY}"
-														   class="input-text"  name="RECEIVABLE_REALITY"
+														   class="input-text"  name="RECEIVABLE_REALITY" readonly
 														   id="rr${var1.INVOICE_ID}"></th>
 									<th ><label>实际收款时间：</label></th>
 									<th ><input onchange="calOD('${var1.INVOICE_ID}')" type="date" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
-												class="input-text"  name="RECEIVABL_PAYTIME"
+												class="input-text"  name="RECEIVABL_PAYTIME" readonly
 												id="rpt${var1.INVOICE_ID}"></th>
 									<th  ><label>滞纳金：</label></th>
 									<th  ><input type="number" style="width: 150px;height: 31px" value="${var1.OVERDUE}"
-												 class="input-text"
+												 class="input-text" readonly
 												 id="od${var1.INVOICE_ID}"></th>
 								</tr>
 								<tr id="tr${var1.INVOICE_ID}" class="success">
@@ -453,7 +459,7 @@
 									<c:if test="${pd2.ISEW == '0' || msg == 'save'}">
 									<th id="addTrFpNotew">
 										<div class="col-md-12"  style="padding-bottom:2em;">
-											<a onclick="addTrFpNotew('${pd.CONTRACT_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i> 添加新的发票项</a>
+											<a onclick="addTrFpNotew('${pd.CONTRACT_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i>新增新的应收款项</a>
 										</div>
 									</th>
 									</c:if>
@@ -881,13 +887,13 @@
 		tr += '<th width="20%"><input type="text" style="width: 150px" class="input-text"  name="PAYERNAME" ' +
 				'id="pn' + uuid + '"></th> </tr>';
 		tr += '<tr class="success"><th width="15%"><label>实际收款金额：</label></th>';
-		tr += '<th width="20%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE_REALITY" ' +
+		tr += '<th width="20%"><input type="number" style="width: 150px" readonly class="input-text"  name="RECEIVABLE_REALITY" ' +
 				'id="rr' + uuid + '"></th>';
 		tr += '<th ><label>实际收款时间：</label></th>';
-		tr += '<th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="RECEIVABL_PAYTIME" ' +
+		tr += '<th ><input type="date" readonly="readonly" style="width: 150px;height: 31px" class="input-text"  name="RECEIVABL_PAYTIME" ' +
 				'id="rpt' + uuid + '"></th>';
 		tr += '<th  ><label>滞纳金：</label></th>';
-		tr += '<th  ><input type="number" style="width: 150px;" class="input-text"  name="OVERDUE" ' +
+		tr += '<th  ><input type="number" style="width: 150px;" readonly="readonly" class="input-text"  name="OVERDUE" ' +
 				'id="od' + uuid + '"></th></tr>';
 		tr += '<tr class="success"><th ><label>发票名称：</label></th>';
 		tr += '<th><input type="text" style="width: 150px;height: 31px"  class="input-text"  name="INVOICENAME"' +
@@ -959,10 +965,10 @@
 		tr += '<th width="20%"><input type="text" style="width: 150px" class="input-text"  name="PAYERNAME" ' +
 				'id="pn'+uuid+'"></th> </tr>';
 		tr += '<tr class="success"><th width="15%"><label>实际收款金额：</label></th>';
-		tr += '<th width="20%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE_REALITY" ' +
+		tr += '<th width="20%"><input type="number" readonly="readonly" style="width: 150px" class="input-text"  name="RECEIVABLE_REALITY" ' +
 				'id="rr'+uuid+'"></th>';
 		tr += '<th ><label>实际收款时间：</label></th>';
-		tr += '<th ><input type="date" style="width: 150px;height: 31px" class="input-text"  name="RECEIVABL_PAYTIME" ' +
+		tr += '<th ><input type="date" style="width: 150px;height: 31px" readonly="readonly" class="input-text"  name="RECEIVABL_PAYTIME" ' +
 				'id="rpt'+uuid+'"></th>';
 		tr += '<th  ><label>滞纳金：</label></th>';
 		tr += '<th  ><input type="number" style="width: 150px;" class="input-text"  name="OVERDUE" ' +

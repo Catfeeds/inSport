@@ -51,10 +51,9 @@ public class ExpenseController extends BaseController {
 		pd = this.getPageData();
 		pd.put("EXPENSE_ID", this.get32UUID());	//主键
 		pd.put("ISWATER", "电费");
+		pd.put("ISCHANGE", "0");
 		String ISLOSS = pd.getString("ISLOSS");
-		if(ISLOSS != null && !"".equals(ISLOSS)){
-			pd.put("ISLOSS",1);
-		}else {
+		if(ISLOSS == null && "".equals(ISLOSS)){
 			pd.put("ISLOSS",0);
 		}
 		expenseService.save(pd);
@@ -70,10 +69,9 @@ public class ExpenseController extends BaseController {
 		pd = this.getPageData();
 		pd.put("EXPENSE_ID", this.get32UUID());	//主键
 		pd.put("ISWATER", "水费");
+		pd.put("ISCHANGE", "0");
 		String ISLOSS = pd.getString("ISLOSS");
-		if(ISLOSS != null && !"".equals(ISLOSS)){
-			pd.put("ISLOSS",1);
-		}else {
+		if(ISLOSS == null && "".equals(ISLOSS)){
 			pd.put("ISLOSS",0);
 		}
 		expenseService.save(pd);
@@ -86,6 +84,12 @@ public class ExpenseController extends BaseController {
 		PageData pd = new PageData();
 		Map<String, Object> json = new HashMap<String, Object>();
 		pd = this.getPageData();
+		PageData pd1 = expenseService.findById(pd);
+		if(pd1.getString("N_EXPENSE_ID") != null && !"".equals(pd1.getString("N_EXPENSE_ID"))){
+			pd.put("ISCHANGE", "1");
+		}else {
+			pd.put("ISCHANGE", "0");
+		}
 		expenseService.edit(pd);
 		return json;
 	}
@@ -190,6 +194,7 @@ public class ExpenseController extends BaseController {
 		if(LINVOICE_ID == null || "".equals(LINVOICE_ID)){
 			return  json;
 		}else {
+			//-------修改----------
 			pd.put("ISCHANGE","1"); //0为新增，1为修改，2已经被添加到后期且无修改
 			pd.put("INVOICE_ID",LINVOICE_ID);
 			listEl = expenseService.listElByInvoiceId(pd);//搜索上个月的电费项是否有修改
@@ -197,21 +202,17 @@ public class ExpenseController extends BaseController {
 			if(listWa.size() > 0) { // 水费有修改数据
 				PageData wPd = new PageData();
 				for (int i = 0; i < listWa.size(); i++) {
-					wPd.put("EXPENSE_ID", this.get32UUID());
+					wPd.put("EXPENSE_ID", listWa.get(i).getString("N_EXPENSE_ID"));
 					wPd.put("LASTMONTH", listWa.get(i).getString("THISMONTH"));
 					wPd.put("RATIO", listWa.get(i).getString("RATIO"));
 					wPd.put("FVALUE", listWa.get(i).getString("FVALUE"));
 					wPd.put("PRICE", listWa.get(i).getString("PRICE"));
+					//wPd.put("ISCHANGE", "1");
 					wPd.put("ISLOSS",Integer.parseInt(listWa.get(i).get("ISLOSS").toString()));
 					wPd.put("METERNUM", listWa.get(i).getString("METERNUM"));
-					wPd.put("ISWATER", listWa.get(i).getString("ISWATER"));
-					wPd.put("NUMBER", "0");
-					wPd.put("TOTAL", "0");
-					wPd.put("REALITY_TOTAL", "0");
-					wPd.put("INVOICE_ID", INVOICE_ID);
-					wPd.put("CONTRACT_ID", CONTRACT_ID);
 					expenseService.editThisMonth(wPd);
 					sPd.put("EXPENSE_ID",listWa.get(i).getString("EXPENSE_ID"));
+					sPd.put("N_EXPENSE_ID",wPd.getString("EXPENSE_ID"));
 					sPd.put("ISCHANGE","2");
 					expenseService.editState(sPd);
 				}
@@ -219,27 +220,24 @@ public class ExpenseController extends BaseController {
 			if(listEl.size() > 0){ // 上个月有修改电费数据
 				PageData ePd = new PageData();
 				for (int i = 0; i < listEl.size(); i++) {
-					ePd.put("EXPENSE_ID", this.get32UUID());
+					ePd.put("EXPENSE_ID", listEl.get(i).getString("N_EXPENSE_ID"));
 					ePd.put("LASTMONTH", listEl.get(i).getString("THISMONTH"));
 					ePd.put("RATIO", listEl.get(i).getString("RATIO"));
 					ePd.put("FVALUE", listEl.get(i).getString("FVALUE"));
 					ePd.put("PRICE", listEl.get(i).getString("PRICE"));
+					//ePd.put("ISCHANGE", "1");
 					ePd.put("ISLOSS", Integer.parseInt(listEl.get(i).get("ISLOSS").toString()));
 					ePd.put("METERNUM", listEl.get(i).getString("METERNUM"));
-					ePd.put("ISWATER", listEl.get(i).getString("ISWATER"));
-					ePd.put("NUMBER", "0");
-					ePd.put("TOTAL", "0");
-					ePd.put("REALITY_TOTAL", "0");
-					ePd.put("ISCHANGE", "2");
-					ePd.put("INVOICE_ID", INVOICE_ID);
-					ePd.put("CONTRACT_ID", CONTRACT_ID);
-					expenseService.save(ePd);
+					expenseService.editThisMonth(ePd);
 					sPd.put("EXPENSE_ID",listEl.get(i).getString("EXPENSE_ID"));
+					sPd.put("N_EXPENSE_ID",ePd.getString("EXPENSE_ID"));
 					sPd.put("ISCHANGE","2");
 					expenseService.editState(sPd);
 				}
 			}
+			//-------新增----------
 			pd.put("ISCHANGE","0"); //0为新增，1为修改，2已经被添加到后期且无修改
+			pd.put("INVOICE_ID",LINVOICE_ID);
 			listEl = expenseService.listElByInvoiceId(pd);//搜索上个月的电费项是否新增
 			listWa = expenseService.listWaByInvoiceId(pd);//搜索上个月的水费项是否新增
 			if(listEl.size() > 0){ // 上个月有新增电费数据
@@ -255,8 +253,9 @@ public class ExpenseController extends BaseController {
 					ePd.put("ISWATER", listEl.get(i).getString("ISWATER"));
 					ePd.put("NUMBER", "0");
 					ePd.put("TOTAL", "0");
+					ePd.put("ISCHANGE", "0");
 					ePd.put("REALITY_TOTAL", "0");
-					ePd.put("ISCHANGE", "2");
+					ePd.put("ISCHANGE", "0");
 					ePd.put("INVOICE_ID", INVOICE_ID);
 					ePd.put("CONTRACT_ID", CONTRACT_ID);
 					expenseService.save(ePd);
@@ -279,6 +278,7 @@ public class ExpenseController extends BaseController {
 					wPd.put("ISWATER", listWa.get(i).getString("ISWATER"));
 					wPd.put("NUMBER", "0");
 					wPd.put("TOTAL", "0");
+					wPd.put("ISCHANGE", "0");
 					wPd.put("REALITY_TOTAL", "0");
 					wPd.put("INVOICE_ID", INVOICE_ID);
 					wPd.put("CONTRACT_ID", CONTRACT_ID);
@@ -289,7 +289,6 @@ public class ExpenseController extends BaseController {
 					expenseService.editState(sPd);
 				}
 			}
-
 		}
 		return json;
 	}

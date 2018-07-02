@@ -83,7 +83,11 @@ public class UtilitiesStateController extends BaseController {
 		PageData pd = new PageData();
 		Map<String, Object> json = new HashMap<String, Object>();
 		pd = this.getPageData();
+		if("".equals(pd.getString("RECEIVABLE")) || pd.getString("RECEIVABLE") == null){
+			pd.put("RECEIVABLE","");
+		}
 		pd.put("UTILITIESSTATE_ID", this.get32UUID());	//主键
+		pd.put("NOT_RECEIVABLE",pd.getString("RECEIVABLE"));
 		utilitiesstateService.save(pd);
 		return json;
 	}

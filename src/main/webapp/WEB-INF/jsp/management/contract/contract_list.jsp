@@ -175,8 +175,8 @@
                                                     <td class='center'>${var.CONTRACTNAME}</td>
                                                     <td class='center'>${var.CONTRACTNUM}</td>
                                                     <td class='center'>${var.CONTRACTOFNAME}</td>
-                                                    <td class='center'>${var.CLIENT}</td>
-                                                    <td class='center'>${var.TELEPHONE}</td>
+                                                    <td class='center'>${var.FNAME}</td>
+                                                    <td class='center'>${var.PHONENUMBER}</td>
                                                     <td class='center'>${var.PROJECT}</td>
                                                     <td class='center'>${var.CONTRACTPIC}</td>
                                                    <%-- <c:if test="${var.ISSTAMPDUTY == 1 }">

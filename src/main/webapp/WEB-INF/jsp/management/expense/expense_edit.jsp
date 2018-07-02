@@ -252,15 +252,15 @@
 							<tr class="success">
 								<th  class="center"><label>滞纳金:</label></th>
 								<th  class="center"><input type="number" style="width: 150px;height: 31px" onchange="odAndRec()"
-														   class="input-text"  name="OVERDUE" value="${utiPd.OVERDUENUM}"
+														   class="input-text"  name="OVERDUE" value="${utiPd.OVERDUENUM}" readonly
 														   id="OVERDUE"></th>
 
 								<th class="center"><label>实际收款时间(水电费)：</label></th>
 								<th class="center"><input type="date" style="width: 150px;height: 31px" value="${utiPd.RECEIVABL_PAYTIME}"
-											class="input-text"  name="RECEIVABL_PAYTIME" onchange="rece_rea()"
+											class="input-text"  name="RECEIVABL_PAYTIME" onchange="rece_rea()" readonly
 											id="RECEIVABL_PAYTIME"></th>
 								<th class="center"><label>实际收款金额(水电费)：</label></th>
-								<th class="center"><input type="number" style="width: 150px"  onclick="odAndRec()"
+								<th class="center"><input type="number" style="width: 150px"  onclick="odAndRec()" readonly
 														  class="input-text"  name="RECEIVABLE_REALITY" value="${utiPd.RECEIVABLE_REALITY}"
 														  id="RECEIVABLE_REALITY"></th>
 
@@ -626,7 +626,7 @@
 				cache: false,
 				success: function (data) {
 					//alert(uuid_var);
-					//window.location.reload();
+					window.location.reload();
 				}
 			});
 		}
@@ -667,7 +667,7 @@
 				cache: false,
 				success: function (data) {
 					//alert(uuid_var);
-					//window.location.reload();
+					window.location.reload();
 				}
 			});
 		}

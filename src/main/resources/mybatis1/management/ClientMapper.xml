@@ -14,6 +14,7 @@
 		FITEMID,	
 		FPARENTID,	
 		FUNIT,	
+		PHONENUMBER,	
 		CLIENT_ID
 	</sql>
 	
@@ -24,6 +25,7 @@
 		#{FITEMID},	
 		#{FPARENTID},	
 		#{FUNIT},	
+		#{PHONENUMBER},	
 		#{CLIENT_ID}
 	</sql>
 	
@@ -56,6 +58,7 @@
 			FITEMID = #{FITEMID},
 			FPARENTID = #{FPARENTID},
 			FUNIT = #{FUNIT},
+			PHONENUMBER = #{PHONENUMBER},
 		CLIENT_ID = CLIENT_ID
 		where 
 		CLIENT_ID = #{CLIENT_ID}

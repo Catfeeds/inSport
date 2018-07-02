@@ -52,6 +52,10 @@
 								<td><input type="text" name="FUNIT" id="FUNIT" value="${pd.FUNIT}" maxlength="255" placeholder="这里输入单位/公司" title="单位/公司" style="width:98%;"/></td>
 							</tr>
 							<tr>
+								<td style="width:75px;text-align: right;padding-top: 13px;">联系电话:</td>
+								<td><input type="text" name="PHONENUMBER" id="PHONENUMBER" value="${pd.PHONENUMBER}" maxlength="255" placeholder="这里输入联系电话" title="联系电话" style="width:98%;"/></td>
+							</tr>
+							<tr>
 								<td style="text-align: center;" colspan="10">
 									<a class="btn btn-mini btn-primary" onclick="save();">保存</a>
 									<a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
@@ -134,6 +138,16 @@
 		            time:2
 		        });
 				$("#FUNIT").focus();
+			return false;
+			}
+			if($("#PHONENUMBER").val()==""){
+				$("#PHONENUMBER").tips({
+					side:3,
+		            msg:'请输入联系电话',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("#PHONENUMBER").focus();
 			return false;
 			}
 			$("#Form").submit();
