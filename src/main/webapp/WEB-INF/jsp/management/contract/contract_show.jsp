@@ -47,13 +47,21 @@
 								<tbody>
 								<tr class="warning">
 									<th colspan="6">
-										<c:if test="${pd.CONTRACTNUM_T != '' && pd.CONTRACTNUM_T != null}">
-											<label style="margin-left: 30px">关联合同：</label>已关联合同
-											<a onclick="show_contract('${pd.CONTRACT_ID_T}')">《${pd.CONTRACTNUM_T}》</a>
-										</c:if>
-										<c:if test="${pd.CONTRACTNUM_T == '' || pd.CONTRACTNUM_T == null}">
+										<c:choose>
+										<c:when test="${not empty listRelevance}">
+											<label class="nav-search">已关联合同
+												<c:forEach items="${listRelevance}" var="var" varStatus="vs">
+													<a onclick="show_contract('${var.CONTRACT_ID}')">《${var.CONTRACTNUM}》</a>
+												</c:forEach>
+											</label>
+											<a style="margin-left: 10px" class="btn btn-xs" onclick="toRelevance('${pd.CONTRACT_ID}')">
+												<i class="ace-icon fa fa-exchange bigger-110 nav-search-icon yellow"></i>修改关联
+											</a>
+										</c:when>
+										<c:otherwise>
 											<label style="margin-left: 30px">关联合同：</label>无关联合同
-										</c:if>
+										</c:otherwise>
+										</c:choose>
 									</th>
 								</tr>
 								<tr class="warning">
@@ -375,6 +383,25 @@
 <script src="static/dist/jquery.magnify.js"></script>
 <script type="text/javascript">
 	$(top.hangge());
+
+	function toRelevance(CONTRACT_ID){
+		top.jzts();
+		var diag = new top.Dialog();
+		diag.Drag = true;
+		diag.Title = "关联合同";
+		diag.URL = '<%=basePath%>contract/toRelevance?CONTRACT_ID='+CONTRACT_ID;
+		diag.Width = window.innerWidth * 0.9;
+		diag.Height = window.innerWidth * 0.9;
+		diag.Modal = true;				//有无遮罩窗口
+		diag.ShowMaxButton = true;	//最大化按钮
+		diag.ShowMinButton = true;		//最小化按钮
+		diag.CancelEvent = function () { //关闭事件
+			//tosearch();
+			diag.close();
+			window.location.reload();
+		};
+		diag.show();
+	}
 
 	function show_contract(CONTRACT_ID){
 		top.jzts();

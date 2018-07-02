@@ -69,7 +69,10 @@ public class ContractService implements ContractManager{
 	public List<PageData> listAll(PageData pd)throws Exception{
 		return (List<PageData>)dao.findForList("ContractMapper.listAll", pd);
 	}
-	
+
+	public List<PageData> listRelevance(String[] ArrayDATA_IDS)throws Exception{
+		return (List<PageData>)dao.findForList("ContractMapper.listRelevance", ArrayDATA_IDS);
+	}
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

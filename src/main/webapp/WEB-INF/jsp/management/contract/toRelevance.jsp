@@ -2,6 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://"
@@ -71,6 +72,7 @@
 
                         <!-- 检索  -->
                         <form action="contract/toRelevance.do" method="post" name="Form" id="Form">
+                            <input type="hidden" name="CONTRACT_ID" id="CONTRACT_ID" value="${pd.CONTRACT_ID}"/>
                             <table style="margin-top:5px;">
                                 <tr>
                                     <td style="margin-left: 10px">
@@ -78,12 +80,13 @@
 										<span class="input-icon">
 											<input type="text" placeholder="这里输入关键词" class="nav-search-input"
                                                    id="nav-search-input" autocomplete="off" name="CONTRACTNUM"
-                                                   value="${pd.CONTRACTNUM }" placeholder="这里输入关键词"/>
+                                                   <%--value="${pd.CONTRACTNUM}" --%>placeholder="这里输入关键词"/>
 											<i class="ace-icon fa fa-search nav-search-icon"></i>
                                            <%-- <input type="hidden" value="${pd.USERNAME}" name="USERNAME" id="USERNAME" />--%>
 										</span>
                                         </div>
                                     </td>
+                                    <c:set var="RELEVANCE_ID" value="${pd.RELEVANCE_ID}"/>
                                     <c:if test="${isDept  == 1}">
                                         <td style="padding-left:12px;">
                                             <label style="margin-top: 5px">部门:</label>
@@ -161,11 +164,22 @@
                                                     <td class='center'>${var.CLIENT}</td>
                                                     <td class='center'>${var.TELEPHONE}</td>
                                                     <td class='center'>${var.PROJECT}</td>
+
                                                     <td class="center">
-                                                        <a class="btn btn-xs btn-success" title="关联合同"
-                                                           onclick="relevance('${pd.CONTRACT_ID}','${var.CONTRACT_ID}')">
-                                                            <i class="ace-icon fa  fa-exchange bigger-120" title="关联合同"></i>
-                                                        </a>
+                                                        <c:choose>
+                                                            <c:when test="${fn:contains(RELEVANCE_ID,var.CONTRACT_ID)}">
+                                                                <a class="btn btn-xs btn-danger" title="解除关联"
+                                                                   onclick="dontrelevance('${pd.CONTRACT_ID}','${var.CONTRACT_ID}')">
+                                                                    <i class="ace-icon fa fa-bolt bigger-120" title="解除关联">   解除关联</i>
+                                                                </a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <a class="btn btn-xs btn-success" title="关联合同"
+                                                                   onclick="relevance('${pd.CONTRACT_ID}','${var.CONTRACT_ID}')">
+                                                                    <i class="ace-icon fa  fa-exchange bigger-120" title="关联合同">关联合同</i>
+                                                                </a>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </td>
                                                 </tr>
 
@@ -250,10 +264,30 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
+    
+    function dontrelevance(CONTRACT_ID_F,CONTRACT_ID_T) {
+        $.ajax({
+            type: "POST",
+            url: '<%=basePath%>contract/dontrelevance',
+            async: false,
+            data: {
+                CONTRACT_ID_F : CONTRACT_ID_F,//原合同id
+                CONTRACT_ID_T : CONTRACT_ID_T//被关联合同id
+            },
+            dataType: 'json',
+            //beforeSend: validateData,
+            cache: false,
+            success: function (data) {
+                alert(data.msg);
+                tosearch();
+                //top.Dialog.close();
+            }
+        });
+    }
 
     //关联
     function relevance(CONTRACT_ID_F,CONTRACT_ID_T) {
-        $.ajax({
+       $.ajax({
             type: "POST",
             url: '<%=basePath%>contract/relevance',
             async: false,
@@ -265,10 +299,47 @@
             //beforeSend: validateData,
             cache: false,
             success: function (data) {
-                alert("关联成功!!");
-                top.Dialog.close();
+
+                alert(data.msg);
+                tosearch();
+                //top.Dialog.close();
             }
         });
+    }
+
+    function edit(){
+        var str = [];
+        for(var i=0;i < document.getElementsByName('ids').length;i++){
+            if(document.getElementsByName('ids')[i].checked){
+                str.push(document.getElementsByName('ids')[i].value);
+            }
+        }
+        if(str.length < 1){
+            alert("您没有选择任何内容!");
+            return false;
+        }else if(str.length > 1){
+            alert("您的选择内容必须要单项!");
+            return false;
+        }else{
+            var Id = str[0];
+            top.jzts();
+            var diag = new top.Dialog();
+            diag.Drag=true;
+            diag.Title ="编辑";
+            diag.URL = '<%=basePath%>rec_collection/goEdit.do?REC_COLLECTION_ID='+Id;
+            diag.Width = 450;
+            diag.Height = 355;
+            diag.Modal = true;				//有无遮罩窗口
+            diag. ShowMaxButton = true;	//最大化按钮
+            diag.ShowMinButton = true;		//最小化按钮
+            diag.CancelEvent = function(){ //关闭事件
+                if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
+                    tosearch();
+                }
+                diag.close();
+            };
+            diag.show();
+        }
     }
 
     //图片预览效果

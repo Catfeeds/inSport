@@ -406,13 +406,6 @@ public class ContractController extends BaseController {
 			if(pd.getString("ISEW") == null || "".equals(pd.getString("ISEW"))){
 				pd2.put("ISEW","0");
 			}
-			/*pd2.put("PRINCIPAL",pd.getString("PRINCIPAL"));
-			pd2.put("RECEIVABLE",pd.get("RECEIVABLE").toString());
-			pd2.put("PAYERNAME",pd.getString("PAYERNAME"));
-			pd2.put("ISPAY",1);
-			pd2.put("PAYTIME",pd.getString("PAYTIME"));
-			pd2.put("RECEIVABLE_REALITY",pd.get("RECEIVABLE_REALITY").toString());
-			pd2.put("RECEIVABL_PAYTIME",pd.getString("RECEIVABL_PAYTIME"));*/
 			pd2.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
 			pd2.put("OVERDUE",pd.getString("OVERDUE"));
 			pd2.put("ISEW",pd.getString("ISEW"));
@@ -508,6 +501,8 @@ public class ContractController extends BaseController {
 			pd.put("keywords", keywords.trim());
 		}
 		page.setPd(pd);
+		//搜索已关联的合同
+		pd = contractService.findById(pd);
 		List<PageData> varList  = contractService.list(page);	//列出Contract列表
 		mv.setViewName("management/contract/toRelevance");
 		mv.addObject("varList", varList);
@@ -515,15 +510,105 @@ public class ContractController extends BaseController {
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
 		return mv;
 	}
+
+	//关联合同
 	@RequestMapping(value = "/relevance")
 	@ResponseBody
 	public Map<String, Object> relevance(Page page)throws Exception {
 		PageData pd = new PageData();
 		Map<String, Object> json = new HashMap<String, Object>();
 		pd = this.getPageData();
+		String CONTRACT_ID_F = pd.getString("CONTRACT_ID_F");
+		String CONTRACT_ID_T = pd.getString("CONTRACT_ID_T");
+		pd.put("CONTRACT_ID",pd.getString("CONTRACT_ID_F"));
+		PageData pd1 = contractService.findById(pd);
+		String RELEVANCE_ID = pd1.getString("RELEVANCE_ID");
+		String[] result1 = RELEVANCE_ID.split(",");
+		for (int i = 0; i < result1.length; i++) {
+			if(pd.getString("CONTRACT_ID_T").equals(result1[i].toString())){
+				json.put("msg","此合同已关联无需再关联！！");
+				return json;
+			}
+		}
+		if(pd1.getString("RELEVANCE_ID") != null && !"".equals(pd1.getString("RELEVANCE_ID"))){
+			pd.put("CONTRACT_ID_T",pd1.getString("RELEVANCE_ID")+","+pd.getString("CONTRACT_ID_T"));
+		}
+		//用于双向关联
+		PageData pd2 = new PageData();
+		pd2.put("CONTRACT_ID_F",CONTRACT_ID_T);
+		pd2.put("CONTRACT_ID_T",CONTRACT_ID_F);
+		contractService.editRelevance(pd2);
 		contractService.editRelevance(pd);
+		json.put("msg","关联成功！！");
 		return json;
 	}
+
+	//解除关联合同
+	@RequestMapping(value = "/dontrelevance")
+	@ResponseBody
+	public Map<String, Object> dontrelevance(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		String CONTRACT_ID_F = pd.getString("CONTRACT_ID_F"); //主动解绑id
+		String CONTRACT_ID_T = pd.getString("CONTRACT_ID_T"); //需要解绑id
+		//主动解绑
+		pd.put("CONTRACT_ID",CONTRACT_ID_F);
+		PageData pd1 = contractService.findById(pd);
+		String RELEVANCE_ID = pd1.getString("RELEVANCE_ID");
+		String[] result1 = RELEVANCE_ID.split(",");
+		if(result1.length < 2){
+			pd.put("CONTRACT_ID_F",CONTRACT_ID_F);
+			pd.put("CONTRACT_ID_T","");
+			contractService.editRelevance(pd);
+		}else {
+			List<String> list = new ArrayList<String>();
+			for (int i=0; i<result1.length; i++) {
+				if(!CONTRACT_ID_T.equals(result1[i])) {
+					list.add(result1[i]);
+				}
+			}
+			String[] newStr =  list.toArray(new String[0]);
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < newStr.length; i++) {
+				sb. append(newStr[i]);
+			}
+			String s = sb.toString();
+			pd.put("CONTRACT_ID_F",CONTRACT_ID_F);
+			pd.put("CONTRACT_ID_T",s);
+			contractService.editRelevance(pd);
+		}
+		//被动解绑
+		pd.put("CONTRACT_ID",CONTRACT_ID_T);
+		pd1 = contractService.findById(pd);
+		RELEVANCE_ID = pd1.getString("RELEVANCE_ID");
+		result1 = RELEVANCE_ID.split(",");
+		if(result1.length < 2){
+			pd.put("CONTRACT_ID_F",CONTRACT_ID_T);
+			pd.put("CONTRACT_ID_T","");
+			contractService.editRelevance(pd);
+		}else {
+			List<String> list = new ArrayList<String>();
+			for (int i=0; i<result1.length; i++) {
+				if(!CONTRACT_ID_F.equals(result1[i])) {
+					list.add(result1[i]);
+				}
+			}
+			String[] newStr =  list.toArray(new String[0]);
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < newStr.length; i++) {
+				sb. append(newStr[i]);
+			}
+			String s = sb.toString();
+			pd.put("CONTRACT_ID_F",CONTRACT_ID_T);
+			pd.put("CONTRACT_ID_T",s);
+			contractService.editRelevance(pd);
+		}
+		json.put("msg","解除关联！！");
+		return json;
+	}
+
+
 	/**去新增页面
 	 * @param
 	 * @throws Exception
@@ -568,9 +653,13 @@ public class ContractController extends BaseController {
 		List<PageData> listDepositInfo = depositinfoService.listByContractId(pd);
 		List<PageData> listInvoice = invoiceService.listByContractId(pd);
 		List<PageData> listPTime = proceedstimeService.listByContractId(pd);
+		String RELEVANCE_ID = pd.getString("RELEVANCE_ID");
+		String[] result1 = RELEVANCE_ID.split(",");
+		List<PageData> listRelevance = contractService.listRelevance(result1);
 		PageData pd1 = paymentcontractService.findByContractId(pd);
 		PageData pd2 = proceedscontractService.findByContractId(pd);
 		mv.setViewName("management/contract/contract_show");
+		mv.addObject("listRelevance", listRelevance);
 		mv.addObject("listInvoice", listInvoice);
 		mv.addObject("listDepositInfo", listDepositInfo);
 		mv.addObject("listPTime", listPTime);
@@ -599,7 +688,10 @@ public class ContractController extends BaseController {
 		List<PageData> listMode = modeService.listAll(pd);
 		List<PageData> listOperator = operatorService.listAll(pd);
 		List<PageData> listClients = clientService.listAll(pd);
-		//System.out.println(listClients);
+		//搜索已关联的合同
+		String RELEVANCE_ID = pd.getString("RELEVANCE_ID");
+		String[] result1 = RELEVANCE_ID.split(",");
+		List<PageData> listRelevance = contractService.listRelevance(result1);
 		PageData pd1 = paymentcontractService.findByContractId(pd);
 		PageData pd2 = proceedscontractService.findByContractId(pd);
 		//PageData pd3 = officecontractService.findByContractId(pd);
@@ -623,6 +715,7 @@ public class ContractController extends BaseController {
 		mv.addObject("listPTime", listPTime);
 		mv.addObject("listProceed", listProceed);
 		mv.addObject("listClients", listClients);
+		mv.addObject("listRelevance", listRelevance);
 		mv.addObject("pd", pd);
 		mv.addObject("pd1", pd1);
 		mv.addObject("pd2", pd2);

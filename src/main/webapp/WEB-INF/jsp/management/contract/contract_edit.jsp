@@ -44,22 +44,28 @@
 						</c:forEach>
 					</select>
 					<label style="margin-left: 30px">关联合同：</label>
-					<c:if test="${pd.RELEVANCE_ID != null && pd.RELEVANCE_ID != ''}">
-						<label class="nav-search">已关联合同  《${pd.CONTRACTNUM_T}》</label>
-						<a style="margin-left: 10px" class="btn btn-xs" onclick="toRelevance('${pd.CONTRACT_ID}')">
-							<i class="ace-icon fa fa-exchange bigger-110 nav-search-icon yellow"></i>修改关联
-						</a>
-					</c:if>
-					<c:if test="${pd.RELEVANCE_ID == null || pd.RELEVANCE_ID == ''}">
-						<label class="nav-search">
-						<span class="input-icon">
-						<input type="text" placeholder="这里输入关键词" class="nav-search-input"
-							   id="nav-search-input" autocomplete="off" name="RELEVANCE_ID" onclick="toRelevance('${pd.CONTRACT_ID}')"
-							   value="" placeholder="搜索合同进行关联"/>
-						<i class="ace-icon fa fa-search nav-search-icon"></i>
-						</span>
-						</label>
-					</c:if>
+					<c:choose>
+						<c:when test="${not empty listRelevance}">
+							<label class="nav-search">已关联合同
+								<c:forEach items="${listRelevance}" var="var" varStatus="vs">
+									<a onclick="show_contract('${var.CONTRACT_ID}')">《${var.CONTRACTNUM}》</a>
+								</c:forEach>
+							</label>
+							<a style="margin-left: 10px" class="btn btn-xs" onclick="toRelevance('${pd.CONTRACT_ID}')">
+								<i class="ace-icon fa fa-exchange bigger-110 nav-search-icon yellow"></i>修改关联
+							</a>
+						</c:when>
+						<c:otherwise>
+							<label class="nav-search">
+								<span class="input-icon">
+								<input type="text" placeholder="这里输入关键词" class="nav-search-input"
+									   id="nav-search-input" autocomplete="off" name="RELEVANCE_ID" onclick="toRelevance('${pd.CONTRACT_ID}')"
+									   value="" placeholder="搜索合同进行关联"/>
+								<i class="ace-icon fa fa-search nav-search-icon"></i>
+								</span>
+							</label>
+						</c:otherwise>
+					</c:choose>
 					<!-- </td> -->
 				</div>
 				<br>
@@ -1576,7 +1582,23 @@
 		$("#zhongxin2").show();
 	}
 
-
+	function show_contract(CONTRACT_ID){
+		top.jzts();
+		var diag = new top.Dialog();
+		diag.Drag = true;
+		diag.Title = "查阅合同信息";
+		diag.URL = '<%=basePath%>contract/toShowContrct.do?CONTRACT_ID=' + CONTRACT_ID;
+		diag.Width = window.innerWidth * 1.2;
+		diag.Height = window.innerHeight * 1.2;
+		diag.Modal = true;				//有无遮罩窗口
+		diag.ShowMaxButton = true;	//最大化按钮
+		diag.ShowMinButton = true;		//最小化按钮
+		diag.CancelEvent = function () { //关闭事件
+			//tosearch();
+			diag.close();
+		};
+		diag.show();
+	}
 </script>
 
 
