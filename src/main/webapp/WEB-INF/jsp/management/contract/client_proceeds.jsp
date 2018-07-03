@@ -60,7 +60,7 @@
 										</th>
 										<th><label style="color: red">*</label><label>收款方式：</label></th>
 										<th >
-											<select name="FSOURCEID" id="FSOURCEID" data-placeholder=""
+											<select name="MODE" id="MODE" data-placeholder=""
 													style="vertical-align:top;width: 150px;" >
 												<option value="信用卡" name="信用卡">信用卡</option>
 												<option value="现金" name="现金">现金</option>
@@ -152,7 +152,7 @@
 				listNotInvoice.forEach(function(value,index,array){
 					tr += '<tr class="success center">' ;
 					tr += '<td><label>'+count+'</label></td>';
-					tr += '<td><label>应收款</label></td>';
+					tr += '<td><label id="ty'+value.INVOICE_ID+'">应收款</label></td>';
 					tr += '<td><label id="r'+value.INVOICE_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
 					tr += '<td><label id="pt'+value.INVOICE_ID+'">'+value.PAYTIME+'</label></td>';
 					tr += '<td><label id="od'+value.INVOICE_ID+'">'+value.OVERDUE_N+'</label></td>';
@@ -165,7 +165,8 @@
 							' class="input-text" id="nr'+value.INVOICE_ID+'"></label></td>';
 					tr += '<td><label id="np'+value.INVOICE_ID+'"></label></td>';
 					tr += '<td><label >' +
-							'<a style="margin-left: 10px" class="btn btn-success btn-xs" onclick="addItemDetail()">' +
+							'<a style="margin-left: 10px" class="btn btn-success btn-xs" ' +
+							'onclick="record_Invoice(\''+value.INVOICE_ID+'\',\''+value.CONTRACT_ID+'\')">' +
 							'<i class="ace-icon fa fa-check-square-o bigger-110 nav-search-icon yellow"></i>' +
 							'</a></label></td>';
 					tr += '</tr>';
@@ -175,7 +176,7 @@
 				listNotUtili.forEach(function(value,index,array){
 					tr += '<tr class="info center">' ;
 					tr += '<td><label>'+count+'</label></td>';
-					tr += '<td><label>应收水电费</label></td>';
+					tr += '<td><label id="ty'+value.UTILITIESSTATE_ID+'">应收水电费</label></td>';
 					tr += '<td><label id="r'+value.UTILITIESSTATE_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
 					tr += '<td><label id="pt'+value.UTILITIESSTATE_ID+'">'+value.PAYTIME+'</label></td>';
 					tr += '<td><label id="od'+value.UTILITIESSTATE_ID+'">'+value.OVERDUE+'</label></td>';
@@ -188,14 +189,18 @@
 					tr += '<td><label><input type="number" style="width: 110px;" onchange="calNP(\''+value.UTILITIESSTATE_ID+'\')"' +
 							' class="input-text" id="nr'+value.UTILITIESSTATE_ID+'"></label></td>';
 					tr += '<td><label id="np'+value.UTILITIESSTATE_ID+'"></label></td>';
-					tr += '<td><label ></label></td>';
+					tr += '<td><label >' +
+							'<a style="margin-left: 10px" class="btn btn-success btn-xs" ' +
+							'onclick="record_Utili(\''+value.UTILITIESSTATE_ID+'\',\''+value.CONTRACT_ID+'\')">' +
+							'<i class="ace-icon fa fa-check-square-o bigger-110 nav-search-icon yellow"></i>' +
+							'</a></label></td>';
 					tr += '</tr>';
 					count ++ ;
 				});
 				listNotDeposit.forEach(function(value,index,array){
 					tr += '<tr class="warning center">' ;
 					tr += '<td><label>'+count+'</label></td>';
-					tr += '<td><label>应押金</label></td>';
+					tr += '<td><label id="ty'+value.DEPOSITINFO_ID+'">应押金</label></td>';
 					tr += '<td><label id="r'+value.DEPOSITINFO_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
 					tr += '<td><label id="pt'+value.DEPOSITINFO_ID+'">'+value.DWDEPOSITTIME+'</label></td>';
 					tr += '<td><label id="od'+value.DEPOSITINFO_ID+'">0</label></td>';
@@ -206,7 +211,11 @@
 					tr += '<td><label><input type="number" style="width: 110px;"  onchange="calNP(\''+value.DEPOSITINFO_ID+'\')" class="input-text"' +
 							' id="nr'+value.DEPOSITINFO_ID+'"></label></td>';
 					tr += '<td><label id="np'+value.DEPOSITINFO_ID+'"></label></td>';
-					tr += '<td><label ></label></td>';
+					tr += '<td><label >' +
+							'<a style="margin-left: 10px" class="btn btn-success btn-xs" ' +
+							'onclick="record_deposit(\''+value.DEPOSITINFO_ID+'\',\''+value.CONTRACT_ID+'\')">' +
+							'<i class="ace-icon fa fa-check-square-o bigger-110 nav-search-icon yellow"></i>' +
+							'</a></label></td>';
 					tr += '</tr>';
 					count ++ ;
 					//console.log(value);
@@ -220,6 +229,33 @@
 			}
 		});
 	});
+
+	//记录押金收款项
+	function record_deposit(DEPOSITINFO_ID,CONTRACT_ID) {
+		var RECEIVABLE = $("#r"+DEPOSITINFO_ID).text(); // 未收款
+		var NOT_RECEIVABLE = $("#np"+DEPOSITINFO_ID).text(); // 未收款
+		var DWDEPOSITTIME = $("#pt"+DEPOSITINFO_ID).text(); //应收时间
+		var OVERDUE = $("#od"+Id).text(); //滞纳金率
+		var RECEIVABL_PAYTIME = $("#rpt"+DEPOSITINFO_ID).text(); //本次收款时间
+		var OVERDUENUM = "0.00";  //滞纳金
+		var AMOUNT = $("#rr"+Id).text();  //应收总数
+		var RECEIVABLE_N = $("#nr"+Id).text();  //本次收款
+		var MODE = $("#MODE").val();  //付款方式
+		var TYPE = $("ty"+DEPOSITINFO_ID).text(); //类型
+		var PAYER = $("#CONTRACTOFNAME").val();  //付款方
+		var ITEMID = DEPOSITINFO_ID;  // 项目id
+		var CONTRACT_ID = CONTRACT_ID;  // 合同id
+	}
+
+	//记录发票收款项
+	function record_Invoice(INVOICE_ID,CONTRACT_ID) {
+
+	}
+
+	//记录水电收款项
+	function record_Utili(UTILITIESSTATE_ID,CONTRACT_ID) {
+
+	}
 
 	//当填写本次实际收款金额填写
 	function calNP(Id) {

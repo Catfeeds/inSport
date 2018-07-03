@@ -10,7 +10,7 @@
 	<!-- 字段 -->
 	<sql id="Field">
 		TYPE,	
-		CONTRACTID,	
+		CONTRACT_ID,
 		ITEMID,	
 		RECEIVABLE,	
 		OVERDUE,	
@@ -20,14 +20,15 @@
 		RECEIVABL_PAYTIME,	
 		RECEIVABL_EMPL,	
 		MODE,	
-		PAYER,	
+		PAYER,
+		AMOUNT,
 		PROCEEDS_RECORD_ID
 	</sql>
 	
 	<!-- 字段值 -->
 	<sql id="FieldValue">
 		#{TYPE},	
-		#{CONTRACTID},	
+		#{CONTRACT_ID},
 		#{ITEMID},	
 		#{RECEIVABLE},	
 		#{OVERDUE},	
@@ -37,7 +38,8 @@
 		#{RECEIVABL_PAYTIME},	
 		#{RECEIVABL_EMPL},	
 		#{MODE},	
-		#{PAYER},	
+		#{PAYER},
+		#{AMOUNT},
 		#{PROCEEDS_RECORD_ID}
 	</sql>
 	
@@ -66,7 +68,7 @@
 		<include refid="tableName"></include>
 		set 
 			TYPE = #{TYPE},
-			CONTRACTID = #{CONTRACTID},
+		CONTRACT_ID = #{CONTRACT_ID},
 			ITEMID = #{ITEMID},
 			RECEIVABLE = #{RECEIVABLE},
 			OVERDUE = #{OVERDUE},
