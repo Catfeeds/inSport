@@ -98,6 +98,7 @@ public class UtilitiesStateController extends BaseController {
 		PageData pd = new PageData();
 		Map<String, Object> json = new HashMap<String, Object>();
 		pd = this.getPageData();
+		pd.put("NOT_RECEIVABLE",pd.getString("RECEIVABLE"));
 		utilitiesstateService.edit(pd);
 		return json;
 	}

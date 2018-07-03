@@ -93,6 +93,7 @@ public class InvoiceController extends BaseController {
 		if(pd.getString("RECEIVABLE_REALITY") == null && "".equals(pd.getString("RECEIVABLE_REALITY"))){
 			pd.put("RECEIVABLE_REALITY","0");
 		}
+		pd.put("NOT_RECEIVABLE",pd.getString("RECEIVABLE"));
 		invoiceService.edit(pd);
 		return  json;
 	}

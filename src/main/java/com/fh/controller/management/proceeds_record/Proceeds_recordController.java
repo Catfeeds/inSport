@@ -9,6 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+
+import com.fh.service.management.depositinfo.DepositInfoManager;
+import com.fh.service.management.expense.ExpenseManager;
+import com.fh.service.management.invoice.InvoiceManager;
+import com.fh.service.management.utilitiesstate.UtilitiesStateManager;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -37,6 +42,18 @@ public class Proceeds_recordController extends BaseController {
 	String menuUrl = "proceeds_record/list.do"; //菜单地址(权限用)
 	@Resource(name="proceeds_recordService")
 	private Proceeds_recordManager proceeds_recordService;
+
+	@Resource(name="utilitiesstateService")
+	private UtilitiesStateManager utilitiesstateService;
+
+	@Resource(name="expenseService")
+	private ExpenseManager expenseService;
+
+	@Resource(name="invoiceService")
+	private InvoiceManager invoiceService;
+
+	@Resource(name="depositinfoService")
+	private DepositInfoManager depositinfoService;
 	
 	/**保存
 	 * @param
@@ -54,6 +71,83 @@ public class Proceeds_recordController extends BaseController {
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
+	}
+
+	@RequestMapping(value = "/record_deposit")
+	@ResponseBody
+	public Map<String, Object> record_deposit(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		pd.put("PROCEEDS_RECORD_ID", this.get32UUID());	//主键
+		pd.put("DEPOSITINFO_ID",pd.getString("ITEMID"));
+		pd.put("RECEIVABL_EMPL",Jurisdiction.getUsername());
+		PageData depd = depositinfoService.findById(pd);
+		depd.put("REALITYTIME",pd.getString("RECEIVABL_PAYTIME"));
+		if(depd.get("REALITY").toString() == null || "".equals(depd.get("REALITY").toString())){
+			depd.put("REALITY","0.00");
+		}
+		Double REALITY = Double.parseDouble(depd.get("REALITY").toString())+Double.parseDouble(pd.get("RECEIVABLE_N").toString());
+		depd.put("REALITY",REALITY.toString());
+		depd.put("NOT_RECEIVABLE",pd.getString("NOT_RECEIVABLE"));
+		depositinfoService.edit(depd);
+		proceeds_recordService.save(pd);
+		return  json;
+	}
+
+	@RequestMapping(value = "/record_Utili")
+	@ResponseBody
+	public Map<String, Object> record_Utili(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		pd.put("PROCEEDS_RECORD_ID", this.get32UUID());	//主键
+		pd.put("UTILITIESSTATE_ID",pd.getString("ITEMID"));
+		pd.put("RECEIVABL_EMPL",Jurisdiction.getUsername());
+		PageData utpd = utilitiesstateService.findById(pd);
+		utpd.put("RECEIVABL_PAYTIME",pd.getString("RECEIVABL_PAYTIME"));
+		if(utpd.get("RECEIVABLE_REALITY").toString() == null || "".equals(utpd.get("RECEIVABLE_REALITY").toString())){
+			utpd.put("RECEIVABLE_REALITY","0.00");
+		}
+		if(utpd.get("OVERDUENUM").toString() == null || "".equals(utpd.get("OVERDUENUM").toString())){
+			utpd.put("OVERDUENUM","0.00");
+		}
+		Double RECEIVABLE_REALITY = Double.parseDouble(utpd.get("RECEIVABLE_REALITY").toString())+Double.parseDouble(pd.get("RECEIVABLE_N").toString());
+		Double OVERDUENUM = Double.parseDouble(utpd.get("OVERDUENUM").toString())+Double.parseDouble(pd.get("OVERDUENUM").toString());
+		utpd.put("RECEIVABLE_REALITY",RECEIVABLE_REALITY.toString());
+		utpd.put("NOT_RECEIVABLE",pd.getString("NOT_RECEIVABLE"));
+		utpd.put("OVERDUENUM",OVERDUENUM);
+		utilitiesstateService.edit(utpd);
+		proceeds_recordService.save(pd);
+		return  json;
+	}
+
+	@RequestMapping(value = "/record_Invoice")
+	@ResponseBody
+	public Map<String, Object> record_Invoice(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		pd.put("PROCEEDS_RECORD_ID", this.get32UUID());	//主键
+
+		pd.put("INVOICE_ID",pd.getString("ITEMID"));
+		pd.put("RECEIVABL_EMPL",Jurisdiction.getUsername());
+		PageData invpd = invoiceService.findById(pd);
+		invpd.put("RECEIVABL_PAYTIME",pd.getString("RECEIVABL_PAYTIME"));
+		if(invpd.get("RECEIVABLE_REALITY").toString() == null || "".equals(invpd.get("RECEIVABLE_REALITY").toString())){
+			invpd.put("RECEIVABLE_REALITY","0.00");
+		}
+		if(invpd.get("OVERDUE").toString() == null || "".equals(invpd.get("OVERDUE").toString())){
+			invpd.put("OVERDUE","0.00");
+		}
+		Double RECEIVABLE_REALITY = Double.parseDouble(invpd.get("RECEIVABLE_REALITY").toString())+Double.parseDouble(pd.get("RECEIVABLE_N").toString());
+		Double OVERDUENUM = Double.parseDouble(invpd.get("OVERDUE").toString())+Double.parseDouble(pd.get("OVERDUENUM").toString());
+		invpd.put("RECEIVABLE_REALITY",RECEIVABLE_REALITY.toString());
+		invpd.put("NOT_RECEIVABLE",pd.getString("NOT_RECEIVABLE"));
+		invpd.put("OVERDUE",OVERDUENUM);
+		invoiceService.edit(invpd);
+		proceeds_recordService.save(pd);
+		return  json;
 	}
 	
 	/**删除

@@ -62,17 +62,17 @@
 										<th >
 											<select name="MODE" id="MODE" data-placeholder=""
 													style="vertical-align:top;width: 150px;" >
-												<option value="信用卡" name="信用卡">信用卡</option>
 												<option value="现金" name="现金">现金</option>
 												<option value="支票" name="支票">支票</option>
 												<option value="转账" name="转账">转账</option>
+												<option value="信用卡" name="信用卡">信用卡</option>
 											</select>
 										</th>
 										<th ><label style="color: red">*</label><label>金额合计：</label></th>
 										<th  >
-											<input type="text" style="width: 150px" value="${pd.FOPPNAME}"
-												   class="input-text"  name="FOPPNAME"
-												   id="FOPPNAME"></th>
+											<input type="text" style="width: 150px" readonly
+												   class="input-text"  name="ALLSUM"
+												   id="ALLSUM"></th>
 									</tr>
 									</tbody>
 								</table>
@@ -152,8 +152,9 @@
 				listNotInvoice.forEach(function(value,index,array){
 					tr += '<tr class="success center">' ;
 					tr += '<td><label>'+count+'</label></td>';
+					tr += '<td style="display: none"><label value="no" id="is'+value.INVOICE_ID+'"></label></td>';
 					tr += '<td><label id="ty'+value.INVOICE_ID+'">应收款</label></td>';
-					tr += '<td><label id="r'+value.INVOICE_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
+					tr += '<td><label name="RECEIVABLE" id="r'+value.INVOICE_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
 					tr += '<td><label id="pt'+value.INVOICE_ID+'">'+value.PAYTIME+'</label></td>';
 					tr += '<td><label id="od'+value.INVOICE_ID+'">'+value.OVERDUE_N+'</label></td>';
 					tr += '<td><input type="date" style="width: 150px;height: 31px" onchange=" calculate(\''+value.INVOICE_ID+'\')"' +
@@ -176,8 +177,9 @@
 				listNotUtili.forEach(function(value,index,array){
 					tr += '<tr class="info center">' ;
 					tr += '<td><label>'+count+'</label></td>';
+					tr += '<td style="display: none"><label value="no" id="is'+value.UTILITIESSTATE_ID+'"></label></td>';
 					tr += '<td><label id="ty'+value.UTILITIESSTATE_ID+'">应收水电费</label></td>';
-					tr += '<td><label id="r'+value.UTILITIESSTATE_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
+					tr += '<td><label name="RECEIVABLE" id="r'+value.UTILITIESSTATE_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
 					tr += '<td><label id="pt'+value.UTILITIESSTATE_ID+'">'+value.PAYTIME+'</label></td>';
 					tr += '<td><label id="od'+value.UTILITIESSTATE_ID+'">'+value.OVERDUE+'</label></td>';
 					tr += '<td>' +
@@ -200,8 +202,9 @@
 				listNotDeposit.forEach(function(value,index,array){
 					tr += '<tr class="warning center">' ;
 					tr += '<td><label>'+count+'</label></td>';
+					tr += '<td style="display: none"><label value="no" id="is'+value.DEPOSITINFO_ID+'"></label></td>';
 					tr += '<td><label id="ty'+value.DEPOSITINFO_ID+'">应押金</label></td>';
-					tr += '<td><label id="r'+value.DEPOSITINFO_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
+					tr += '<td><label name="RECEIVABLE" id="r'+value.DEPOSITINFO_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
 					tr += '<td><label id="pt'+value.DEPOSITINFO_ID+'">'+value.DWDEPOSITTIME+'</label></td>';
 					tr += '<td><label id="od'+value.DEPOSITINFO_ID+'">0</label></td>';
 					tr += '<td><label><input type="date" style="width: 150px;height: 31px" onchange=" calculate(\''+value.DEPOSITINFO_ID+'\')"' +
@@ -223,6 +226,11 @@
 
 				$("#trskqk").before(tr);
 				tr = '';
+				var ALLSUM = 0.00;
+				$("[name='RECEIVABLE']").each(function(index,item){
+					ALLSUM += parseFloat($(this).text());
+				});
+				$("#ALLSUM").val(ALLSUM);
 			},
 			error: function () {
 				alert("请求失败");
@@ -232,29 +240,176 @@
 
 	//记录押金收款项
 	function record_deposit(DEPOSITINFO_ID,CONTRACT_ID) {
-		var RECEIVABLE = $("#r"+DEPOSITINFO_ID).text(); // 未收款
-		var NOT_RECEIVABLE = $("#np"+DEPOSITINFO_ID).text(); // 未收款
-		var DWDEPOSITTIME = $("#pt"+DEPOSITINFO_ID).text(); //应收时间
-		var OVERDUE = $("#od"+Id).text(); //滞纳金率
-		var RECEIVABL_PAYTIME = $("#rpt"+DEPOSITINFO_ID).text(); //本次收款时间
-		var OVERDUENUM = "0.00";  //滞纳金
-		var AMOUNT = $("#rr"+Id).text();  //应收总数
-		var RECEIVABLE_N = $("#nr"+Id).text();  //本次收款
+		var Is = $("#is"+DEPOSITINFO_ID).val();
+		if(Is == "yes"){
+			alert("已保存，无需重复保存");
+			return;
+		}
 		var MODE = $("#MODE").val();  //付款方式
-		var TYPE = $("ty"+DEPOSITINFO_ID).text(); //类型
+		var con = confirm("是否确定付款方式为:"+MODE+"?"); //在页面上弹出对话框
+		if(con == true){
+		}
+		else {
+			return;
+		}
+		var RECEIVABLE_N = $("#nr"+DEPOSITINFO_ID).val();  //本次收款
+		if(RECEIVABLE_N == null || RECEIVABLE_N == ""){
+			return;
+		}
+		var RECEIVABLE = $("#r"+DEPOSITINFO_ID).text(); // 本次应收款
+		var NOT_RECEIVABLE = $("#np"+DEPOSITINFO_ID).text(); // 未收款
+		var PAYTIME = $("#pt"+DEPOSITINFO_ID).text(); //应收时间
+		var OVERDUE = $("#od"+DEPOSITINFO_ID).text(); //滞纳金率
+		var RECEIVABL_PAYTIME = $("#rpt"+DEPOSITINFO_ID).val(); //本次收款时间
+		var OVERDUENUM = "0.00";  //滞纳金
+		var AMOUNT = $("#rr"+DEPOSITINFO_ID).text();  //应收总数
+		var TYPE = $("#ty"+DEPOSITINFO_ID).text(); //类型
 		var PAYER = $("#CONTRACTOFNAME").val();  //付款方
 		var ITEMID = DEPOSITINFO_ID;  // 项目id
 		var CONTRACT_ID = CONTRACT_ID;  // 合同id
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>proceeds_record/record_deposit',
+			async: false,
+			data: {
+				CONTRACT_ID : CONTRACT_ID,
+				TYPE : TYPE,
+				MODE : MODE,
+				RECEIVABLE_N : RECEIVABLE_N,
+				AMOUNT : AMOUNT,
+				OVERDUENUM : OVERDUENUM,
+				RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
+				OVERDUE : OVERDUE,
+				PAYTIME : PAYTIME,
+				NOT_RECEIVABLE : NOT_RECEIVABLE,
+				RECEIVABLE : RECEIVABLE,
+				ITEMID : ITEMID,
+				PAYER : PAYER
+			},
+			dataType: 'json',
+			//beforeSend: validateData,
+			cache: false,
+			success: function (data) {
+				alert("收款成功");
+				$("#is"+DEPOSITINFO_ID).val("yes");
+			}
+		});
 	}
 
 	//记录发票收款项
 	function record_Invoice(INVOICE_ID,CONTRACT_ID) {
-
+		var Is = $("#is"+INVOICE_ID).val();
+		if(Is == "yes"){
+			alert("已保存，无需重复保存");
+			return;
+		}
+		var MODE = $("#MODE").val();  //付款方式
+		var con = confirm("是否确定付款方式为:"+MODE+"?"); //在页面上弹出对话框
+		if(con == true){
+		}
+		else {
+			return;
+		}
+		var RECEIVABLE_N = $("#nr"+INVOICE_ID).val();  //本次收款
+		if(RECEIVABLE_N == null || RECEIVABLE_N == ""){
+			return;
+		}
+		var RECEIVABLE = $("#r"+INVOICE_ID).text(); // 本次应收款
+		var NOT_RECEIVABLE = $("#np"+INVOICE_ID).text(); // 未收款
+		var PAYTIME = $("#pt"+INVOICE_ID).text(); //应收时间
+		var OVERDUE = $("#od"+INVOICE_ID).text(); //滞纳金率
+		var RECEIVABL_PAYTIME = $("#rpt"+INVOICE_ID).val(); //本次收款时间
+		var OVERDUENUM = $("#odn"+INVOICE_ID).val();  //滞纳金
+		var AMOUNT = $("#rr"+INVOICE_ID).text();  //应收总数
+		var TYPE = $("#ty"+INVOICE_ID).text(); //类型
+		var PAYER = $("#CONTRACTOFNAME").val();  //付款方
+		var ITEMID = INVOICE_ID;  // 项目id
+		var CONTRACT_ID = CONTRACT_ID;  // 合同id
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>proceeds_record/record_Invoice',
+			async: false,
+			data: {
+				CONTRACT_ID : CONTRACT_ID,
+				TYPE : TYPE,
+				MODE : MODE,
+				RECEIVABLE_N : RECEIVABLE_N,
+				AMOUNT : AMOUNT,
+				OVERDUENUM : OVERDUENUM,
+				RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
+				OVERDUE : OVERDUE,
+				PAYTIME : PAYTIME,
+				NOT_RECEIVABLE : NOT_RECEIVABLE,
+				RECEIVABLE : RECEIVABLE,
+				ITEMID : ITEMID,
+				PAYER : PAYER
+			},
+			dataType: 'json',
+			//beforeSend: validateData,
+			cache: false,
+			success: function (data) {
+				alert("收款成功");
+				$("#is"+INVOICE_ID).val("yes");
+			}
+		});
 	}
 
 	//记录水电收款项
 	function record_Utili(UTILITIESSTATE_ID,CONTRACT_ID) {
-
+		var Is = $("#is"+UTILITIESSTATE_ID).val();
+		if(Is == "yes"){
+			alert("已保存，无需重复保存");
+			return;
+		}
+		var MODE = $("#MODE").val();  //付款方式
+		var con = confirm("是否确定付款方式为:"+MODE+"?"); //在页面上弹出对话框
+		if(con == true){
+		}
+		else {
+			return;
+		}
+		var RECEIVABLE_N = $("#nr"+UTILITIESSTATE_ID).val();  //本次收款
+		if(RECEIVABLE_N == null || RECEIVABLE_N == ""){
+			return;
+		}
+		var RECEIVABLE = $("#r"+UTILITIESSTATE_ID).text(); // 本次应收款
+		var NOT_RECEIVABLE = $("#np"+UTILITIESSTATE_ID).text(); // 未收款
+		var PAYTIME = $("#pt"+UTILITIESSTATE_ID).text(); //应收时间
+		var OVERDUE = $("#od"+UTILITIESSTATE_ID).text(); //滞纳金率
+		var RECEIVABL_PAYTIME = $("#rpt"+UTILITIESSTATE_ID).val(); //本次收款时间
+		var OVERDUENUM = $("#odn"+UTILITIESSTATE_ID).val();  //滞纳金
+		var AMOUNT = $("#rr"+UTILITIESSTATE_ID).text();  //应收总数
+		var TYPE = $("#ty"+UTILITIESSTATE_ID).text(); //类型
+		var PAYER = $("#CONTRACTOFNAME").val();  //付款方
+		var ITEMID = UTILITIESSTATE_ID;  // 项目id
+		var CONTRACT_ID = CONTRACT_ID;  // 合同id
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>proceeds_record/record_Utili',
+			async: false,
+			data: {
+				CONTRACT_ID : CONTRACT_ID,
+				TYPE : TYPE,
+				MODE : MODE,
+				RECEIVABLE_N : RECEIVABLE_N,
+				AMOUNT : AMOUNT,
+				OVERDUENUM : OVERDUENUM,
+				RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
+				OVERDUE : OVERDUE,
+				PAYTIME : PAYTIME,
+				NOT_RECEIVABLE : NOT_RECEIVABLE,
+				RECEIVABLE : RECEIVABLE,
+				ITEMID : ITEMID,
+				PAYER : PAYER
+			},
+			dataType: 'json',
+			//beforeSend: validateData,
+			cache: false,
+			success: function (data) {
+				alert("收款成功");
+				$("#is"+UTILITIESSTATE_ID).val("yes");
+			}
+		});
 	}
 
 	//当填写本次实际收款金额填写
