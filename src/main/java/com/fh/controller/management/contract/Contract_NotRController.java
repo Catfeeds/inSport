@@ -3,6 +3,7 @@ package com.fh.controller.management.contract;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.Page;
 import com.fh.service.management.client.ClientManager;
+import com.fh.service.management.contract.ContractManager;
 import com.fh.service.management.contractpicture.ContractPictureManager;
 import com.fh.util.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -31,24 +32,33 @@ public class Contract_NotRController extends BaseController {
 	@Resource(name="clientService")
 	private ClientManager clientService;
 
+	@Resource(name="contractService")
+	private ContractManager contractService;
+
 	@RequestMapping(value = "/client_proceeds")
 	public ModelAndView listTree() throws Exception {
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		List<PageData> listClients = clientService.listAll(pd);
+		pd.put("CONTRACTTYPES","收款合同");
+		List<PageData> listConToName = contractService.listConToName(pd);
 		mv.setViewName("management/contract/client_proceeds");
-		mv.addObject("listClients", listClients);
+		mv.addObject("listConToName", listConToName);
 		return mv;
 	}
 
-	@RequestMapping(value="/getOneClient")
+	@RequestMapping(value="/getNotContract")
 	@ResponseBody
-	public Map<String, Object> getOneClient(Page page) throws Exception{
+	public Map<String, Object> getNotContract(Page page) throws Exception{
 		Map<String, Object> json = new HashMap<String, Object>();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd = clientService.findById(pd);
+		List<PageData> listNotInvoice = contractService.listNotInvoice(pd);
+		List<PageData> listNotUtili = contractService.listNotUtili(pd);
+		List<PageData> listNotDeposit = contractService.listNotDeposit(pd);
+		json.put("listNotInvoice",listNotInvoice);
+		json.put("listNotUtili",listNotUtili);
+		json.put("listNotDeposit",listNotDeposit);
 		json.put("pd",pd);
 		return  json;
 	}

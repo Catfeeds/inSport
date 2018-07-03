@@ -1,46 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="InvoiceMapper">
+<mapper namespace="Proceeds_recordMapper">
 	
 	<!--表名 -->
 	<sql id="tableName">
-		TB_INVOICE
+		TB_PROCEEDS_RECORD
 	</sql>
 	
 	<!-- 字段 -->
 	<sql id="Field">
-		CONTRACT_ID,	
-		INVOICENAME,	
-		INVOICETIME,	
-		REMARK,
-		RECEIVABLE,
-		PAYTIME,
-		OVERDUE,
-		PROCEEDSTIME_ID,
-		RECEIVABLE_REALITY,
-		RECEIVABL_PAYTIME,
-		PAYERNAME,
-		NOT_RECEIVABLE,
-		OVERDUE_N,
-		INVOICE_ID
+		TYPE,	
+		CONTRACTID,	
+		ITEMID,	
+		RECEIVABLE,	
+		OVERDUE,	
+		OVERDUENUM,	
+		RECEIVABLE_N,	
+		NOT_RECEIVABLE,	
+		RECEIVABL_PAYTIME,	
+		RECEIVABL_EMPL,	
+		MODE,	
+		PAYER,	
+		PROCEEDS_RECORD_ID
 	</sql>
-
+	
 	<!-- 字段值 -->
 	<sql id="FieldValue">
-		#{CONTRACT_ID},	
-		#{INVOICENAME},	
-		#{INVOICETIME},	
-		#{REMARK},
-		#{RECEIVABLE},
-		#{PAYTIME},
-		#{OVERDUE},
-		#{PROCEEDSTIME_ID},
-		#{RECEIVABLE_REALITY},
-		#{RECEIVABL_PAYTIME},
-		#{PAYERNAME},
-		#{NOT_RECEIVABLE},
-		#{OVERDUE_N},
-		#{INVOICE_ID}
+		#{TYPE},	
+		#{CONTRACTID},	
+		#{ITEMID},	
+		#{RECEIVABLE},	
+		#{OVERDUE},	
+		#{OVERDUENUM},	
+		#{RECEIVABLE_N},	
+		#{NOT_RECEIVABLE},	
+		#{RECEIVABL_PAYTIME},	
+		#{RECEIVABL_EMPL},	
+		#{MODE},	
+		#{PAYER},	
+		#{PROCEEDS_RECORD_ID}
 	</sql>
 	
 	<!-- 新增-->
@@ -59,33 +57,29 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			INVOICE_ID = #{INVOICE_ID}
+			PROCEEDS_RECORD_ID = #{PROCEEDS_RECORD_ID}
 	</delete>
-
-	<delete id="deleteByTimeID" parameterType="pd">
-		delete from
-		<include refid="tableName"></include>
-		where
-		PROCEEDSTIME_ID = #{PROCEEDSTIME_ID}
-	</delete>
-
+	
 	<!-- 修改 -->
 	<update id="edit" parameterType="pd">
 		update
 		<include refid="tableName"></include>
 		set 
-			INVOICENAME = #{INVOICENAME},
-			INVOICETIME = #{INVOICETIME},
-		RECEIVABLE = #{RECEIVABLE},
-		PAYTIME = #{PAYTIME},
-		OVERDUE = #{OVERDUE},
-		OVERDUE_N = #{OVERDUE_N},
-		RECEIVABLE_REALITY = #{RECEIVABLE_REALITY},
-		RECEIVABL_PAYTIME = #{RECEIVABL_PAYTIME},
-		PAYERNAME = #{PAYERNAME},
-		INVOICE_ID = INVOICE_ID
+			TYPE = #{TYPE},
+			CONTRACTID = #{CONTRACTID},
+			ITEMID = #{ITEMID},
+			RECEIVABLE = #{RECEIVABLE},
+			OVERDUE = #{OVERDUE},
+			OVERDUENUM = #{OVERDUENUM},
+			RECEIVABLE_N = #{RECEIVABLE_N},
+			NOT_RECEIVABLE = #{NOT_RECEIVABLE},
+			RECEIVABL_PAYTIME = #{RECEIVABL_PAYTIME},
+			RECEIVABL_EMPL = #{RECEIVABL_EMPL},
+			MODE = #{MODE},
+			PAYER = #{PAYER},
+		PROCEEDS_RECORD_ID = PROCEEDS_RECORD_ID
 		where 
-		INVOICE_ID = #{INVOICE_ID}
+		PROCEEDS_RECORD_ID = #{PROCEEDS_RECORD_ID}
 	</update>
 	
 	<!-- 通过ID获取数据 -->
@@ -95,7 +89,7 @@
 		from 
 		<include refid="tableName"></include>
 		where 
-			INVOICE_ID = #{INVOICE_ID}
+			PROCEEDS_RECORD_ID = #{PROCEEDS_RECORD_ID}
 	</select>
 	
 	<!-- 列表 -->
@@ -124,28 +118,13 @@
 		from 
 		<include refid="tableName"></include>
 	</select>
-
-	<select id="listByContractId" parameterType="pd" resultType="pd">
-		select
-		<include refid="Field"></include>
-		from
-		<include refid="tableName"></include>
-		WHERE CONTRACT_ID = #{CONTRACT_ID} ORDER BY NUM
-	</select>
-
-	<select id="listByContractIdWithUre" parameterType="pd" resultType="pd">
-		SELECT u.OVERDUENUM AS UOVERDUENUM,u.RECEIVABLE_REALITY AS URECEIVABLE_REALITY,u.RECEIVABLE AS URECEIVABLE,
-		u.TOTAL_SUM_E,u.TOTAL_SUM_W, i.* FROM TB_INVOICE i LEFT JOIN TB_UTILITIESSTATE u ON i.INVOICE_ID = u.INVOICE_ID
-		where
-		i.CONTRACT_ID = #{CONTRACT_ID} ORDER BY NUM
-	</select>
 	
 	<!-- 批量删除 -->
 	<delete id="deleteAll" parameterType="String">
 		delete from
 		<include refid="tableName"></include>
 		where 
-			INVOICE_ID in
+			PROCEEDS_RECORD_ID in
 		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
                  #{item}
 		</foreach>

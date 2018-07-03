@@ -61,6 +61,34 @@ public class ContractService implements ContractManager{
 		return (List<PageData>)dao.findForList("ContractMapper.datalistPageByDept", page);
 	}
 
+	/**
+	 获取现有签约的公司
+	 */
+	public List<PageData> listConToName(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ContractMapper.listConToName", pd);
+	}
+
+	/**
+	 未付款发票项
+	 */
+	public List<PageData> listNotInvoice(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ContractMapper.listNotInvoice", pd);
+	}
+
+	/**
+	 未付款水电项
+	 */
+	public List<PageData> listNotUtili(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ContractMapper.listNotUtili", pd);
+	}
+
+	/**
+	 未付款押金项
+	 */
+	public List<PageData> listNotDeposit(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ContractMapper.listNotDeposit", pd);
+	}
+
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception

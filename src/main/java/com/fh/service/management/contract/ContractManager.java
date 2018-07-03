@@ -44,6 +44,35 @@ public interface ContractManager{
 	 */
 	public List<PageData> listAll(PageData pd)throws Exception;
 
+	/*
+	获取现有签约的公司
+	 */
+	public List<PageData> listConToName(PageData pd)throws Exception;
+
+	/**
+	 * 未付款发票项
+	 * @param
+	 * @return
+	 * @throws Exception
+     */
+	public List<PageData> listNotInvoice(PageData pd)throws Exception;
+
+	/**
+	 * 未付款水电项
+	 * @param
+	 * @return
+	 * @throws Exception
+	 */
+	public List<PageData> listNotUtili(PageData pd)throws Exception;
+
+	/**
+	 * 未付款押金项
+	 * @param
+	 * @return
+	 * @throws Exception
+     */
+	public List<PageData> listNotDeposit(PageData pd)throws Exception;
+
 	public List<PageData> datalistPageByDept(Page page)throws Exception;
 
 	public List<PageData> listRelevance(String[] ArrayDATA_IDS)throws Exception;

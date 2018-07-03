@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="static/ace/css/datepicker.css" />
 	<link rel="stylesheet" href="static/css/fo.css" />
 </head>
-<body class="no-skin">
+<body id="sBody" class="no-skin">
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
 	<!-- /section:basics/sidebar -->
@@ -48,46 +48,31 @@
 								<table id="table_report" class="table table-striped table-bordered table-hover">
 									<tbody>
 									<tr class="warning">
-										<th ><label style="color: red">*</label><label>客户编号:</label></th>
+										<th ><label style="color: red">*</label><label>客户名称:</label></th>
 										<th>
-											<select name="CLIENT" id="CLIENT" data-placeholder=""
+											<select name="CONTRACTOFNAME" id="CONTRACTOFNAME" data-placeholder=""
 													style="vertical-align:top;width: 150px;">
-												<option value="${pd.CLIENT_ID}" name="${pd.CLIENT_ID}">${pd.FNUMBER}</option>
-												<c:forEach items="${listClients}" var="var" varStatus="vs">
-													<option value="${var.CLIENT_ID}" name="${var.CLIENT_ID}">${var.FNUMBER}</option>
+												<option value="${pd.CONTRACTOFNAME}" name="${pd.CONTRACTOFNAME}">${pd.CONTRACTOFNAME}</option>
+												<c:forEach items="${listConToName}" var="var" varStatus="vs">
+													<option value="${var.CONTRACTOFNAME}" name="${var.CONTRACTOFNAME}">${var.CONTRACTOFNAME}</option>
 												</c:forEach>
 											</select>
 										</th>
-										<th ><label style="color: red">*</label><label>客户名称：</label></th>
-										<th  >
-											<input type="text" style="width: 150px" value="${pd.FNAME}"
-												   class="input-text"  name="FNAME"
-												   id="FNAME"></th>
-										<th ><label style="color: red">*</label><label>金额合计：</label></th>
-										<th  >
-											<input type="text" style="width: 150px" value="${pd.FOPPNAME}"
-												   class="input-text"  name="FOPPNAME"
-												   id="FOPPNAME"></th>
-									</tr>
-									<tr class="active">
-										<th><label style="color: red">*</label><label>经手人:</label></th>
-										<th width="10%">
-											<input onclick="toCus()" type="text" style="width: 150px;"
-												   value="${pd.CUNAME}"
-												   class="input-text"  id="CUNAME">
-										</th>
 										<th><label style="color: red">*</label><label>收款方式：</label></th>
-										<th width="10%">
+										<th >
 											<select name="FSOURCEID" id="FSOURCEID" data-placeholder=""
 													style="vertical-align:top;width: 150px;" >
 												<option value="信用卡" name="信用卡">信用卡</option>
 												<option value="现金" name="现金">现金</option>
 												<option value="支票" name="支票">支票</option>
-												<option value="现金券" name="现金券">现金券</option>
 												<option value="转账" name="转账">转账</option>
-												<option value="免单" name="免单">免单</option>
 											</select>
 										</th>
+										<th ><label style="color: red">*</label><label>金额合计：</label></th>
+										<th  >
+											<input type="text" style="width: 150px" value="${pd.FOPPNAME}"
+												   class="input-text"  name="FOPPNAME"
+												   id="FOPPNAME"></th>
 									</tr>
 									</tbody>
 								</table>
@@ -105,31 +90,33 @@
 	<!-- /.main-content -->
 </div>
 <!-- /.main-container -->
-<div style="margin-bottom: 0px" class="weeks">
+<div style="margin-bottom: 0px;height: 65%"  class="weeks">
 	<ul style="margin-left: 0px;margin-bottom: 0px" class="weekItem" id="weektab">
 		<li>收款情况</li>
 	</ul>
-	<div class="box01_c" id="spmx">
-		<a style="margin-left: 10px" class="btn btn-success btn-xs" onclick="addItemDetail('${pd.OPPORTUNITY_ID}')">
+	<div class="box01_c" id="skqk">
+		<%--<a style="margin-left: 10px" class="btn btn-success btn-xs" onclick="addItemDetail('${pd.OPPORTUNITY_ID}')">
 			<i class="ace-icon fa glyphicon-plus bigger-110 nav-search-icon yellow"></i>新增
 		</a>
 		<a class="btn btn-primary  btn-xs" onclick="delItemDetail()">
 			<i class="ace-icon fa fa-trash-o bigger-120 nav-search-icon "></i>删除
-		</a>
-		<table id="taspmx" class="table table-striped table-bordered table-hover"
+		</a>--%>
+		<table id="taskqk" class="table table-striped table-bordered table-hover"
 			   style="margin-top:5px;">
 			<tr>
 				<th class="center">序号</th>
-				<th class="center">商品编号</th>
-				<th class="center">商品名称</th>
-				<th class="center">规格型号</th>
-				<th class="center">单位</th>
-				<th class="center">标准价格</th>
-				<th class="center">数量</th>
-				<th class="center">金额</th>
-				<th class="center">备注</th>
+				<th class="center">费用类型</th>
+				<th class="center">应收金额</th>
+				<th class="center">应收款时间</th>
+				<th class="center">滞纳金率</th>
+				<th class="center">实际收款时间</th>
+				<th class="center">滞纳金</th>
+				<th class="center">总应收金额</th>
+				<th class="center">本次收款金额</th>
+				<th class="center">尚未收款金额</th>
+				<th class="center">收款</th>
 			</tr>
-			<tr id="trspmx">
+			<tr id="trskqk">
 			</tr>
 		</table>
 	</div>
@@ -146,25 +133,127 @@
 <script type="text/javascript">
 	$(top.hangge());
 
-	$("#CLIENT").change(function(){
-		var CLIENT_ID = $("#CLIENT").find("option:selected").attr("name");
+	$("#CONTRACTOFNAME").change(function(){
+		var CONTRACTOFNAME = $("#CONTRACTOFNAME").find("option:selected").attr("name");
 		$.ajax({
 			async: false,
 			cache: false,
 			type: 'POST',
 			data : {
-				CLIENT_ID : CLIENT_ID
+				CONTRACTOFNAME : CONTRACTOFNAME
 			},
-			//dataType:"String",
-			url: '<%=basePath%>contract_notr/getOneClient',
+			url: '<%=basePath%>contract_notr/getNotContract',
 			success: function (data) {
-				$("#FNAME").val(data.pd.FNAME);
+				var listNotInvoice = data.listNotInvoice;
+				var listNotUtili = data.listNotUtili;
+				var listNotDeposit = data.listNotDeposit;
+				var tr = '';
+				var count = 1;
+				listNotInvoice.forEach(function(value,index,array){
+					tr += '<tr class="success center">' ;
+					tr += '<td><label>'+count+'</label></td>';
+					tr += '<td><label>应收款</label></td>';
+					tr += '<td><label id="r'+value.INVOICE_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
+					tr += '<td><label id="pt'+value.INVOICE_ID+'">'+value.PAYTIME+'</label></td>';
+					tr += '<td><label id="od'+value.INVOICE_ID+'">'+value.OVERDUE_N+'</label></td>';
+					tr += '<td><input type="date" style="width: 150px;height: 31px" onchange=" calculate(\''+value.INVOICE_ID+'\')"' +
+							' class="input-text" id="rpt'+value.INVOICE_ID+'"></td>';
+					tr += '<td><label><input type="number" style="width: 110px;" onchange="changeOD_cal(\''+value.INVOICE_ID+'\')"' +
+							' class="input-text" id="odn'+value.INVOICE_ID+'"></label></td>';
+					tr += '<td><label id="rr'+value.INVOICE_ID+'"></label></td>';
+					tr += '<td><label><input type="number" style="width: 110px;" onchange="calNP(\''+value.INVOICE_ID+'\')"' +
+							' class="input-text" id="nr'+value.INVOICE_ID+'"></label></td>';
+					tr += '<td><label id="np'+value.INVOICE_ID+'"></label></td>';
+					tr += '<td><label >' +
+							'<a style="margin-left: 10px" class="btn btn-success btn-xs" onclick="addItemDetail()">' +
+							'<i class="ace-icon fa fa-check-square-o bigger-110 nav-search-icon yellow"></i>' +
+							'</a></label></td>';
+					tr += '</tr>';
+					count ++ ;
+
+				});
+				listNotUtili.forEach(function(value,index,array){
+					tr += '<tr class="info center">' ;
+					tr += '<td><label>'+count+'</label></td>';
+					tr += '<td><label>应收水电费</label></td>';
+					tr += '<td><label id="r'+value.UTILITIESSTATE_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
+					tr += '<td><label id="pt'+value.UTILITIESSTATE_ID+'">'+value.PAYTIME+'</label></td>';
+					tr += '<td><label id="od'+value.UTILITIESSTATE_ID+'">'+value.OVERDUE+'</label></td>';
+					tr += '<td>' +
+							'<input type="date" style="width: 150px;height: 31px" onchange=" calculate(\''+value.UTILITIESSTATE_ID+'\')"' +
+							' class="input-text" id="rpt'+value.UTILITIESSTATE_ID+'"></td>';
+					tr += '<td><label><input type="number" style="width: 110px;" onchange="changeOD_cal(\''+value.UTILITIESSTATE_ID+'\')"' +
+							' class="input-text" id="odn'+value.UTILITIESSTATE_ID+'"></label></td>';
+					tr += '<td><label id="rr'+value.UTILITIESSTATE_ID+'"></label></td>';
+					tr += '<td><label><input type="number" style="width: 110px;" onchange="calNP(\''+value.UTILITIESSTATE_ID+'\')"' +
+							' class="input-text" id="nr'+value.UTILITIESSTATE_ID+'"></label></td>';
+					tr += '<td><label id="np'+value.UTILITIESSTATE_ID+'"></label></td>';
+					tr += '<td><label ></label></td>';
+					tr += '</tr>';
+					count ++ ;
+				});
+				listNotDeposit.forEach(function(value,index,array){
+					tr += '<tr class="warning center">' ;
+					tr += '<td><label>'+count+'</label></td>';
+					tr += '<td><label>应押金</label></td>';
+					tr += '<td><label id="r'+value.DEPOSITINFO_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
+					tr += '<td><label id="pt'+value.DEPOSITINFO_ID+'">'+value.DWDEPOSITTIME+'</label></td>';
+					tr += '<td><label id="od'+value.DEPOSITINFO_ID+'">0</label></td>';
+					tr += '<td><label><input type="date" style="width: 150px;height: 31px" onchange=" calculate(\''+value.DEPOSITINFO_ID+'\')"' +
+							' class="input-text" id="rpt'+value.DEPOSITINFO_ID+'"></label></td>';
+					tr += '<td><label>0.00</label></td>';
+					tr += '<td><label id="rr'+value.DEPOSITINFO_ID+'"></label></td>';
+					tr += '<td><label><input type="number" style="width: 110px;"  onchange="calNP(\''+value.DEPOSITINFO_ID+'\')" class="input-text"' +
+							' id="nr'+value.DEPOSITINFO_ID+'"></label></td>';
+					tr += '<td><label id="np'+value.DEPOSITINFO_ID+'"></label></td>';
+					tr += '<td><label ></label></td>';
+					tr += '</tr>';
+					count ++ ;
+					//console.log(value);
+				});
+
+				$("#trskqk").before(tr);
+				tr = '';
 			},
 			error: function () {
 				alert("请求失败");
 			}
 		});
 	});
+
+	//当填写本次实际收款金额填写
+	function calNP(Id) {
+		var rr = $("#rr"+Id).text();
+		var nr = $("#nr"+Id).val();
+		var differ = parseFloat(rr) - parseFloat(nr);
+		if(differ < 0){
+			differ = 0.00;
+		}
+		$("#np"+Id).text(differ.toFixed(2));
+	}
+
+	//当滞纳金改变后进行计算
+	function changeOD_cal(Id) {
+		var RECEIVABLE = $("#r"+Id).text();
+		var OVERDUENUM = $("#odn"+Id).val();
+		$("#rr"+Id).text((parseFloat(OVERDUENUM) + parseFloat(RECEIVABLE)).toFixed(2));
+	}
+
+	//当选择实际收款时间进行计算
+	function calculate(Id){
+		var RECEIVABLE = $("#r"+Id).text();
+		var OVERDUE = $("#od"+Id).text();
+		var PAYTIME = $("#pt"+Id).text();
+		var RECEIVABL_PAYTIME = $("#rpt"+Id).val();
+		var differ = (Date.parse(new Date(RECEIVABL_PAYTIME))-Date.parse(new Date(PAYTIME)))/(1000*60*60*24);
+		if(differ > 0){
+			var OVERDUENUM = (parseFloat(RECEIVABLE)) * OVERDUE * differ * 0.01;
+		}else {
+			var OVERDUENUM = 0;
+		}
+		$("#odn"+Id).val(OVERDUENUM.toFixed(2));
+		$("#rr"+Id).text((parseFloat(OVERDUENUM) + parseFloat(RECEIVABLE)).toFixed(2));
+	}
 
 	//保存
 	function save(){
@@ -174,6 +263,7 @@
 	}
 
 	$(function() {
+		$("#sBody").css("height",$(document).height());
 		week_init();
 		if($("#FCREATETIME").val() == null || $("#FCREATETIME").val() == ""){
 			var myDate = new Date();

@@ -1,4 +1,4 @@
-package com.fh.controller.management.depositinfo;
+package com.fh.controller.management.proceeds_record;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -23,20 +23,20 @@ import com.fh.util.ObjectExcelView;
 import com.fh.util.PageData;
 import com.fh.util.Jurisdiction;
 import com.fh.util.Tools;
-import com.fh.service.management.depositinfo.DepositInfoManager;
+import com.fh.service.management.proceeds_record.Proceeds_recordManager;
 
 /** 
- * 说明：押金信息管理
+ * 说明：收款记录管理
  * 创建人：FH Q313596790
- * 创建时间：2018-06-03
+ * 创建时间：2018-07-03
  */
 @Controller
-@RequestMapping(value="/depositinfo")
-public class DepositInfoController extends BaseController {
+@RequestMapping(value="/proceeds_record")
+public class Proceeds_recordController extends BaseController {
 	
-	String menuUrl = "depositinfo/list.do"; //菜单地址(权限用)
-	@Resource(name="depositinfoService")
-	private DepositInfoManager depositinfoService;
+	String menuUrl = "proceeds_record/list.do"; //菜单地址(权限用)
+	@Resource(name="proceeds_recordService")
+	private Proceeds_recordManager proceeds_recordService;
 	
 	/**保存
 	 * @param
@@ -44,39 +44,16 @@ public class DepositInfoController extends BaseController {
 	 */
 	@RequestMapping(value="/save")
 	public ModelAndView save() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"新增DepositInfo");
+		logBefore(logger, Jurisdiction.getUsername()+"新增Proceeds_record");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("DEPOSITINFO_ID", this.get32UUID());	//主键
-		depositinfoService.save(pd);
+		pd.put("PROCEEDS_RECORD_ID", this.get32UUID());	//主键
+		proceeds_recordService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
-	}
-
-	@RequestMapping(value = "/saveInfo")
-	@ResponseBody
-	public Map<String, Object> saveDetail(Page page)throws Exception {
-		PageData pd = new PageData();
-		Map<String, Object> json = new HashMap<String, Object>();
-		pd = this.getPageData();
-		pd.put("DEPOSITINFO_ID", this.get32UUID());	//主键
-		pd.put("NOT_RECEIVABLE",pd.getString("DWDEPOSIT"));
-		depositinfoService.save(pd);
-		return  json;
-	}
-
-	@RequestMapping(value = "/editInfo")
-	@ResponseBody
-	public Map<String, Object> editInfo(Page page)throws Exception {
-		Map<String, Object> json = new HashMap<String, Object>();
-		PageData pd = new PageData();
-		pd = this.getPageData();
-		pd.put("NOT_RECEIVABLE",pd.getString("DWDEPOSIT"));
-		depositinfoService.edit(pd);
-		return  json;
 	}
 	
 	/**删除
@@ -85,11 +62,11 @@ public class DepositInfoController extends BaseController {
 	 */
 	@RequestMapping(value="/delete")
 	public void delete(PrintWriter out) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"删除DepositInfo");
+		logBefore(logger, Jurisdiction.getUsername()+"删除Proceeds_record");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		depositinfoService.delete(pd);
+		proceeds_recordService.delete(pd);
 		out.write("success");
 		out.close();
 	}
@@ -100,12 +77,12 @@ public class DepositInfoController extends BaseController {
 	 */
 	@RequestMapping(value="/edit")
 	public ModelAndView edit() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"修改DepositInfo");
+		logBefore(logger, Jurisdiction.getUsername()+"修改Proceeds_record");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		depositinfoService.edit(pd);
+		proceeds_recordService.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -117,7 +94,7 @@ public class DepositInfoController extends BaseController {
 	 */
 	@RequestMapping(value="/list")
 	public ModelAndView list(Page page) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"列表DepositInfo");
+		logBefore(logger, Jurisdiction.getUsername()+"列表Proceeds_record");
 		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
@@ -127,8 +104,8 @@ public class DepositInfoController extends BaseController {
 			pd.put("keywords", keywords.trim());
 		}
 		page.setPd(pd);
-		List<PageData>	varList = depositinfoService.list(page);	//列出DepositInfo列表
-		mv.setViewName("management/depositinfo/depositinfo_list");
+		List<PageData>	varList = proceeds_recordService.list(page);	//列出Proceeds_record列表
+		mv.setViewName("management/proceeds_record/proceeds_record_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
@@ -144,7 +121,7 @@ public class DepositInfoController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		mv.setViewName("management/depositinfo/depositinfo_edit");
+		mv.setViewName("management/proceeds_record/proceeds_record_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
 		return mv;
@@ -159,8 +136,8 @@ public class DepositInfoController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd = depositinfoService.findById(pd);	//根据ID读取
-		mv.setViewName("management/depositinfo/depositinfo_edit");
+		pd = proceeds_recordService.findById(pd);	//根据ID读取
+		mv.setViewName("management/proceeds_record/proceeds_record_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;
@@ -173,7 +150,7 @@ public class DepositInfoController extends BaseController {
 	@RequestMapping(value="/deleteAll")
 	@ResponseBody
 	public Object deleteAll() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"批量删除DepositInfo");
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除Proceeds_record");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
 		PageData pd = new PageData();		
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -182,7 +159,7 @@ public class DepositInfoController extends BaseController {
 		String DATA_IDS = pd.getString("DATA_IDS");
 		if(null != DATA_IDS && !"".equals(DATA_IDS)){
 			String ArrayDATA_IDS[] = DATA_IDS.split(",");
-			depositinfoService.deleteAll(ArrayDATA_IDS);
+			proceeds_recordService.deleteAll(ArrayDATA_IDS);
 			pd.put("msg", "ok");
 		}else{
 			pd.put("msg", "no");
@@ -198,46 +175,42 @@ public class DepositInfoController extends BaseController {
 	 */
 	@RequestMapping(value="/excel")
 	public ModelAndView exportExcel() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"导出DepositInfo到excel");
+		logBefore(logger, Jurisdiction.getUsername()+"导出Proceeds_record到excel");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		List<String> titles = new ArrayList<String>();
-		titles.add("应付押金金额");	//1
-		titles.add("应付押金时间");	//2
-		titles.add("实际付款押金金额");	//3
-		titles.add("实际押金付款时间");	//4
-		titles.add("付款方");	//5
-		titles.add("进场时间");	//6
-		titles.add("是否已办进场手续");	//7
-		titles.add("撤场时间");	//8
-		titles.add("是否已办撤场手续");	//9
-		titles.add("退押金金额");	//10
-		titles.add("结转收入金额");	//11
-		titles.add("发票名称");	//12
-		titles.add("开票时间");	//13
-		titles.add("合同主id");	//14
+		titles.add("类型");	//1
+		titles.add("合同id");	//2
+		titles.add("项目id");	//3
+		titles.add("本次应收金额");	//4
+		titles.add("滞纳金率");	//5
+		titles.add("滞纳金");	//6
+		titles.add("本次收款金额");	//7
+		titles.add("本次尚未收款金额");	//8
+		titles.add("本次收款时间");	//9
+		titles.add("收款人");	//10
+		titles.add("收款方式");	//11
+		titles.add("付款方名称");	//12
 		dataMap.put("titles", titles);
-		List<PageData> varOList = depositinfoService.listAll(pd);
+		List<PageData> varOList = proceeds_recordService.listAll(pd);
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
-			vpd.put("var1", varOList.get(i).get("DWDEPOSIT").toString());	//1
-			vpd.put("var2", varOList.get(i).getString("DWDEPOSITTIME"));	    //2
-			vpd.put("var3", varOList.get(i).get("REALITY").toString());	//3
-			vpd.put("var4", varOList.get(i).getString("REALITYTIME"));	    //4
-			vpd.put("var5", varOList.get(i).getString("DEPOSITPAYER"));	    //5
-			vpd.put("var6", varOList.get(i).getString("ENTERTIME"));	    //6
-			vpd.put("var7", varOList.get(i).get("ISENTERPROCEDURE").toString());	//7
-			vpd.put("var8", varOList.get(i).getString("WITHDRAWALTIME"));	    //8
-			vpd.put("var9", varOList.get(i).get("ISDRAWALPROCEDURE").toString());	//9
-			vpd.put("var10", varOList.get(i).get("RETURNDEPOSIT").toString());	//10
-			vpd.put("var11", varOList.get(i).get("TRAINCOAMOUNT").toString());	//11
-			vpd.put("var12", varOList.get(i).getString("INVOICENAME"));	    //12
-			vpd.put("var13", varOList.get(i).getString("INVOICETIME"));	    //13
-			vpd.put("var14", varOList.get(i).getString("CONTRACT_ID"));	    //14
+			vpd.put("var1", varOList.get(i).getString("TYPE"));	    //1
+			vpd.put("var2", varOList.get(i).getString("CONTRACTID"));	    //2
+			vpd.put("var3", varOList.get(i).getString("ITEMID"));	    //3
+			vpd.put("var4", varOList.get(i).getString("RECEIVABLE"));	    //4
+			vpd.put("var5", varOList.get(i).getString("OVERDUE"));	    //5
+			vpd.put("var6", varOList.get(i).getString("OVERDUENUM"));	    //6
+			vpd.put("var7", varOList.get(i).getString("RECEIVABLE_N"));	    //7
+			vpd.put("var8", varOList.get(i).getString("NOT_RECEIVABLE"));	    //8
+			vpd.put("var9", varOList.get(i).getString("RECEIVABL_PAYTIME"));	    //9
+			vpd.put("var10", varOList.get(i).getString("RECEIVABL_EMPL"));	    //10
+			vpd.put("var11", varOList.get(i).getString("MODE"));	    //11
+			vpd.put("var12", varOList.get(i).getString("PAYER"));	    //12
 			varList.add(vpd);
 		}
 		dataMap.put("varList", varList);

@@ -99,9 +99,18 @@
 								</tr>
 								<tr class="active">
 									<th ><label>签约方：</label></th>
-									<th ><input type="text" style="width: 150px" value="${pd.CONTRACTOFNAME}"
+									<th >
+										<input type="text" style="width: 150px" value="${pd.CONTRACTOFNAME}"
 												class="input-text"  name="CONTRACTOFNAME"
-												id="CONTRACTOFNAME"></th>
+												id="CONTRACTOFNAME">
+										<%--<select name="CLIENT" id="CLIENT" data-placeholder=""
+												style="vertical-align:top;width: 150px;">
+											<option value="${pd.CLIENT}" name="${pd.CLIENT}">${pd.FNAME}</option>
+											<c:forEach items="${listClients}" var="var" varStatus="vs">
+												<option value="${var.CLIENT_ID}" name="${var.CLIENT_ID}">${var.FNAME}</option>
+											</c:forEach>
+										</select>--%>
+									</th>
 									<th  ><label>项目名称：</label></th>
 									<th  >
 										<input type="text" style="width: 150px" value="${pd.PROJECT}"
@@ -113,17 +122,13 @@
 								<tr class="success">
 									<th ><label>客户联系人姓名：</label></th>
 									<th >
-										<select name="CLIENT" id="CLIENT" data-placeholder=""
-												style="vertical-align:top;width: 150px;">
-											<option value="${pd.CLIENT}" name="${pd.CLIENT}">${pd.FNAME}</option>
-											<c:forEach items="${listClients}" var="var" varStatus="vs">
-												<option value="${var.CLIENT_ID}" name="${var.CLIENT_ID}">${var.FNAME}</option>
-											</c:forEach>
-										</select>
+										<input type="text" style="width: 150px" value="${pd.CLIENT}"
+											   class="input-text"  name="CLIENT"
+											   id="CLIENT">
 									</th>
 									<th  ><label>联系电话：</label></th>
 									<th  >
-										<input type="text" style="width: 150px" value="${pd.PHONENUMBER}"
+										<input type="text" style="width: 150px" value="${pd.TELEPHONE}"
 											   class="input-text"  name="TELEPHONE"
 											   id="TELEPHONE"></th>
 									<th  ><label></label></th>
@@ -183,16 +188,16 @@
 												 id="STAMPDUTY"></th>
 									<th width="15%"><label>印花税计提月份：</label></th>
 									<th width="10%">
-										<select name="STAMPDUTYMONTH" id="STAMPDUTYMONTH" data-placeholder=""
+										<%--<select name="STAMPDUTYMONTH" id="STAMPDUTYMONTH" data-placeholder=""
 												style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
 											<option value="${pd.STAMPDUTYMONTH}" name="${pd.STAMPDUTYMONTH}">${pd.STAMPDUTYMONTH}</option>
 											<c:forEach items="${listmonth}" var="var" varStatus="vs">
 												<option id="${var}" value="${var}" name="${var}">${var}</option>
 											</c:forEach>
-										</select>
-										<%--<input type="text" style="width: 150px" value="${pd.STAMPDUTYMONTH}"
+										</select>--%>
+										<input type="month" style="width: 150px;height: 31px" value="${pd.STAMPDUTYMONTH}"
 														   class="input-text"  name="STAMPDUTYMONTH"
-														   id="STAMPDUTYMONTH">--%>
+														   id="STAMPDUTYMONTH">
 									</th>
 								</tr>
 								<tr class="success">
@@ -486,21 +491,21 @@
 														 class="input-text"  name="DWDEPOSIT"
 														id="dd${var.DEPOSITINFO_ID}"></th>
 											<th width="15%"><label>应付款时间（押金）：</label></th>
-											<th width="10%"><input type="date" style="width: 150px" value="${var.DWDEPOSITTIME}"
+											<th width="10%"><input type="date" style="width: 150px;height: 31px" value="${var.DWDEPOSITTIME}"
 																   class="input-text"  name="DWDEPOSITTIME"
 																   id="ddt${var.DEPOSITINFO_ID}"></th>
 											<th  ><label></label></th>
 											<th  ></th>
 										</tr>
 										<tr class="danger">
-											<th width="15%"><label>实际付款金额（押金）：</label></th>
+											<th width="15%"><label>实际收款金额（押金）：</label></th>
 											<th width="10%">
 												<input type="number" style="width: 150px" value="${var.REALITY}"
 													   class="input-text"  name="REALITY"
 													   id="r${var.DEPOSITINFO_ID}">
 											</th>
-											<th  ><label>实际付款时间（押金）：</label></th>
-											<th  ><input type="date" style="width: 150px" value="${var.REALITYTIME}"
+											<th  ><label>实际收款时间（押金）：</label></th>
+											<th  ><input type="date" style="width: 150px;height: 31px" value="${var.REALITYTIME}"
 														 class="input-text"  name="REALITYTIME"
 														 id="rt${var.DEPOSITINFO_ID}"></th>
 											<th width="15%"><label>付款方名称（押金）：</label></th>
@@ -803,11 +808,11 @@
 		tr += '<tr class="danger"><th width="10%" ><label>应收押金金额：</label></th>';
 		tr += '<th  ><input type="number" style="width: 150px" class="input-text"  name="DWDEPOSIT" id="dd'+uuid+'"></th>';
 		tr += '<th width="15%"><label>应付款时间（押金）：</label></th>';
-		tr += '<th width="10%"><input type="date" style="width: 150px" class="input-text"  name="DWDEPOSITTIME" id="ddt'+uuid+'"></th>';
+		tr += '<th width="10%"><input type="date" style="width: 150px;height: 31px" class="input-text"  name="DWDEPOSITTIME" id="ddt'+uuid+'"></th>';
 		tr += '<th ><label></label></th><th  ></th></tr>';
 		tr += '<tr class="danger"><th width="15%"><label>实际付款金额（押金）：</label></th><th width="10%">';
 		tr += '<input type="number" style="width: 150px" class="input-text"  name="REALITY" id="r'+uuid+'"></th>';
-		tr += '<th  ><label>实际付款时间（押金）：</label></th><th><input type="date" style="width: 150px" class="input-text"  name="REALITYTIME"';
+		tr += '<th  ><label>实际付款时间（押金）：</label></th><th><input type="date" style="width: 150px;height: 31px" class="input-text"  name="REALITYTIME"';
 		tr += 'id="rt'+uuid+'"></th>';
 		tr += '<th width="15%"><label>付款方名称（押金）：</label></th>';
 		tr += '<th width="10%"><input type="text" style="width: 150px" class="input-text"  name="DEPOSITPAYER" id="dp'+uuid+'"></th></tr>';
@@ -1023,6 +1028,7 @@
 		var PAYERNAME = $("#pn"+uuid).val();
 		var INVOICENAME = $("#in"+uuid).val();
 		var INVOICETIME = $("#it"+uuid).val();
+		var OVERDUE_N = '${pd2.OVERDUE}';
 		$.ajax({
 			type: "POST",
 			url: '<%=basePath%>invoice/saveDetail',
@@ -1031,6 +1037,7 @@
 				RECEIVABLE : RECEIVABLE,
 				PAYTIME : PAYTIME,
 				OVERDUE : OVERDUE,
+				OVERDUE_N : OVERDUE_N,
 				//RECEIVABLE_REALITY : RECEIVABLE_REALITY,
 				//RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
 				PAYERNAME : PAYERNAME,
@@ -1059,12 +1066,14 @@
 		var PAYERNAME = $("#pn"+INVOICE_ID).val();
 		var INVOICENAME = $("#ivn"+INVOICE_ID).val();
 		var INVOICETIME = $("#ivt"+INVOICE_ID).val();
+		var OVERDUE_N = '${pd2.OVERDUE}';
 		$.ajax({
 			type: "POST",
 			url: '<%=basePath%>invoice/editInfo',
 			async: false,
 			data: {
 				RECEIVABLE : RECEIVABLE,
+				OVERDUE_N : OVERDUE_N,
 				PAYTIME : PAYTIME,
 				OVERDUE : OVERDUE,
 				RECEIVABLE_REALITY : RECEIVABLE_REALITY,
@@ -1080,7 +1089,7 @@
 			success: function (data) {
 				//uuid = data.uuid;
 				alert("修改成功!!");
-				window.location.reload();
+				//window.location.reload();
 			}
 		});
 	}
