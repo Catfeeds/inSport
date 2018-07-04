@@ -698,11 +698,19 @@ public class ContractController extends BaseController {
 		List<PageData> listItems = taxitemsService.listAll(pd);
 		ArrayList<String> listmonth = new ArrayList<String>();
 		List<PageData> listDeptNo = deptnoService.listAll(pd);
+		List<PageData> listPayprimary = payprimaryService.findByContractId(pd); //主表
+		List<PageData> listPayDetail = paydetailService.listByContractId(pd);  //明细
+		if(listPayprimary == null || "".equals(listPayprimary)){
+			pd.put("PAYPRIMARY_ID",this.get32UUID());
+		}
 		DecimalFormat dften = new DecimalFormat("00");
 		for (int i = 1; i <= 12; i++) {
 			listmonth.add(dften.format(i));
 		}
 		mv.setViewName("management/contract/contract_edit");
+		mv.addObject("listPayprimary", listPayprimary);
+		mv.addObject("count", listPayDetail.size());
+		mv.addObject("listPayDetail", listPayDetail);
 		mv.addObject("msg", "editInfo");
 		mv.addObject("listDeptNo",listDeptNo);
 		mv.addObject("listOperator",listOperator);

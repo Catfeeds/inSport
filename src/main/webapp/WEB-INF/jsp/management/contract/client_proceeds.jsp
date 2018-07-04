@@ -37,7 +37,7 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-12">
-						<form action="opportunity/${msg }.do" name="Form" id="Form" method="post">
+						<form action="contract_notr/client_proceeds.do" name="Form" id="Form" method="post">
 							<input type="hidden" name="FSTATE" id="FSTATE" value="${pd.FSTATE}"/>
 							<input  name="FCREATERID" id="FCREATERID" value="${pd.FCREATERID}"
 									type="hidden"  />
@@ -133,7 +133,7 @@
 <script type="text/javascript">
 	$(top.hangge());
 
-	$("#CONTRACTOFNAME").change(function(){
+	function toAjax_load(){
 		var CONTRACTOFNAME = $("#CONTRACTOFNAME").find("option:selected").attr("name");
 		$.ajax({
 			async: false,
@@ -152,7 +152,6 @@
 				listNotInvoice.forEach(function(value,index,array){
 					tr += '<tr class="success center">' ;
 					tr += '<td><label>'+count+'</label></td>';
-					tr += '<td style="display: none"><label value="no" id="is'+value.INVOICE_ID+'"></label></td>';
 					tr += '<td><label id="ty'+value.INVOICE_ID+'">应收款</label></td>';
 					tr += '<td><label name="RECEIVABLE" id="r'+value.INVOICE_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
 					tr += '<td><label id="pt'+value.INVOICE_ID+'">'+value.PAYTIME+'</label></td>';
@@ -177,7 +176,6 @@
 				listNotUtili.forEach(function(value,index,array){
 					tr += '<tr class="info center">' ;
 					tr += '<td><label>'+count+'</label></td>';
-					tr += '<td style="display: none"><label value="no" id="is'+value.UTILITIESSTATE_ID+'"></label></td>';
 					tr += '<td><label id="ty'+value.UTILITIESSTATE_ID+'">应收水电费</label></td>';
 					tr += '<td><label name="RECEIVABLE" id="r'+value.UTILITIESSTATE_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
 					tr += '<td><label id="pt'+value.UTILITIESSTATE_ID+'">'+value.PAYTIME+'</label></td>';
@@ -202,7 +200,6 @@
 				listNotDeposit.forEach(function(value,index,array){
 					tr += '<tr class="warning center">' ;
 					tr += '<td><label>'+count+'</label></td>';
-					tr += '<td style="display: none"><label value="no" id="is'+value.DEPOSITINFO_ID+'"></label></td>';
 					tr += '<td><label id="ty'+value.DEPOSITINFO_ID+'">应押金</label></td>';
 					tr += '<td><label name="RECEIVABLE" id="r'+value.DEPOSITINFO_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
 					tr += '<td><label id="pt'+value.DEPOSITINFO_ID+'">'+value.DWDEPOSITTIME+'</label></td>';
@@ -236,15 +233,19 @@
 				alert("请求失败");
 			}
 		});
+	}
+
+	$("#CONTRACTOFNAME").change(function(){
+		toAjax_load();
 	});
 
 	//记录押金收款项
 	function record_deposit(DEPOSITINFO_ID,CONTRACT_ID) {
 		var Is = $("#is"+DEPOSITINFO_ID).val();
-		if(Is == "yes"){
+		/*if(Is == "yes"){
 			alert("已保存，无需重复保存");
 			return;
-		}
+		}*/
 		var MODE = $("#MODE").val();  //付款方式
 		var con = confirm("是否确定付款方式为:"+MODE+"?"); //在页面上弹出对话框
 		if(con == true){
@@ -291,7 +292,8 @@
 			cache: false,
 			success: function (data) {
 				alert("收款成功");
-				$("#is"+DEPOSITINFO_ID).val("yes");
+				//$("#is"+DEPOSITINFO_ID).val("yes");
+				save();
 			}
 		});
 	}
@@ -299,10 +301,10 @@
 	//记录发票收款项
 	function record_Invoice(INVOICE_ID,CONTRACT_ID) {
 		var Is = $("#is"+INVOICE_ID).val();
-		if(Is == "yes"){
+		/*if(Is == "yes"){
 			alert("已保存，无需重复保存");
 			return;
-		}
+		}*/
 		var MODE = $("#MODE").val();  //付款方式
 		var con = confirm("是否确定付款方式为:"+MODE+"?"); //在页面上弹出对话框
 		if(con == true){
@@ -349,7 +351,8 @@
 			cache: false,
 			success: function (data) {
 				alert("收款成功");
-				$("#is"+INVOICE_ID).val("yes");
+				/*$("#is"+INVOICE_ID).val("yes");*/
+				save();
 			}
 		});
 	}
@@ -357,10 +360,10 @@
 	//记录水电收款项
 	function record_Utili(UTILITIESSTATE_ID,CONTRACT_ID) {
 		var Is = $("#is"+UTILITIESSTATE_ID).val();
-		if(Is == "yes"){
+		/*if(Is == "yes"){
 			alert("已保存，无需重复保存");
 			return;
-		}
+		}*/
 		var MODE = $("#MODE").val();  //付款方式
 		var con = confirm("是否确定付款方式为:"+MODE+"?"); //在页面上弹出对话框
 		if(con == true){
@@ -407,7 +410,8 @@
 			cache: false,
 			success: function (data) {
 				alert("收款成功");
-				$("#is"+UTILITIESSTATE_ID).val("yes");
+				//$("#is"+UTILITIESSTATE_ID).val("yes");
+				save();
 			}
 		});
 	}
@@ -449,13 +453,14 @@
 	//保存
 	function save(){
 		$("#Form").submit();
-		$("#zhongxin").hide();
-		$("#zhongxin2").show();
+		/*$("#zhongxin").hide();
+		$("#zhongxin2").show();*/
 	}
 
 	$(function() {
 		$("#sBody").css("height",$(document).height());
 		week_init();
+		toAjax_load();
 		if($("#FCREATETIME").val() == null || $("#FCREATETIME").val() == ""){
 			var myDate = new Date();
 			var year = myDate.getFullYear();

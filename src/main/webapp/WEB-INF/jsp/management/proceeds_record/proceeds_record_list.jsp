@@ -67,9 +67,11 @@
 									<label class="pos-rel"><input type="checkbox" class="ace" id="zcheckbox" /><span class="lbl"></span></label>
 									</th>
 									<th class="center" style="width:50px;">序号</th>
+									<th class="center">付款方名称</th>
 									<th class="center">类型</th>
-									<th class="center">合同id</th>
-									<th class="center">项目id</th>
+									<th class="center">合同编号</th>
+									<th class="center">收款方式</th>
+									<%--<th class="center">项目id</th>--%>
 									<th class="center">本次应收金额</th>
 									<th class="center">滞纳金率</th>
 									<th class="center">滞纳金</th>
@@ -77,9 +79,8 @@
 									<th class="center">本次尚未收款金额</th>
 									<th class="center">本次收款时间</th>
 									<th class="center">收款人</th>
-									<th class="center">收款方式</th>
-									<th class="center">付款方名称</th>
-									<th class="center">操作</th>
+
+
 								</tr>
 							</thead>
 													
@@ -94,9 +95,11 @@
 												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.PROCEEDS_RECORD_ID}" class="ace" /><span class="lbl"></span></label>
 											</td>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
+											<td class='center'>${var.PAYER}</td>
 											<td class='center'>${var.TYPE}</td>
-											<td class='center'>${var.CONTRACTID}</td>
-											<td class='center'>${var.ITEMID}</td>
+											<td class='center'>${var.CONTRACTNUM}</td>
+											<td class='center'>${var.MODE}</td>
+											<%--<td class='center'>${var.ITEMID}</td>--%>
 											<td class='center'>${var.RECEIVABLE}</td>
 											<td class='center'>${var.OVERDUE}</td>
 											<td class='center'>${var.OVERDUENUM}</td>
@@ -104,55 +107,6 @@
 											<td class='center'>${var.NOT_RECEIVABLE}</td>
 											<td class='center'>${var.RECEIVABL_PAYTIME}</td>
 											<td class='center'>${var.RECEIVABL_EMPL}</td>
-											<td class='center'>${var.MODE}</td>
-											<td class='center'>${var.PAYER}</td>
-											<td class="center">
-												<c:if test="${QX.edit != 1 && QX.del != 1 }">
-												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
-												</c:if>
-												<div class="hidden-sm hidden-xs btn-group">
-													<c:if test="${QX.edit == 1 }">
-													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.PROCEEDS_RECORD_ID}');">
-														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
-													</a>
-													</c:if>
-													<c:if test="${QX.del == 1 }">
-													<a class="btn btn-xs btn-danger" onclick="del('${var.PROCEEDS_RECORD_ID}');">
-														<i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
-													</a>
-													</c:if>
-												</div>
-												<div class="hidden-md hidden-lg">
-													<div class="inline pos-rel">
-														<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-															<i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-														</button>
-			
-														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-															<c:if test="${QX.edit == 1 }">
-															<li>
-																<a style="cursor:pointer;" onclick="edit('${var.PROCEEDS_RECORD_ID}');" class="tooltip-success" data-rel="tooltip" title="修改">
-																	<span class="green">
-																		<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-																	</span>
-																</a>
-															</li>
-															</c:if>
-															<c:if test="${QX.del == 1 }">
-															<li>
-																<a style="cursor:pointer;" onclick="del('${var.PROCEEDS_RECORD_ID}');" class="tooltip-error" data-rel="tooltip" title="删除">
-																	<span class="red">
-																		<i class="ace-icon fa fa-trash-o bigger-120"></i>
-																	</span>
-																</a>
-															</li>
-															</c:if>
-														</ul>
-													</div>
-												</div>
-											</td>
-										</tr>
-									
 									</c:forEach>
 									</c:if>
 									<c:if test="${QX.cha == 0 }">
@@ -172,14 +126,14 @@
 						<div class="page-header position-relative">
 						<table style="width:100%;">
 							<tr>
-								<td style="vertical-align:top;">
+								<%--<td style="vertical-align:top;">
 									<c:if test="${QX.add == 1 }">
 									<a class="btn btn-mini btn-success" onclick="add();">新增</a>
 									</c:if>
 									<c:if test="${QX.del == 1 }">
 									<a class="btn btn-mini btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" title="批量删除" ><i class='ace-icon fa fa-trash-o bigger-120'></i></a>
 									</c:if>
-								</td>
+								</td>--%>
 								<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
 							</tr>
 						</table>

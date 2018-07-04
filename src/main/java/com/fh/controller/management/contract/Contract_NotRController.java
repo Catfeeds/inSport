@@ -44,6 +44,7 @@ public class Contract_NotRController extends BaseController {
 		List<PageData> listConToName = contractService.listConToName(pd);
 		mv.setViewName("management/contract/client_proceeds");
 		mv.addObject("listConToName", listConToName);
+		mv.addObject("pd", pd);
 		return mv;
 	}
 
