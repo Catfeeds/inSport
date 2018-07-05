@@ -367,11 +367,11 @@
 
 		//保存水电费
 		function saveUtilities(CONTRACT_ID,PROCEEDSTIME_ID,INVOICE_ID){
-			var RECEIVABLE_REALITY = $("#RECEIVABLE_REALITY").val();
+			var RECEIVABLE_REALITY = "0.00";
 			var PAYERNAME = $("#PAYERNAME").val();
 			var PAYTIME = $("#PAYTIME").val();
 			var RECEIVABLE = $("#RECEIVABLE").val();
-			var OVERDUENUM = $("#OVERDUE").val();
+			var OVERDUENUM = "0.00";
 			var RECEIVABL_PAYTIME = $("#RECEIVABL_PAYTIME").val();
 			var LASTMONTH_SUM_E = $("#LASTMONTH_SUM_E").text();
 			var THISMONTH_SUM_E = $("#THISMONTH_SUM_E").text();

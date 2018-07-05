@@ -220,14 +220,17 @@
 					count ++ ;
 					//console.log(value);
 				});
-
+			/*	$("#trskqk").find("tr").each(function(i){
+					alert($(this).attr("id"));
+				});*/
 				$("#trskqk").before(tr);
+
 				tr = '';
 				var ALLSUM = 0.00;
 				$("[name='RECEIVABLE']").each(function(index,item){
 					ALLSUM += parseFloat($(this).text());
 				});
-				$("#ALLSUM").val(ALLSUM);
+				$("#ALLSUM").val(ALLSUM.toFixed(2));
 			},
 			error: function () {
 				alert("请求失败");
@@ -236,7 +239,8 @@
 	}
 
 	$("#CONTRACTOFNAME").change(function(){
-		toAjax_load();
+		save();
+		//toAjax_load();
 	});
 
 	//记录押金收款项

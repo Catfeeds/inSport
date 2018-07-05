@@ -106,7 +106,7 @@
 											<td class='center'>${var.RECEIVABLE_N}</td>
 											<td class='center'>${var.NOT_RECEIVABLE}</td>
 											<td class='center'>${var.RECEIVABL_PAYTIME}</td>
-											<td class='center'>${var.RECEIVABL_EMPL}</td>
+											<td class='center'>${var.UNAME}</td>
 									</c:forEach>
 									</c:if>
 									<c:if test="${QX.cha == 0 }">

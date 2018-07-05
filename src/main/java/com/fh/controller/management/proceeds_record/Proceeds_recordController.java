@@ -84,10 +84,10 @@ public class Proceeds_recordController extends BaseController {
 		pd.put("RECEIVABL_EMPL",Jurisdiction.getUsername());
 		PageData depd = depositinfoService.findById(pd);
 		depd.put("REALITYTIME",pd.getString("RECEIVABL_PAYTIME"));
-		if(depd.get("REALITY").toString() == null || "".equals(depd.get("REALITY").toString())){
+		if(depd.getString("REALITY") == null || "".equals(depd.getString("REALITY"))){
 			depd.put("REALITY","0.00");
 		}
-		Double REALITY = Double.parseDouble(depd.get("REALITY").toString())+Double.parseDouble(pd.get("RECEIVABLE_N").toString());
+		Double REALITY = Double.parseDouble(depd.getString("REALITY"))+Double.parseDouble(pd.getString("RECEIVABLE_N"));
 		depd.put("REALITY",REALITY.toString());
 		depd.put("NOT_RECEIVABLE",pd.getString("NOT_RECEIVABLE"));
 		depositinfoService.edit(depd);
@@ -106,14 +106,14 @@ public class Proceeds_recordController extends BaseController {
 		pd.put("RECEIVABL_EMPL",Jurisdiction.getUsername());
 		PageData utpd = utilitiesstateService.findById(pd);
 		utpd.put("RECEIVABL_PAYTIME",pd.getString("RECEIVABL_PAYTIME"));
-		if(utpd.get("RECEIVABLE_REALITY").toString() == null || "".equals(utpd.get("RECEIVABLE_REALITY").toString())){
+		if(utpd.getString("RECEIVABLE_REALITY") == null || "".equals(utpd.getString("RECEIVABLE_REALITY"))){
 			utpd.put("RECEIVABLE_REALITY","0.00");
 		}
-		if(utpd.get("OVERDUENUM").toString() == null || "".equals(utpd.get("OVERDUENUM").toString())){
+		if(utpd.getString("OVERDUENUM") == null || "".equals(utpd.getString("OVERDUENUM"))){
 			utpd.put("OVERDUENUM","0.00");
 		}
-		Double RECEIVABLE_REALITY = Double.parseDouble(utpd.get("RECEIVABLE_REALITY").toString())+Double.parseDouble(pd.get("RECEIVABLE_N").toString());
-		Double OVERDUENUM = Double.parseDouble(utpd.get("OVERDUENUM").toString())+Double.parseDouble(pd.get("OVERDUENUM").toString());
+		Double RECEIVABLE_REALITY = Double.parseDouble(utpd.getString("RECEIVABLE_REALITY"))+Double.parseDouble(pd.getString("RECEIVABLE_N"));
+		Double OVERDUENUM = Double.parseDouble(utpd.getString("OVERDUENUM"))+Double.parseDouble(pd.getString("OVERDUENUM"));
 		utpd.put("RECEIVABLE_REALITY",RECEIVABLE_REALITY.toString());
 		utpd.put("NOT_RECEIVABLE",pd.getString("NOT_RECEIVABLE"));
 		utpd.put("OVERDUENUM",OVERDUENUM);
@@ -134,14 +134,14 @@ public class Proceeds_recordController extends BaseController {
 		pd.put("RECEIVABL_EMPL",Jurisdiction.getUsername());
 		PageData invpd = invoiceService.findById(pd);
 		invpd.put("RECEIVABL_PAYTIME",pd.getString("RECEIVABL_PAYTIME"));
-		if(invpd.get("RECEIVABLE_REALITY").toString() == null || "".equals(invpd.get("RECEIVABLE_REALITY").toString())){
+		if(invpd.getString("RECEIVABLE_REALITY") == null || "".equals(invpd.getString("RECEIVABLE_REALITY"))){
 			invpd.put("RECEIVABLE_REALITY","0.00");
 		}
-		if(invpd.get("OVERDUE").toString() == null || "".equals(invpd.get("OVERDUE").toString())){
+		if(invpd.getString("OVERDUE") == null || "".equals(invpd.getString("OVERDUE"))){
 			invpd.put("OVERDUE","0.00");
 		}
-		Double RECEIVABLE_REALITY = Double.parseDouble(invpd.get("RECEIVABLE_REALITY").toString())+Double.parseDouble(pd.get("RECEIVABLE_N").toString());
-		Double OVERDUENUM = Double.parseDouble(invpd.get("OVERDUE").toString())+Double.parseDouble(pd.get("OVERDUENUM").toString());
+		Double RECEIVABLE_REALITY = Double.parseDouble(invpd.getString("RECEIVABLE_REALITY"))+Double.parseDouble(pd.getString("RECEIVABLE_N"));
+		Double OVERDUENUM = Double.parseDouble(invpd.getString("OVERDUE"))+Double.parseDouble(pd.getString("OVERDUENUM"));
 		invpd.put("RECEIVABLE_REALITY",RECEIVABLE_REALITY.toString());
 		invpd.put("NOT_RECEIVABLE",pd.getString("NOT_RECEIVABLE"));
 		invpd.put("OVERDUE",OVERDUENUM);

@@ -68,7 +68,7 @@
                                         <td style="padding-left:2px;">新增发单记录</td>
                                     </tr>
                                     <tr class="center" id="sum" >
-                                        <td id="td1" rowspan="${count +1}"
+                                        <td id="td1" rowspan="10000"
                                             style="padding-left:2px;vertical-align:middle;">
                                                 ${var.STARTTIME } -- ${var.ENTTIME }
                                         </td>
@@ -78,7 +78,7 @@
                                             <c:if test="${var.PROCEEDSTIME_ID == var1.PROCEEDSTIME_ID}">
                                             <tr class="center" style="vertical-align:middle;" >
                                                 <td style="padding-left:2px;">
-                                                        <p>${var1.RECEIVABLE}</p>
+                                                    <p>${var1.RECEIVABLE}</p>
                                                 </td>
                                                 <td style="padding-left:2px;">
                                                     <p> ${var1.URECEIVABLE}</p>
@@ -87,16 +87,16 @@
                                                     <p>  ${var1.OVERDUE}</p>
                                                 </td>
                                                 <td style="padding-left:2px;">
-                                                    <p>   ${var1.UOVERDUENUM}</p>
+                                                    <p>   ${var1.OVERDUENUM}</p>
                                                 </td>
                                                 <td style="padding-left:2px;">
-                                                    <p>   ${var1.PROCEEDSDETAIL_ID}</p>
+                                                    <p>   ${var1.SUM_IU}</p>
                                                 </td>
                                                 <td style="padding-left:2px;">
-                                                    <p>  ${var1.PROCEEDSDETAIL_ID}</p>
+                                                    <p>  ${var1.SUM_R}</p>
                                                 </td>
                                                 <td style="padding-left:2px;">
-                                                    <p>   ${var1.PROCEEDSDETAIL_ID}</p>
+                                                    <p>   ${var1.SUM_N}</p>
                                                 </td>
 
                                                 <td style="padding-left:2px;">

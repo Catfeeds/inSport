@@ -698,6 +698,19 @@
 								<div id="divTable" class="col-md-12"  style="padding-bottom:2em;">
 									<a onclick="addTable()" class="btn btn-info" id="add"><i class="fa fa-plus"></i> 添加新的主表</a>
 								</div>
+								<table class="table table-border table-bg table-bordered">
+									<tbody>
+									<tr class="success">
+										<td width="10%" ><label>备注：</label></td>
+										<td colspan="5">
+											<textarea style="width: 95%;height: 78px" name="REMARK" id="REMARK">${pd1.REMARK}</textarea>
+											<%--<input type="text" style="width: 150px" value="${pd1.REMARK}"
+													class="input-text"  name="REMARK"
+													id="REMARK">--%>
+										</td>
+									</tr>
+									</tbody>
+								</table>
 							</div>
 							<%--<table id="paymentContarct" style="display: none" class="table table-border table-bg table-bordered">
 								<tbody>
@@ -1253,7 +1266,7 @@
 		tr += '<th ><input type="date" style="width: 150px;height: 31px" readonly="readonly" class="input-text"  name="RECEIVABL_PAYTIME" ' +
 				'id="rpt'+uuid+'"></th>';
 		tr += '<th  ><label>滞纳金：</label></th>';
-		tr += '<th  ><input type="number" style="width: 150px;" class="input-text"  name="OVERDUE" ' +
+		tr += '<th  ><input type="number" style="width: 150px;" class="input-text" readonly  name="OVERDUE" ' +
 				'id="od'+uuid+'"></th></tr>';
 		tr += '<tr class="success"><th ><label>发票名称：</label></th>';
 		tr += '<th><input type="text" style="width: 150px;height: 31px"  class="input-text"  name="INVOICENAME"'+
@@ -1293,9 +1306,9 @@
 	function saveInvoice(CONTRACT_ID,uuid,PROCEEDSTIME_ID) {
 		var RECEIVABLE =$("#r"+uuid).val();
 		var PAYTIME = $("#pt"+uuid).val();
-		var OVERDUE = $("#od"+uuid).val();
-		//var RECEIVABLE_REALITY = $("#rr"+uuid).val();
-		//var RECEIVABL_PAYTIME = $("#rpt"+uuid).val();
+		var OVERDUE = "0.00";
+		var RECEIVABLE_REALITY = "0.00";
+		var RECEIVABL_PAYTIME = $("#rpt"+uuid).val();
 		var PAYERNAME = $("#pn"+uuid).val();
 		var INVOICENAME = $("#in"+uuid).val();
 		var INVOICETIME = $("#it"+uuid).val();
@@ -1309,8 +1322,8 @@
 				PAYTIME : PAYTIME,
 				OVERDUE : OVERDUE,
 				OVERDUE_N : OVERDUE_N,
-				//RECEIVABLE_REALITY : RECEIVABLE_REALITY,
-				//RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
+				RECEIVABLE_REALITY : RECEIVABLE_REALITY,
+				RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
 				PAYERNAME : PAYERNAME,
 				INVOICENAME : INVOICENAME,
 				INVOICETIME : INVOICETIME,
