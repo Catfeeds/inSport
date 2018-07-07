@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ProceedsTimeMapper">
+<mapper namespace="ProceedsReceiptsMapper">
 	
 	<!--表名 -->
 	<sql id="tableName">
-		TB_PROCEEDSTIME
+		TB_PROCEEDSRECEIPTS
 	</sql>
 	
 	<!-- 字段 -->
 	<sql id="Field">
-		CONTRACT_ID,	
-		STARTTIME,	
-		ENTTIME,	
-		REMARK,	
-		PROCEEDSTIME_ID
+		PROCEEDSDATE,	
+		PROCEEDSNUM,	
+		OVERDUENUM,	
+		RECEIVABLE_REALITY,	
+		NOT_RECEIVABLE,	
+		PAYER,	
+		PROCEEDSER,	
+		ISPRINTLN,	
+		PRINTLNDATE,	
+		PROCEEDSRECEIPTS_ID
 	</sql>
 	
 	<!-- 字段值 -->
 	<sql id="FieldValue">
-		#{CONTRACT_ID},	
-		#{STARTTIME},	
-		#{ENTTIME},	
-		#{REMARK},	
-		#{PROCEEDSTIME_ID}
+		#{PROCEEDSDATE},	
+		#{PROCEEDSNUM},	
+		#{OVERDUENUM},	
+		#{RECEIVABLE_REALITY},	
+		#{NOT_RECEIVABLE},	
+		#{PAYER},	
+		#{PROCEEDSER},	
+		#{ISPRINTLN},	
+		#{PRINTLNDATE},	
+		#{PROCEEDSRECEIPTS_ID}
 	</sql>
 	
 	<!-- 新增-->
@@ -41,7 +51,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			PROCEEDSTIME_ID = #{PROCEEDSTIME_ID}
+			PROCEEDSRECEIPTS_ID = #{PROCEEDSRECEIPTS_ID}
 	</delete>
 	
 	<!-- 修改 -->
@@ -49,11 +59,18 @@
 		update
 		<include refid="tableName"></include>
 		set 
-			STARTTIME = #{STARTTIME},
-			ENTTIME = #{ENTTIME},
-		PROCEEDSTIME_ID = PROCEEDSTIME_ID
+			PROCEEDSDATE = #{PROCEEDSDATE},
+			PROCEEDSNUM = #{PROCEEDSNUM},
+			OVERDUENUM = #{OVERDUENUM},
+			RECEIVABLE_REALITY = #{RECEIVABLE_REALITY},
+			NOT_RECEIVABLE = #{NOT_RECEIVABLE},
+			PAYER = #{PAYER},
+			PROCEEDSER = #{PROCEEDSER},
+			ISPRINTLN = #{ISPRINTLN},
+			PRINTLNDATE = #{PRINTLNDATE},
+		PROCEEDSRECEIPTS_ID = PROCEEDSRECEIPTS_ID
 		where 
-		PROCEEDSTIME_ID = #{PROCEEDSTIME_ID}
+		PROCEEDSRECEIPTS_ID = #{PROCEEDSRECEIPTS_ID}
 	</update>
 	
 	<!-- 通过ID获取数据 -->
@@ -63,20 +80,9 @@
 		from 
 		<include refid="tableName"></include>
 		where 
-			PROCEEDSTIME_ID = #{PROCEEDSTIME_ID}
+			PROCEEDSRECEIPTS_ID = #{PROCEEDSRECEIPTS_ID}
 	</select>
-
-	<select id="listByContractId" parameterType="pd" resultType="pd">
-		select
-		<include refid="Field"></include>
-		from
-		<include refid="tableName"></include>
-		where
-		CONTRACT_ID = #{CONTRACT_ID}
-		ORDER BY NUM
-	</select>
-
-
+	
 	<!-- 列表 -->
 	<select id="datalistPage" parameterType="page" resultType="pd">
 		select
@@ -109,7 +115,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			PROCEEDSTIME_ID in
+			PROCEEDSRECEIPTS_ID in
 		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
                  #{item}
 		</foreach>

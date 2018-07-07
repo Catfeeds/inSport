@@ -12,11 +12,14 @@
 	<base href="<%=basePath%>">
 	<!-- 下拉框 -->
 	<link rel="stylesheet" href="static/ace/css/chosen.css" />
+	<link rel="stylesheet" href="static/silviomore/bootstrap-select.css" />
 	<!-- jsp文件头和头部 -->
 	<%@ include file="../../system/index/top.jsp"%>
 	<!-- 日期框 -->
 	<link rel="stylesheet" href="static/ace/css/datepicker.css" />
 	<link rel="stylesheet" href="static/css/fo.css" />
+	<script type="text/javascript" src="static/js/jquery-2.1.1.js"></script>
+	<script src="static/silviomore/bootstrap-select.js"></script>
 </head>
 <body id="sBody" class="no-skin">
 <!-- /section:basics/navbar.layout -->
@@ -39,6 +42,7 @@
 					<div class="col-xs-12">
 						<form action="contract_notr/client_proceeds.do" name="Form" id="Form" method="post">
 							<input type="hidden" name="FSTATE" id="FSTATE" value="${pd.FSTATE}"/>
+							<input type="hidden" name="MODES" id="MODES" value="${pd.MODES}"/>
 							<input  name="FCREATERID" id="FCREATERID" value="${pd.FCREATERID}"
 									type="hidden"  />
 							<div id="zhongxin" style="padding-top: 13px;">
@@ -50,22 +54,46 @@
 									<tr class="warning">
 										<th ><label style="color: red">*</label><label>客户名称:</label></th>
 										<th>
-											<select name="CONTRACTOFNAME" id="CONTRACTOFNAME" data-placeholder=""
+											<%--<select name="CONTRACTOFNAME" id="CONTRACTOFNAME" data-placeholder=""
 													style="vertical-align:top;width: 150px;">
 												<option value="${pd.CONTRACTOFNAME}" name="${pd.CONTRACTOFNAME}">${pd.CONTRACTOFNAME}</option>
 												<c:forEach items="${listConToName}" var="var" varStatus="vs">
 													<option value="${var.CONTRACTOFNAME}" name="${var.CONTRACTOFNAME}">${var.CONTRACTOFNAME}</option>
 												</c:forEach>
-											</select>
+											</select>--%>
+												<select name="CONTRACTOFNAME" id="CONTRACTOFNAME" class="selectpicker bla bla bli"
+														data-style="btn-info" data-live-search="true" title="请选择客户" >
+													<option value="${pd.CONTRACTOFNAME}" name="${pd.CONTRACTOFNAME}">${pd.CONTRACTOFNAME}</option>
+													<c:forEach items="${listConToName}" var="var" varStatus="vs">
+														<option value="${var.CONTRACTOFNAME}" name="${var.CONTRACTOFNAME}">${var.CONTRACTOFNAME}</option>
+													</c:forEach>
+													</optgroup>
+												</select>
 										</th>
 										<th><label style="color: red">*</label><label>收款方式：</label></th>
 										<th >
-											<select name="MODE" id="MODE" data-placeholder=""
-													style="vertical-align:top;width: 150px;" >
-												<option value="现金" name="现金">现金</option>
-												<option value="支票" name="支票">支票</option>
-												<option value="转账" name="转账">转账</option>
-												<option value="信用卡" name="信用卡">信用卡</option>
+											<select name="MODE" id="MODE" class="selectpicker bla bla bli" title="请选择收款方式"
+													data-style="" multiple data-live-search="true" >
+												<option value="现金"
+														<c:if test="${fn:contains(pd.MODES,'现金')}">
+															selected
+														</c:if>
+														name="现金">现金</option>
+												<option value="支票"
+														<c:if test="${fn:contains(pd.MODES,'支票')}">
+															selected
+														</c:if>
+														name="支票">支票</option>
+												<option value="转账"
+														<c:if test="${fn:contains(pd.MODES,'转账')}">
+															selected
+														</c:if>
+														name="转账">转账</option>
+												<option value="信用卡"
+														<c:if test="${fn:contains(pd.MODES,'信用卡')}">
+															selected
+														</c:if>
+														name="信用卡">信用卡</option>
 											</select>
 										</th>
 										<th ><label style="color: red">*</label><label>金额合计：</label></th>
@@ -250,7 +278,14 @@
 			alert("已保存，无需重复保存");
 			return;
 		}*/
-		var MODE = $("#MODE").val();  //付款方式
+		var MODE = "";
+		$("#MODE option:selected").each(function () {
+			MODE += $(this).val() +",";
+		});
+		MODE = MODE.substr(0,MODE.length -1);
+		$("#MODES").val(MODE);
+		//alert(MODE);
+		//var MODE = $("#MODE").val();  //付款方式
 		var con = confirm("是否确定付款方式为:"+MODE+"?"); //在页面上弹出对话框
 		if(con == true){
 		}
@@ -309,7 +344,12 @@
 			alert("已保存，无需重复保存");
 			return;
 		}*/
-		var MODE = $("#MODE").val();  //付款方式
+		var MODE = "";
+		$("#MODE option:selected").each(function () {
+			MODE += $(this).val() +",";
+		});  //付款方式
+		MODE = MODE.substr(0,MODE.length -1);
+		$("#MODES").val(MODE);
 		var con = confirm("是否确定付款方式为:"+MODE+"?"); //在页面上弹出对话框
 		if(con == true){
 		}
@@ -368,7 +408,12 @@
 			alert("已保存，无需重复保存");
 			return;
 		}*/
-		var MODE = $("#MODE").val();  //付款方式
+		var MODE = "";
+		$("#MODE option:selected").each(function () {
+			MODE += $(this).val() +",";
+		});  //付款方式
+		MODE = MODE.substr(0,MODE.length -1);
+		$("#MODES").val(MODE);
 		var con = confirm("是否确定付款方式为:"+MODE+"?"); //在页面上弹出对话框
 		if(con == true){
 		}
@@ -475,6 +520,13 @@
 
 		//日期框
 		$('.date-picker').datepicker({autoclose: true,todayHighlight: true});
+	});
+
+	$(window).on('load', function () {
+		$('.selectpicker').selectpicker({
+			'selectedText': 'cat'
+		});
+		// $('.selectpicker').selectpicker('hide');
 	});
 
 	function week_init() {
