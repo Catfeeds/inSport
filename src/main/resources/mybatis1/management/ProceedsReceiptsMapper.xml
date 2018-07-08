@@ -101,7 +101,11 @@
 				)
 		</if>
 	</select>
-	
+
+	<select id="listTop2" parameterType="page" resultType="pd">
+		SELECT TOP 2 * FROM TB_PROCEEDSRECEIPTS WHERE PAYER = #{CONTRACTOFNAME} ORDER BY NUM DESC
+	</select>
+
 	<!-- 列表(全部) -->
 	<select id="listAll" parameterType="pd" resultType="pd">
 		select

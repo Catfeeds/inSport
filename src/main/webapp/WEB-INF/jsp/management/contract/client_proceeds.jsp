@@ -43,6 +43,7 @@
 						<form action="contract_notr/client_proceeds.do" name="Form" id="Form" method="post">
 							<input type="hidden" name="FSTATE" id="FSTATE" value="${pd.FSTATE}"/>
 							<input type="hidden" name="MODES" id="MODES" value="${pd.MODES}"/>
+							<input type="hidden" name="PROCEEDSRECEIPTS_ID" id="PROCEEDSRECEIPTS_ID" value="${pd.PROCEEDSRECEIPTS_ID}"/>
 							<input  name="FCREATERID" id="FCREATERID" value="${pd.FCREATERID}"
 									type="hidden"  />
 							<div id="zhongxin" style="padding-top: 13px;">
@@ -118,7 +119,7 @@
 	<!-- /.main-content -->
 </div>
 <!-- /.main-container -->
-<div style="margin-bottom: 0px;height: 65%"  class="weeks">
+<div style="margin-bottom: 0px;height: 55%"  class="weeks">
 	<ul style="margin-left: 0px;margin-bottom: 0px" class="weekItem" id="weektab">
 		<li>收款情况</li>
 	</ul>
@@ -146,6 +147,35 @@
 			</tr>
 			<tr id="trskqk">
 			</tr>
+		</table>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<table class="table table-border table-bg table-bordered">
+			<tbody>
+			<tr class="warning">
+				<td class='center' colspan="1000"><label>最近收款单据</label></td>
+			</tr>
+			<c:if test="${not empty listTop2}">
+			<c:forEach items="${listTop2}" var="var" varStatus="vs">
+			<tr class="warning">
+				<td class='center'>
+					<label class="pos-rel"><input type='checkbox' name='ids'
+												  value="${var.PROCEEDSRECEIPTS_ID}"
+												  class="ace"/><span
+							class="lbl"></span></label>
+				</td>
+				<td class='center'><label>收款编号：</label></td>
+				<td class='center'>${var.PROCEEDSRECEIPTS_ID}</td>
+				<td class='center'><label>收款总额：</label></td>
+				<td class='center'>${var.PROCEEDSNUM}</td>
+				<td  class='center'><label>收款日期</label></td>
+				<td class='center' >${var.PROCEEDSDATE}</td>
+			</tr>
+			</c:forEach>
+			</c:if>
+			</tbody>
 		</table>
 	</div>
 </div>
@@ -181,7 +211,8 @@
 					tr += '<tr class="success center">' ;
 					tr += '<td><label>'+count+'</label></td>';
 					tr += '<td><label id="ty'+value.INVOICE_ID+'">应收款</label></td>';
-					tr += '<td><label name="RECEIVABLE" id="r'+value.INVOICE_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
+					tr += '<td><label name="RECEIVABLE" id="r'+value.INVOICE_ID+'">'+value.NOT_RECEIVABLE+'</label>' +
+							'<label id="se'+value.INVOICE_ID+'">（'+value.STARTTIME+'  至  '+value.ENDTIME+'）</label></td>';
 					tr += '<td><label id="pt'+value.INVOICE_ID+'">'+value.PAYTIME+'</label></td>';
 					tr += '<td><label id="od'+value.INVOICE_ID+'">'+value.OVERDUE_N+'</label></td>';
 					tr += '<td><input type="date" style="width: 150px;height: 31px" onchange=" calculate(\''+value.INVOICE_ID+'\')"' +
@@ -205,7 +236,8 @@
 					tr += '<tr class="info center">' ;
 					tr += '<td><label>'+count+'</label></td>';
 					tr += '<td><label id="ty'+value.UTILITIESSTATE_ID+'">应收水电费</label></td>';
-					tr += '<td><label name="RECEIVABLE" id="r'+value.UTILITIESSTATE_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
+					tr += '<td><label name="RECEIVABLE" id="r'+value.UTILITIESSTATE_ID+'">'+value.NOT_RECEIVABLE+'</label>' +
+					'<label id="se'+value.UTILITIESSTATE_ID+'">（'+value.STARTTIME+'  至  '+value.ENDTIME+'）</label></td>';
 					tr += '<td><label id="pt'+value.UTILITIESSTATE_ID+'">'+value.PAYTIME+'</label></td>';
 					tr += '<td><label id="od'+value.UTILITIESSTATE_ID+'">'+value.OVERDUE+'</label></td>';
 					tr += '<td>' +
@@ -267,6 +299,7 @@
 	}
 
 	$("#CONTRACTOFNAME").change(function(){
+		$("#PROCEEDSRECEIPTS_ID").val("");
 		save();
 		//toAjax_load();
 	});
@@ -283,6 +316,10 @@
 			MODE += $(this).val() +",";
 		});
 		MODE = MODE.substr(0,MODE.length -1);
+		if(MODE.length < 1){
+			alert("请选择收款方式！！");
+			return;
+		}
 		$("#MODES").val(MODE);
 		//alert(MODE);
 		//var MODE = $("#MODE").val();  //付款方式
@@ -296,6 +333,21 @@
 		if(RECEIVABLE_N == null || RECEIVABLE_N == ""){
 			return;
 		}
+		var str = [];
+		for(var i=0;i < document.getElementsByName('ids').length;i++){
+			if(document.getElementsByName('ids')[i].checked){
+				str.push(document.getElementsByName('ids')[i].value);
+			}
+		}
+		if(str.length < 1){
+			var PROCEEDSRECEIPTS_ID = $("#PROCEEDSRECEIPTS_ID").val();
+		}else if(str.length > 1){
+			alert("您的选择内容必须要单项!");
+			return false;
+		}else {
+			var PROCEEDSRECEIPTS_ID = str[0];
+		}
+		var ALLSUM = $("#ALLSUM").val(); //未收款总额
 		var RECEIVABLE = $("#r"+DEPOSITINFO_ID).text(); // 本次应收款
 		var NOT_RECEIVABLE = $("#np"+DEPOSITINFO_ID).text(); // 未收款
 		var PAYTIME = $("#pt"+DEPOSITINFO_ID).text(); //应收时间
@@ -312,6 +364,8 @@
 			url: '<%=basePath%>proceeds_record/record_deposit',
 			async: false,
 			data: {
+				ALLSUM : ALLSUM,
+				PROCEEDSRECEIPTS_ID : PROCEEDSRECEIPTS_ID,
 				CONTRACT_ID : CONTRACT_ID,
 				TYPE : TYPE,
 				MODE : MODE,
@@ -332,6 +386,7 @@
 			success: function (data) {
 				alert("收款成功");
 				//$("#is"+DEPOSITINFO_ID).val("yes");
+				$("#PROCEEDSRECEIPTS_ID").val(data.PROCEEDSRECEIPTS_ID);
 				save();
 			}
 		});
@@ -348,6 +403,10 @@
 		$("#MODE option:selected").each(function () {
 			MODE += $(this).val() +",";
 		});  //付款方式
+		if(MODE.length < 1){
+			alert("请选择收款方式！！");
+			return;
+		}
 		MODE = MODE.substr(0,MODE.length -1);
 		$("#MODES").val(MODE);
 		var con = confirm("是否确定付款方式为:"+MODE+"?"); //在页面上弹出对话框
@@ -360,6 +419,21 @@
 		if(RECEIVABLE_N == null || RECEIVABLE_N == ""){
 			return;
 		}
+		var ALLSUM = $("#ALLSUM").val(); //未收款总额
+		var str = [];
+		for(var i=0;i < document.getElementsByName('ids').length;i++){
+			if(document.getElementsByName('ids')[i].checked){
+				str.push(document.getElementsByName('ids')[i].value);
+			}
+		}
+		if(str.length < 1){
+			var PROCEEDSRECEIPTS_ID = $("#PROCEEDSRECEIPTS_ID").val();
+		}else if(str.length > 1){
+			alert("您的选择内容必须要单项!");
+			return false;
+		}else {
+			var PROCEEDSRECEIPTS_ID = str[0];
+		}
 		var RECEIVABLE = $("#r"+INVOICE_ID).text(); // 本次应收款
 		var NOT_RECEIVABLE = $("#np"+INVOICE_ID).text(); // 未收款
 		var PAYTIME = $("#pt"+INVOICE_ID).text(); //应收时间
@@ -371,14 +445,18 @@
 		var PAYER = $("#CONTRACTOFNAME").val();  //付款方
 		var ITEMID = INVOICE_ID;  // 项目id
 		var CONTRACT_ID = CONTRACT_ID;  // 合同id
+		var SETIME = $("#se"+INVOICE_ID).text();
 		$.ajax({
 			type: "POST",
 			url: '<%=basePath%>proceeds_record/record_Invoice',
 			async: false,
 			data: {
+				ALLSUM : ALLSUM,
+				PROCEEDSRECEIPTS_ID : PROCEEDSRECEIPTS_ID,
 				CONTRACT_ID : CONTRACT_ID,
 				TYPE : TYPE,
 				MODE : MODE,
+				SETIME : SETIME,
 				RECEIVABLE_N : RECEIVABLE_N,
 				AMOUNT : AMOUNT,
 				OVERDUENUM : OVERDUENUM,
@@ -396,6 +474,7 @@
 			success: function (data) {
 				alert("收款成功");
 				/*$("#is"+INVOICE_ID).val("yes");*/
+				$("#PROCEEDSRECEIPTS_ID").val(data.PROCEEDSRECEIPTS_ID);
 				save();
 			}
 		});
@@ -412,6 +491,10 @@
 		$("#MODE option:selected").each(function () {
 			MODE += $(this).val() +",";
 		});  //付款方式
+		if(MODE.length < 1){
+			alert("请选择收款方式！！");
+			return;
+		}
 		MODE = MODE.substr(0,MODE.length -1);
 		$("#MODES").val(MODE);
 		var con = confirm("是否确定付款方式为:"+MODE+"?"); //在页面上弹出对话框
@@ -423,6 +506,21 @@
 		var RECEIVABLE_N = $("#nr"+UTILITIESSTATE_ID).val();  //本次收款
 		if(RECEIVABLE_N == null || RECEIVABLE_N == ""){
 			return;
+		}
+		var ALLSUM = $("#ALLSUM").val(); //未收款总额
+		var str = [];
+		for(var i=0;i < document.getElementsByName('ids').length;i++){
+			if(document.getElementsByName('ids')[i].checked){
+				str.push(document.getElementsByName('ids')[i].value);
+			}
+		}
+		if(str.length < 1){
+			var PROCEEDSRECEIPTS_ID = $("#PROCEEDSRECEIPTS_ID").val();
+		}else if(str.length > 1){
+			alert("您的选择内容必须要单项!");
+			return false;
+		}else {
+			var PROCEEDSRECEIPTS_ID = str[0];
 		}
 		var RECEIVABLE = $("#r"+UTILITIESSTATE_ID).text(); // 本次应收款
 		var NOT_RECEIVABLE = $("#np"+UTILITIESSTATE_ID).text(); // 未收款
@@ -440,6 +538,8 @@
 			url: '<%=basePath%>proceeds_record/record_Utili',
 			async: false,
 			data: {
+				ALLSUM : ALLSUM,
+				PROCEEDSRECEIPTS_ID : PROCEEDSRECEIPTS_ID,
 				CONTRACT_ID : CONTRACT_ID,
 				TYPE : TYPE,
 				MODE : MODE,
@@ -459,7 +559,7 @@
 			cache: false,
 			success: function (data) {
 				alert("收款成功");
-				//$("#is"+UTILITIESSTATE_ID).val("yes");
+				$("#PROCEEDSRECEIPTS_ID").val(data.PROCEEDSRECEIPTS_ID);
 				save();
 			}
 		});

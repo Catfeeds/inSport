@@ -61,7 +61,11 @@ public class Proceeds_recordService implements Proceeds_recordManager{
 	public List<PageData> listAll(PageData pd)throws Exception{
 		return (List<PageData>)dao.findForList("Proceeds_recordMapper.listAll", pd);
 	}
-	
+
+	public List<PageData> listByProReceiptsID(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("Proceeds_recordMapper.listByProReceiptsID", pd);
+	}
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import com.fh.service.management.depositinfo.DepositInfoManager;
 import com.fh.service.management.expense.ExpenseManager;
 import com.fh.service.management.invoice.InvoiceManager;
+import com.fh.service.management.proceedsreceipts.ProceedsReceiptsManager;
 import com.fh.service.management.utilitiesstate.UtilitiesStateManager;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -54,6 +55,9 @@ public class Proceeds_recordController extends BaseController {
 
 	@Resource(name="depositinfoService")
 	private DepositInfoManager depositinfoService;
+
+	@Resource(name="proceedsreceiptsService")
+	private ProceedsReceiptsManager proceedsreceiptsService;
 	
 	/**保存
 	 * @param
@@ -87,11 +91,38 @@ public class Proceeds_recordController extends BaseController {
 		if(depd.getString("REALITY") == null || "".equals(depd.getString("REALITY"))){
 			depd.put("REALITY","0.00");
 		}
+		if(depd.getString("OVERDUENUM") == null || "".equals(depd.getString("OVERDUENUM"))){
+			depd.put("OVERDUENUM","0.00");
+		}
+		//判断是否已存在一张单据，没有则新增一张
+		PageData pdPR = proceedsreceiptsService.findById(pd);
+		if(pdPR == null || "".equals(pdPR)){
+			pdPR = new PageData();
+			pdPR.put("PROCEEDSRECEIPTS_ID",this.get32UUID());
+			pdPR.put("PROCEEDSDATE",pd.getString("RECEIVABL_PAYTIME"));
+			pdPR.put("PROCEEDSNUM",pd.getString("RECEIVABLE_N")); // 一次收的金额，后面叠加
+			pdPR.put("OVERDUENUM",pd.getString("OVERDUENUM")); //一次收的滞纳金，后面叠加
+			pdPR.put("RECEIVABLE_REALITY",pd.getString("ALLSUM")); // 应收总额，后面不变
+			pdPR.put("NOT_RECEIVABLE",Double.parseDouble(pd.getString("ALLSUM"))+ Double.parseDouble(pd.getString("OVERDUENUM"))  - Double.parseDouble(pd.getString("RECEIVABLE_N")));//未收款，后面叠减
+			pdPR.put("PAYER",pd.getString("PAYER"));
+			pdPR.put("PROCEEDSER",Jurisdiction.getUsername());
+			pdPR.put("ISPRINTLN","0");
+			proceedsreceiptsService.save(pdPR);
+		}else {
+			pdPR.put("PROCEEDSDATE",pd.getString("RECEIVABL_PAYTIME"));
+			pdPR.put("PROCEEDSNUM",Double.parseDouble(pdPR.get("PROCEEDSNUM").toString())+Double.parseDouble(pd.get("RECEIVABLE_N").toString()));
+			pdPR.put("OVERDUENUM",Double.parseDouble(pdPR.get("OVERDUENUM").toString())+Double.parseDouble(pd.get("OVERDUENUM").toString()));
+			//pdPR.put("RECEIVABLE_REALITY",Double.parseDouble(pdPR.get("PROCEEDSNUM").toString())+Double.parseDouble(pdPR.get("OVERDUENUM").toString()));
+			pdPR.put("NOT_RECEIVABLE",Double.parseDouble(pdPR.get("NOT_RECEIVABLE").toString())+Double.parseDouble(pd.get("OVERDUENUM").toString()) - Double.parseDouble(pd.get("RECEIVABLE_N").toString()));
+			proceedsreceiptsService.edit(pdPR);
+		}
 		Double REALITY = Double.parseDouble(depd.getString("REALITY"))+Double.parseDouble(pd.getString("RECEIVABLE_N"));
 		depd.put("REALITY",REALITY.toString());
 		depd.put("NOT_RECEIVABLE",pd.getString("NOT_RECEIVABLE"));
+		pd.put("PROCEEDSRECEIPTS_ID",pdPR.getString("PROCEEDSRECEIPTS_ID"));
 		depositinfoService.edit(depd);
 		proceeds_recordService.save(pd);
+		json.put("PROCEEDSRECEIPTS_ID",pdPR.getString("PROCEEDSRECEIPTS_ID"));
 		return  json;
 	}
 
@@ -112,13 +143,37 @@ public class Proceeds_recordController extends BaseController {
 		if(utpd.getString("OVERDUENUM") == null || "".equals(utpd.getString("OVERDUENUM"))){
 			utpd.put("OVERDUENUM","0.00");
 		}
+		//判断是否已存在一张单据，没有则新增一张
+		PageData pdPR = proceedsreceiptsService.findById(pd);
+		if(pdPR == null || "".equals(pdPR)){
+			pdPR = new PageData();
+			pdPR.put("PROCEEDSRECEIPTS_ID",this.get32UUID());
+			pdPR.put("PROCEEDSDATE",pd.getString("RECEIVABL_PAYTIME"));
+			pdPR.put("PROCEEDSNUM",pd.getString("RECEIVABLE_N")); // 一次收的金额，后面叠加
+			pdPR.put("OVERDUENUM",pd.getString("OVERDUENUM")); //一次收的滞纳金，后面叠加
+			pdPR.put("RECEIVABLE_REALITY",pd.getString("ALLSUM")); // 应收总额，后面不变
+			pdPR.put("NOT_RECEIVABLE",Double.parseDouble(pd.getString("ALLSUM"))+ Double.parseDouble(pd.getString("OVERDUENUM"))  - Double.parseDouble(pd.getString("RECEIVABLE_N")));//未收款，后面叠减
+			pdPR.put("PAYER",pd.getString("PAYER"));
+			pdPR.put("PROCEEDSER",Jurisdiction.getUsername());
+			pdPR.put("ISPRINTLN","0");
+			proceedsreceiptsService.save(pdPR);
+		}else {
+			pdPR.put("PROCEEDSDATE",pd.getString("RECEIVABL_PAYTIME"));
+			pdPR.put("PROCEEDSNUM",Double.parseDouble(pdPR.get("PROCEEDSNUM").toString())+Double.parseDouble(pd.get("RECEIVABLE_N").toString()));
+			pdPR.put("OVERDUENUM",Double.parseDouble(pdPR.get("OVERDUENUM").toString())+Double.parseDouble(pd.get("OVERDUENUM").toString()));
+			//pdPR.put("RECEIVABLE_REALITY",Double.parseDouble(pdPR.get("PROCEEDSNUM").toString())+Double.parseDouble(pdPR.get("OVERDUENUM").toString()));
+			pdPR.put("NOT_RECEIVABLE",Double.parseDouble(pdPR.get("NOT_RECEIVABLE").toString()) +Double.parseDouble(pd.get("OVERDUENUM").toString())- Double.parseDouble(pd.get("RECEIVABLE_N").toString()));
+			proceedsreceiptsService.edit(pdPR);
+		}
 		Double RECEIVABLE_REALITY = Double.parseDouble(utpd.getString("RECEIVABLE_REALITY"))+Double.parseDouble(pd.getString("RECEIVABLE_N"));
 		Double OVERDUENUM = Double.parseDouble(utpd.getString("OVERDUENUM"))+Double.parseDouble(pd.getString("OVERDUENUM"));
 		utpd.put("RECEIVABLE_REALITY",RECEIVABLE_REALITY.toString());
 		utpd.put("NOT_RECEIVABLE",pd.getString("NOT_RECEIVABLE"));
+		pd.put("PROCEEDSRECEIPTS_ID",pdPR.getString("PROCEEDSRECEIPTS_ID"));
 		utpd.put("OVERDUENUM",OVERDUENUM);
 		utilitiesstateService.edit(utpd);
 		proceeds_recordService.save(pd);
+		json.put("PROCEEDSRECEIPTS_ID",pdPR.getString("PROCEEDSRECEIPTS_ID"));
 		return  json;
 	}
 
@@ -140,13 +195,37 @@ public class Proceeds_recordController extends BaseController {
 		if(invpd.getString("OVERDUE") == null || "".equals(invpd.getString("OVERDUE"))){
 			invpd.put("OVERDUE","0.00");
 		}
+		//判断是否已存在一张单据，没有则新增一张
+		PageData pdPR = proceedsreceiptsService.findById(pd);
+		if(pdPR == null || "".equals(pdPR)){
+			pdPR = new PageData();
+			pdPR.put("PROCEEDSRECEIPTS_ID",this.get32UUID());
+			pdPR.put("PROCEEDSDATE",pd.getString("RECEIVABL_PAYTIME"));
+			pdPR.put("PROCEEDSNUM",pd.getString("RECEIVABLE_N")); // 一次收的金额，后面叠加
+			pdPR.put("OVERDUENUM",pd.getString("OVERDUENUM")); //一次收的滞纳金，后面叠加
+			pdPR.put("RECEIVABLE_REALITY",pd.getString("ALLSUM")); // 应收总额，后面不变
+			pdPR.put("NOT_RECEIVABLE",Double.parseDouble(pd.getString("ALLSUM")) + Double.parseDouble(pd.getString("OVERDUENUM")) - Double.parseDouble(pd.getString("RECEIVABLE_N")));//未收款，后面叠减
+			pdPR.put("PAYER",pd.getString("PAYER"));
+			pdPR.put("PROCEEDSER",Jurisdiction.getUsername());
+			pdPR.put("ISPRINTLN","0");
+			proceedsreceiptsService.save(pdPR);
+		}else {
+			pdPR.put("PROCEEDSDATE",pd.getString("RECEIVABL_PAYTIME"));
+			pdPR.put("PROCEEDSNUM",Double.parseDouble(pdPR.get("PROCEEDSNUM").toString())+Double.parseDouble(pd.get("RECEIVABLE_N").toString()));
+			pdPR.put("OVERDUENUM",Double.parseDouble(pdPR.get("OVERDUENUM").toString())+Double.parseDouble(pd.get("OVERDUENUM").toString()));
+			//pdPR.put("RECEIVABLE_REALITY",Double.parseDouble(pdPR.get("PROCEEDSNUM").toString())+Double.parseDouble(pdPR.get("OVERDUENUM").toString()));
+			pdPR.put("NOT_RECEIVABLE",Double.parseDouble(pdPR.get("NOT_RECEIVABLE").toString())+Double.parseDouble(pd.get("OVERDUENUM").toString()) - Double.parseDouble(pd.get("RECEIVABLE_N").toString()));
+			proceedsreceiptsService.edit(pdPR);
+		}
 		Double RECEIVABLE_REALITY = Double.parseDouble(invpd.getString("RECEIVABLE_REALITY"))+Double.parseDouble(pd.getString("RECEIVABLE_N"));
 		Double OVERDUENUM = Double.parseDouble(invpd.getString("OVERDUE"))+Double.parseDouble(pd.getString("OVERDUENUM"));
 		invpd.put("RECEIVABLE_REALITY",RECEIVABLE_REALITY.toString());
 		invpd.put("NOT_RECEIVABLE",pd.getString("NOT_RECEIVABLE"));
+		pd.put("PROCEEDSRECEIPTS_ID",pdPR.getString("PROCEEDSRECEIPTS_ID"));
 		invpd.put("OVERDUE",OVERDUENUM);
 		invoiceService.edit(invpd);
 		proceeds_recordService.save(pd);
+		json.put("PROCEEDSRECEIPTS_ID",pdPR.getString("PROCEEDSRECEIPTS_ID"));
 		return  json;
 	}
 	
@@ -205,7 +284,20 @@ public class Proceeds_recordController extends BaseController {
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
 		return mv;
 	}
-	
+
+	@RequestMapping(value="/record_show")
+	public ModelAndView record_show() throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		List<PageData> listByProReceiptsID = proceeds_recordService.listByProReceiptsID(pd);
+		mv.setViewName("management/proceeds_record/proceeds_record_show");
+		mv.addObject("listByProReceiptsID", listByProReceiptsID);
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
+
 	/**去新增页面
 	 * @param
 	 * @throws Exception

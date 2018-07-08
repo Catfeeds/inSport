@@ -41,7 +41,9 @@ public interface ProceedsReceiptsManager{
 	 * @throws Exception
 	 */
 	public List<PageData> listAll(PageData pd)throws Exception;
-	
+
+	public List<PageData> listTop2(PageData pd)throws Exception;
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

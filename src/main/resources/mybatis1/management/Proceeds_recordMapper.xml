@@ -21,8 +21,10 @@
 		RECEIVABL_EMPL,	
 		MODE,	
 		PAYER,
+		SETIME,
 		PAYTIME,
 		AMOUNT,
+		PROCEEDSRECEIPTS_ID,
 		PROCEEDS_RECORD_ID
 	</sql>
 	
@@ -40,8 +42,10 @@
 		#{RECEIVABL_EMPL},	
 		#{MODE},	
 		#{PAYER},
+		#{SETIME},
 		#{PAYTIME},
 		#{AMOUNT},
+		#{PROCEEDSRECEIPTS_ID},
 		#{PROCEEDS_RECORD_ID}
 	</sql>
 	
@@ -116,7 +120,12 @@
 		from 
 		<include refid="tableName"></include>
 	</select>
-	
+
+	<!-- 根据单据id去查询相应的记录 -->
+	<select id="listByProReceiptsID" parameterType="pd" resultType="pd">
+		SELECT * FROM TB_PROCEEDS_RECORD WHERE PROCEEDSRECEIPTS_ID = #{PROCEEDSRECEIPTS_ID} ORDER BY NUM
+	</select>
+
 	<!-- 批量删除 -->
 	<delete id="deleteAll" parameterType="String">
 		delete from

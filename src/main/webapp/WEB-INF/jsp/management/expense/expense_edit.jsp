@@ -234,6 +234,16 @@
 						<table class="table table-border table-bg table-bordered">
 							<tbody>
 							<tr class="success">
+								<th class="center"><label>周期(水电费)：</label></th>
+								<th colspan="6"><input type="date" style="width: 150px;height: 31px" value="${pd.STARTTIME}"
+														  class="input-text"  name="STARTTIME" readonly
+														  id="STARTTIME"> 至
+									<input type="date" style="width: 150px;height: 31px" value="${pd.ENDTIME}" readonly
+										   class="input-text"  name="ENDTIME"
+										   id="ENDTIME">
+								</th>
+							</tr>
+							<tr class="success">
 								<th class="center"><label>付款方名称(水电费)：</label></th>
 								<th class="center"><input type="text" style="width: 150px" value="${pd.PAYERNAME}"
 														  class="input-text"  name="PAYERNAME"
@@ -316,6 +326,8 @@
 		function editUtilities(UTILITIESSTATE_ID){
 			var RECEIVABLE_REALITY = $("#RECEIVABLE_REALITY").val();
 			var PAYERNAME = $("#PAYERNAME").val();
+			var STARTTIME = $("#STARTTIME").val();
+			var ENDTIME = $("#ENDTIME").val();
 			var PAYTIME = $("#PAYTIME").val();
 			var RECEIVABLE = $("#RECEIVABLE").val();
 			var OVERDUENUM = $("#OVERDUE").val();
@@ -337,6 +349,8 @@
 				async: false,
 				data: {
 					RECEIVABLE_REALITY : RECEIVABLE_REALITY,
+					STARTTIME : STARTTIME,
+					ENDTIME : ENDTIME,
 					PAYERNAME : PAYERNAME,
 					PAYTIME : PAYTIME,
 					RECEIVABLE : RECEIVABLE,
@@ -368,6 +382,8 @@
 		//保存水电费
 		function saveUtilities(CONTRACT_ID,PROCEEDSTIME_ID,INVOICE_ID){
 			var RECEIVABLE_REALITY = "0.00";
+			var STARTTIME = $("#STARTTIME").val();
+			var ENDTIME = $("#ENDTIME").val();
 			var PAYERNAME = $("#PAYERNAME").val();
 			var PAYTIME = $("#PAYTIME").val();
 			var RECEIVABLE = $("#RECEIVABLE").val();
@@ -390,6 +406,8 @@
 				async: false,
 				data: {
 					RECEIVABLE_REALITY : RECEIVABLE_REALITY,
+					STARTTIME : STARTTIME,
+					ENDTIME : ENDTIME,
 					PAYERNAME : PAYERNAME,
 					PAYTIME : PAYTIME,
 					RECEIVABLE : RECEIVABLE,

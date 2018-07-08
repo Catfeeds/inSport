@@ -350,6 +350,18 @@
 								<c:forEach items="${listInvoice}" var="var1" varStatus="vs">
 								<c:if test="${var1.PROCEEDSTIME_ID == var.PROCEEDSTIME_ID}">
 								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" class="success">
+									<th width="15%"><label>客户租用周期：</label></th>
+									<th colspan="3"><input type="date" style="width: 150px;height: 31px" value="${var1.STARTTIME}"
+												class="input-text"
+												id="st${var1.INVOICE_ID}">至
+										<input type="date" style="width: 150px;height: 31px" value="${var1.ENDTIME}"
+											   class="input-text"
+											   id="et${var1.INVOICE_ID}">
+									</th>
+									<th ></th>
+									<th ></th>
+								</tr>
+								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" class="success">
 									<th width="15%"><label>应收金额：</label></th>
 									<th ><input type="number" style="width: 150px" value="${var1.RECEIVABLE}"
 														   class="input-text"  name="RECEIVABLE"
@@ -1052,11 +1064,13 @@
 				//uuid = data.uuid;
 			}
 		});
+		var STARTTIME = $("#st"+INVOICE_ID).val();
+		var ENDTIME = $("#et"+INVOICE_ID).val();
 		top.jzts();
 		var diag = new top.Dialog();
 		diag.Drag = true;
 		diag.Title = "添加水电费项";
-		diag.URL = '<%=basePath%>expense/goAdd?CONTRACT_ID='+CONTRACT_ID+'&PROCEEDSTIME_ID='+PROCEEDSTIME_ID+'&INVOICE_ID='+INVOICE_ID+'&CONTRACTOFNAME='+CONTRACTOFNAME+'&OVERDUE='+OVERDUE+'&PAYERNAME='+PAYERNAME;
+		diag.URL = '<%=basePath%>expense/goAdd?CONTRACT_ID='+CONTRACT_ID+'&STARTTIME='+STARTTIME+'&ENDTIME='+ENDTIME+'&PROCEEDSTIME_ID='+PROCEEDSTIME_ID+'&INVOICE_ID='+INVOICE_ID+'&CONTRACTOFNAME='+CONTRACTOFNAME+'&OVERDUE='+OVERDUE+'&PAYERNAME='+PAYERNAME;
 		diag.Width = window.innerWidth * 1.3;
 		diag.Height = 700;
 		diag.Modal = true;				//有无遮罩窗口
@@ -1250,6 +1264,14 @@
 		 */
 		var tr = "";
 		var CONTRACTCLASSIFY = $("#CONTRACTCLASSIFY").val();
+		tr += '<tr class="success"><th width="15%"><label>客户租用周期：</label></th>';
+		tr += ' <th colspan="3"><input type="date" style="width: 150px;height: 31px" class="input-text"id="st'+uuid+'">';
+		tr += ' 至 <input type="date" style="width: 150px;height: 31px" class="input-text"id="et'+uuid+'">'+
+				'</th>';
+		tr += '<th ></th>';
+		tr += '<th></th> </tr>';
+
+
 		tr += '<tr class="success"><th width="15%"><label>应收金额：</label></th>';
 		tr += '<th width="10%"><input type="number" style="width: 150px" class="input-text"  name="RECEIVABLE" ' +
 				'id="r'+uuid+'"></th>';
@@ -1312,6 +1334,8 @@
 		var PAYERNAME = $("#pn"+uuid).val();
 		var INVOICENAME = $("#in"+uuid).val();
 		var INVOICETIME = $("#it"+uuid).val();
+		var STARTTIME  = $("#st"+uuid).val();
+		var ENDTIME  = $("#et"+uuid).val();
 		var OVERDUE_N = '${pd2.OVERDUE}';
 		$.ajax({
 			type: "POST",
@@ -1320,6 +1344,8 @@
 			data: {
 				RECEIVABLE : RECEIVABLE,
 				PAYTIME : PAYTIME,
+				STARTTIME : STARTTIME,
+				ENDTIME : ENDTIME,
 				OVERDUE : OVERDUE,
 				OVERDUE_N : OVERDUE_N,
 				RECEIVABLE_REALITY : RECEIVABLE_REALITY,
@@ -1349,6 +1375,8 @@
 		var RECEIVABL_PAYTIME = $("#rpt"+INVOICE_ID).val();
 		var PAYERNAME = $("#pn"+INVOICE_ID).val();
 		var INVOICENAME = $("#ivn"+INVOICE_ID).val();
+		var STARTTIME  = $("#st"+INVOICE_ID).val();
+		var ENDTIME  = $("#et"+INVOICE_ID).val();
 		var INVOICETIME = $("#ivt"+INVOICE_ID).val();
 		var OVERDUE_N = '${pd2.OVERDUE}';
 		$.ajax({
@@ -1359,6 +1387,8 @@
 				RECEIVABLE : RECEIVABLE,
 				OVERDUE_N : OVERDUE_N,
 				PAYTIME : PAYTIME,
+				STARTTIME : STARTTIME,
+				ENDTIME : ENDTIME,
 				OVERDUE : OVERDUE,
 				RECEIVABLE_REALITY : RECEIVABLE_REALITY,
 				RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,

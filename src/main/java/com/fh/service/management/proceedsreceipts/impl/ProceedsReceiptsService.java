@@ -61,7 +61,11 @@ public class ProceedsReceiptsService implements ProceedsReceiptsManager{
 	public List<PageData> listAll(PageData pd)throws Exception{
 		return (List<PageData>)dao.findForList("ProceedsReceiptsMapper.listAll", pd);
 	}
-	
+
+	public List<PageData> listTop2(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ProceedsReceiptsMapper.listTop2", pd);
+	}
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

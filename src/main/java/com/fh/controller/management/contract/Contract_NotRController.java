@@ -5,6 +5,7 @@ import com.fh.entity.Page;
 import com.fh.service.management.client.ClientManager;
 import com.fh.service.management.contract.ContractManager;
 import com.fh.service.management.contractpicture.ContractPictureManager;
+import com.fh.service.management.proceedsreceipts.ProceedsReceiptsManager;
 import com.fh.util.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -35,15 +36,23 @@ public class Contract_NotRController extends BaseController {
 	@Resource(name="contractService")
 	private ContractManager contractService;
 
+	@Resource(name="proceedsreceiptsService")
+	private ProceedsReceiptsManager proceedsreceiptsService;
+
 	@RequestMapping(value = "/client_proceeds")
 	public ModelAndView listTree() throws Exception {
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd.put("CONTRACTTYPES","收款合同");
+		if(pd.getString("PROCEEDSRECEIPTS_ID") == null || "".equals(pd.getString("PROCEEDSRECEIPTS_ID")) ){
+			pd.put("PROCEEDSRECEIPTS_ID",this.get32UUID());
+		}
+		List<PageData> listTop2 = proceedsreceiptsService.listTop2(pd);
 		List<PageData> listConToName = contractService.listConToName(pd);
 		mv.setViewName("management/contract/client_proceeds");
 		mv.addObject("listConToName", listConToName);
+		mv.addObject("listTop2", listTop2);
 		mv.addObject("pd", pd);
 		return mv;
 	}
