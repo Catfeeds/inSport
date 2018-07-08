@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+
+import com.fh.service.management.proceeds_record.Proceeds_recordManager;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -37,6 +39,9 @@ public class ProceedsReceiptsController extends BaseController {
 	String menuUrl = "proceedsreceipts/list.do"; //菜单地址(权限用)
 	@Resource(name="proceedsreceiptsService")
 	private ProceedsReceiptsManager proceedsreceiptsService;
+
+	@Resource(name="proceeds_recordService")
+	private Proceeds_recordManager proceeds_recordService;
 	
 	/**保存
 	 * @param
@@ -103,6 +108,22 @@ public class ProceedsReceiptsController extends BaseController {
 		if(null != keywords && !"".equals(keywords)){
 			pd.put("keywords", keywords.trim());
 		}
+		String lastEnd = pd.getString("lastEnd");				//关键词检索条件
+		if(null != lastEnd && !"".equals(lastEnd)){
+			pd.put("lastEnd", lastEnd.trim());
+		}
+		String lastStart = pd.getString("lastStart");				//关键词检索条件
+		if(null != lastStart && !"".equals(lastStart)){
+			pd.put("lastStart", lastStart.trim());
+		}
+		String picStart = pd.getString("picStart");				//关键词检索条件
+		if(null != picStart && !"".equals(picStart)){
+			pd.put("picStart", picStart.trim());
+		}
+		String picEnd = pd.getString("picEnd");				//关键词检索条件
+		if(null != picEnd && !"".equals(picEnd)){
+			pd.put("picEnd", picEnd.trim());
+		}
 		page.setPd(pd);
 		List<PageData>	varList = proceedsreceiptsService.list(page);	//列出ProceedsReceipts列表
 		mv.setViewName("management/proceedsreceipts/proceedsreceipts_list");
@@ -125,9 +146,26 @@ public class ProceedsReceiptsController extends BaseController {
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
 		return mv;
-	}	
-	
-	 /**去修改页面
+	}
+
+	/**去修改页面
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/toPrint")
+	public ModelAndView toPrint()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = proceedsreceiptsService.findById(pd);	//根据ID读取
+		List<PageData> listByProReceiptsID = proceeds_recordService.listByProReceiptsID(pd);
+		mv.addObject("listByProReceiptsID", listByProReceiptsID);
+		mv.setViewName("management/proceedsreceipts/toPrint");
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
+	/**去修改页面
 	 * @param
 	 * @throws Exception
 	 */

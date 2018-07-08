@@ -89,6 +89,10 @@ public class ContractService implements ContractManager{
 		return (List<PageData>)dao.findForList("ContractMapper.listNotDeposit", pd);
 	}
 
+	public List<PageData> listTimeToContract(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ContractMapper.listTimeToContract", pd);
+	}
+
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception

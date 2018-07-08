@@ -1,6 +1,10 @@
 ﻿		<div id="navbar" class="navbar navbar-default">
 			<script type="text/javascript">
 				try{ace.settings.check('navbar' , 'fixed');}catch(e){}
+				
+				function toContract() {
+					alert("弹出未收款合同");
+				}
 			</script>
 
 			<div class="navbar-container" id="navbar-container">
@@ -32,10 +36,10 @@
 				<!-- #section:basics/navbar.dropdown -->
 				<div class="navbar-buttons navbar-header pull-right" role="navigation">
 					<ul class="nav ace-nav">
-						<li title="待办任务" class="grey">
+						<li title="待办任务"  onclick="toContract();" class="grey">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-								<i class="ace-icon fa fa-tasks"></i>
-								<span class="badge badge-grey">${listWarnCount}</span>
+								<i class="ace-icon fa fa-tasks" ></i>
+								<span class="badge badge-grey" style="background-color: palevioletred">${listTimeToContractCount}</span>
 							</a>
 
 							<%--<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">

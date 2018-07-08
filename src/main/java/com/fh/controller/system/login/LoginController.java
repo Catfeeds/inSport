@@ -3,14 +3,13 @@ package com.fh.controller.system.login;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.fh.service.management.contract.ContractManager;
 import com.fh.service.management.warn.WarnManager;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -76,6 +75,8 @@ public class LoginController extends BaseController {
 	private LogInImgManager loginimgService;
 	@Resource(name="warnService")
 	private WarnManager warnService;
+	@Resource(name="contractService")
+	private ContractManager contractService;
 	
 	/**访问登录页
 	 * @return
@@ -233,11 +234,19 @@ public class LoginController extends BaseController {
 			mv.setViewName("system/index/login");
 			logger.error(e.getMessage(), e);
 		}
-		pd.put("USERNAME",Jurisdiction.getUsername());
+
 		try {
-			List<PageData> listWarn = warnService.listWarnByUser(pd);
-			mv.addObject("listWarn",listWarn);
-			mv.addObject("listWarnCount",listWarn.size());
+			pd.put("USERNAME",Jurisdiction.getUsername());
+			PageData uPd = userService.findByUsername(pd);
+			pd.put("OPERATOR",uPd.getString("NAME"));
+			Date currentTime = new Date();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			String dateString = formatter.format(currentTime);
+			pd.put("TODAY",dateString);
+			//listTimeToContract
+			List<PageData> listTimeToContract = contractService.listTimeToContract(pd);
+			mv.addObject("listTimeToContract",listTimeToContract);
+			mv.addObject("listTimeToContractCount",listTimeToContract.size());
 		}catch (Exception e){
 
 		}

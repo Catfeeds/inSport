@@ -42,8 +42,21 @@
 										</span>
 									</div>
 								</td>
-								<td style="padding-left:2px;"><input class="span10 date-picker" name="lastStart" id="lastStart"  value="" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" style="width:88px;" placeholder="开始日期" title="开始日期"/></td>
-								<td style="padding-left:2px;"><input class="span10 date-picker" name="lastEnd" name="lastEnd"  value="" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" style="width:88px;" placeholder="结束日期" title="结束日期"/></td>
+
+								<td style="padding-left:12px;">
+									时间区间
+									<input class="span10 date-picker" name="lastStart" id="lastStart"  value="${pd.lastStart}" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" style="width:88px;" placeholder="开始日期" title="开始日期"/>
+									<input class="span10 date-picker" name="lastEnd" id="lastEnd" value="${pd.lastEnd}" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" style="width:88px;" placeholder="结束日期" title="结束日期"/>
+								</td>
+								<td style="padding-left:12px;">
+									<label>金额区间:</label>
+									<input type="number" placeholder="输入金额" style="width: 110px" class="nav-search-input"
+										   id="picStart" autocomplete="off" name="picStart"
+										   value="${pd.picStart}" />  -至-
+									<input type="number" placeholder="输入金额" style="width: 110px" class="nav-search-input"
+										   id="picEnd" autocomplete="off" name="picEnd"
+										   value="${pd.picEnd }" />
+								</td>
 								<c:if test="${QX.cha == 1 }">
 								<td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="tosearch();"  title="检索"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
 								</c:if>
@@ -89,24 +102,29 @@
 											<td class='center'>${var.RECEIVABLE_REALITY}</td>
 											<td class='center'>${var.NOT_RECEIVABLE}</td>
 											<td class='center'>${var.PAYER}</td>
-											<td class='center'>${var.PROCEEDSER}</td>
-											<td class='center'>${var.ISPRINTLN}</td>
+											<td class='center'>${var.NAME}</td>
+											<td class='center'>
+												<c:if test="${ar.ISPRINTLN == '1' }">
+													是
+												</c:if>
+												<c:if test="${ar.ISPRINTLN == '0' }">
+													否
+												</c:if>
+											</td>
 											<td class='center'>${var.PRINTLNDATE}</td>
 											<td class="center">
 												<c:if test="${QX.edit != 1 && QX.del != 1 }">
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
 												</c:if>
 												<div class="hidden-sm hidden-xs btn-group">
-													<c:if test="${QX.edit == 1 }">
-													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.PROCEEDSRECEIPTS_ID}');">
-														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
+													<a class="btn btn-xs btn-info" title="打印" onclick="print('${var.PROCEEDSRECEIPTS_ID}');">
+														<i class="ace-icon glyphicon glyphicon-print bigger-120" title="打印">打印</i>
 													</a>
-													</c:if>
-													<c:if test="${QX.del == 1 }">
+													<%--<c:if test="${QX.del == 1 }">
 													<a class="btn btn-xs btn-danger" onclick="del('${var.PROCEEDSRECEIPTS_ID}');">
 														<i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
 													</a>
-													</c:if>
+													</c:if>--%>
 												</div>
 												<div class="hidden-md hidden-lg">
 													<div class="inline pos-rel">
@@ -158,14 +176,14 @@
 						<div class="page-header position-relative">
 						<table style="width:100%;">
 							<tr>
-								<td style="vertical-align:top;">
+								<%--<td style="vertical-align:top;">
 									<c:if test="${QX.add == 1 }">
 									<a class="btn btn-mini btn-success" onclick="add();">新增</a>
 									</c:if>
 									<c:if test="${QX.del == 1 }">
 									<a class="btn btn-mini btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" title="批量删除" ><i class='ace-icon fa fa-trash-o bigger-120'></i></a>
 									</c:if>
-								</td>
+								</td>--%>
 								<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
 							</tr>
 						</table>
@@ -205,6 +223,10 @@
 	<script type="text/javascript" src="static/js/jquery.tips.js"></script>
 	<script type="text/javascript">
 		$(top.hangge());//关闭加载状态
+		
+		function print(PROCEEDSRECEIPTS_ID) {
+			window.open("<%=basePath%>proceedsreceipts/toPrint.do?PROCEEDSRECEIPTS_ID="+PROCEEDSRECEIPTS_ID, "", 'left=250,top=150,width=1250,height=750,toolbar=no,menubar=no,status=no,scrollbars=yes,resizable=yes');
+		}
 
 		function  record_Show(PROCEEDSRECEIPTS_ID) {
 			top.jzts();

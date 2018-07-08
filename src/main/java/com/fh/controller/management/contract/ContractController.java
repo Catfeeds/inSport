@@ -655,14 +655,20 @@ public class ContractController extends BaseController {
 		List<PageData> listDepositInfo = depositinfoService.listByContractId(pd);
 		List<PageData> listInvoice = invoiceService.listByContractId(pd);
 		List<PageData> listPTime = proceedstimeService.listByContractId(pd);
+		List<PageData> listPayprimary = payprimaryService.findByContractId(pd); //主表
+		List<PageData> listPayDetail = paydetailService.listByContractId(pd);  //明细
 		String RELEVANCE_ID = pd.getString("RELEVANCE_ID");
-		String[] result1 = RELEVANCE_ID.split(",");
-		List<PageData> listRelevance = contractService.listRelevance(result1);
+		if(RELEVANCE_ID != null && !"".equals(RELEVANCE_ID) ){
+			String[] result1 = RELEVANCE_ID.split(",");
+			List<PageData> listRelevance = contractService.listRelevance(result1);
+			mv.addObject("listRelevance", listRelevance);
+		}
 		PageData pd1 = paymentcontractService.findByContractId(pd);
 		PageData pd2 = proceedscontractService.findByContractId(pd);
 		mv.setViewName("management/contract/contract_show");
-		mv.addObject("listRelevance", listRelevance);
 		mv.addObject("listInvoice", listInvoice);
+		mv.addObject("listPayprimary", listPayprimary);
+		mv.addObject("listPayDetail", listPayDetail);
 		mv.addObject("listDepositInfo", listDepositInfo);
 		mv.addObject("listPTime", listPTime);
 		mv.addObject("pd", pd);

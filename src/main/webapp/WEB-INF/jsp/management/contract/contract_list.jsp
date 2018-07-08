@@ -173,7 +173,11 @@
                                                     </td>
                                                     <td class='center' style="width: 30px;">${vs.index+1}</td>
                                                     <td class='center'>${var.CONTRACTNAME}</td>
-                                                    <td class='center'>${var.CONTRACTNUM}</td>
+                                                    <td class='center'>${var.CONTRACTNUM}
+                                                        <c:if test="${var.RELEVANCE_ID != '' && var.RELEVANCE_ID != null}">
+                                                            <span style="margin-left: 20px" class="red"><i class="ace-icon fa fa-exchange bigger-50"></i></span>
+                                                        </c:if>
+                                                    </td>
                                                     <td class='center'>${var.CONTRACTOFNAME}</td>
                                                     <td class='center'>${var.CLIENT}</td>
                                                     <td class='center'>${var.TELEPHONE}</td>

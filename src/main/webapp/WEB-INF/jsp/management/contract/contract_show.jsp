@@ -211,6 +211,39 @@
 								</c:forEach>
 								</c:if>
 								</c:if>
+								<!-- 不含水电费 -->
+								<c:if test="${pd2.ISEW != '1'}">
+									<c:if test="${not empty listInvoice }">
+										<c:forEach items="${listInvoice}" var="var1" varStatus="vs">
+												<tr  name="tr${var.PROCEEDSTIME_ID}" class="success">
+													<th width="15%"><label>应收金额：</label></th>
+													<th >${var1.RECEIVABLE}</th>
+													<th ><label>应收款时间：</label></th>
+													<th >${var1.PAYTIME}</th>
+													<th width="15%"><label>付款方名称：</label></th>
+													<th width="20%">${var1.PAYERNAME}</th>
+												</tr>
+												<tr name="tr${var.PROCEEDSTIME_ID}" class="success">
+													<th width="15%"><label>实际收款金额：</label></th>
+													<th width="20%">${var1.RECEIVABLE_REALITY}</th>
+													<th ><label>实际收款时间：</label></th>
+													<th >${var1.RECEIVABL_PAYTIME}</th>
+													<th  ><label>滞纳金：</label></th>
+													<th  >${var1.OVERDUE}</th>
+												</tr>
+												<tr name="tr${var.PROCEEDSTIME_ID}" id="tr${var1.INVOICE_ID}" class="success">
+													<th ><label>发票名称：</label></th>
+													<th  >${var1.INVOICENAME}</th>
+													<th  ><label>开票时间：</label></th>
+													<th  >${var1.INVOICETIME}</th>
+													<th  colspan="2">
+													</th>
+												</tr>
+												<tr  style="height: 3px" class="active"><th colspan="6"><label></label></th></tr>
+										</c:forEach>
+									</c:if>
+								</c:if>
+								<!-- 不含水电费 -->
 								<c:if test="${not empty listDepositInfo }">
 									<c:forEach items="${listDepositInfo}" var="var" varStatus="vs">
 										<tbody id="tb${var.DEPOSITINFO_ID}">
@@ -309,27 +342,74 @@
 								</tbody>
 							</table>
 							<!-- --------------------------------------------------------------------------- -->
-							<table id="paymentContarct" style="display: none" class="table table-border table-bg table-bordered">
-								<tbody>
-								<tr class="active">
-									<th ><label>总金额：</label></th>
-									<th >${pd1.AMOUNT}</th>
-									<th width="15%"><label>应付款金额：</label></th>
-									<th width="20%">${pd1.DUE_AMOUNT}</th>
-									<th ><label>实际付款时间：</label></th>
-									<th  >${pd1.REALITYTIME}</th>
-								</tr>
-								<tr class="success">
+							<div id="paymentContarct" style="display: none" class="table table-border table-bg table-bordered">
+								<div >
+									<c:if test="${not empty listPayprimary}">
+										<c:forEach items="${listPayprimary}" var="var" varStatus="vs">
+											<table id="ta${var.PAYPRIMARY_ID}" class="table table-border table-bg table-bordered" style="margin-top: 10px">
+												<tbody id="tb${var.PAYPRIMARY_ID}">
+												<tr class="center">
+													<td style="padding-left:2px;">时间</td>
+													<td style="padding-left:2px;">总应付金额</td>
+													<td style="padding-left:2px;">付款所属时间</td>
+													<td style="padding-left:2px;">应付款金额</td>
+													<td style="padding-left:2px;">实际付款时间</td>
+													<td style="padding-left:2px;">实际付款金额</td>
+													<td style="padding-left:2px;">尚没付款金额</td>
+												</tr>
+												<tr class="center" id="sum" >
+													<td id="td1${var.PAYPRIMARY_ID}" rowspan="100000" style="padding-left:2px;vertical-align:middle;">${var.STARTTIME } -- ${var.ENTTIME }</td>
+													<td id="td2${var.PAYPRIMARY_ID}" rowspan="100000"  style="padding-left:2px;vertical-align:middle;">
+														<p id="pic${var.PAYPRIMARY_ID}">${var.CONTRACTPIC }</p>
+													</td>
+												</tr>
+												<c:if test="${not empty listPayDetail}">
+													<c:forEach items="${listPayDetail}" var="var1" varStatus="vs1">
+														<c:if test="${var1.PAYPRIMARY_ID == var.PAYPRIMARY_ID}">
+															<tr class="center" style="background-color: #FFFFCC" >
+																<td style="padding-left:2px;">
+																		${var1.SHPAYTIME}
+																</td>
+																<td style="padding-left:2px;">
+																		${var1.SHPAY}
+																</td>
+																<td style="padding-left:2px;">
+																		${var1.REALITYPAYTIME}
+																</td>
+																<td style="padding-left:2px;">
+																		${var1.REALITYPAY}
+																</td>
+																<td style="padding-left:2px;">
+																	<p>${var1.ONPAYPIC}</p>
+																</td>
+																	<%--<td style="padding-left:2px;">
+                                                                        <a class="btn btn-xs btn-success" title="保存修改"
+                                                                           onclick="editPay('${var1.PAYPRIMARY_ID}','${var1.PAYDETAIL_ID}');">
+                                                                            <i class="ace-icon fa fa-check-square-o bigger-120"
+                                                                               title="保存修改"></i>
+                                                                        </a>
+                                                                        <a class="btn btn-xs btn-danger" title="删除"
+                                                                           onclick="delPay('${var1.PAYPRIMARY_ID}','${var1.PAYDETAIL_ID}');">
+                                                                            <i class="ace-icon fa fa-trash-o bigger-120"
+                                                                               title="删除"></i>
+                                                                        </a>
+                                                                    </td>--%>
+															</tr>
 
-									<th  ><label>实际付款金额：</label></th>
-									<th  >${pd1.REALITY_AMOUNT}</th>
-									<th  ><label>付款日：</label></th>
-									<th  >${pd1.PAYDAY}</th>
-									<th width="10%" ><label>备注：</label></th>
-									<th >${pd1.REMARK}</th>
-								</tr>
-								</tbody>
-							</table>
+														</c:if>
+													</c:forEach>
+												</c:if>
+												<tr id="${var.PAYPRIMARY_ID}"></tr>
+												</tbody>
+											</table>
+											<div class="col-md-12"  style="padding-bottom:2em;">
+												<a onclick="addTr('${var.PAYPRIMARY_ID}')" class="btn btn-info" ><i class="fa fa-plus"></i> 添加新的明细项</a>
+											</div>
+										</c:forEach>
+									</c:if>
+
+								</div>
+							</div>
 						<!-- ------------------------------------------------------------------------------- -->
 					</div>
 

@@ -73,6 +73,14 @@ public interface ContractManager{
      */
 	public List<PageData> listNotDeposit(PageData pd)throws Exception;
 
+	/**
+	 *提醒时间段需收款合同
+	 * @param pd
+	 * @return
+	 * @throws Exception
+     */
+	public List<PageData> listTimeToContract(PageData pd)throws Exception;
+
 	public List<PageData> datalistPageByDept(Page page)throws Exception;
 
 	public List<PageData> listRelevance(String[] ArrayDATA_IDS)throws Exception;

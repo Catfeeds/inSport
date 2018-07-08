@@ -78,7 +78,11 @@
                                             <c:if test="${var.PROCEEDSTIME_ID == var1.PROCEEDSTIME_ID}">
                                             <tr class="center" style="vertical-align:middle;" >
                                                 <td style="padding-left:2px;">
-                                                    <p>${var1.RECEIVABLE}</p>
+                                                    <p>${var1.RECEIVABLE}&emsp;&emsp;
+                                                        <c:if test="${var1.STARTTIME != null && var1.STARTTIME != ''  && var1.ENDTIME != null  && var1.ENDTIME != '' }">
+                                                            (${var1.STARTTIME} --- ${var1.ENDTIME})
+                                                        </c:if>
+                                                    </p>
                                                 </td>
                                                 <td style="padding-left:2px;">
                                                     <p> ${var1.URECEIVABLE}</p>

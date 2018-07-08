@@ -211,8 +211,13 @@
 					tr += '<tr class="success center">' ;
 					tr += '<td><label>'+count+'</label></td>';
 					tr += '<td><label id="ty'+value.INVOICE_ID+'">应收款</label></td>';
-					tr += '<td><label name="RECEIVABLE" id="r'+value.INVOICE_ID+'">'+value.NOT_RECEIVABLE+'</label>' +
-							'<label id="se'+value.INVOICE_ID+'">（'+value.STARTTIME+'  至  '+value.ENDTIME+'）</label></td>';
+					tr += '<td><label name="RECEIVABLE" id="r'+value.INVOICE_ID+'">'+value.NOT_RECEIVABLE+'</label>';
+					if(value.STARTTIME != null && value.STARTTIME != "" && value.ENDTIME != null && value.ENDTIME !=""){
+						tr += '<label id="se'+value.INVOICE_ID+'">（'+value.STARTTIME+'  至  '+value.ENDTIME+'）</label>';
+					}else {
+						tr += '<label id="se'+value.INVOICE_ID+'"></label>';
+					}
+					tr += '</td>';
 					tr += '<td><label id="pt'+value.INVOICE_ID+'">'+value.PAYTIME+'</label></td>';
 					tr += '<td><label id="od'+value.INVOICE_ID+'">'+value.OVERDUE_N+'</label></td>';
 					tr += '<td><input type="date" style="width: 150px;height: 31px" onchange=" calculate(\''+value.INVOICE_ID+'\')"' +
@@ -236,8 +241,13 @@
 					tr += '<tr class="info center">' ;
 					tr += '<td><label>'+count+'</label></td>';
 					tr += '<td><label id="ty'+value.UTILITIESSTATE_ID+'">应收水电费</label></td>';
-					tr += '<td><label name="RECEIVABLE" id="r'+value.UTILITIESSTATE_ID+'">'+value.NOT_RECEIVABLE+'</label>' +
-					'<label id="se'+value.UTILITIESSTATE_ID+'">（'+value.STARTTIME+'  至  '+value.ENDTIME+'）</label></td>';
+					tr += '<td><label name="RECEIVABLE" id="r'+value.UTILITIESSTATE_ID+'">'+value.NOT_RECEIVABLE+'</label>';
+					if(value.STARTTIME != null && value.STARTTIME != "" && value.ENDTIME != null && value.ENDTIME !=""){
+						tr += '<label id="se'+value.UTILITIESSTATE_ID+'">（'+value.STARTTIME+'  至  '+value.ENDTIME+'）</label>';
+					}else {
+						tr += '<label id="se'+value.INVOICE_ID+'"></label>';
+					}
+					tr += '</td>';
 					tr += '<td><label id="pt'+value.UTILITIESSTATE_ID+'">'+value.PAYTIME+'</label></td>';
 					tr += '<td><label id="od'+value.UTILITIESSTATE_ID+'">'+value.OVERDUE+'</label></td>';
 					tr += '<td>' +
