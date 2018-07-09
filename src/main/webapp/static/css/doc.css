@@ -1,0 +1,281 @@
+
+h1 tt,
+h1 code {
+    font-size: inherit;
+}
+
+h2 tt,
+h2 code {
+    font-size: inherit;
+}
+
+h3 tt,
+h3 code {
+    font-size: inherit;
+}
+
+h4 tt,
+h4 code {
+    font-size: inherit;
+}
+
+h5 tt,
+h5 code {
+    font-size: inherit;
+}
+
+h6 tt,
+h6 code {
+    font-size: inherit;
+}
+
+
+
+li p.first {
+    display: inline-block;
+}
+
+blockquote {
+    border-left: 2px solid #dddddd;
+    padding: 0 15px;
+    color: #777777;
+}
+
+
+code,
+tt {
+    margin: 0 2px;
+    padding: 0 5px;
+    white-space: nowrap;
+    border: 1px solid #eaeaea;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+}
+
+pre code {
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+    border: none;
+    background: transparent;
+}
+
+pre {
+    background-color: #303030;
+    font-size: 13px;
+    line-height: 19px;
+    overflow: auto;
+    padding: 6px 10px;
+}
+
+pre code {
+    color: #f2f2f2;
+    border: none;
+    padding: 0;
+    font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+pre tt {
+    background-color: transparent;
+    border: none;
+}
+
+@media print {
+    table,
+    pre {
+        page-break-inside: avoid;
+    }
+}
+
+
+/*-------------------------------*/
+
+.doc-line {
+    height: 3px;
+}
+
+.doc-gotop {
+    position: fixed;
+    bottom: 5px;
+    right: 5px;
+    z-index: 9;
+}
+
+
+/*避免对话框样式被工具生成的全局样式污染*/
+
+.ui-dialog table,
+.ui-dialog table tr,
+.ui-dialog tr td,
+.ui-dialog tr:nth-child(2n) {
+    border: 0 none;
+    background: transparent;
+}
+
+.ui-dialog td.ui-dialog-header {
+    border-bottom: 1px solid #E5E5E5;
+}
+
+code.sh_sourceCode {
+    color: #000000;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_keyword {
+    color: #009;
+    font-weight: bold;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_type {
+    color: #0000ff;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_string {
+    color: #00F;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_regexp {
+    color: #060;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_specialchar {
+    color: #C42DA8;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_comment {
+    color: #999;
+    font-weight: normal;
+    font-style: italic;
+}
+
+code.sh_sourceCode .sh_number {
+    color: #F00;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_codeproc {
+    color: #00b800;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_symbol {
+    color: #009;
+    font-weight: bold;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_function {
+    color: #000;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_cbracket {
+    color: #009;
+    font-weight: bold;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_url {
+    color: #ff0000;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_date {
+    color: #0000ff;
+    font-weight: bold;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_time {
+    color: #0000ff;
+    font-weight: bold;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_file {
+    color: #0000ff;
+    font-weight: bold;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_ip {
+    color: #ff0000;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_name {
+    color: #ff0000;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_variable {
+    color: #ec7f15;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_oldfile {
+    color: #C42DA8;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_newfile {
+    color: #ff0000;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_difflines {
+    color: #0000ff;
+    font-weight: bold;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_selector {
+    color: #ec7f15;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_property {
+    color: #0000ff;
+    font-weight: bold;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_value {
+    color: #ff0000;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_codedef_var {
+    color: #909;
+    font-weight: normal;
+    font-style: normal;
+}
+
+code.sh_sourceCode .sh_codedef_func {
+    color: #099;
+    font-weight: normal;
+    font-style: normal;
+}

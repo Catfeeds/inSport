@@ -15,6 +15,8 @@ import com.fh.service.management.expense.ExpenseManager;
 import com.fh.service.management.invoice.InvoiceManager;
 import com.fh.service.management.proceedsreceipts.ProceedsReceiptsManager;
 import com.fh.service.management.utilitiesstate.UtilitiesStateManager;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -76,6 +78,78 @@ public class Proceeds_recordController extends BaseController {
 		mv.setViewName("save_result");
 		return mv;
 	}
+
+	//统一收款
+	@RequestMapping(value = "/toProceeds")
+	@ResponseBody
+	public Map<String, Object> toProceeds(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		pd.put("PROCEEDSRECEIPTS_ID",this.get32UUID());//主键
+		JSONObject job = null;
+		PageData pd1 = new PageData();
+		pd1.put("RECEIVABL_EMPL",Jurisdiction.getUsername());
+		if(pd.getString("strJson").length()>5) {
+			JSONArray jsonArray = JSONArray.fromObject(pd.getString("strJson") );
+			for (int i = 0; i < jsonArray.size(); i++) {
+				job = jsonArray.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+				if("应收押金".equals(job.getString("TYPE"))){
+					//查询后，修改
+					pd.put("DEPOSITINFO_ID", job.getString("ITEMID"));
+					PageData depd = depositinfoService.findById(pd);
+					Double REALITY = Double.parseDouble(depd.getString("REALITY"))+Double.parseDouble(job.get("RECEIVABLE_N").toString());
+					depd.put("REALITY",REALITY.toString());
+					depd.put("NOT_RECEIVABLE",job.getString("NOT_RECEIVABLE"));
+					depositinfoService.edit(depd);
+				}else if("应收款".equals(job.getString("TYPE"))){
+					pd.put("INVOICE_ID", job.getString("ITEMID"));
+					PageData invpd = invoiceService.findById(pd);
+					Double RECEIVABLE_REALITY = Double.parseDouble(invpd.getString("RECEIVABLE_REALITY"))+Double.parseDouble(job.get("RECEIVABLE_N").toString());
+					Double OVERDUENUM = Double.parseDouble(invpd.getString("OVERDUE"))+Double.parseDouble(job.get("OVERDUENUM").toString());
+					invpd.put("RECEIVABLE_REALITY",RECEIVABLE_REALITY.toString());
+					invpd.put("NOT_RECEIVABLE",job.getString("NOT_RECEIVABLE"));
+					invpd.put("OVERDUE",OVERDUENUM);
+					invoiceService.edit(invpd);
+				}else if("应收水电费".equals(job.getString("TYPE"))){
+					pd.put("UTILITIESSTATE_ID", job.getString("ITEMID"));
+					PageData utpd = utilitiesstateService.findById(pd);
+					Double RECEIVABLE_REALITY = Double.parseDouble(utpd.getString("RECEIVABLE_REALITY"))+Double.parseDouble(job.get("RECEIVABLE_N").toString());
+					Double OVERDUENUM = Double.parseDouble(utpd.getString("OVERDUENUM"))+Double.parseDouble(job.get("OVERDUENUM").toString());
+					utpd.put("RECEIVABLE_REALITY",RECEIVABLE_REALITY.toString());
+					utpd.put("NOT_RECEIVABLE",job.getString("NOT_RECEIVABLE"));
+					utpd.put("OVERDUENUM",OVERDUENUM);
+					utilitiesstateService.edit(utpd);
+				}
+				pd1.put("PROCEEDS_RECORD_ID",this.get32UUID());
+				pd1.put("TYPE", job.getString("TYPE"));
+				pd1.put("CONTRACT_ID", job.getString("CONTRACT_ID"));
+				pd1.put("ITEMID", job.getString("ITEMID"));
+				pd1.put("PROCEEDSRECEIPTS_ID",pd.getString("PROCEEDSRECEIPTS_ID"));
+				pd1.put("RECEIVABLE",job.getString("RECEIVABLE"));
+				pd1.put("MODE",job.getString("MODE"));
+				pd1.put("RECEIVABLE_N",job.getString("RECEIVABLE_N"));
+				pd1.put("OVERDUE",job.getString("OVERDUE"));
+				pd1.put("NOT_RECEIVABLE",job.getString("NOT_RECEIVABLE"));
+				pd1.put("AMOUNT",job.getString("AMOUNT"));
+				pd1.put("OVERDUENUM",job.getString("OVERDUENUM"));
+				pd1.put("RECEIVABL_PAYTIME",job.getString("RECEIVABL_PAYTIME"));
+				pd1.put("SETIME",job.getString("SETIME"));
+				proceeds_recordService.save(pd1);
+			}
+		}
+		pd.put("PROCEEDSDATE",new Date());
+		pd.put("PROCEEDSNUM",pd.getString("PROCEEDSNUM")); // 一次收的金额，后面叠加
+		pd.put("OVERDUENUM",pd.getString("OVERDUENUM")); //一次收的滞纳金，后面叠加
+		pd.put("RECEIVABLE_REALITY",pd.getString("ALLSUM")); // 应收总额，后面不变
+		pd.put("NOT_RECEIVABLE",Double.parseDouble(pd.getString("ALLSUM"))+ Double.parseDouble(pd.getString("OVERDUENUM"))  - Double.parseDouble(pd.getString("PROCEEDSNUM")));//未收款，后面叠减
+		pd.put("PAYER",pd.getString("PAYER"));
+		pd.put("PROCEEDSER",Jurisdiction.getUsername());
+		pd.put("ISPRINTLN","0");
+		proceedsreceiptsService.save(pd);
+		return  json;
+	}
+
 
 	@RequestMapping(value = "/record_deposit")
 	@ResponseBody

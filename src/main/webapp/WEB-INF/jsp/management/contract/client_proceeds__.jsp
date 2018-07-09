@@ -16,13 +16,9 @@
 	<!-- jsp文件头和头部 -->
 	<%@ include file="../../system/index/top.jsp"%>
 	<!-- 日期框 -->
-	<script type="text/javascript" src="static/js/jquery-2.1.1.js"></script>
 	<link rel="stylesheet" href="static/ace/css/datepicker.css" />
 	<link rel="stylesheet" href="static/css/fo.css" />
-	<script src="static/js/dialog-plus.js"></script>
-	<link rel="stylesheet" href="static/css/doc.css" />
-	<script src="static/js/doc.js"></script>
-
+	<script type="text/javascript" src="static/js/jquery-2.1.1.js"></script>
 	<script src="static/silviomore/bootstrap-select.js"></script>
 </head>
 <body id="sBody" class="no-skin">
@@ -75,8 +71,8 @@
 													</optgroup>
 												</select>
 										</th>
-										<%--<th class="center"> <label style="color: red">*</label><label>收款方式：</label></th>--%>
-										<%--<th class="center" >
+										<th class="center"> <label style="color: red">*</label><label>收款方式：</label></th>
+										<th class="center" >
 											<select name="MODE" id="MODE" class="selectpicker bla bla bli" title="请选择收款方式"
 													data-style="" multiple data-live-search="true" >
 												<option value="现金"
@@ -100,16 +96,16 @@
 														</c:if>
 														name="信用卡">信用卡</option>
 											</select>
-										</th>--%>
+										</th>
 										<th class="center"><label style="color: red">*</label><label>金额合计：</label></th>
 										<th class="center" >
 											<input type="text" style="width: 150px" readonly
 												   class="input-text"  name="ALLSUM"
 												   id="ALLSUM"></th>
 										<th class="center" >
-											<a class="btn btn-primary" onclick="toProceeds()">
+											<button class="btn btn-primary" onclick="toProceeds()">
 												<i class="ace-icon glyphicon glyphicon-ok align-top bigger-125">确定收款</i>
-											</a>
+											</button>
 										</th>
 									</tr>
 									</tbody>
@@ -142,7 +138,6 @@
 		<table id="taskqk" class="table table-striped table-bordered table-hover"
 			   style="margin-top:5px;">
 			<tr>
-				<th class="center" style="width:35px;"><label class="pos-rel"><input type="checkbox" class="ace" id="zcheckbox"/><span class="lbl"></span></label></th>
 				<th class="center">序号</th>
 				<th class="center">费用类型</th>
 				<th class="center">应收金额</th>
@@ -203,146 +198,39 @@
 
 	function toProceeds(){
 		//var tahtmx = $("#tahtmx");
-		var RECEIVABLE_N ;  //本次收款
-		var ALLSUM = $("#ALLSUM").val(); //未收款总额
-		var RECEIVABLE ; // 本次应收款
-		var NOT_RECEIVABLE ; // 未收款
-		var PAYTIME ; //应收时间
-		var OVERDUE ; //滞纳金率
-		var RECEIVABL_PAYTIME ; //本次收款时间
-		var OVERDUENUM ;  //滞纳金
-		var AMOUNT ;  //应收总数
-		var TYPE ; //类型
-		var ITEMID ;  // 项目id
-		var CONTRACT_ID ;  // 合同id
-		var SETIME;
+		var FQTY;
+		var FAMOUNT;
+		var FITEMID;
+		var FSTARTTIME;
+		var FENTTIME;
 		var strJson = '';
-		var PAYER = $("#CONTRACTOFNAME").val();  //付款方
-		var PROCEEDSNUM = 0.00;
-		var OVERDUENUM_ALL = 0.00;
-		var NOT_RECEIVABLE_ALL = 0.00;
-		//(parseFloat(OVERDUENUM)
-		var CONTEXT = "<div align='center'>";
 		strJson += '[';
 		$('#taskqk tr').each(function(i){                   // 遍历 tr
-			var MODE = "";
 			if(i > 0 && i < ($('#taskqk tr').length - 1) ){
-				MODE = "";
-				var isJson = '1';
 				$(this).children('td').each(function(j){  // 遍历 tr 的各个 td
 					if(j == 0){
-						//alert($(this).find("[name='ids']").is(':checked'));
-						if(!$(this).find("[name='ids']").is(':checked')){
-							isJson = '0';
-							return false;
-						}
-					}else if(j == 2){
-						TYPE = $(this).find("[name='TYPE']").text();
-						CONTEXT += "<p>收款项:"+ TYPE+";";
-					}else if(j == 3){
-						RECEIVABLE = $(this).find("[name='RECEIVABLE']").text();
-						SETIME = $(this).find("[name='SETIME']").text();
-						CONTEXT += RECEIVABLE+SETIME+";</p>";
+						FITEMID = $(this).find("input").val();
 					}else if(j == 4){
-						PAYTIME = $(this).find("[name='PAYTIME']").text();
+						FQTY = $(this).find("input").val();
 					}else if(j == 5){
-						OVERDUE = $(this).find("[name='OVERDUE']").text();
+						FAMOUNT = $(this).find("input").val();
 					}else if(j == 6){
-						RECEIVABL_PAYTIME = $(this).find("[name='RECEIVABL_PAYTIME']").val();
-						if(RECEIVABL_PAYTIME == "" || RECEIVABL_PAYTIME == null){
-							isJson = '0';
-							alert("请选择实际收款时间！！");
-						}
+						FSTARTTIME = $(this).find("input").val();
 					}else if(j == 7){
-						OVERDUENUM = $(this).find("[name='OVERDUENUM']").val();
-						if(OVERDUENUM == null || OVERDUENUM == ""){
-							OVERDUENUM = 0.00;
-						}
-						OVERDUENUM_ALL += parseFloat(OVERDUENUM);
-						CONTEXT += "<p>滞纳金:"+OVERDUENUM+";";
-					}else if(j == 8){
-						AMOUNT = $(this).find("[name='AMOUNT']").text();
-					}else if(j == 9){
-						RECEIVABLE_N = $(this).find("[name='RECEIVABLE_N']").val();
-						if(RECEIVABLE_N == "" || RECEIVABLE_N == null){
-							isJson = '0';
-							alert("请输入本次收款金额！！");
-						}else {
-							CONTEXT += "本次还款:"+RECEIVABLE_N+";";
-							PROCEEDSNUM += parseFloat(RECEIVABLE_N);
-						}
-					}else if(j == 10){
-						NOT_RECEIVABLE = $(this).find("[name='NOT_RECEIVABLE']").text();
-						CONTEXT += "未收款:"+NOT_RECEIVABLE+";";
-					}else if(j == 11){
-						$(this).find("[name='MODE'] option:selected").each(function () {
-							MODE += $(this).val() +",";
-						});
-						MODE = MODE.substr(0,MODE.length -1);
-						CONTEXT += "收款方式:"+MODE+"。</p>";
-					}else if(j == 12){
-						ITEMID = $(this).find("[name='ITEMID']").text();
-					}else if(j == 13){
-						CONTRACT_ID = $(this).find("[name='CONTRACT_ID']").text();
+						FENTTIME = $(this).find("input").val();
 					}
 				});
-				if(isJson == '1'){
-					strJson += '{"TYPE":"'+TYPE+'",';
-					strJson += '"RECEIVABLE":"'+RECEIVABLE+'",';
-					strJson += '"SETIME":"'+SETIME+'",';
-					strJson += '"PAYTIME":"'+PAYTIME+'",';
-					strJson += '"MODE":"'+MODE+'",';
-					strJson += '"NOT_RECEIVABLE":"'+NOT_RECEIVABLE+'",';
-					strJson += '"RECEIVABLE_N":"'+RECEIVABLE_N+'",';
-					strJson += '"AMOUNT":"'+AMOUNT+'",';
-					strJson += '"OVERDUENUM":"'+OVERDUENUM+'",';
-					strJson += '"OVERDUE":"'+OVERDUE+'",';
-					strJson += '"ITEMID":"'+ITEMID+'",';
-					strJson += '"CONTRACT_ID":"'+CONTRACT_ID+'",';
-					strJson += '"RECEIVABL_PAYTIME":"'+RECEIVABL_PAYTIME+'"},';
-				}
+				strJson += '{"FITEMID":"'+FITEMID+'",'
+				strJson += '"FQTY":"'+FQTY+'",'
+				strJson += '"FAMOUNT":"'+FAMOUNT+'",'
+				strJson += '"FSTARTTIME":"'+FSTARTTIME+'",'
+				strJson += '"FENTTIME":"'+FENTTIME+'"},'
 			}
 		});
 		strJson = strJson.substring(0,strJson.length-1);
-		strJson += ']';
-		CONTEXT += "<p>收款总额:"+PROCEEDSNUM+";";
-		CONTEXT += "产生滞纳金:"+OVERDUENUM_ALL+"。</p>";
-		CONTEXT += "</div>";
-		var d = dialog({
-			title: '消息',
-			content: CONTEXT,
-			ok: function () {
-				//var value = $('#CONTEXT').val();
-				//this.close(value);
-				alert("开始收款");
-				$.ajax({
-					type: "POST",
-					url: '<%=basePath%>proceeds_record/toProceeds',
-					async: false,
-					data: {
-						strJson : strJson,
-						PROCEEDSNUM : PROCEEDSNUM,
-						OVERDUENUM : OVERDUENUM_ALL,
-						PAYER : PAYER,
-						ALLSUM : ALLSUM
-					},
-					dataType: 'json',
-					//beforeSend: validateData,
-					cache: false,
-					success: function (data) {
-						alert("收款成功");
-					}
-				});
-				this.remove();
-			}
-		});
-		/*d.addEventListener('close', function () {
-		 alert(value);
-		 });*/
-		d.show();
+		strJson += ']'
+		$("#strJson").val(strJson);
 		console.log(strJson);
-
-
 	}
 
 	function toAjax_load(){
@@ -363,98 +251,83 @@
 				var count = 1;
 				listNotInvoice.forEach(function(value,index,array){
 					tr += '<tr class="success center">' ;
-					tr += '<td class="center"><label class="pos-rel"><input type="checkbox" name="ids" value="'+value.INVOICE_ID+'" class="ace"/><span class="lbl"></span></label> </td>';
 					tr += '<td><label>'+count+'</label></td>';
-					tr += '<td><label name="TYPE" id="ty'+value.INVOICE_ID+'">应收款</label></td>';
+					tr += '<td><label  id="ty'+value.INVOICE_ID+'">应收款</label></td>';
 					tr += '<td><label name="RECEIVABLE" id="r'+value.INVOICE_ID+'">'+value.NOT_RECEIVABLE+'</label>';
 					if(value.STARTTIME != null && value.STARTTIME != "" && value.ENDTIME != null && value.ENDTIME !=""){
-						tr += '<label name="SETIME" id="se'+value.INVOICE_ID+'">（'+value.STARTTIME+'  至  '+value.ENDTIME+'）</label>';
+						tr += '<label id="se'+value.INVOICE_ID+'">（'+value.STARTTIME+'  至  '+value.ENDTIME+'）</label>';
 					}else {
-						tr += '<label name="SETIME"  id="se'+value.INVOICE_ID+'"></label>';
+						tr += '<label id="se'+value.INVOICE_ID+'"></label>';
 					}
 					tr += '</td>';
-					tr += '<td><label name="PAYTIME" id="pt'+value.INVOICE_ID+'">'+value.PAYTIME+'</label></td>';
-					tr += '<td><label name="OVERDUE" id="od'+value.INVOICE_ID+'">'+value.OVERDUE_N+'</label></td>';
-					tr += '<td><input name="RECEIVABL_PAYTIME" type="date" style="width: 150px;height: 31px"' +
-							' onchange=" calculate(\''+value.INVOICE_ID+'\')"' +
+					tr += '<td><label id="pt'+value.INVOICE_ID+'">'+value.PAYTIME+'</label></td>';
+					tr += '<td><label id="od'+value.INVOICE_ID+'">'+value.OVERDUE_N+'</label></td>';
+					tr += '<td><input type="date" style="width: 150px;height: 31px" onchange=" calculate(\''+value.INVOICE_ID+'\')"' +
 							' class="input-text" id="rpt'+value.INVOICE_ID+'"></td>';
-					tr += '<td><label><input name="OVERDUENUM" type="number" style="width: 110px;"' +
-							' onchange="changeOD_cal(\''+value.INVOICE_ID+'\')"' +
+					tr += '<td><label><input type="number" style="width: 110px;" onchange="changeOD_cal(\''+value.INVOICE_ID+'\')"' +
 							' class="input-text" id="odn'+value.INVOICE_ID+'"></label></td>';
-					tr += '<td><label name="AMOUNT" id="rr'+value.INVOICE_ID+'"></label></td>';
-					tr += '<td><label><input name="RECEIVABLE_N" type="number" style="width: 110px;" onchange="calNP(\''+value.INVOICE_ID+'\')"' +
+					tr += '<td><label id="rr'+value.INVOICE_ID+'"></label></td>';
+					tr += '<td><label><input type="number" style="width: 110px;" onchange="calNP(\''+value.INVOICE_ID+'\')"' +
 							' class="input-text" id="nr'+value.INVOICE_ID+'"></label></td>';
-					tr += '<td><label name="NOT_RECEIVABLE" id="np'+value.INVOICE_ID+'"></label></td>';
-					tr += '<td>'
-					tr += '<select name="MODE" style="width: 150px" data-style="btn-info"  class="selectpicker bla bla bli" title="请选择收款方式"  multiple data-live-search="true" >'
-					tr += '<option value="现金" name="现金">现金</option><option value="支票" name="支票">支票</option>'
-					tr += '<option value="转账" name="转账">转账</option><option value="信用卡" name="信用卡">信用卡</option></select>'
-					tr += '</td>';
-					tr += '<td style="display: none"><label name="ITEMID" >'+value.INVOICE_ID+'</label></td>';
-					tr += '<td style="display: none"><label name="CONTRACT_ID" >'+value.CONTRACT_ID+'</label></td>';
+					tr += '<td><label id="np'+value.INVOICE_ID+'"></label></td>';
+					tr += '<td><label >' +
+							'<a style="margin-left: 10px" class="btn btn-success btn-xs" ' +
+							'onclick="record_Invoice(\''+value.INVOICE_ID+'\',\''+value.CONTRACT_ID+'\')">' +
+							'<i class="ace-icon fa fa-check-square-o bigger-110 nav-search-icon yellow"></i>' +
+							'</a></label></td>';
 					tr += '</tr>';
 					count ++ ;
+
 				});
 				listNotUtili.forEach(function(value,index,array){
 					tr += '<tr class="info center">' ;
-					tr += '<td class="center"><label class="pos-rel"><input type="checkbox" name="ids" value="'+value.UTILITIESSTATE_ID+'" class="ace"/><span class="lbl"></span></label> </td>';
 					tr += '<td><label>'+count+'</label></td>';
-					tr += '<td><label name="TYPE" id="ty'+value.UTILITIESSTATE_ID+'">应收水电费</label></td>';
+					tr += '<td><label id="ty'+value.UTILITIESSTATE_ID+'">应收水电费</label></td>';
 					tr += '<td><label name="RECEIVABLE" id="r'+value.UTILITIESSTATE_ID+'">'+value.NOT_RECEIVABLE+'</label>';
 					if(value.STARTTIME != null && value.STARTTIME != "" && value.ENDTIME != null && value.ENDTIME !=""){
-						tr += '<label name="SETIME" id="se'+value.UTILITIESSTATE_ID+'">（'+value.STARTTIME+'  至  '+value.ENDTIME+'）</label>';
+						tr += '<label id="se'+value.UTILITIESSTATE_ID+'">（'+value.STARTTIME+'  至  '+value.ENDTIME+'）</label>';
 					}else {
-						tr += '<label name="SETIME" id="se'+value.INVOICE_ID+'"></label>';
+						tr += '<label id="se'+value.INVOICE_ID+'"></label>';
 					}
 					tr += '</td>';
-					tr += '<td><label name="PAYTIME" id="pt'+value.UTILITIESSTATE_ID+'">'+value.PAYTIME+'</label></td>';
-					tr += '<td><label name="OVERDUE" id="od'+value.UTILITIESSTATE_ID+'">'+value.OVERDUE+'</label></td>';
-					tr += '<td><input name="RECEIVABL_PAYTIME" type="date" style="width: 150px;height: 31px" ' +
-							'onchange=" calculate(\''+value.UTILITIESSTATE_ID+'\')"' +
+					tr += '<td><label id="pt'+value.UTILITIESSTATE_ID+'">'+value.PAYTIME+'</label></td>';
+					tr += '<td><label id="od'+value.UTILITIESSTATE_ID+'">'+value.OVERDUE+'</label></td>';
+					tr += '<td>' +
+							'<input type="date" style="width: 150px;height: 31px" onchange=" calculate(\''+value.UTILITIESSTATE_ID+'\')"' +
 							' class="input-text" id="rpt'+value.UTILITIESSTATE_ID+'"></td>';
-					tr += '<td><label><input name="OVERDUENUM" type="number" style="width: 110px;" onchange="changeOD_cal(\''+value.UTILITIESSTATE_ID+'\')"' +
+					tr += '<td><label><input type="number" style="width: 110px;" onchange="changeOD_cal(\''+value.UTILITIESSTATE_ID+'\')"' +
 							' class="input-text" id="odn'+value.UTILITIESSTATE_ID+'"></label></td>';
-					tr += '<td><label name="AMOUNT" id="rr'+value.UTILITIESSTATE_ID+'"></label></td>';
-					tr += '<td><label><input name="RECEIVABLE_N" type="number" style="width: 110px;" onchange="calNP(\''+value.UTILITIESSTATE_ID+'\')"' +
+					tr += '<td><label id="rr'+value.UTILITIESSTATE_ID+'"></label></td>';
+					tr += '<td><label><input type="number" style="width: 110px;" onchange="calNP(\''+value.UTILITIESSTATE_ID+'\')"' +
 							' class="input-text" id="nr'+value.UTILITIESSTATE_ID+'"></label></td>';
-					tr += '<td><label name="NOT_RECEIVABLE" id="np'+value.UTILITIESSTATE_ID+'"></label></td>';
-					tr += '<td>'
-					tr += '<select name="MODE" style="width: 150px" data-style="btn-info"  class="selectpicker bla bla bli" title="请选择收款方式"  multiple data-live-search="true" >'
-					tr += '<option value="现金" name="现金">现金</option><option value="支票" name="支票">支票</option>'
-					tr += '<option value="转账" name="转账">转账</option><option value="信用卡" name="信用卡">信用卡</option></select>'
-					tr += '</td>';
-					tr += '<td style="display: none"><label name="ITEMID" >'+value.UTILITIESSTATE_ID+'</label></td>';
-					tr += '<td style="display: none"><label name="CONTRACT_ID" >'+value.CONTRACT_ID+'</label></td>';
+					tr += '<td><label id="np'+value.UTILITIESSTATE_ID+'"></label></td>';
+					tr += '<td><label >' +
+							'<a style="margin-left: 10px" class="btn btn-success btn-xs" ' +
+							'onclick="record_Utili(\''+value.UTILITIESSTATE_ID+'\',\''+value.CONTRACT_ID+'\')">' +
+							'<i class="ace-icon fa fa-check-square-o bigger-110 nav-search-icon yellow"></i>' +
+							'</a></label></td>';
 					tr += '</tr>';
 					count ++ ;
 				});
 				listNotDeposit.forEach(function(value,index,array){
 					tr += '<tr class="warning center">' ;
-					tr += '<td class="center"><label class="pos-rel"><input type="checkbox" name="ids" value="'+value.DEPOSITINFO_ID+'" class="ace"/><span class="lbl"></span></label> </td>';
 					tr += '<td><label>'+count+'</label></td>';
-					tr += '<td><label name="TYPE" id="ty'+value.DEPOSITINFO_ID+'">应收押金</label></td>';
+					tr += '<td><label id="ty'+value.DEPOSITINFO_ID+'">应押金</label></td>';
 					tr += '<td><label name="RECEIVABLE" id="r'+value.DEPOSITINFO_ID+'">'+value.NOT_RECEIVABLE+'</label></td>';
-					if(value.STARTTIME != null && value.STARTTIME != "" && value.ENDTIME != null && value.ENDTIME !=""){
-						tr += '<label name="SETIME" id="se'+value.UTILITIESSTATE_ID+'">（'+value.STARTTIME+'  至  '+value.ENDTIME+'）</label>';
-					}else {
-						tr += '<label name="SETIME" id="se'+value.INVOICE_ID+'"></label>';
-					}
-					tr += '<td><label name="PAYTIME" id="pt'+value.DEPOSITINFO_ID+'">'+value.DWDEPOSITTIME+'</label></td>';
-					tr += '<td><label name="OVERDUE" id="od'+value.DEPOSITINFO_ID+'">0</label></td>';
-					tr += '<td><label><input name="RECEIVABL_PAYTIME" type="date" style="width: 150px;height: 31px" onchange=" calculate(\''+value.DEPOSITINFO_ID+'\')"' +
+					tr += '<td><label id="pt'+value.DEPOSITINFO_ID+'">'+value.DWDEPOSITTIME+'</label></td>';
+					tr += '<td><label id="od'+value.DEPOSITINFO_ID+'">0</label></td>';
+					tr += '<td><label><input type="date" style="width: 150px;height: 31px" onchange=" calculate(\''+value.DEPOSITINFO_ID+'\')"' +
 							' class="input-text" id="rpt'+value.DEPOSITINFO_ID+'"></label></td>';
-					tr += '<td><label name="OVERDUENUM">0.00</label></td>';
-					tr += '<td><label name="AMOUNT" id="rr'+value.DEPOSITINFO_ID+'"></label></td>';
-					tr += '<td><label><input name="RECEIVABLE_N" type="number" style="width: 110px;"  onchange="calNP(\''+value.DEPOSITINFO_ID+'\')" class="input-text"' +
+					tr += '<td><label>0.00</label></td>';
+					tr += '<td><label id="rr'+value.DEPOSITINFO_ID+'"></label></td>';
+					tr += '<td><label><input type="number" style="width: 110px;"  onchange="calNP(\''+value.DEPOSITINFO_ID+'\')" class="input-text"' +
 							' id="nr'+value.DEPOSITINFO_ID+'"></label></td>';
-					tr += '<td><label name="NOT_RECEIVABLE" id="np'+value.DEPOSITINFO_ID+'"></label></td>';
-					tr += '<td>'
-					tr += '<select name="MODE" style="width: 150px" data-style="btn-info"  class="selectpicker bla bla bli" title="请选择收款方式"  multiple data-live-search="true" >'
-					tr += '<option value="现金" name="现金">现金</option><option value="支票" name="支票">支票</option>'
-					tr += '<option value="转账" name="转账">转账</option><option value="信用卡" name="信用卡">信用卡</option></select>'
-					tr += '</td>';
-					tr += '<td style="display: none"><label name="ITEMID" >'+value.DEPOSITINFO_ID+'</label></td>';
-					tr += '<td style="display: none"><label name="CONTRACT_ID" >'+value.CONTRACT_ID+'</label></td>';
+					tr += '<td><label id="np'+value.DEPOSITINFO_ID+'"></label></td>';
+					tr += '<td><label >' +
+							'<a style="margin-left: 10px" class="btn btn-success btn-xs" ' +
+							'onclick="record_deposit(\''+value.DEPOSITINFO_ID+'\',\''+value.CONTRACT_ID+'\')">' +
+							'<i class="ace-icon fa fa-check-square-o bigger-110 nav-search-icon yellow"></i>' +
+							'</a></label></td>';
 					tr += '</tr>';
 					count ++ ;
 					//console.log(value);
