@@ -1,16 +1,16 @@
-package com.fh.service.management.invoice;
+package com.fh.service.management.bill;
 
 import java.util.List;
 import com.fh.entity.Page;
 import com.fh.util.PageData;
 
 /** 
- * 说明： 发票模块接口
+ * 说明： 发单管理接口
  * 创建人：FH Q313596790
- * 创建时间：2018-06-03
+ * 创建时间：2018-07-10
  * @version
  */
-public interface InvoiceManager{
+public interface BillManager{
 
 	/**新增
 	 * @param pd
@@ -23,9 +23,7 @@ public interface InvoiceManager{
 	 * @throws Exception
 	 */
 	public void delete(PageData pd)throws Exception;
-
-	public void deleteByTimeID(PageData pd)throws Exception;
-
+	
 	/**修改
 	 * @param pd
 	 * @throws Exception
@@ -44,18 +42,14 @@ public interface InvoiceManager{
 	 */
 	public List<PageData> listAll(PageData pd)throws Exception;
 
-	public List<PageData> listByContractId(PageData pd)throws Exception;
-
-	public List<PageData> listByContractIdWithUre(PageData pd)throws Exception;
+	public List<PageData> listByItemId(PageData pd)throws Exception;
 
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception
 	 */
 	public PageData findById(PageData pd)throws Exception;
-
-	public PageData findByInvoiceWithUre(PageData pd)throws Exception;
-
+	
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception

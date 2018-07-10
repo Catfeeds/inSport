@@ -105,7 +105,7 @@
 
                                                 <td style="padding-left:2px;">
                                                     <a class="btn btn-xs btn-warning" title="新增发单记录"
-                                                       onclick="addWarning('${var1.PROCEEDSDETAIL_ID}');">
+                                                       onclick="addWarning('${var1.INVOICE_ID}','${var1.CONTRACT_ID}');">
                                                         <i class="ace-icon fa fa-exclamation-circle bigger-120"
                                                            title="新增发单记录"></i>
                                                     </a>
@@ -153,8 +153,21 @@
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
 
-    function addWarning(PROCEEDSDETAIL_ID) {
-        alert("发单记录功能待开发。。。");
+    function addWarning(INVOICE_ID,CONTRACT_ID) {
+        top.jzts();
+        var diag = new top.Dialog();
+        diag.Drag=true;
+        diag.Title ="收款记录明细";
+        diag.URL = '<%=basePath%>bill/addWarning.do?INVOICE_ID='+INVOICE_ID+"&CONTRACT_ID="+CONTRACT_ID;
+        diag.Width = window.innerWidth * 0.9;
+        diag.Height = window.innerHeight * 0.9;
+        diag.Modal = true;				//有无遮罩窗口
+        diag. ShowMaxButton = true;	//最大化按钮
+        diag.ShowMinButton = true;		//最小化按钮
+        diag.CancelEvent = function(){ //关闭事件
+            diag.close();
+        };
+        diag.show();
     }
 
     function toCalUncollected(PROCEEDSDETAIL_ID){

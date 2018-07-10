@@ -81,7 +81,11 @@ public class InvoiceService implements InvoiceManager{
 	public PageData findById(PageData pd)throws Exception{
 		return (PageData)dao.findForObject("InvoiceMapper.findById", pd);
 	}
-	
+
+	public PageData findByInvoiceWithUre(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("InvoiceMapper.findByInvoiceWithUre", pd);
+	}
+
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception
