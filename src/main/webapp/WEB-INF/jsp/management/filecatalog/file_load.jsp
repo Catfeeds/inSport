@@ -68,6 +68,15 @@
                         <table style="margin-top:5px;">
                             <tr>
                                 <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" title="当前目录">当前目录:<c:if test="${pd.FNAME == null }">根目录</c:if><c:if test="${not empty pd.FNAME}">${pd.FNAME}</c:if></a></td>
+                                <td style="vertical-align:top;padding-left:5px">
+                                    <div class="nav-search">
+										<span class="input-icon">
+											<input type="text" placeholder="这里输入关键词" class="nav-search-input" id="keywords" autocomplete="off" name="keywords" value="${pd.keywords}" placeholder="这里输入关键词"/>
+											<i class="ace-icon fa fa-search nav-search-icon"></i>
+										</span>
+                                    </div>
+                                </td>
+                                <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="tosearch();"  title="检索"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
                                 <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="editFileName();"  title="修改文件名称">修改文件名称<i id="nach-icon" class="ace-icon fa fa-cog bigger-110 nav-search-icon green"></i></a></td>
                                 <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="deletes();"  title="检索">删除文件<i id="nav-search-icon" class="ace-icon fa fa-cogs bigger-110 nav-search-icon red"></i></a></td>
                                 <td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="downs();" title="下载文件">下载文件<i id="downfile" class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td>
@@ -506,6 +515,11 @@
 <script src="static/dist/jquery.magnify.js"></script>
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
+
+    function tosearch(){
+        var keywords = $("#keywords").val();
+        window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}&keywords="+keywords;
+    }
     
     function editJurisdiction(FILEMEANS_ID) {
         top.jzts();

@@ -116,6 +116,10 @@ public class FileCatalogController extends BaseController {
 		PageData userPd = userService.findByUsername(pd);
 		pd1.put("FILE_READUSERS",userPd.getString("USER_ID"));
 		pd1.put("USERNAME",Jurisdiction.getUsername());
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			pd1.put("keywords", keywords.trim());
+		}
 		List<PageData> list_catalog = filecatalogService.list_catalog(page);//文件夹对象集合
 		List<PageData> list_files_NotENCTYPT = filemeansService.listByFILE_CATALOGURL_ID_NotENCTYPT(pd1);//文件集合(不加密）
 		List<PageData> list_files_ENCTYPT = filemeansService.listByFILE_CATALOGURL_ID_ENCTYPT(pd1);//文件集合(加密）

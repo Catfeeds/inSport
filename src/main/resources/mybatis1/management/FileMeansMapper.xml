@@ -183,12 +183,20 @@
         SELECT FILEMEANS_ID FROM TB_FILEMEANS WHERE FILE_CREATEUSER <![CDATA[<> ]]> #{USERNAME}
         AND FILE_ISENCTYPT = 1 AND FILE_PASSUSER LIKE '%'+ #{FILE_READUSERS} +'%')
         AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
+        <if test="keywords != null and keywords != ''"><!-- 关键词检索 -->
+            and
+            FILENAME LIKE '%' + #{keywords} + '%'
+        </if>
         ORDER BY FILE_TYPE desc, FILENAME asc
     </select>
 
     <!-- 自己上传的文件 -->
     <select id="listENCTYPTByYourself" parameterType="pd" resultType="pd">
         SELECT * FROM TB_FILEMEANS WHERE FILE_CREATEUSER = #{USERNAME} AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
+        <if test="keywords != null and keywords != ''"><!-- 关键词检索 -->
+            and
+            FILENAME LIKE '%' + #{keywords} + '%'
+        </if>
         ORDER BY FILE_TYPE desc, FILENAME asc
     </select>
 
@@ -200,6 +208,10 @@
         SELECT FILEMEANS_ID FROM TB_FILEMEANS WHERE
         FILE_PASSUSER LIKE '%'+ #{FILE_READUSERS} +'%') AND FILE_CREATEUSER <![CDATA[<> ]]> #{USERNAME}
         AND FILE_ISENCTYPT = 1 AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
+        <if test="keywords != null and keywords != ''"><!-- 关键词检索 -->
+            and
+            FILENAME LIKE '%' + #{keywords} + '%'
+        </if>
         ORDER BY FILE_TYPE desc, FILENAME asc
     </select>
 
