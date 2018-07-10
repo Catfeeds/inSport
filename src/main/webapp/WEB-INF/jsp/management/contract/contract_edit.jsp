@@ -32,7 +32,7 @@
 					<a  class="btn btn-success btn-xs" onclick="save()">
 						<i class="ace-icon fa fa-credit-card bigger-110 nav-search-icon yellow"></i>保存
 					</a>
-					<a class="btn btn-primary  btn-xs" onclick="top.Dialog.close();">
+					<a class="btn btn-primary  btn-xs" onclick="qx();">
 						<i class="ace-icon fa  fa-external-link bigger-110 nav-search-icon red"></i>取消
 					</a>
 					<label style="margin-left: 30px">部门：</label>
@@ -794,6 +794,9 @@
 <script type="text/javascript">
 	$(top.hangge());
 
+	var editCount = 0;
+	var addCount = 0;
+
 	//付款合同明细function---strar
 	function delPay(PAYPRIMARY_ID,PAYDETAIL_ID){
 		$.ajax({
@@ -844,6 +847,7 @@
 	var newPAYPRIMARY_ID = null;
 
 	function saveTable(tuuid){
+		addCount -= 1 ;
 		var con = confirm("是否保存时间和总金额?"); //在页面上弹出对话框
 		if(con == true){
 			//alert("是");
@@ -881,6 +885,7 @@
 	}
 
 	function addTable(){
+		addCount += 1;
 		var uuid = "";
 		$.ajax({
 			type: "POST",
@@ -913,6 +918,7 @@
 	}
 
 	function addTr(uuid_var) {
+		addCount += 1;
 		var isname = $("#pic"+uuid_var).length;
 		var count =$("#ta"+uuid_var+" tr").length;
 		$("#td1"+uuid_var).attr("rowspan",count);
@@ -1084,6 +1090,7 @@
 	}
 
 	function addTrYj(CONTRACT_ID) {
+		addCount += 1;
 		var uuid = "";
 		$.ajax({
 			type: "POST",
@@ -1144,6 +1151,7 @@
 	}
 
 	function addTrTime(CONTRACT_ID){
+		addCount += 1;
 		var uuid = "";
 		$.ajax({
 			type: "POST",
@@ -1171,6 +1179,7 @@
 	}
 
 	function addTrFpNotew(CONTRACT_ID) {
+		addCount += 1;
 		var uuid = "";
 		$.ajax({
 			type: "POST",
@@ -1218,6 +1227,7 @@
 	}
 
 	function addTrFp(CONTRACT_ID,PROCEEDSTIME_ID) {
+		addCount += 1;
 		var uuid = "";
 		$.ajax({
 			type: "POST",
@@ -1304,6 +1314,7 @@
 	}
 
 	function saveTime(CONTRACT_ID,uuid){
+		addCount -= 1;
 		var STARTTIME = $("#st"+uuid).val();
 		var ENTTIME = $("#et"+uuid).val();
 		$.ajax({
@@ -1326,6 +1337,7 @@
 	}
 	
 	function saveInvoice(CONTRACT_ID,uuid,PROCEEDSTIME_ID) {
+		addCount -= 1;
 		var RECEIVABLE =$("#r"+uuid).val();
 		var PAYTIME = $("#pt"+uuid).val();
 		var OVERDUE = "0.00";
@@ -1483,6 +1495,7 @@
 	}
 
 	function saveDepositInfo(uuid,CONTRACT_ID,num,num1) {
+		addCount -= 1;
 		var INVOICENAME = $("#in"+uuid).val();
 		var INVOICETIME = $("#it"+uuid).val();
 		var DWDEPOSIT = $("#dd"+uuid).val();
@@ -1778,8 +1791,31 @@
 		diag.show();
 	}
 
-	function save(){
+	function qx(){
+		if(addCount > 0){
+			var con = confirm("还有新增项目未保存，是否放弃保存?"); //在页面上弹出对话框
+			if(con == true){
+				//alert("是");
+			}
+			else {
+				// alert("否");
+				return;
+			}
+		}
+		top.Dialog.close();
+	}
 
+	function save(){
+		if(addCount > 0){
+			var con = confirm("还有新增项目未保存，是否放弃保存?"); //在页面上弹出对话框
+			if(con == true){
+				//alert("是");
+			}
+			else {
+				// alert("否");
+				return;
+			}
+		}
 		if($("#CONTRACTNAME").val()==""){
 			$("#CONTRACTNAME").tips({
 				side:3,

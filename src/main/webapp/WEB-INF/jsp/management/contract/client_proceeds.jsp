@@ -132,7 +132,7 @@
 	<ul style="margin-left: 0px;margin-bottom: 0px" class="weekItem" id="weektab">
 		<li>收款情况</li>
 	</ul>
-	<div class="box01_c" id="skqk">
+	<div class="box01_c" style="height: 90%" id="skqk">
 		<%--<a style="margin-left: 10px" class="btn btn-success btn-xs" onclick="addItemDetail('${pd.OPPORTUNITY_ID}')">
 			<i class="ace-icon fa glyphicon-plus bigger-110 nav-search-icon yellow"></i>新增
 		</a>
