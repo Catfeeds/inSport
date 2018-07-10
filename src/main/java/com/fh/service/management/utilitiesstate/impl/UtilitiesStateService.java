@@ -35,7 +35,11 @@ public class UtilitiesStateService implements UtilitiesStateManager{
 	public void delete(PageData pd)throws Exception{
 		dao.delete("UtilitiesStateMapper.delete", pd);
 	}
-	
+
+	public void deleteByContractId(PageData pd)throws Exception{
+		dao.delete("UtilitiesStateMapper.deleteByContractId", pd);
+	}
+
 	/**修改
 	 * @param pd
 	 * @throws Exception

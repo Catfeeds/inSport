@@ -66,6 +66,13 @@
 			INVOICE_ID = #{INVOICE_ID}
 	</delete>
 
+	<delete id="deleteByContractId" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where
+		CONTRACT_ID = #{CONTRACT_ID}
+	</delete>
+
 	<delete id="deleteByTimeID" parameterType="pd">
 		delete from
 		<include refid="tableName"></include>

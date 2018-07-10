@@ -35,7 +35,11 @@ public class ProceedsTimeService implements ProceedsTimeManager{
 	public void delete(PageData pd)throws Exception{
 		dao.delete("ProceedsTimeMapper.delete", pd);
 	}
-	
+
+	public void deleteByContractId(PageData pd)throws Exception{
+		dao.delete("ProceedsTimeMapper.deleteByContractId", pd);
+	}
+
 	/**修改
 	 * @param pd
 	 * @throws Exception

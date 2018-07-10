@@ -23,7 +23,9 @@ public interface ProceedsContractManager{
 	 * @throws Exception
 	 */
 	public void delete(PageData pd)throws Exception;
-	
+
+	public void deleteByContractId(PageData pd)throws Exception;
+
 	/**修改
 	 * @param pd
 	 * @throws Exception

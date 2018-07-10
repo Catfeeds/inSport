@@ -35,7 +35,11 @@ public class ProceedsContractService implements ProceedsContractManager{
 	public void delete(PageData pd)throws Exception{
 		dao.delete("ProceedsContractMapper.delete", pd);
 	}
-	
+
+	public void deleteByContractId(PageData pd)throws Exception{
+		dao.delete("ProceedsContractMapper.deleteByContractId", pd);
+	}
+
 	/**修改
 	 * @param pd
 	 * @throws Exception

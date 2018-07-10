@@ -1242,36 +1242,6 @@
 				uuid = data.uuid;
 			}
 		});
-		/*
-		 <tr class="success">
-		 <th width="15%"><label>应收金额：</label></th>
-		 <th width="10%"><input type="number" style="width: 150px" value="${pd2.RECEIVABLE}"
-		 class="input-text"  name="RECEIVABLE"
-		 id="RECEIVABLE"></th>
-		 <th ><label>应付款时间：</label></th>
-		 <th ><input type="date" style="width: 150px;height: 31px" value="${pd2.PAYTIME}"
-		 class="input-text"  name="PAYTIME"
-		 id="PAYTIME"></th>
-		 <th  ><label>滞纳金率：</label></th>
-		 <th  ><input type="number" style="width: 150px;height: 31px" value="${pd2.OVERDUE}"
-		 class="input-text"  name="OVERDUE"
-		 id="OVERDUE"></th>
-		 </tr>
-		 <tr class="success">
-		 <th width="15%"><label>实际付款金额：</label></th>
-		 <th width="20%"><input type="number" style="width: 150px" value="${pd2.RECEIVABLE_REALITY}"
-		 class="input-text"  name="RECEIVABLE_REALITY"
-		 id="RECEIVABLE_REALITY"></th>
-		 <th ><label>实际付款时间：</label></th>
-		 <th ><input type="date" style="width: 150px;height: 31px" value="${pd2.RECEIVABL_PAYTIME}"
-		 class="input-text"  name="RECEIVABL_PAYTIME"
-		 id="RECEIVABL_PAYTIME"></th>
-		 <th width="15%"><label>付款方名称：</label></th>
-		 <th width="20%"><input type="text" style="width: 150px" value="${pd2.PAYERNAME}"
-		 class="input-text"  name="PAYERNAME"
-		 id="PAYERNAME"></th>
-		 </tr>
-		 */
 		var tr = "";
 		var CONTRACTCLASSIFY = $("#CONTRACTCLASSIFY").val();
 		tr += '<tr class="success"><th width="15%"><label>客户租用周期：</label></th>';

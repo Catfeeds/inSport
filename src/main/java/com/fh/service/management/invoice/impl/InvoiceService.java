@@ -36,6 +36,10 @@ public class InvoiceService implements InvoiceManager{
 		dao.delete("InvoiceMapper.delete", pd);
 	}
 
+	public void deleteByContractId(PageData pd)throws Exception{
+		dao.delete("InvoiceMapper.deleteByContractId", pd);
+	}
+
 	public void deleteByTimeID(PageData pd)throws Exception{
 		dao.delete("InvoiceMapper.deleteByTimeID", pd);
 	}

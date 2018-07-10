@@ -35,7 +35,11 @@ public class DepositInfoService implements DepositInfoManager{
 	public void delete(PageData pd)throws Exception{
 		dao.delete("DepositInfoMapper.delete", pd);
 	}
-	
+
+	public void deleteByContractId(PageData pd)throws Exception{
+		dao.delete("DepositInfoMapper.deleteByContractId", pd);
+	}
+
 	/**修改
 	 * @param pd
 	 * @throws Exception

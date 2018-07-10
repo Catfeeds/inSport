@@ -29,6 +29,7 @@ import com.fh.service.management.proceedsdetail.ProceedsDetailManager;
 import com.fh.service.management.proceedsprimary.ProceedsPrimaryManager;
 import com.fh.service.management.proceedstime.ProceedsTimeManager;
 import com.fh.service.management.taxitems.TaxItemsManager;
+import com.fh.service.management.utilitiesstate.UtilitiesStateManager;
 import com.fh.service.management.warn.WarnManager;
 import com.fh.service.system.user.UserManager;
 import com.fh.util.*;
@@ -119,6 +120,9 @@ public class ContractController extends BaseController {
 
 	@Resource(name="userService")
 	private UserManager userService;
+
+	@Resource(name="utilitiesstateService")
+	private UtilitiesStateManager utilitiesstateService;
 	// 树
 	@RequestMapping(value = "/listTree")
 	public ModelAndView listTree() throws Exception {
@@ -363,6 +367,11 @@ public class ContractController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		contractService.delete(pd);
+		proceedscontractService.deleteByContractId(pd);
+		proceedstimeService.deleteByContractId(pd);
+		depositinfoService.deleteByContractId(pd);
+		utilitiesstateService.deleteByContractId(pd);
+		invoiceService.deleteByContractId(pd);
 		out.write("success");
 		out.close();
 	}
