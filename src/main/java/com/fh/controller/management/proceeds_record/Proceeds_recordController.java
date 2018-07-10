@@ -2,6 +2,7 @@ package com.fh.controller.management.proceeds_record;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -130,23 +131,41 @@ public class Proceeds_recordController extends BaseController {
 				pd1.put("MODE",job.getString("MODE"));
 				pd1.put("RECEIVABLE_N",job.getString("RECEIVABLE_N"));
 				pd1.put("OVERDUE",job.getString("OVERDUE"));
+				pd1.put("RECEIVABL_EMPL",Jurisdiction.getUsername());
 				pd1.put("NOT_RECEIVABLE",job.getString("NOT_RECEIVABLE"));
+				pd1.put("PAYER",pd.getString("PAYER"));
 				pd1.put("AMOUNT",job.getString("AMOUNT"));
 				pd1.put("OVERDUENUM",job.getString("OVERDUENUM"));
 				pd1.put("RECEIVABL_PAYTIME",job.getString("RECEIVABL_PAYTIME"));
 				pd1.put("SETIME",job.getString("SETIME"));
 				proceeds_recordService.save(pd1);
 			}
+			pd.put("PROCEEDSDATE",new Date());
+			pd.put("PROCEEDSNUM",pd.getString("PROCEEDSNUM")); // 一次收的金额，后面叠加
+			pd.put("OVERDUENUM",pd.getString("OVERDUENUM")); //一次收的滞纳金，后面叠加
+			pd.put("RECEIVABLE_REALITY",pd.getString("ALLSUM")); // 应收总额，后面不变
+			pd.put("NOT_RECEIVABLE",Double.parseDouble(pd.getString("ALLSUM"))+ Double.parseDouble(pd.getString("OVERDUENUM"))  - Double.parseDouble(pd.getString("PROCEEDSNUM")));//未收款，后面叠减
+			pd.put("PAYER",pd.getString("PAYER"));
+			pd.put("PROCEEDSER",Jurisdiction.getUsername());
+			pd.put("ISPRINTLN","0");
+			Date noDate = new Date();
+			DateFormat df1 = DateFormat.getDateInstance();
+			System.out.println(df1.format(noDate));
+			PageData pd3 = proceedsreceiptsService.findMaxNo(pd);
+			int MAXNO;
+			if(pd3.getString("MAXNO") == null || "".equals(pd3.getString("MAXNO"))){
+				MAXNO = 1;
+			}else {
+				MAXNO = Integer.parseInt(pd3.getString("MAXNO").substring(pd3.getString("MAXNO").length()-3,pd3.getString("MAXNO").length())) +1;
+			}
+			//new DecimalFormat("0.00"
+			//System.out.println(df1.format(noDate)+(new DecimalFormat("000").format(MAXNO)));
+			pd.put("PROCEEDSNO",("PDJ"+df1.format(noDate)+(new DecimalFormat("000").format(MAXNO))).toString().trim().replaceAll("-", ""));
+			proceedsreceiptsService.save(pd);
+			json.put("msg","yes");
+		}else {
+			json.put("msg","no");
 		}
-		pd.put("PROCEEDSDATE",new Date());
-		pd.put("PROCEEDSNUM",pd.getString("PROCEEDSNUM")); // 一次收的金额，后面叠加
-		pd.put("OVERDUENUM",pd.getString("OVERDUENUM")); //一次收的滞纳金，后面叠加
-		pd.put("RECEIVABLE_REALITY",pd.getString("ALLSUM")); // 应收总额，后面不变
-		pd.put("NOT_RECEIVABLE",Double.parseDouble(pd.getString("ALLSUM"))+ Double.parseDouble(pd.getString("OVERDUENUM"))  - Double.parseDouble(pd.getString("PROCEEDSNUM")));//未收款，后面叠减
-		pd.put("PAYER",pd.getString("PAYER"));
-		pd.put("PROCEEDSER",Jurisdiction.getUsername());
-		pd.put("ISPRINTLN","0");
-		proceedsreceiptsService.save(pd);
 		return  json;
 	}
 

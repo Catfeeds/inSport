@@ -3,7 +3,28 @@
 				try{ace.settings.check('navbar' , 'fixed');}catch(e){}
 				
 				function toContract() {
-					alert("弹出未收款合同");
+					//alert("弹出未收款合同");
+					top.jzts();
+					var diag = new top.Dialog();
+					diag.Drag=true;
+					diag.Title ="未收款列表";
+					diag.URL = '<%=basePath%>contract/listNotProceeds.do';
+					diag.Width = window.innerWidth * 1.2;
+					diag.Height = window.innerHeight * 1.2;
+					diag.Modal = true;				//有无遮罩窗口
+					diag. ShowMaxButton = true;	//最大化按钮
+					diag.ShowMinButton = true;		//最小化按钮
+					diag.CancelEvent = function(){ //关闭事件
+						/*if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
+							if('${page.currentPage}' == '0'){
+								tosearch();
+							}else{
+								tosearch();
+							}
+						}*/
+						diag.close();
+					};
+					diag.show();
 				}
 			</script>
 

@@ -102,16 +102,29 @@
     </div>
     <hr>
     <div id="print" style="margin-bottom: 10%;margin-right: 20%">
-        <button align="right" style="" onClick="printAndNone()">打印</button>&nbsp;</td>
+        <button align="right" style="" onClick="printAndNone('${pd.PROCEEDSRECEIPTS_ID}')">打印</button>&nbsp;</td>
     </div>
 </div>
 <!-- 引入 -->
 <script type="text/javascript">
 
-    function printAndNone() {
+    function printAndNone(PROCEEDSRECEIPTS_ID) {
         $("#print").css("display","none");
         window.print();
         $("#print").css("display","");
+        $.ajax({
+            type: "POST",
+            url: '<%=basePath%>proceedsreceipts/editPrintln.do',
+            data: {
+                PROCEEDSRECEIPTS_ID: PROCEEDSRECEIPTS_ID
+            },
+            dataType: 'json',
+            //beforeSend: validateData,
+            cache: false,
+            success: function (data) {
+
+            }
+        });
     }
 
     $(function() {

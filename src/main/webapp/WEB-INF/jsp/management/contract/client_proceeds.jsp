@@ -51,8 +51,8 @@
 							<input  name="FCREATERID" id="FCREATERID" value="${pd.FCREATERID}"
 									type="hidden"  />
 							<div id="zhongxin" style="padding-top: 13px;">
-								<div style="background-color: #2e6589; height:35px;border-radius: 10px 10px 0px 0px;">
-									<p style="margin-left:20px;font-size: 22px;color: white">基本信息</p>
+								<div style="padding-top: 5px; background-color: #2e6589; height:35px;border-radius: 10px 10px 0px 0px;">
+									<p style="margin-left:20px;font-size: 22px;color: white">收款信息</p>
 								</div>
 								<table id="table_report" class="table table-striped table-bordered table-hover">
 									<tbody>
@@ -169,19 +169,18 @@
 			</tr>
 			<c:if test="${not empty listTop2}">
 			<c:forEach items="${listTop2}" var="var" varStatus="vs">
-			<tr class="warning">
-				<td class='center'>
-					<label class="pos-rel"><input type='checkbox' name='ids'
-												  value="${var.PROCEEDSRECEIPTS_ID}"
-												  class="ace"/><span
-							class="lbl"></span></label>
-				</td>
+			<tr class="warning" ondblclick="record_Show('${var.PROCEEDSRECEIPTS_ID}')">
 				<td class='center'><label>收款编号：</label></td>
-				<td class='center'>${var.PROCEEDSRECEIPTS_ID}</td>
+				<td class='center'>${var.PROCEEDSNO}</td>
 				<td class='center'><label>收款总额：</label></td>
 				<td class='center'>${var.PROCEEDSNUM}</td>
 				<td  class='center'><label>收款日期</label></td>
-				<td class='center' >${var.PROCEEDSDATE}</td>
+				<td class='center' >${fn:substring(var.PROCEEDSDATE, 0, 10)}</td>
+				<td class='center' >
+					<a class="btn btn-xs btn-info" title="打印" onclick="print('${var.PROCEEDSRECEIPTS_ID}');">
+						<i class="ace-icon glyphicon glyphicon-print bigger-120" title="打印">打印</i>
+					</a>
+				</td>
 			</tr>
 			</c:forEach>
 			</c:if>
@@ -200,6 +199,27 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
 	$(top.hangge());
+
+	function  record_Show(PROCEEDSRECEIPTS_ID) {
+		top.jzts();
+		var diag = new top.Dialog();
+		diag.Drag=true;
+		diag.Title ="收款记录明细";
+		diag.URL = '<%=basePath%>proceeds_record/record_show.do?PROCEEDSRECEIPTS_ID='+PROCEEDSRECEIPTS_ID;
+		diag.Width = window.innerWidth * 0.8;
+		diag.Height = window.innerHeight * 0.8;
+		diag.Modal = true;				//有无遮罩窗口
+		diag. ShowMaxButton = true;	//最大化按钮
+		diag.ShowMinButton = true;		//最小化按钮
+		diag.CancelEvent = function(){ //关闭事件
+			diag.close();
+		};
+		diag.show();
+	}
+
+	function print(PROCEEDSRECEIPTS_ID) {
+		window.open("<%=basePath%>proceedsreceipts/toPrint.do?PROCEEDSRECEIPTS_ID="+PROCEEDSRECEIPTS_ID, "", 'left=250,top=150,width=1250,height=750,toolbar=no,menubar=no,status=no,scrollbars=yes,resizable=yes');
+	}
 
 	function toProceeds(){
 		//var tahtmx = $("#tahtmx");
@@ -221,6 +241,7 @@
 		var PROCEEDSNUM = 0.00;
 		var OVERDUENUM_ALL = 0.00;
 		var NOT_RECEIVABLE_ALL = 0.00;
+		var isJson;
 		//(parseFloat(OVERDUENUM)
 		var CONTEXT = "<div align='center'>";
 		strJson += '[';
@@ -228,7 +249,7 @@
 			var MODE = "";
 			if(i > 0 && i < ($('#taskqk tr').length - 1) ){
 				MODE = "";
-				var isJson = '1';
+				isJson = '1';
 				$(this).children('td').each(function(j){  // 遍历 tr 的各个 td
 					if(j == 0){
 						//alert($(this).find("[name='ids']").is(':checked'));
@@ -303,46 +324,49 @@
 				}
 			}
 		});
-		strJson = strJson.substring(0,strJson.length-1);
-		strJson += ']';
-		CONTEXT += "<p>收款总额:"+PROCEEDSNUM+";";
-		CONTEXT += "产生滞纳金:"+OVERDUENUM_ALL+"。</p>";
-		CONTEXT += "</div>";
-		var d = dialog({
-			title: '消息',
-			content: CONTEXT,
-			ok: function () {
-				//var value = $('#CONTEXT').val();
-				//this.close(value);
-				alert("开始收款");
-				$.ajax({
-					type: "POST",
-					url: '<%=basePath%>proceeds_record/toProceeds',
-					async: false,
-					data: {
-						strJson : strJson,
-						PROCEEDSNUM : PROCEEDSNUM,
-						OVERDUENUM : OVERDUENUM_ALL,
-						PAYER : PAYER,
-						ALLSUM : ALLSUM
-					},
-					dataType: 'json',
-					//beforeSend: validateData,
-					cache: false,
-					success: function (data) {
-						alert("收款成功");
-					}
-				});
-				this.remove();
-			}
-		});
-		/*d.addEventListener('close', function () {
-		 alert(value);
-		 });*/
-		d.show();
-		console.log(strJson);
-
-
+			strJson = strJson.substring(0, strJson.length - 1);
+			strJson += ']';
+			CONTEXT += "<p>收款总额:" + PROCEEDSNUM.toFixed(2) + ";";
+			CONTEXT += "产生滞纳金:" + OVERDUENUM_ALL.toFixed(2) + "。</p>";
+			CONTEXT += "</div>";
+			var d = dialog({
+				title: '消息',
+				content: CONTEXT,
+				ok: function () {
+					//var value = $('#CONTEXT').val();
+					//this.close(value);
+					//alert("开始收款");
+					$.ajax({
+						type: "POST",
+						url: '<%=basePath%>proceeds_record/toProceeds',
+						async: false,
+						data: {
+							strJson: strJson,
+							PROCEEDSNUM: PROCEEDSNUM.toFixed(2),
+							OVERDUENUM: OVERDUENUM_ALL.toFixed(2),
+							PAYER: PAYER,
+							ALLSUM: ALLSUM
+						},
+						dataType: 'json',
+						//beforeSend: validateData,
+						cache: false,
+						success: function (data) {
+							if(data.msg == "yes"){
+								alert("收款成功");
+								save();
+							}else {
+								alert("未产生收款数据");
+							}
+						}
+					});
+					this.remove();
+				}
+			});
+			/*d.addEventListener('close', function () {
+			 alert(value);
+			 });*/
+			d.show();
+			console.log(strJson);
 	}
 
 	function toAjax_load(){

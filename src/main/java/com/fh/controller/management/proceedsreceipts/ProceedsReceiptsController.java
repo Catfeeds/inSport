@@ -92,7 +92,20 @@ public class ProceedsReceiptsController extends BaseController {
 		mv.setViewName("save_result");
 		return mv;
 	}
-	
+
+	@RequestMapping(value = "/editPrintln")
+	@ResponseBody
+	public Map<String, Object> editPrintln(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		pd.put("ISPRINTLN","1");
+		pd.put("PRINTLNDATE",new Date());
+		proceedsreceiptsService.editPrintln(pd);
+		return  json;
+	}
+
+
 	/**列表
 	 * @param page
 	 * @throws Exception

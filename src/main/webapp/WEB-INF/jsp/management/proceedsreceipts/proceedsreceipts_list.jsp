@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -96,7 +97,7 @@
 												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.PROCEEDSRECEIPTS_ID}" class="ace" /><span class="lbl"></span></label>
 											</td>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
-											<td class='center'>${var.PROCEEDSDATE}</td>
+											<td class='center'>${fn:substring(var.PROCEEDSDATE, 0, 10)}</td>
 											<td class='center'>${var.PROCEEDSNUM}</td>
 											<td class='center'>${var.OVERDUENUM}</td>
 											<td class='center'>${var.RECEIVABLE_REALITY}</td>
@@ -104,14 +105,14 @@
 											<td class='center'>${var.PAYER}</td>
 											<td class='center'>${var.NAME}</td>
 											<td class='center'>
-												<c:if test="${ar.ISPRINTLN == '1' }">
+												<c:if test="${var.ISPRINTLN == '1' }">
 													是
 												</c:if>
-												<c:if test="${ar.ISPRINTLN == '0' }">
+												<c:if test="${var.ISPRINTLN == '0' }">
 													否
 												</c:if>
 											</td>
-											<td class='center'>${var.PRINTLNDATE}</td>
+											<td class='center'>${fn:substring(var.PRINTLNDATE, 0, 10)}</td>
 											<td class="center">
 												<c:if test="${QX.edit != 1 && QX.del != 1 }">
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>

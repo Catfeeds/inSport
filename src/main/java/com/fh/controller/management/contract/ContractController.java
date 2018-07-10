@@ -30,6 +30,7 @@ import com.fh.service.management.proceedsprimary.ProceedsPrimaryManager;
 import com.fh.service.management.proceedstime.ProceedsTimeManager;
 import com.fh.service.management.taxitems.TaxItemsManager;
 import com.fh.service.management.warn.WarnManager;
+import com.fh.service.system.user.UserManager;
 import com.fh.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -115,6 +116,9 @@ public class ContractController extends BaseController {
 
 	@Resource(name="clientService")
 	private ClientManager clientService;
+
+	@Resource(name="userService")
+	private UserManager userService;
 	// 树
 	@RequestMapping(value = "/listTree")
 	public ModelAndView listTree() throws Exception {
@@ -486,6 +490,36 @@ public class ContractController extends BaseController {
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
+		return mv;
+	}
+
+
+	@RequestMapping(value="/listNotProceeds")
+	public ModelAndView listNotProceeds(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表Contract");
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		//System.out.println("用户："+Jurisdiction.getUsername());
+		if(pd.getString("USERNAME") == null || "".equals(pd.getString("USERNAME"))){
+			pd.put("USERNAME",Jurisdiction.getUsername());
+		}
+		PageData userpd = departmentgroupService.findUserlogin(pd);
+		List<PageData>	varList = null;
+		String DNAME = null;
+		//varList = contractService.datalistPageByDept(page);	//列出Contract列表
+		//listTimeToContract
+		pd.put("USERNAME",Jurisdiction.getUsername());
+		PageData uPd = userService.findByUsername(pd);
+		pd.put("OPERATOR",uPd.getString("NAME"));
+		Date currentTime = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = formatter.format(currentTime);
+		pd.put("TODAY",dateString);
+		varList = contractService.listTimeToContract(pd);
+		mv.setViewName("management/contract/listNotProceeds");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
 		return mv;
 	}
 

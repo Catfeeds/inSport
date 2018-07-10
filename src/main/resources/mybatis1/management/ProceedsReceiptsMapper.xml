@@ -17,7 +17,8 @@
 		PAYER,	
 		PROCEEDSER,	
 		ISPRINTLN,	
-		PRINTLNDATE,	
+		PRINTLNDATE,
+		PROCEEDSNO,
 		PROCEEDSRECEIPTS_ID
 	</sql>
 	
@@ -31,7 +32,8 @@
 		#{PAYER},	
 		#{PROCEEDSER},	
 		#{ISPRINTLN},	
-		#{PRINTLNDATE},	
+		#{PRINTLNDATE},
+		#{PROCEEDSNO},
 		#{PROCEEDSRECEIPTS_ID}
 	</sql>
 	
@@ -72,6 +74,16 @@
 		where 
 		PROCEEDSRECEIPTS_ID = #{PROCEEDSRECEIPTS_ID}
 	</update>
+
+	<update id="editPrintln" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set
+		ISPRINTLN = #{ISPRINTLN},
+		PRINTLNDATE = #{PRINTLNDATE}
+		where
+		PROCEEDSRECEIPTS_ID = #{PROCEEDSRECEIPTS_ID}
+	</update>
 	
 	<!-- 通过ID获取数据 -->
 	<select id="findById" parameterType="pd" resultType="pd">
@@ -79,6 +91,10 @@
 		LEFT JOIN sys_user u ON p.PROCEEDSER = u.USERNAME
 		where 
 			p.PROCEEDSRECEIPTS_ID = #{PROCEEDSRECEIPTS_ID}
+	</select>
+
+	<select id="findMaxNo" parameterType="pd" resultType="pd">
+		SELECT MAX(PROCEEDSNO) AS MAXNO FROM TB_PROCEEDSRECEIPTS
 	</select>
 	
 	<!-- 列表 -->

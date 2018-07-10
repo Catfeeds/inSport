@@ -29,7 +29,9 @@ public interface ProceedsReceiptsManager{
 	 * @throws Exception
 	 */
 	public void edit(PageData pd)throws Exception;
-	
+
+	public void editPrintln(PageData pd)throws Exception;
+
 	/**列表
 	 * @param page
 	 * @throws Exception
@@ -41,6 +43,8 @@ public interface ProceedsReceiptsManager{
 	 * @throws Exception
 	 */
 	public List<PageData> listAll(PageData pd)throws Exception;
+
+	public PageData findMaxNo(PageData pd)throws Exception;
 
 	public List<PageData> listTop2(PageData pd)throws Exception;
 

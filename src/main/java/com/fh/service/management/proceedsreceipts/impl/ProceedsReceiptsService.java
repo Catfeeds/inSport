@@ -43,7 +43,11 @@ public class ProceedsReceiptsService implements ProceedsReceiptsManager{
 	public void edit(PageData pd)throws Exception{
 		dao.update("ProceedsReceiptsMapper.edit", pd);
 	}
-	
+
+	public void editPrintln(PageData pd)throws Exception{
+		dao.update("ProceedsReceiptsMapper.editPrintln", pd);
+	}
+
 	/**列表
 	 * @param page
 	 * @throws Exception
@@ -64,6 +68,10 @@ public class ProceedsReceiptsService implements ProceedsReceiptsManager{
 
 	public List<PageData> listTop2(PageData pd)throws Exception{
 		return (List<PageData>)dao.findForList("ProceedsReceiptsMapper.listTop2", pd);
+	}
+
+	public PageData findMaxNo(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("ProceedsReceiptsMapper.findMaxNo", pd);
 	}
 
 	/**通过id获取数据
