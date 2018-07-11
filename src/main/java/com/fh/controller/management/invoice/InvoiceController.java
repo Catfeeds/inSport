@@ -72,7 +72,7 @@ public class InvoiceController extends BaseController {
 			pd.put("RECEIVABLE_REALITY","0");
 		}*/
 		if("".equals(pd.getString("RECEIVABLE")) || pd.getString("RECEIVABLE") == null){
-			pd.put("RECEIVABLE","");
+			pd.put("RECEIVABLE","0.00");
 		}
 		pd.put("NOT_RECEIVABLE",pd.getString("RECEIVABLE"));
 		invoiceService.save(pd);
@@ -85,12 +85,12 @@ public class InvoiceController extends BaseController {
 		Map<String, Object> json = new HashMap<String, Object>();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		if(pd.getString("RECEIVABLE") == null && "".equals(pd.getString("RECEIVABLE"))){
+		if(pd.getString("RECEIVABLE") == null || "".equals(pd.getString("RECEIVABLE"))){
 			pd.put("RECEIVABLE","0");
 		}else {
 
 		}
-		if(pd.getString("RECEIVABLE_REALITY") == null && "".equals(pd.getString("RECEIVABLE_REALITY"))){
+		if(pd.getString("RECEIVABLE_REALITY") == null || "".equals(pd.getString("RECEIVABLE_REALITY"))){
 			pd.put("RECEIVABLE_REALITY","0");
 		}
 		pd.put("NOT_RECEIVABLE",pd.getString("RECEIVABLE"));

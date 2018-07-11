@@ -276,46 +276,7 @@
 							<!-- --------------------------------------------------------------------------- -->
 							<table id="proceedsContract" style="display: none;" class="table table-border table-bg table-bordered">
 								<tbody>
-								<%--<tr class="success">
-									&lt;%&ndash;<th width="15%"><label>项目负责人：</label></th>
-									<th width="10%"><input type="text" style="width: 150px" value="${pd2.PRINCIPAL}"
-														   class="input-text"  name="PRINCIPAL"
-														   id="PRINCIPAL"></th>&ndash;%&gt;
-									<th width="15%"><label>应收金额：</label></th>
-									<th width="10%"><input type="number" style="width: 150px" value="${pd2.RECEIVABLE}"
-														   class="input-text"  name="RECEIVABLE"
-														   id="RECEIVABLE"></th>
-									<th ><label>应付款时间：</label></th>
-									<th ><input type="date" style="width: 150px;height: 31px" value="${pd2.PAYTIME}"
-												class="input-text"  name="PAYTIME"
-												id="PAYTIME"></th>
-									<th  ><label>滞纳金率：</label></th>
-									<th  ><input type="number" style="width: 150px;height: 31px" value="${pd2.OVERDUE}"
-												 class="input-text"  name="OVERDUE"
-												 id="OVERDUE"></th>
 
-								</tr>
-								<tr class="success">
-									<th width="15%"><label>实际付款金额：</label></th>
-									<th width="20%"><input type="number" style="width: 150px" value="${pd2.RECEIVABLE_REALITY}"
-														   class="input-text"  name="RECEIVABLE_REALITY"
-														   id="RECEIVABLE_REALITY"></th>
-									<th ><label>实际付款时间：</label></th>
-									<th ><input type="date" style="width: 150px;height: 31px" value="${pd2.RECEIVABL_PAYTIME}"
-												class="input-text"  name="RECEIVABL_PAYTIME"
-												id="RECEIVABL_PAYTIME"></th>
-									<th width="15%"><label>付款方名称：</label></th>
-									<th width="20%"><input type="text" style="width: 150px" value="${pd2.PAYERNAME}"
-														   class="input-text"  name="PAYERNAME"
-														   id="PAYERNAME"></th>
-
-									&lt;%&ndash;<th  ><label>是否收款：</label></th>
-									<th  >
-										<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio1" id="form-field-radio3" onclick="isPAY('1');" <c:if test="${pd2.ISPAY == '1' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">是</span></label>
-										<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio1" id="form-field-radio4" onclick="isPAY('0');" <c:if test="${pd2.ISPAY == '0' }">checked="checked"</c:if> type="radio" value="icon-edit"><span class="lbl">否</span></label>
-									</th>&ndash;%&gt;
-
-								</tr>--%>
 								<!--  -----------------------含水电--------------------------------------->
 								<c:if test="${pd2.ISEW == '1'}">
 								<c:if test="${not empty listPTime}">
@@ -513,12 +474,12 @@
 											<th width="15%"><label>实际收款金额（押金）：</label></th>
 											<th width="10%">
 												<input type="number" style="width: 150px" value="${var.REALITY}"
-													   class="input-text"  name="REALITY"
+													   class="input-text"  name="REALITY" readonly
 													   id="r${var.DEPOSITINFO_ID}">
 											</th>
 											<th  ><label>实际收款时间（押金）：</label></th>
 											<th  ><input type="date" style="width: 150px;height: 31px" value="${var.REALITYTIME}"
-														 class="input-text"  name="REALITYTIME"
+														 class="input-text"  name="REALITYTIME" readonly
 														 id="rt${var.DEPOSITINFO_ID}"></th>
 											<th width="15%"><label>付款方名称（押金）：</label></th>
 											<th width="10%"><input type="text" style="width: 150px" value="${var.DEPOSITPAYER}"
@@ -1116,8 +1077,8 @@
 		tr += '<th width="10%"><input type="date" style="width: 150px;height: 31px" class="input-text"  name="DWDEPOSITTIME" id="ddt'+uuid+'"></th>';
 		tr += '<th ><label></label></th><th  ></th></tr>';
 		tr += '<tr class="danger"><th width="15%"><label>实际付款金额（押金）：</label></th><th width="10%">';
-		tr += '<input type="number" style="width: 150px" class="input-text"  name="REALITY" id="r'+uuid+'"></th>';
-		tr += '<th  ><label>实际付款时间（押金）：</label></th><th><input type="date" style="width: 150px;height: 31px" class="input-text"  name="REALITYTIME"';
+		tr += '<input type="number" readonly style="width: 150px" class="input-text"  name="REALITY" id="r'+uuid+'"></th>';
+		tr += '<th  ><label>实际付款时间（押金）：</label></th><th><input type="date" readonly style="width: 150px;height: 31px" class="input-text"  name="REALITYTIME"';
 		tr += 'id="rt'+uuid+'"></th>';
 		tr += '<th width="15%"><label>付款方名称（押金）：</label></th>';
 		tr += '<th width="10%"><input type="text" style="width: 150px" class="input-text"  name="DEPOSITPAYER" id="dp'+uuid+'"></th></tr>';

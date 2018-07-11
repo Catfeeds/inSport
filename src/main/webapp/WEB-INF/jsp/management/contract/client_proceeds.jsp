@@ -25,7 +25,7 @@
 
 	<script src="static/silviomore/bootstrap-select.js"></script>
 </head>
-<body id="sBody" class="no-skin">
+<body id="sBody" class="no-skin" onclick="calProceeds()">
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
 	<!-- /section:basics/sidebar -->
@@ -75,32 +75,12 @@
 													</optgroup>
 												</select>
 										</th>
-										<%--<th class="center"> <label style="color: red">*</label><label>收款方式：</label></th>--%>
-										<%--<th class="center" >
-											<select name="MODE" id="MODE" class="selectpicker bla bla bli" title="请选择收款方式"
-													data-style="" multiple data-live-search="true" >
-												<option value="现金"
-														<c:if test="${fn:contains(pd.MODES,'现金')}">
-															selected
-														</c:if>
-														name="现金">现金</option>
-												<option value="支票"
-														<c:if test="${fn:contains(pd.MODES,'支票')}">
-															selected
-														</c:if>
-														name="支票">支票</option>
-												<option value="转账"
-														<c:if test="${fn:contains(pd.MODES,'转账')}">
-															selected
-														</c:if>
-														name="转账">转账</option>
-												<option value="信用卡"
-														<c:if test="${fn:contains(pd.MODES,'信用卡')}">
-															selected
-														</c:if>
-														name="信用卡">信用卡</option>
-											</select>
-										</th>--%>
+										<th class="center"><label>本次收款总额：</label></th>
+										<th class="center" >
+											<input type="text" style="width: 150px" readonly
+												   class="input-text"  name="PROCEEDSNUM"
+												   id="PROCEEDSNUM">
+										</th>
 										<th class="center"><label style="color: red">*</label><label>金额合计：</label></th>
 										<th class="center" >
 											<input type="text" style="width: 150px" readonly
@@ -142,7 +122,9 @@
 		<table id="taskqk" class="table table-striped table-bordered table-hover"
 			   style="margin-top:5px;">
 			<tr>
-				<th class="center" style="width:35px;"><label class="pos-rel"><input type="checkbox" class="ace" id="zcheckbox"/><span class="lbl"></span></label></th>
+				<th class="center" style="width:35px;"><label class="pos-rel">
+					<%--<input type="checkbox" class="ace" id="zcheckbox"/><span class="lbl"></span></label>--%>
+				</th>
 				<th class="center">序号</th>
 				<th class="center">费用类型</th>
 				<th class="center">应收金额</th>
@@ -219,6 +201,31 @@
 
 	function print(PROCEEDSRECEIPTS_ID) {
 		window.open("<%=basePath%>proceedsreceipts/toPrint.do?PROCEEDSRECEIPTS_ID="+PROCEEDSRECEIPTS_ID, "", 'left=250,top=150,width=1250,height=750,toolbar=no,menubar=no,status=no,scrollbars=yes,resizable=yes');
+	}
+
+	function calProceeds(){
+		//alert("kaishi");
+		var PROCEEDSNUM = 0.00;
+		var RECEIVABLE_N ;
+		$('#taskqk tr').each(function(i){                   // 遍历 tr
+			if(i > 0 && i < ($('#taskqk tr').length - 1) ){
+				$(this).children('td').each(function(j){  // 遍历 tr 的各个 td
+					if(j == 0){
+						if(!$(this).find("[name='ids']").is(':checked')){
+							return false;
+						}
+					}else if(j == 9){
+						RECEIVABLE_N = $(this).find("[name='RECEIVABLE_N']").val();
+						if(RECEIVABLE_N == "" || RECEIVABLE_N == null){
+							PROCEEDSNUM += 0.00;
+						}else {
+							PROCEEDSNUM += parseFloat(RECEIVABLE_N);
+						}
+					}
+				});
+			}
+		});
+		$("#PROCEEDSNUM").val(PROCEEDSNUM);
 	}
 
 	function toProceeds(){
@@ -389,7 +396,13 @@
 					tr += '<tr class="success center">' ;
 					tr += '<td class="center"><label class="pos-rel"><input type="checkbox" name="ids" value="'+value.INVOICE_ID+'" class="ace"/><span class="lbl"></span></label> </td>';
 					tr += '<td><label>'+count+'</label></td>';
-					tr += '<td><label name="TYPE" id="ty'+value.INVOICE_ID+'">应收款</label></td>';
+					tr += '<td><label name="TYPE" id="ty'+value.INVOICE_ID+'">' ;
+					if(value.CONTRACTCLASSIFY == '写字楼'){
+						tr += '应收租金' ;
+					}else {
+						tr += '应收款' ;
+					}
+					tr += '</label></td>';
 					tr += '<td><label name="RECEIVABLE" id="r'+value.INVOICE_ID+'">'+value.NOT_RECEIVABLE+'</label>';
 					if(value.STARTTIME != null && value.STARTTIME != "" && value.ENDTIME != null && value.ENDTIME !=""){
 						tr += '<label name="SETIME" id="se'+value.INVOICE_ID+'">（'+value.STARTTIME+'  至  '+value.ENDTIME+'）</label>';

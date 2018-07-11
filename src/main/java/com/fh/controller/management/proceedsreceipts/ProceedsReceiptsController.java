@@ -172,6 +172,11 @@ public class ProceedsReceiptsController extends BaseController {
 		pd = this.getPageData();
 		pd = proceedsreceiptsService.findById(pd);	//根据ID读取
 		List<PageData> listByProReceiptsID = proceeds_recordService.listByProReceiptsID(pd);
+		for (int i = 0; i < listByProReceiptsID.size(); i++) {
+			if("写字楼".equals(listByProReceiptsID.get(i).getString("CONTRACTCLASSIFY"))){
+				pd.put("CONTRACTCLASSIFY","1");
+			}
+		}
 		mv.addObject("listByProReceiptsID", listByProReceiptsID);
 		mv.setViewName("management/proceedsreceipts/toPrint");
 		mv.addObject("pd", pd);

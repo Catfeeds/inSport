@@ -63,6 +63,9 @@ public class DepositInfoController extends BaseController {
 		Map<String, Object> json = new HashMap<String, Object>();
 		pd = this.getPageData();
 		pd.put("DEPOSITINFO_ID", this.get32UUID());	//主键
+		if(pd.getString("REALITY") == null || "".equals(pd.getString("REALITY"))){
+			pd.put("REALITY","0");
+		}
 		pd.put("NOT_RECEIVABLE",pd.getString("DWDEPOSIT"));
 		depositinfoService.save(pd);
 		return  json;
@@ -74,6 +77,9 @@ public class DepositInfoController extends BaseController {
 		Map<String, Object> json = new HashMap<String, Object>();
 		PageData pd = new PageData();
 		pd = this.getPageData();
+		if(pd.getString("REALITY") == null || "".equals(pd.getString("REALITY"))){
+			pd.put("REALITY","0");
+		}
 		pd.put("NOT_RECEIVABLE",pd.getString("DWDEPOSIT"));
 		depositinfoService.edit(pd);
 		return  json;

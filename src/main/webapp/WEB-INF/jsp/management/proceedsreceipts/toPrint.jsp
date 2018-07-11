@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -44,19 +44,27 @@
     <table style="font-size: 15px" width="1050" height="130" border="0" align="center" cellpadding="0" cellspacing="0">
         <tr>
             <td align="center">收款日期</td>
-            <td align="center">本次应收款总额</td>
+            <c:if test="${pd.CONTRACTCLASSIFY != '1'}">
+                 <td align="center">本次应收款总额</td>
+            </c:if>
             <td align="center">本次已收款金额</td>
             <td align="center">本次产生滞纳金</td>
-            <td align="center">尚未收款金额</td>
+            <c:if test="${pd.CONTRACTCLASSIFY != '1'}">
+                <td align="center">尚未收款金额</td>
+            </c:if>
             <td align="center">客户名称</td>
             <td align="center">收款人</td>
         </tr>
         <tr>
-            <td align="center">${pd.PROCEEDSDATE}</td>
-            <td align="center">${pd.RECEIVABLE_REALITY}</td>
+            <td align="center">${fn:substring(pd.PROCEEDSDATE, 0, 10)}</td>
+            <c:if test="${pd.CONTRACTCLASSIFY != '1'}">
+                <td align="center">${pd.RECEIVABLE_REALITY}</td>
+            </c:if>
             <td align="center">${pd.PROCEEDSNUM}</td>
             <td align="center">${pd.OVERDUENUM}</td>
-            <td align="center">${pd.NOT_RECEIVABLE}</td>
+            <c:if test="${pd.CONTRACTCLASSIFY != '1'}">
+                <td align="center">${pd.NOT_RECEIVABLE}</td>
+            </c:if>
             <td align="center">${pd.PAYER}</td>
             <td align="center">${pd.NAME}</td>
         </tr>

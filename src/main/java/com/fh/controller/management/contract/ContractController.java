@@ -222,7 +222,11 @@ public class ContractController extends BaseController {
 			pd2.put("PRINCIPAL",pd.getString("PRINCIPAL"));
 			//pd2.put("ISPAY",Integer.parseInt(pd.get("ISPAY").toString()));
 			pd2.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
-			pd2.put("ISEW",pd.getString("ISEW"));
+			if(pd.getString("ISEW") == null || "".equals(pd.getString("ISEW"))){
+				pd2.put("ISEW","0");
+			}else {
+				pd2.put("ISEW",pd.getString("ISEW"));
+			}
 			pd2.put("OVERDUE",pd.getString("OVERDUE"));
 			pd2.put("FREMARK",pd.getString("FREMARK"));
 			//pd.put("CONTRACT_ID", this.get32UUID());	//主键
@@ -300,27 +304,6 @@ public class ContractController extends BaseController {
 		//mv.addObject("arrYear",arrYear);
 		return mv;
 	}
-
-	/*@RequestMapping(value="/openOfficeT")
-	public ModelAndView openOfficeT(Page page) throws Exception{
-		ModelAndView mv = this.getModelAndView();
-		PageData pd = new PageData();
-		pd = this.getPageData();
-		pd = contractService.findById(pd);
-		PageData pd1 = proceedscontractService.findByContractId(pd);
-		List<PageData> listProceedsprimary = proceedsprimaryService.listByContractId(pd); //主表
-		List<PageData> listProceedsDetail = proceedsdetailService.listByContractId(pd);  //明细
-		if(listProceedsprimary == null || "".equals(listProceedsprimary)){
-			pd.put("PROCEEDSPRIMARY_ID",this.get32UUID());
-		}
-		mv.setViewName("management/contract/contract_openProceeds");
-		mv.addObject("pd", pd);
-		mv.addObject("pd1", pd1);
-		mv.addObject("listProceedsprimary", listProceedsprimary);
-		mv.addObject("count", listProceedsDetail.size());
-		mv.addObject("listProceedsDetail", listProceedsDetail);
-		return mv;
-	}*/
 
 	@RequestMapping(value="/savePic")
 	@ResponseBody

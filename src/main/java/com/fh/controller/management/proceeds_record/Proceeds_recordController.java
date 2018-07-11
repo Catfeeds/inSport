@@ -102,14 +102,16 @@ public class Proceeds_recordController extends BaseController {
 					Double REALITY = Double.parseDouble(depd.getString("REALITY"))+Double.parseDouble(job.get("RECEIVABLE_N").toString());
 					depd.put("REALITY",REALITY.toString());
 					depd.put("NOT_RECEIVABLE",job.getString("NOT_RECEIVABLE"));
+					depd.put("REALITYTIME",job.getString("RECEIVABL_PAYTIME"));
 					depositinfoService.edit(depd);
-				}else if("应收款".equals(job.getString("TYPE"))){
+				}else if("应收款".equals(job.getString("TYPE")) || "应收租金".equals(job.getString("TYPE"))){
 					pd.put("INVOICE_ID", job.getString("ITEMID"));
 					PageData invpd = invoiceService.findById(pd);
 					Double RECEIVABLE_REALITY = Double.parseDouble(invpd.getString("RECEIVABLE_REALITY"))+Double.parseDouble(job.get("RECEIVABLE_N").toString());
 					Double OVERDUENUM = Double.parseDouble(invpd.getString("OVERDUE"))+Double.parseDouble(job.get("OVERDUENUM").toString());
 					invpd.put("RECEIVABLE_REALITY",RECEIVABLE_REALITY.toString());
 					invpd.put("NOT_RECEIVABLE",job.getString("NOT_RECEIVABLE"));
+					invpd.put("RECEIVABL_PAYTIME",job.getString("RECEIVABL_PAYTIME"));
 					invpd.put("OVERDUE",OVERDUENUM);
 					invoiceService.edit(invpd);
 				}else if("应收水电费".equals(job.getString("TYPE"))){
@@ -119,6 +121,7 @@ public class Proceeds_recordController extends BaseController {
 					Double OVERDUENUM = Double.parseDouble(utpd.getString("OVERDUENUM"))+Double.parseDouble(job.get("OVERDUENUM").toString());
 					utpd.put("RECEIVABLE_REALITY",RECEIVABLE_REALITY.toString());
 					utpd.put("NOT_RECEIVABLE",job.getString("NOT_RECEIVABLE"));
+					utpd.put("RECEIVABL_PAYTIME",job.getString("RECEIVABL_PAYTIME"));
 					utpd.put("OVERDUENUM",OVERDUENUM);
 					utilitiesstateService.edit(utpd);
 				}
