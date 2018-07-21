@@ -55,7 +55,7 @@
     <link rel="stylesheet" href="static/dist/jquery.magnify.min.css"/>
     <script src="static/webContextMenu/js/web.contextmenu.js"></script>
 </head>
-<body class="no-skin" id="rightj">
+<body class="no-skin" <c:if test="${pd.isDel == '1' }"> id="rightj" </c:if>>
 
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
@@ -78,7 +78,9 @@
                                 </td>
                                 <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="tosearch();"  title="检索"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
                                 <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="editFileName();"  title="修改文件名称">修改文件名称<i id="nach-icon" class="ace-icon fa fa-cog bigger-110 nav-search-icon green"></i></a></td>
+                                <c:if test="${pd.isDel == '1' }">
                                 <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="deletes();"  title="检索">删除文件<i id="nav-search-icon" class="ace-icon fa fa-cogs bigger-110 nav-search-icon red"></i></a></td>
+                                </c:if>
                                 <td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="downs();" title="下载文件">下载文件<i id="downfile" class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td>
                             </tr>
                         </table>
@@ -773,35 +775,39 @@
 
     //执行删除任务
     function deletes() {
-        bootbox.confirm("确定要删除吗?", function (result) {
-            if (result) {
-                var delfile = [];
-                $(".ace-thumbnails .float_div").each(function () {
-                    if ($(this).css("display") != "none") {
-                        delfile.push($(this).attr("name"));
-                    }
-                });
-                for (var index = 0; index < delfile.length; index++) {
-                    //alert(delfile[index]);
-                    $.ajax({
-                        async: false,
-                        cache: false,
-                        type: 'POST',
-                        data : {
-                            FILE_URL:delfile[index]
-                        },
-                        //dataType:"String",
-                        url: '<%=basePath%>fileupata/deleteFile',
-                        success: function (data) {
-                            window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
-                        },
-                        error: function () {
-                            alert("请求失败");
-                        }
-                    });
-                }
+        var delfile = [];
+        $(".ace-thumbnails .float_div").each(function () {
+            if ($(this).css("display") != "none") {
+                delfile.push($(this).attr("name"));
             }
         });
+        if(delfile.length > 0){
+            bootbox.confirm("确定要删除吗?", function (result) {
+                if (result) {
+
+                    for (var index = 0; index < delfile.length; index++) {
+                        //alert(delfile[index]);
+                        $.ajax({
+                            async: false,
+                            cache: false,
+                            type: 'POST',
+                            data : {
+                                FILE_URL:delfile[index]
+                            },
+                            //dataType:"String",
+                            url: '<%=basePath%>fileupata/deleteFile',
+                            success: function (data) {
+                                window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
+                            },
+                            error: function () {
+                                alert("请求失败");
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
     }
 
     //执行下载任务

@@ -168,7 +168,8 @@
 		</if>
 		<if test="pd.CONTRACTNUM != null and pd.CONTRACTNUM != ''"><!-- 关键词检索 -->
 			and
-			CONTRACTNUM LIKE '%'+ #{pd.CONTRACTNUM}+'%'
+			CONTRACTNUM LIKE '%'+ #{pd.CONTRACTNUM}+'%' OR CONTRACTNAME LIKE '%'+ #{pd.CONTRACTNUM}+'%'
+			OR CONTRACTOFNAME LIKE '%'+ #{pd.CONTRACTNUM}+'%'
 		</if>
 		<if test="pd.DEPTNAME != null and pd.DEPTNAME != ''"><!-- 关键词检索 -->
 			and

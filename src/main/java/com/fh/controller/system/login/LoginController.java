@@ -93,7 +93,7 @@ public class LoginController extends BaseController {
 		return mv;
 	}
 
-	private static void getLocalMac(InetAddress ia) throws SocketException {
+	private static String getLocalMac(InetAddress ia) throws SocketException {
 		// TODO Auto-generated method stub
 		//获取网卡，获取地址
 		byte[] mac = NetworkInterface.getByInetAddress(ia).getHardwareAddress();
@@ -113,7 +113,8 @@ public class LoginController extends BaseController {
 				sb.append(str);
 			}
 		}
-		//System.out.println("本机MAC地址:"+sb.toString().toUpperCase());
+		System.out.println("本机MAC地址:"+sb.toString().toUpperCase());
+		return  sb.toString().toUpperCase();
 	}
 	
 	/**请求登录，验证用户
@@ -128,7 +129,7 @@ public class LoginController extends BaseController {
 		pd = this.getPageData();
 		InetAddress ia = InetAddress.getLocalHost();
 		//System.out.println(ia);
-		getLocalMac(ia);
+
 		String errInfo = "";
 		String KEYDATA[] = pd.getString("KEYDATA").replaceAll("qq313596790fh", "").replaceAll("QQ978336446fh", "").split(",fh,");
 		if(null != KEYDATA && KEYDATA.length == 3){
@@ -186,6 +187,10 @@ public class LoginController extends BaseController {
 		}else{
 			errInfo = "error";	//缺少参数
 		}
+		/*String mac = getLocalMac(ia);
+		if(!"40-8D-5C-BD-4A-47".equals(getLocalMac(ia))){
+			return false;
+		}*/
 		map.put("result", errInfo);
 		return AppUtil.returnObject(new PageData(), map);
 	}

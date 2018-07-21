@@ -207,11 +207,7 @@ public class ContractController extends BaseController {
 		if ("付款合同".equals(pd.getString("CONTRACTTYPES"))){
 			PageData pd1 = new PageData();
 			pd1.put("PAYMENTCONTRACT_ID",get32UUID());
-			pd1.put("AMOUNT",pd.get("AMOUNT").toString());
-			pd1.put("DUE_AMOUNT",pd.get("DUE_AMOUNT").toString());
-			pd1.put("REALITY_AMOUNT",pd.get("REALITY_AMOUNT").toString());
-			pd1.put("REALITYTIME",pd.get("REALITYTIME").toString());
-			pd1.put("PAYDAY",pd.getString("PAYDAY"));
+
 			pd1.put("REMARK",pd.getString("REMARK"));
 			pd1.put("CONTRACT_ID",pd.getString("CONTRACT_ID"));
 			paymentcontractService.save(pd1);

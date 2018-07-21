@@ -35,7 +35,11 @@ public class DepartmentGroupService implements DepartmentGroupManager{
 	public void delete(PageData pd)throws Exception{
 		dao.delete("DepartmentGroupMapper.delete", pd);
 	}
-	
+
+	public void deleteByDepIDAndUID(PageData pd)throws Exception{
+		dao.delete("DepartmentGroupMapper.deleteByDepIDAndUID", pd);
+	}
+
 	/**修改
 	 * @param pd
 	 * @throws Exception

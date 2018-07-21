@@ -56,11 +56,11 @@
 										</tr>
 										<tr>
 											<td style="width:79px;text-align: right;padding-top: 13px;">密码:</td>
-											<td><input type="password" name="PASSWORD" id="password"  maxlength="32" placeholder="输入密码" title="密码" style="width:98%;"/></td>
+											<td><input type="password" value="123456" name="PASSWORD" id="password"  maxlength="32" placeholder="输入密码" title="密码" style="width:98%;"/></td>
 										</tr>
 										<tr>
 											<td style="width:79px;text-align: right;padding-top: 13px;">确认密码:</td>
-											<td><input type="password" name="chkpwd" id="chkpwd"  maxlength="32" placeholder="确认密码" title="确认密码" style="width:98%;"/></td>
+											<td><input type="password" value="123456" name="chkpwd" id="chkpwd"  maxlength="32" placeholder="确认密码" title="确认密码" style="width:98%;"/></td>
 										</tr>
 										<tr>
 											<td style="width:79px;text-align: right;padding-top: 13px;">姓名:</td>
@@ -188,7 +188,7 @@
 			$("#name").focus();
 			return false;
 		}
-		var myreg = /^(((13[0-9]{1})|159)+\d{8})$/;
+		/*var myreg = /^(((13[0-9]{1})|159)+\d{8})$/;
 		if($("#PHONE").val()==""){
 			
 			$("#PHONE").tips({
@@ -208,8 +208,8 @@
 	        });
 			$("#PHONE").focus();
 			return false;
-		}
-		if($("#EMAIL").val()==""){
+		}*/
+		/*if($("#EMAIL").val()==""){
 			
 			$("#EMAIL").tips({
 				side:3,
@@ -228,7 +228,7 @@
 	        });
 			$("#EMAIL").focus();
 			return false;
-		}
+		}*/
 		if($("#user_id").val()==""){
 			hasU();
 		}else{

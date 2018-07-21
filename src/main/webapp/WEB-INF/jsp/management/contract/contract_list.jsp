@@ -70,7 +70,7 @@
                     <div class="col-xs-12">
 
                         <!-- 检索  -->
-                        <form action="contract/list.do" method="post" name="Form" id="Form">
+                        <form action="contract/list.do?keywords=${pd.keywords}" method="post" name="Form" id="Form">
                             <table style="margin-top:5px;">
                                 <tr>
                                     <td>
@@ -205,9 +205,9 @@
                                                         </c:if>
                                                        <%-- <div class="hidden-sm hidden-xs btn-group">--%>
                                                             <c:if test="${var.CONTRACTTYPES == '付款合同' }">
-                                                                <a class="btn btn-xs btn-success" title="打开付款表格"
+                                                                <a class="btn btn-xs btn-info" title="打开付款表格"
                                                                    onclick="openPayT('${var.CONTRACT_ID}')">
-                                                                    <i class="ace-icon fa fa-calendar bigger-120" title="打开付款表格"></i>
+                                                                    <i class="ace-icon fa fa-credit-card bigger-120" title="打开付款表格"></i>
                                                                 </a>
                                                             </c:if>
                                                             <c:if test="${var.CONTRACTTYPES == '收款合同' }">
@@ -604,8 +604,8 @@
         diag.Drag = true;
         diag.Title = "新增";
         diag.URL = '<%=basePath%>contract/goAdd.do';
-        diag.Width = window.innerWidth * 0.9;
-        diag.Height = window.innerHeight * 0.9;
+        diag.Width = window.innerWidth * 1.9;
+        diag.Height = window.innerHeight * 1.9;
         diag.Modal = true;				//有无遮罩窗口
         diag.ShowMaxButton = true;	//最大化按钮
         diag.ShowMinButton = true;		//最小化按钮
@@ -636,8 +636,8 @@
         diag.Drag = true;
         diag.Title = "编辑";
         diag.URL = '<%=basePath%>contract/goEdit.do?CONTRACT_ID=' + Id;
-        diag.Width = window.innerWidth * 0.9;
-        diag.Height = window.innerHeight * 0.9;
+        diag.Width = window.innerWidth * 1.9;
+        diag.Height = window.innerHeight * 1.9;
         diag.Modal = true;				//有无遮罩窗口
         diag.ShowMaxButton = true;	//最大化按钮
         diag.ShowMinButton = true;		//最小化按钮

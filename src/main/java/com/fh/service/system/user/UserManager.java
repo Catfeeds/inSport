@@ -64,6 +64,8 @@ public interface UserManager {
 
 	public List<PageData> listAll(PageData pd)throws Exception;
 
+	public List<PageData> listAllIn(PageData pd)throws Exception;
+
 	/**用户列表(弹窗选择用)
 	 * @param page
 	 * @return

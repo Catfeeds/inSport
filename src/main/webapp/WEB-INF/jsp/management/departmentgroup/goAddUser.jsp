@@ -40,6 +40,8 @@
                               method="post">
                             <input type="hidden" value="${pd.USERS}"
                                    name="USERS" id="USERS"/>
+                            <input type="hidden" value="${pd.USERS_NOT}"
+                                   name="USERS_NOT" id="USERS_NOT"/>
                             <input type="hidden" value="${pd.pid}"
                                    name="pid" id="pid"/>
                             <%--<input
@@ -100,6 +102,27 @@
                                 i++; %>
                             </c:forEach>
                         </table>
+                        <% int j = 1; %>
+                        <table id="checked" width="100%" border="2" bordercolor="#a0c6e5" style="margin-top: 10px">
+                            <c:forEach items="${listUsersIn}" var="var" varStatus="vs">
+                                <% if (j % 5 == 1) { %>
+                                　　<tr>
+                                　　<% } %>
+                                　　<td nowrap align="center" >
+                                <label style="float:left;padding-left:10px;padding-top:7px;text-align: center;">
+                                    <input name="checked" type="checkbox" checked
+                                        <%--<c:if test="${fn:contains(theString,var.USER_ID)}"> checked="checked" </c:if>--%>
+                                           class="ace" id="${var.NAME}" value="${var.USER_ID}">
+												<span class="lbl" style="width:90%;margin: 7px;
+														border-radius: 5px;padding: 6px">
+													用户名称：${var.NAME}<br>
+                                </td>
+                                　　<% if (j % 5 == 0) { %>
+                                　　</tr>
+                                　　<% }
+                                j++; %>
+                            </c:forEach>
+                        </table>
 
                         <!-- ------------------------------------------------------------------------------- -->
                     </div>
@@ -137,6 +160,7 @@
     }
 
     function saveInfo() {
+        jqchk_not();
         jqchk();
         $("#Form").submit();
     }
@@ -161,6 +185,20 @@
          });
          alert(jsonstr);*/
         $("#USERS").val(jsonstr);
+    }
+
+    function jqchk_not() { //jquery获取复选框值
+        var jsonstr_not = '[';
+        $('input[name="checked"]:not(:checked)').each(function () {
+            //alert($(this).val());
+            jsonstr_not += '{';
+            jsonstr_not += '"USER_ID":"' + $(this).val();
+            jsonstr_not += '"}';
+            jsonstr_not += ',';
+        });
+        jsonstr_not = jsonstr_not.substring(0, jsonstr_not.length - 1);
+        jsonstr_not += ']';
+        $("#USERS_NOT").val(jsonstr_not);
     }
 </script>
 

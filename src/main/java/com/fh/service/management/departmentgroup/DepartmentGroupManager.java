@@ -23,7 +23,9 @@ public interface DepartmentGroupManager{
 	 * @throws Exception
 	 */
 	public void delete(PageData pd)throws Exception;
-	
+
+	public void deleteByDepIDAndUID(PageData pd)throws Exception;
+
 	/**修改
 	 * @param pd
 	 * @throws Exception

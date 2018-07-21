@@ -328,6 +328,14 @@
 		</if>
 	</select>
 
+	<select id="listAllIn" parameterType="pd" resultType="pd" >
+		SELECT  * from sys_user u
+		WHERE u.USER_ID IN(SELECT d.UID FROM TB_DEPARTMENTGROUP d WHERE d.PID = #{pid})
+		<if test="keywords!= null and keywords != ''">
+			AND NAME like '%' + #{keywords} + '%'
+		</if>
+	</select>
+
 	<select id="listOperatorAll" parameterType="pd" resultType="pd" >
 		SELECT  * from sys_user u
 		WHERE u.USER_ID not IN(SELECT o.UID FROM TB_OPERATOR o )

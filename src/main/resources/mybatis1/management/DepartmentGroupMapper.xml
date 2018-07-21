@@ -43,6 +43,13 @@
 		where 
 			DEPARTMENTGROUP_ID = #{DEPARTMENTGROUP_ID}
 	</delete>
+
+	<delete id="deleteByDepIDAndUID" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where
+		UID = #{UID} AND PID = #{PID}
+	</delete>
 	
 	<!-- 修改 -->
 	<update id="edit" parameterType="pd">

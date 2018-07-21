@@ -13,10 +13,13 @@
 <html lang="en">
 <head>
 	<base href="<%=basePath%>">
-
+	<link rel="stylesheet" href="static/dist/jquery.magnify.min.css"/>
+	<link rel="stylesheet" href="static/silviomore/bootstrap-select.css" />
 	<!-- jsp文件头和头部 -->
 	<%@ include file="../../system/index/top.jsp"%>
 	<script type="text/javascript" src="static/js/jquery-2.1.1.js"></script>
+	<script src="static/dist/jquery.magnify.js"></script>
+	<script src="static/silviomore/bootstrap-select.js"></script>
 </head>
 <body class="no-skin">
 
@@ -206,7 +209,8 @@
 										<%--<input type="text" style="width: 150px" value="${pd.OPERATOR}"
 												class="input-text"  name="OPERATOR"
 												id="OPERATOR">--%>
-										<select name="OPERATOR" id="OPERATOR" data-placeholder=""
+										<select name="OPERATOR" id="OPERATOR" class="selectpicker bla bla bli"
+												data-style="btn-info" data-width="150px" data-height="31px" data-live-search="true"
 												style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
 											<option value="${pd.OPERATOR}" name="${pd.OPERATOR}">${pd.OPERATOR}</option>
 											<c:forEach items="${listOperator}" var="var" varStatus="vs">
@@ -271,6 +275,21 @@
 									<input onclick="selectPic('${pd.CONTRACT_ID}')" style="width: 50%;" value="选择附件" class="btn btn-success btn-block"/>
 								</p>
 							</div>
+							<div align="center" style="width: 100%;height: 30px;-moz-border-radius: 10px;-webkit-border-radius: 10px; border-radius:10px;background-color: #00CCFF;">
+								<strong style="font-size: 18px">合同附件</strong>
+							</div>
+							<br>
+							<div align="center" style="margin-left: 2%;margin-right: 2%; border:1px solid #bbe1f1;background:#eefaff" >
+								<ul align="center" class="ace-thumbnails clearfix" id="imgList">
+									<!-- #section:pages/gallery -->
+									<li style="display: none;">
+										<a href="" data-rel="colorbox">
+											<img width="150" height="150" alt="150x150" src=""/>
+										</a>
+									</li>
+								</ul>
+							</div>
+
 
 							<br />
 							<!-- --------------------------------------------------------------------------- -->
@@ -288,7 +307,7 @@
 																	   id="st${var.PROCEEDSTIME_ID}"  class="input-text"  >
 										--- <input type="date" style="width: 150px;height: 31px" value="${var.ENTTIME}"
 												   class="input-text" id="et${var.PROCEEDSTIME_ID}">
-										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="添加明细"
+										<a id="${var.PROCEEDSTIME_ID}" style="margin-left: 10px" class="btn btn-xs btn-success" title="添加明细"
 										   onclick="addTrFp('${pd.CONTRACT_ID}','${var.PROCEEDSTIME_ID}')">
 											<i class="ace-icon fa fa-pencil-square-o bigger-120" title="添加明细">添加明细</i></a>
 										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="保存修改"
@@ -449,7 +468,7 @@
 									</c:if>
 									<c:if test="${pd2.ISEW == '1' || msg == 'save'}">
 									<th style="<c:if test="${pd2.ISEW != '1'}">display:none;</c:if>" id="addTrTime">
-										<div class="col-md-12"  style="padding-bottom:2em;">
+										<div class="col-md-12"  style="padding-bottom:2em;" id="addTrTimeDiv">
 											<a onclick="addTrTime('${pd.CONTRACT_ID}')" class="btn btn-info" ><i class="fa fa-plus"></i> 添加明细时间区间</a>
 										</div>
 									</th>
@@ -563,20 +582,21 @@
 													<i class="ace-icon fa fa-pencil-square-o bigger-120" title="水电费录入"></i></a>--%>
 												<a class="btn btn-xs blue" title="确认修改"
 													 onclick="editDepositInfo('${var.DEPOSITINFO_ID}');">
-												<i class="ace-icon fa fa-pencil-square-o bigger-120" title="确认修改"></i></a>
+												<i class="ace-icon fa fa-pencil-square-o bigger-120" title="确认修改"></i>确认修改</a>
 												<a class="btn btn-mini btn-danger" title="删除该押金项"
 												   onclick="delDepositInfo('${var.DEPOSITINFO_ID}');">
-													<i class="ace-icon fa fa-trash-o bigger-120" title="删除该押金项"></i></a>
+													<i class="ace-icon fa fa-trash-o bigger-120" title="删除该押金项"></i>删除该押金项</a>
 											</th>
 											<th  ></th>
 										</tr>
+										<tr style="height: 3px" class="active"><th colspan="6"><label></label></th></tr>
 									</tbody>
 									</c:forEach>
 								</c:if>
 								<tr id="yj${pd.CONTRACT_ID}"></tr>
 								<tr>
 									<th>
-										<div class="col-md-12"  style="padding-bottom:2em;">
+										<div id="addTrYjDiv" class="col-md-12"  style="padding-bottom:2em;">
 											<a onclick="addTrYj('${pd.CONTRACT_ID}')" class="btn btn-info" ><i class="fa fa-plus"></i> 添加新的押金项</a>
 										</div>
 									</th>
@@ -603,11 +623,11 @@
 												<tr class="center">
 													<td style="padding-left:2px;">时间</td>
 													<td style="padding-left:2px;">总应付金额</td>
-													<td style="padding-left:2px;">付款所属时间</td>
+													<%--<td style="padding-left:2px;">付款所属时间</td>--%>
 													<td style="padding-left:2px;">应付款金额</td>
-													<td style="padding-left:2px;">实际付款时间</td>
 													<td style="padding-left:2px;">实际付款金额</td>
-													<td style="padding-left:2px;">尚没付款金额</td>
+													<td style="padding-left:2px;">实际付款时间</td>
+													<td style="padding-left:2px;">备注</td>
 													<td style="padding-left:2px;">操作</td>
 												</tr>
 												<tr class="center" id="sum" >
@@ -620,26 +640,28 @@
 													<c:forEach items="${listPayDetail}" var="var1" varStatus="vs1">
 														<c:if test="${var1.PAYPRIMARY_ID == var.PAYPRIMARY_ID}">
 															<tr class="center" style="background-color: #FFFFCC" >
-																<td style="padding-left:2px;">
+																<%--<td style="padding-left:2px;">
 																	<input type="date" style="width: 150px;height: 31px" value="${var1.SHPAYTIME}"
 																		   class="input-text"  name="SHPAYTIME" id="spt${var1.PAYDETAIL_ID}"
-																	></td>
+																	></td>--%>
 																<td style="padding-left:2px;">
 																	<input type="number" style="width: 150px;height: 31px" value="${var1.SHPAY}"
 																		   class="input-text"  name="SHPAY" id="sp${var1.PAYDETAIL_ID}"
 																	></td>
-																<td style="padding-left:2px;">
-																	<input type="date" style="width: 150px;height: 31px" value="${var1.REALITYPAYTIME}"
-																		   class="input-text"  name="REALITYPAYTIME" id="rpt${var1.PAYDETAIL_ID}"
-																	>
-																</td>
 																<td style="padding-left:2px;">
 																	<input type="number" style="width: 150px" value="${var1.REALITYPAY}"
 																		   class="input-text"  name="REALITYPAY" id="rp${var1.PAYDETAIL_ID}"
 																	>
 																</td>
 																<td style="padding-left:2px;">
-																	<p>${var1.ONPAYPIC}</p>
+																	<input type="date" style="width: 150px;height: 31px" value="${var1.REALITYPAYTIME}"
+																		   class="input-text"  name="REALITYPAYTIME" id="rpt${var1.PAYDETAIL_ID}"
+																	>
+																</td>
+																<td style="padding-left:2px;">
+																	<input type="text" style="width: 150px;height: 31px" value="${var1.FNOTE}"
+																		   class="input-text"  name="FNOTE" id="no${var1.PAYDETAIL_ID}"
+																	>
 																</td>
 																<td style="padding-left:2px;">
 																	<a class="btn btn-xs btn-success" title="保存修改"
@@ -685,39 +707,6 @@
 									</tbody>
 								</table>
 							</div>
-							<%--<table id="paymentContarct" style="display: none" class="table table-border table-bg table-bordered">
-								<tbody>
-								<tr class="active">
-									<th ><label>总金额：</label></th>
-									<th ><input type="number" style="width: 150px" value="${pd1.AMOUNT}"
-												class="input-text"  name="AMOUNT"
-												id="AMOUNT"></th>
-									<th width="15%"><label>应付款金额：</label></th>
-									<th width="20%"><input type="number" style="width: 150px" value="${pd1.DUE_AMOUNT}"
-														   class="input-text"  name="DUE_AMOUNT"
-														   id="DUE_AMOUNT"></th>
-									<th ><label>实际付款时间：</label></th>
-									<th  ><input type="date" style="width: 150px;height: 31px" value="${pd1.REALITYTIME}"
-												 class="input-text"  name="REALITYTIME"
-												 id="REALITYTIME"></th>
-								</tr>
-								<tr class="success">
-
-									<th  ><label>实际付款金额：</label></th>
-									<th  ><input type="number" style="width: 150px" value="${pd1.REALITY_AMOUNT}"
-												 class="input-text"  name="REALITY_AMOUNT"
-												 id="REALITY_AMOUNT"></th>
-									<th  ><label>付款日：</label></th>
-									<th  ><input type="number" style="width: 150px" value="${pd1.PAYDAY}"
-												 class="input-text"  name="PAYDAY"
-												 id="PAYDAY"></th>
-									<th width="10%" ><label>备注：</label></th>
-									<th ><input type="text" style="width: 150px" value="${pd1.REMARK}"
-												 class="input-text"  name="REMARK"
-												 id="REMARK"></th>
-								</tr>
-								</tbody>
-							</table>--%>
 						</form>
 						<!-- ------------------------------------------------------------------------------- -->
 					</div>
@@ -738,7 +727,8 @@
 
 </div>
 <!-- /.main-container -->
-
+<!-- 删除时确认窗口 -->
+<script src="static/ace/js/bootbox.js"></script>
 <!-- basic scripts -->
 <!-- 页面底部js¨ -->
 <%@ include file="../../system/index/foot.jsp"%>
@@ -783,6 +773,7 @@
 		var SHPAY = $("#sp"+PAYDETAIL_ID).val();
 		var REALITYPAYTIME = $("#rpt"+PAYDETAIL_ID).val();
 		var REALITYPAY = $("#rp"+PAYDETAIL_ID).val();
+		var FNOTE = $("#no"+PAYDETAIL_ID).val();
 		//alert("应付时间:"+SHPAYTIME+",应付金额:"+SHPAY+",实际付款时间:"+REALITYPAYTIME+",实际付款金额:"+REALITYPAY+"。");
 		$.ajax({
 			type: "POST",
@@ -794,6 +785,7 @@
 				SHPAYTIME : SHPAYTIME,
 				SHPAY : SHPAY,
 				REALITYPAYTIME : REALITYPAYTIME,
+				FNOTE:FNOTE,
 				REALITYPAY : REALITYPAY
 			},
 			dataType: 'json',
@@ -866,9 +858,9 @@
 		table += '<table id="ta'+uuid+'" class="table table-border table-bg table-bordered" style="margin-top: 10px">';
 		table += '<tbody id="tb'+uuid+'" ><tr class="center" >';
 		table += '<td style="padding-left:2px;">时间</td><td style="padding-left:2px;">总应付金额</td>';
-		table += '<td style="padding-left:2px;">付款所属时间</td><td style="padding-left:2px;">应付款金额</td>';
-		table += '<td style="padding-left:2px;">实际付款时间</td><td style="padding-left:2px;">实际付款金额</td>';
-		table += '<td style="padding-left:2px;">尚没付款金额</td><td style="padding-left:2px;">操作</td>';
+		table += '<td style="padding-left:2px;">应付款金额</td><td style="padding-left:2px;">实际付款金额</td>';
+		table += '<td style="padding-left:2px;">实际付款时间</td>';
+		table += '<td style="padding-left:2px;">备注</td><td style="padding-left:2px;">操作</td>';
 		table += '</tr></tbody></table>';
 		table += '<div class="col-md-12"  style="padding-bottom:2em;">';
 		table += '<a onclick="addTr(\''+uuid+'\')" class="btn btn-info" id="add"><i class="fa fa-plus"></i> 添加新的明细项</a>';
@@ -895,15 +887,14 @@
 			tr += '<td id="td2'+uuid_var+'"  class="center" style="padding-left:2px;">' +
 					'<input onchange="saveTable(\''+uuid_var+'\')" id="pic'+uuid_var+'" type="number" style="width: 150px" class="input-text"  name="CONTRACTPIC" ></td>';
 		}
-		tr += '<td style="padding-left:2px;"><input id="spt'+uuid_var+'" type="date" style="width: 150px;height: 31px" '+
-				'class="input-text"  name="SHPAYTIME" ></td>'
 		tr += '<td style="padding-left:2px;"><input id="sp'+uuid_var+'" type="number" style="width: 150px;height: 31px" ' +
 				' class="input-text"  name="SHPAY" ></td>';
+		tr += '<td style="padding-left:2px;">' +
+				'<input id="rp'+uuid_var+'" type="number" style="width: 150px" class="input-text"  name="REALITYPAY" ></td>';
 		tr += ' <td style="padding-left:2px;">' +
 				'<input id="rpt'+uuid_var+'" type="date" style="width: 150px;height: 31px" class="input-text"  name="REALITYPAYTIME" ></td>';
 		tr += '<td style="padding-left:2px;">' +
-				'<input id="rp'+uuid_var+'" type="number" style="width: 150px" class="input-text"  name="REALITYPAY" ></td>';
-		tr += '<td style="padding-left:2px;"></td>';
+				'<input id="no'+uuid_var+'" type="text" style="width: 150px" class="input-text"  name="FNOTE" ></td>';
 		tr += '<td style="padding-left:2px;"> ' +
 				'<a class="btn btn-xs btn-success" title="保存" onclick="saveDetail(\''+uuid_var+'\');">' +
 				'<i class="ace-icon fa fa-check-square-o bigger-120" title="保存"></i>' +
@@ -930,7 +921,7 @@
 		var REALITYPAYTIME = $("#rpt"+uuid_var).val();
 		var SHPAY =$("#sp"+uuid_var).val();
 		var SHPAYTIME = $("#spt"+uuid_var).val();
-
+		var FNOTE = $("#no"+uuid_var).val();
 		$.ajax({
 			type: "POST",
 			url: '<%=basePath%>paydetail/saveDetail',
@@ -941,7 +932,8 @@
 				SHPAYTIME:SHPAYTIME,
 				REALITYPAYTIME:REALITYPAYTIME,
 				SHPAY:SHPAY,
-				SHPAYTIME:SHPAYTIME
+				SHPAYTIME:SHPAYTIME,
+				FNOTE:FNOTE
 			},
 			dataType: 'json',
 			//beforeSend: validateData,
@@ -1105,9 +1097,10 @@
 		tr += '<th ><label>开票时间：</label></th><th ><label>';
 		tr += '<input type="date" style="width: 140px;height: 31px" class="input-date"  name="INVOICETIME" id="it'+uuid+'">';
 		tr += '</label></th><th  ><a class="btn btn-xs btn-success" title="保存" onclick="saveDepositInfo(\''+uuid+'\',\''+CONTRACT_ID+'\',\''+num+'\',\''+num1+'\');">' +
-				'<i class="ace-icon fa fa-check-square-o bigger-120" title="保存"></i></a></th><th  ></th></tr>';
+				'<i class="ace-icon fa fa-check-square-o bigger-120" title="保存"></i>保存</a></th><th  ></th></tr>';
 		$("#yj"+CONTRACT_ID).before(tr);
 		tr = "";
+		$("#addTrYjDiv").css("display","none");
 		//alert($("input[name='form-field-radio"+num+"']:checked").val());
 	}
 
@@ -1137,6 +1130,7 @@
 			tr += '</tr>';
 		$("#ti"+CONTRACT_ID).before(tr);
 		tr = '';
+		$("#addTrTimeDiv").css("display","none");
 	}
 
 	function addTrFpNotew(CONTRACT_ID) {
@@ -1185,6 +1179,7 @@
 		tr += '<tr style="height: 3px" class="active"><th colspan="6"><label></label></th></tr>'
 		$("#fp").before(tr);
 		tr = "";
+		$("#addTrFpNotew").css("display","none");
 	}
 
 	function addTrFp(CONTRACT_ID,PROCEEDSTIME_ID) {
@@ -1242,6 +1237,7 @@
 		tr += '<tr style="height: 3px" class="active"><th colspan="6"><label></label></th></tr>'
 		$("#fp"+PROCEEDSTIME_ID).before(tr);
 		tr = "";
+		$("#"+PROCEEDSTIME_ID).css("display","none");
 	}
 
 	function saveTime(CONTRACT_ID,uuid){
@@ -1265,6 +1261,7 @@
 				window.location.reload();
 			}
 		});
+		$("#addTrTimeDiv").css("display","");
 	}
 	
 	function saveInvoice(CONTRACT_ID,uuid,PROCEEDSTIME_ID) {
@@ -1308,6 +1305,8 @@
 				window.location.reload();
 			}
 		});
+		$("#addTrFpNotew").css("display","");
+		$("#addTrFp").css("display","");
 	}
 
 	function editInvoice(INVOICE_ID){
@@ -1543,6 +1542,49 @@
 		$("#tb"+DEPOSITINFO_ID).css("display","none");
 	}
 
+	function showPic(CONTRACT_ID) {
+		$.ajax({
+			type: "POST",
+			url: '<%=basePath%>contractpicture/listOneContractPic',
+			data: {CONTRACT_ID: CONTRACT_ID},
+			dataType: 'json',
+			cache: false,
+			success: function (data) {
+				$("#imgList").html('');
+				var count = 0;	//总数
+				var html = '';
+				var res = data.listOnePic;
+				for (var i = 0; i < res.length; i++) {
+					html += '<li>' +
+							'<a data-magnify="gallery"' +
+							' data-caption="Paraglider flying over Aurlandfjord, Norway by framedbythomas" href="<%=basePath%>' + res[i].URL_PIC + '">' +
+							'<img width="200;" name="' + res[i].URL_PIC + '" height="200";   src="<%=basePath%>' + res[i].URL_PIC + '" alt="">' +
+							'</a>' +
+							'<p width="180;" class="center">'+res[i].NAME+'</p>'+
+							'<div style="width: 100%;height: 25px" align="center" >' +
+							'<a  onclick="delPic('+"'"+res[i].CONTRACTPICTURE_ID+"','"+CONTRACT_ID+"'"+')" style="width: 45px;height: 20px;margin-top:2px" >删除</a>' +
+							'</div>'+
+							'</li>'+ ''
+				}
+				var pdf = data.listOnePdf;
+				for (var i = 0; i < pdf.length; i++) {
+					html += '<li>' +
+							'<a ' +
+							' href="<%=basePath%>' + pdf[i].URL_PIC + '">' +
+							'<img width="200;" name="' + pdf[i].URL_PIC + '" height="200";   src="<%=basePath%>static/filecatalog/images/application-pdf.png" alt="">' +
+							'</a>' +
+							'<p width="180;" class="center">'+pdf[i].NAME+'</p>'+
+							'<div style="width: 100%;height: 25px" align="center" >' +
+							'<button  onclick="delPic('+"'"+pdf[i].CONTRACTPICTURE_ID+"','"+CONTRACT_ID+"'"+')" style="width: 45px;height: 20px;margin-top:2px" >删除</button>' +
+							'</div>'+
+							'</li>'+ ''
+				}
+				$("#imgList").append(html);
+
+			}
+		});
+	}
+
 	
 	$(function () {
 		if($("#CONTRACTTYPES").find("option:selected").attr("value") == "付款合同"){
@@ -1566,7 +1608,27 @@
 		}else {
 			$("#INVITATIONTICKET").attr("readonly","readonly");
 		}
-	})
+		var CONTRACT_ID = '${pd.CONTRACT_ID}';
+		showPic(CONTRACT_ID);
+	});
+
+	function delPic(CONTRACTPICTURE_ID, CONTRACT_ID) {
+		bootbox.confirm("确定要删除该相片吗?", function (result) {
+			if (result) {
+				$.ajax({
+					type: "POST",
+					url: '<%=basePath%>contractpicture/delete.do?tm=' + new Date().getTime(),
+					data: {CONTRACTPICTURE_ID: CONTRACTPICTURE_ID},
+					dataType: 'json',
+					//beforeSend: validateData,
+					cache: false,
+					success: function (data) {
+						showPic(CONTRACT_ID);
+					}
+				});
+			}
+		});
+	}
 
 	$("#DEPTNO").change(function(){
 		var DEPTNO = $("#DEPTNO").find("option:selected").attr("name");
@@ -1747,126 +1809,6 @@
 				return;
 			}
 		}
-		if($("#CONTRACTNAME").val()==""){
-			$("#CONTRACTNAME").tips({
-				side:3,
-				msg:'请输入合同名称',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#CONTRACTNAME").focus();
-			return false;
-		}
-		if($("#CONTRACTNUM").val()==""){
-			$("#CONTRACTNUM").tips({
-				side:3,
-				msg:'请输入合同编号',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#CONTRACTNUM").focus();
-			return false;
-		}
-		if($("#CONTRACTPIC").val()==""){
-			$("#CONTRACTPIC").tips({
-				side:3,
-				msg:'请输入合同金额',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#CONTRACTPIC").focus();
-			return false;
-		}
-		if($("#CONTRACTOFNAME").val()==""){
-			$("#CONTRACTOFNAME").tips({
-				side:3,
-				msg:'请输入签约方',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#CONTRACTOFNAME").focus();
-			return false;
-		}
-		if($("#FUSEDATE").val()==""){
-			$("#FUSEDATE").tips({
-				side:3,
-				msg:'请输入合同签订使用时间',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#FUSEDATE").focus();
-			return false;
-		}
-		if($("#PROJECT").val()==""){
-			$("#PROJECT").tips({
-				side:3,
-				msg:'请输入项目',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#PROJECT").focus();
-			return false;
-		}
-		if($("#FDATE").val()==""){
-			$("#FDATE").tips({
-				side:3,
-				msg:'请输入签约时间',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#FDATE").focus();
-			return false;
-		}
-		if($("#TAXITEMS").val()==""){
-			$("#TAXITEMS").tips({
-				side:3,
-				msg:'请输入税目',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#TAXITEMS").focus();
-			return false;
-		}
-		if($("#MODE").val()==""){
-			$("#MODE").tips({
-				side:3,
-				msg:'请输入方式',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#MODE").focus();
-			return false;
-		}
-		if($("#OPERATOR").val()==""){
-			$("#OPERATOR").tips({
-				side:3,
-				msg:'请输入经办人',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#OPERATOR").focus();
-			return false;
-		}
-		if($("#CONTRACTTYPES").val()==""){
-			$("#CONTRACTTYPES").tips({
-				side:3,
-				msg:'请输入合同类型',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#CONTRACTTYPES").focus();
-			return false;
-		}
-		if($("#TAXITEMS").val()==""){
-			$("#TAXITEMS").tips({
-				side:3,
-				msg:'请输入税目',
-				bg:'#AE81FF',
-				time:2
-			});
-			$("#TAXITEMS").focus();
-			return false;
-		}
 		$("#Form").submit();
 		$("#zhongxin").hide();
 		$("#zhongxin2").show();
@@ -1889,6 +1831,13 @@
 		};
 		diag.show();
 	}
+
+	$(window).on('load', function () {
+		$('.selectpicker').selectpicker({
+			'selectedText': 'cat',
+		});
+		// $('.selectpicker').selectpicker('hide');
+	});
 </script>
 
 

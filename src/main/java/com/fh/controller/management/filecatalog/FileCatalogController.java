@@ -113,6 +113,9 @@ public class FileCatalogController extends BaseController {
 		page.setPd(pd);
 		//System.out.println(pd);
 		pd.put("USERNAME",Jurisdiction.getUsername());
+		if("admin".equals(Jurisdiction.getUsername())){
+			pd.put("isDel","1");
+		}
 		PageData userPd = userService.findByUsername(pd);
 		pd1.put("FILE_READUSERS",userPd.getString("USER_ID"));
 		pd1.put("USERNAME",Jurisdiction.getUsername());

@@ -230,6 +230,7 @@
 
 	function toProceeds(){
 		//var tahtmx = $("#tahtmx");
+		var modeCount = 0;
 		var RECEIVABLE_N ;  //本次收款
 		var ALLSUM = $("#ALLSUM").val(); //未收款总额
 		var RECEIVABLE ; // 本次应收款
@@ -307,6 +308,9 @@
 							MODE += $(this).val() +",";
 						});
 						MODE = MODE.substr(0,MODE.length -1);
+						if(MODE == "" || MODE == null){
+							modeCount ++ ;
+						}
 						CONTEXT += "收款方式:"+MODE+"。</p>";
 					}else if(j == 12){
 						ITEMID = $(this).find("[name='ITEMID']").text();
@@ -336,38 +340,53 @@
 			CONTEXT += "<p>收款总额:" + PROCEEDSNUM.toFixed(2) + ";";
 			CONTEXT += "产生滞纳金:" + OVERDUENUM_ALL.toFixed(2) + "。</p>";
 			CONTEXT += "</div>";
+		if(modeCount > 0){
+			alert("存在"+modeCount+"项未选择收款方式，请选择后在确认收款...");
+			return false;
+		}
 			var d = dialog({
 				title: '消息',
 				content: CONTEXT,
-				ok: function () {
-					//var value = $('#CONTEXT').val();
-					//this.close(value);
-					//alert("开始收款");
-					$.ajax({
-						type: "POST",
-						url: '<%=basePath%>proceeds_record/toProceeds',
-						async: false,
-						data: {
-							strJson: strJson,
-							PROCEEDSNUM: PROCEEDSNUM.toFixed(2),
-							OVERDUENUM: OVERDUENUM_ALL.toFixed(2),
-							PAYER: PAYER,
-							ALLSUM: ALLSUM
-						},
-						dataType: 'json',
-						//beforeSend: validateData,
-						cache: false,
-						success: function (data) {
-							if(data.msg == "yes"){
-								alert("收款成功");
-								save();
-							}else {
-								alert("未产生收款数据");
-							}
+				button: [
+					{
+						value: '取消',
+						cancel: function () {
+							this.remove();
 						}
-					});
-					this.remove();
-				}
+					},
+					{
+						value: '确定',
+						callback: function () {
+							$.ajax({
+								type: "POST",
+								url: '<%=basePath%>proceeds_record/toProceeds',
+								async: false,
+								data: {
+									strJson: strJson,
+									PROCEEDSNUM: PROCEEDSNUM.toFixed(2),
+									OVERDUENUM: OVERDUENUM_ALL.toFixed(2),
+									PAYER: PAYER,
+									ALLSUM: ALLSUM
+								},
+								dataType: 'json',
+								//beforeSend: validateData,
+								cache: false,
+								success: function (data) {
+									if(data.msg == "yes"){
+										alert("收款成功");
+										save();
+									}else {
+										alert("未产生收款数据");
+									}
+								}
+							});
+							this.remove();
+						},
+						autofocus: true
+					}
+
+				]
+
 			});
 			/*d.addEventListener('close', function () {
 			 alert(value);

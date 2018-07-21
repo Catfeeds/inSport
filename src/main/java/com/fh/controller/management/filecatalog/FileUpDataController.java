@@ -87,7 +87,7 @@ public class FileUpDataController extends BaseController {
 		String filePath = "";
 		if (null != file && !file.isEmpty()) {
 			filePath = PathUtil.getClasspath() + Const.FILEPATH + FNAME;		//文件上传路径
-			//System.out.println(filePath);
+			System.out.println(PathUtil.getClasspath());
 			//filePath = "static/images/contract/" + ffile;		//文件上传路径
 			//fileName = FileUpload.fileUp(file, filePath, this.get32UUID());				//执行上传
 			fileName = FileUpload.fileUpNotType(file, filePath, fileOriginalName);				//执行上传
@@ -106,8 +106,6 @@ public class FileUpDataController extends BaseController {
 		pd.put("FILE_READ", 0);
 		pd.put("FILE_CATALOGURL", FNAME);
 		pd.put("FILE_CATALOGURL_ID",Integer.parseInt(FITEMID));
-		//------------
-
 		pd.put("FILE_READUSERS", FILE_READUSERS);
 		pd.put("FILE_PASSWORD", FILE_PASSWORD);
 		pd.put("FILE_ISENCTYPT", FILE_ISENCTYPT);
@@ -179,7 +177,7 @@ public class FileUpDataController extends BaseController {
 		PageData pd = this.getPageData();
 		//System.out.println("pd------------------>"+pd);
 		String oldName = pd.getString("FILE_URL");
-		String qz = "D:/【源码】maven_sqlsever_版本/MVNFHS/target/inSport/";
+		String qz = PathUtil.getClasspath();
 		String fileUrl= qz + pd.getString("FILE_URL");
 		File file = new File(fileUrl);
 		String newName =pd.getString("FNAME") + oldName.substring(oldName.lastIndexOf("."),oldName.length());

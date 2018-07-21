@@ -351,11 +351,11 @@
 												<tr class="center">
 													<td style="padding-left:2px;">时间</td>
 													<td style="padding-left:2px;">总应付金额</td>
-													<td style="padding-left:2px;">付款所属时间</td>
+													<%--<td style="padding-left:2px;">付款所属时间</td>--%>
 													<td style="padding-left:2px;">应付款金额</td>
-													<td style="padding-left:2px;">实际付款时间</td>
 													<td style="padding-left:2px;">实际付款金额</td>
-													<td style="padding-left:2px;">尚没付款金额</td>
+													<td style="padding-left:2px;">实际付款时间</td>
+													<td style="padding-left:2px;width: 350px">备注</td>
 												</tr>
 												<tr class="center" id="sum" >
 													<td id="td1${var.PAYPRIMARY_ID}" rowspan="100000" style="padding-left:2px;vertical-align:middle;">${var.STARTTIME } -- ${var.ENTTIME }</td>
@@ -367,20 +367,21 @@
 													<c:forEach items="${listPayDetail}" var="var1" varStatus="vs1">
 														<c:if test="${var1.PAYPRIMARY_ID == var.PAYPRIMARY_ID}">
 															<tr class="center" style="background-color: #FFFFCC" >
-																<td style="padding-left:2px;">
+																<%--<td style="padding-left:2px;">
 																		${var1.SHPAYTIME}
-																</td>
+																</td>--%>
 																<td style="padding-left:2px;">
 																		${var1.SHPAY}
-																</td>
-																<td style="padding-left:2px;">
-																		${var1.REALITYPAYTIME}
 																</td>
 																<td style="padding-left:2px;">
 																		${var1.REALITYPAY}
 																</td>
 																<td style="padding-left:2px;">
-																	<p>${var1.ONPAYPIC}</p>
+																		${var1.REALITYPAYTIME}
+																</td>
+
+																<td style="padding-left:2px;">
+																	<p>${var1.FNOTE}</p>
 																</td>
 																	<%--<td style="padding-left:2px;">
                                                                         <a class="btn btn-xs btn-success" title="保存修改"
@@ -402,9 +403,9 @@
 												<tr id="${var.PAYPRIMARY_ID}"></tr>
 												</tbody>
 											</table>
-											<div class="col-md-12"  style="padding-bottom:2em;">
+											<%--<div class="col-md-12"  style="padding-bottom:2em;">
 												<a onclick="addTr('${var.PAYPRIMARY_ID}')" class="btn btn-info" ><i class="fa fa-plus"></i> 添加新的明细项</a>
-											</div>
+											</div>--%>
 										</c:forEach>
 									</c:if>
 
