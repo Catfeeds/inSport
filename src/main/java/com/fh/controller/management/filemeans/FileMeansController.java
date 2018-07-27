@@ -79,6 +79,48 @@ public class FileMeansController extends BaseController {
 		//System.out.println(maxNo);
 		return  json;
 	}
+
+
+	@RequestMapping(value = "/checkPassWord")
+	@ResponseBody
+	public Map<String, Object> checkPassWord(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		String pw = pd.getString("FILE_PASSWORD");
+		PageData oneFile = filemeansService.findById(pd);
+		if(pw.equals(oneFile.getString("FILE_PASSWORD"))){
+			json.put("result","ture");
+		}else {
+			json.put("result","false");
+		}
+		//PageData maxNo = contractService.findMaxNo(pd);
+		json.put("oneFile",oneFile);
+		if(oneFile.getString("FILE_CREATEUSER").equals(Jurisdiction.getUsername())){
+			json.put("your","yes");
+		}else {
+			json.put("your","no");
+		}
+		return  json;
+	}
+
+
+	//重置密码
+	@RequestMapping(value = "/resetPassWord")
+	@ResponseBody
+	public Map<String, Object> resetPassWord(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		String resetUser = Jurisdiction.getUsername();
+		if("admin".equals(resetUser)){
+			filemeansService.resetPassWord(pd);
+			json.put("result","1");
+		}else {
+			json.put("result","0");
+		}
+		return  json;
+	}
 	
 	/**保存
 	 * @param
@@ -156,6 +198,10 @@ public class FileMeansController extends BaseController {
 		if(null != keywords && !"".equals(keywords)){
 			pd.put("keywords", keywords.trim());
 		}
+		String FILE_CREATEUSER = pd.getString("FILE_CREATEUSER");				//关键词检索条件
+		if(null != FILE_CREATEUSER && !"".equals(FILE_CREATEUSER)){
+			pd.put("FILE_CREATEUSER", FILE_CREATEUSER.trim());
+		}
 		page.setPd(pd);
 		List<PageData>	varList = filemeansService.list(page);	//列出FileMeans列表
 		mv.setViewName("management/filemeans/filemeans_list");
@@ -221,9 +267,9 @@ public class FileMeansController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		filemeansService.editJurisdiction(pd);
-		if("1".equals(pd.getString("ISCLEARS"))){
+		/*if("1".equals(pd.getString("ISCLEARS"))){
 			filemeansService.deletePassUser(pd);
-		}
+		}*/
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;

@@ -124,9 +124,10 @@ public class FileCatalogController extends BaseController {
 			pd1.put("keywords", keywords.trim());
 		}
 		List<PageData> list_catalog = filecatalogService.list_catalog(page);//文件夹对象集合
-		List<PageData> list_files_NotENCTYPT = filemeansService.listByFILE_CATALOGURL_ID_NotENCTYPT(pd1);//文件集合(不加密）
-		List<PageData> list_files_ENCTYPT = filemeansService.listByFILE_CATALOGURL_ID_ENCTYPT(pd1);//文件集合(加密）
-		List<PageData> listENCTYPTByYourself = filemeansService.listENCTYPTByYourself(pd1);//文件集合(加密）
+		List<PageData> list_files_NotENCTYPT = filemeansService.listByFILE_CATALOGURL_ID_NotENCTYPT(pd1);//文件集合(无加密、有权限查阅的）
+		List<PageData> list_files_ENCTYPT = filemeansService.listByFILE_CATALOGURL_ID_ENCTYPT(pd1);//文件集合(别人上传的加密，该用户有权限访问的）
+		List<PageData> listENCTYPTByYourself = filemeansService.listENCTYPTByYourself(pd1);//文件集合(自己上传的加密）
+		List<PageData> listNot_EnctyptByYourself = filemeansService.listNot_EnctyptByYourself(pd1);//文件集合(自己上传的加密）
 		if (del){
 			mv.addObject("isdel",0);//当isdel为0时则具有删除功能;1为不具有删除功能
 		}else {
@@ -137,6 +138,7 @@ public class FileCatalogController extends BaseController {
 		mv.addObject("listENCTYPTByYourself",listENCTYPTByYourself);
 		mv.addObject("list_files_NotENCTYPT",list_files_NotENCTYPT);
 		mv.addObject("list_files_ENCTYPT",list_files_ENCTYPT);
+		mv.addObject("listNot_EnctyptByYourself",listNot_EnctyptByYourself);
 		mv.setViewName("management/filecatalog/file_load");
 		return mv;
 	}

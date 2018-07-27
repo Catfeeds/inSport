@@ -75,6 +75,7 @@ public class FileUpDataController extends BaseController {
 			, @RequestParam(value="FILE_PASSWORD",required=false)String FILE_PASSWORD
 			, @RequestParam(value="FILE_ISENCTYPT",required=false)String FILE_ISENCTYPT
 			, @RequestParam(value="FILE_ISPRIVATE",required=false)String FILE_ISPRIVATE
+			, @RequestParam(value="FILE_ISDOWN",required=false)String FILE_ISDOWN
 	) throws Exception{
 		logBefore(logger, Jurisdiction.getUsername()+"新增图片");
 		Map<String,String> map = new HashMap<String,String>();
@@ -110,6 +111,7 @@ public class FileUpDataController extends BaseController {
 		pd.put("FILE_PASSWORD", FILE_PASSWORD);
 		pd.put("FILE_ISENCTYPT", FILE_ISENCTYPT);
 		pd.put("FILE_ISPRIVATE", FILE_ISPRIVATE);
+		pd.put("FILE_ISDOWN", FILE_ISDOWN);
 		filemeansService.save(pd);
 		//contractpictureService.save(pd);
 		//Watermark.setWatemark(PathUtil.getClasspath() + Const.FILEPATHIMG + ffile + "/" + fileName);//加水印

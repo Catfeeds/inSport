@@ -45,6 +45,11 @@
 						<input type="hidden" name="FPARENTID" id="FPARENTID" value="${pd.FPARENTID}"/>
 						<input type="hidden" name="FILE_READUSERS" id="FILE_READUSERS"/>
 					</form>
+						<label class="control-label" >是否可下载：</label>
+						<label style="margin-right: 15px">
+							<input onclick="isDowns(this)" checked id="isDowns" name="isDowns" class="ace ace-switch ace-switch-5" type="checkbox">
+							<span class="lbl"></span>
+						</label>
 						<label class="control-label" >仅本人可见：</label>
 						<label style="margin-right: 15px">
 							<input onclick="toPrivate(this)" id="private" name="toPrivate" class="ace ace-switch ace-switch-5" type="checkbox">
@@ -74,13 +79,15 @@
 							<p>选择查阅权限人员：</p>
 							<label style="display: none" id="somebody" for="somebodyselect"></label>
 							<select style="display: none" id="somebodyselect" class="selectpicker bla bla bli"
-									data-style="btn-info" multiple data-live-search="true" >
+									data-style="btn-info" multiple data-live-search="true" title="选择权限用户">
 								<c:forEach items="${dept}" var="var" varStatus="vs">
-									<option id="${var.DEPARTMENTGROUP_ID}"
-											<c:if test="${var.DNAME == userPd.NAME}">
-												selected
-											</c:if>
-											value="${var.UID}" name="${var.PID}">${var.DNAME}</option>
+									<c:if test="${var.DNAME != userPd.NAME}">
+										<option id="${var.DEPARTMENTGROUP_ID}"
+												<%--<c:if test="${var.DNAME == userPd.NAME}">
+													selected
+												</c:if>--%>
+												value="${var.UID}" name="${var.PID}">${var.DNAME}</option>
+										</c:if>
 								</c:forEach>
 								</optgroup>
 							</select>
@@ -163,6 +170,7 @@
 			var FILE_ISENCTYPT ='';
 			var FILE_PASSWORD = '';
 			var FILE_ISPRIVATE = '';
+			var FILE_ISDOWN = '0';
 			if($("#isSomeBody").prop("checked")){
 				FILE_READUSERS='';
 				$("#somebodyselect option:selected").each(function () {
@@ -182,6 +190,10 @@
 			}else {
 				FILE_ISENCTYPT = '0';
 			}
+			if($("#isDowns").prop("checked")){
+				FILE_ISDOWN = '1';
+			}
+
 			if($("#private").prop("checked")){
 				//$("#passWord").css("display","");
 				FILE_READUSERS='${userPd.USER_ID}';
@@ -196,7 +208,8 @@
 			 diag.Drag = true;
 			 diag.Title = "选择上传文件";
 			 diag.URL = '<%=basePath%>fileupata/goAddFile.do?FITEMID=' + FITEMID + '&FNAME=' + FNAME +"&FILE_ISPRIVATE="+FILE_ISPRIVATE
-					 + '&FILE_READUSERS=' + FILE_READUSERS+ '&FILE_PASSWORD=' + FILE_PASSWORD + '&FILE_ISENCTYPT=' + FILE_ISENCTYPT;
+					 + '&FILE_READUSERS=' + FILE_READUSERS+ '&FILE_PASSWORD=' + FILE_PASSWORD + '&FILE_ISENCTYPT=' + FILE_ISENCTYPT+
+					 '&FILE_ISDOWN=' + FILE_ISDOWN;
 			 diag.Width = 800;
 			 diag.Height = 490;
 			 diag.CancelEvent = function () { //关闭事件

@@ -138,14 +138,7 @@
                                                         <div onclick="toSelect('${var.FILEMEANS_ID}')"
                                                             style="width: 120px;"
                                                            data-rel="colorbox" class="cboxElement">
-                                                            <div
-                                                                    <c:if test="${var.FILE_ISDOWN == '1'}">
-                                                                        name="${var.FILE_URL}"
-                                                                    </c:if>
-                                                                    <c:if test="${var.FILE_ISDOWN != '1'}">
-                                                                        name="no"
-                                                                    </c:if>
-                                                                     id="${var.FILEMEANS_ID }"
+                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                                  class="float_div"
                                                                  style="display: none">
                                                                 <img src="static/images/Smile.png"
@@ -165,16 +158,11 @@
                                             <c:if test="${fn:contains(var.FILE_TYPE,'pdf')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
+
                                                         <div onclick="toSelect('${var.FILEMEANS_ID}')"
                                                            data-rel="colorbox"  style="width: 120px;"
                                                            class="cboxElement">
-                                                            <div    <c:if test="${var.FILE_ISDOWN == '1'}">
-                                                                        name="${var.FILE_URL}"
-                                                                    </c:if>
-                                                                    <c:if test="${var.FILE_ISDOWN != '1'}">
-                                                                        name="no"
-                                                                    </c:if>
-                                                                    id="${var.FILEMEANS_ID }"
+                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                                  class="float_div"
                                                                  style="display: none">
                                                                 <img src="static/images/Smile.png"
@@ -187,6 +175,9 @@
                                                                 <div name="inner" class="inner">${var.FILENAME}</div>
                                                             </a>
                                                         </div>
+                                                            <%--<div style="width: 100%;height: 25px" align="center" >
+                                                                <p>${var.FILE_CATALOGURL}</p>
+                                                            </div>--%>
                                                     </div>
                                                 </li>
                                             </c:if>
@@ -197,14 +188,7 @@
                                                         <div onclick="toSelect('${var.FILEMEANS_ID}')"
                                                            data-rel="colorbox"  style="width: 120px;"
                                                            class="cboxElement">
-                                                            <div
-                                                                <c:if test="${var.FILE_ISDOWN == '1'}">
-                                                                    name="${var.FILE_URL}"
-                                                                </c:if>
-                                                                <c:if test="${var.FILE_ISDOWN != '1'}">
-                                                                    name="no"
-                                                                </c:if>
-                                                                 id="${var.FILEMEANS_ID }"
+                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                                  class="float_div"
                                                                  style="display: none">
                                                                 <img src="static/images/Smile.png"
@@ -227,14 +211,7 @@
                                                         <div onclick="toSelect('${var.FILEMEANS_ID}')"
                                                             data-rel="colorbox"  style="width: 120px;"
                                                            class="cboxElement">
-                                                            <div
-                                                                <c:if test="${var.FILE_ISDOWN == '1'}">
-                                                                    name="${var.FILE_URL}"
-                                                                </c:if>
-                                                                <c:if test="${var.FILE_ISDOWN != '1'}">
-                                                                    name="no"
-                                                                </c:if>
-                                                                 id="${var.FILEMEANS_ID }"
+                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                                  class="float_div"
                                                                  style="display: none">
                                                                 <img src="static/images/Smile.png"
@@ -255,10 +232,10 @@
                                         </c:if>
                                     </c:when>
                                 </c:choose>
-                                <!-- 自己上传不加密的文件 listNot_EnctyptByYourself-->
+                                <!-- 自己加密的文件 listENCTYPTByYourself-->
                                 <c:choose>
-                                    <c:when test="${not empty listNot_EnctyptByYourself}">
-                                        <c:forEach items="${listNot_EnctyptByYourself}" var="var" varStatus="vs">
+                                    <c:when test="${not empty listENCTYPTByYourself}">
+                                        <c:forEach items="${listENCTYPTByYourself}" var="var" varStatus="vs">
                                             <c:if test="${fn:contains(var.FILE_TYPE,'image')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
@@ -286,8 +263,8 @@
                                             <c:if test="${fn:contains(var.FILE_TYPE,'pdf')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
+
                                                         <div onclick="toSelect('${var.FILEMEANS_ID}')"
-                                                             ondblclick="editJurisdiction('${var.FILEMEANS_ID}')"
                                                              data-rel="colorbox"  style="width: 120px;"
                                                              class="cboxElement">
                                                             <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
@@ -314,7 +291,6 @@
                                                     <div align="center">
 
                                                         <div onclick="toSelect('${var.FILEMEANS_ID}')"
-                                                             ondblclick="editJurisdiction('${var.FILEMEANS_ID}')"
                                                              data-rel="colorbox"  style="width: 120px;"
                                                              class="cboxElement">
                                                             <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
@@ -338,7 +314,6 @@
                                                     <div align="center">
 
                                                         <div onclick="toSelect('${var.FILEMEANS_ID}')"
-                                                             ondblclick="editJurisdiction('${var.FILEMEANS_ID}')"
                                                              data-rel="colorbox"  style="width: 120px;"
                                                              class="cboxElement">
                                                             <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
@@ -362,108 +337,12 @@
                                         </c:if>
                                     </c:when>
                                 </c:choose>
-                                <!-- 自己加密的文件 listENCTYPTByYourself-->
-                                <c:choose>
-                                    <c:when test="${not empty listENCTYPTByYourself}">
-                                        <c:forEach items="${listENCTYPTByYourself}" var="var" varStatus="vs">
-                                            <c:if test="${fn:contains(var.FILE_TYPE,'image')}">
-                                                <li id="file${var.FILEMEANS_ID}" style="border:none;margin-top: 30px;margin-left: 15px">
-                                                    <div align="center">
-                                                        <div onclick="openByPW('${var.FILEMEANS_ID}');" <%--onclick="toSelect('${var.FILEMEANS_ID}')"--%>
-                                                             style="width: 120px;"
-                                                             data-rel="colorbox" class="cboxElement">
-                                                            <img  width="120" height="110"
-                                                                 src="static/filecatalog/images/locked.png" alt="">
-                                                            <a >
-                                                                <div  name="inner">${var.FILENAME}</div>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </c:if>
-                                            <c:if test="${fn:contains(var.FILE_TYPE,'pdf')}">
-                                                <li  id="file${var.FILEMEANS_ID}"  style="border:none;margin-top: 30px;margin-left: 15px">
-                                                    <div align="center">
-                                                            <%--<div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
-                                                                 class="float_div"
-                                                                 style="display: none">
-                                                                <img src="static/images/Smile.png"
-                                                                     style="width: 35px;height: 35px"/>
-                                                            </div>--%>
-                                                        <div onclick="openByPW('${var.FILEMEANS_ID}');" style="width: 120px;"
-                                                             data-rel="colorbox"
-                                                             class="cboxElement">
-                                                            <img width="120" height="110" alt="200x200"
-                                                                   src="static/filecatalog/images/locked.png"/>
-                                                            <a >
-                                                                <div name="inner" >${var.FILENAME}</div>
-                                                            </a>
-                                                        </div>
-                                                            <%--<div style="width: 100%;height: 25px" align="center" >
-                                                                <p>${var.FILE_CATALOGURL}</p>
-                                                            </div>--%>
-                                                    </div>
-                                                </li>
-                                            </c:if>
-                                            <c:if test="${fn:contains(var.FILE_TYPE,'word')}">
-                                                <li id="file${var.FILEMEANS_ID}" style="border:none;margin-top: 30px;margin-left: 15px">
-                                                    <div align="center">
-                                                            <%--<div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
-                                                                 class="float_div"
-                                                                 style="display: none">
-                                                                <img src="static/images/Smile.png"
-                                                                     style="width: 35px;height: 35px"/>
-                                                            </div>--%>
-                                                        <div onclick="openByPW('${var.FILEMEANS_ID}');"
-                                                             data-rel="colorbox" style="width: 120px;"
-                                                             class="cboxElement">
-                                                            <img  width="120" height="110" alt="200x200"
-                                                                  src="static/filecatalog/images/locked.png"/>
-                                                            <a >
-                                                                <div name="inner" >${var.FILENAME}</div>
-                                                            </a>
-                                                        </div>
-                                                            <%--<div style="width: 100%;height: 25px" align="center" >
-                                                                <p>${var.FILE_CATALOGURL}</p>
-                                                            </div>--%>
-                                                    </div>
-                                                </li>
-                                            </c:if>
-                                            <c:if test="${fn:contains(var.FILE_TYPE,'sheet')}">
-                                                <li id="file${var.FILEMEANS_ID}" style="border:none;margin-top: 30px;margin-left: 15px">
-                                                    <div align="center">
-                                                            <%--<div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
-                                                                 class="float_div"
-                                                                 style="display: none">
-                                                                <img src="static/images/Smile.png"
-                                                                     style="width: 35px;height: 35px"/>
-                                                            </div>--%>
-                                                        <div onclick="openByPW('${var.FILEMEANS_ID}');"
-                                                             data-rel="colorbox" style="width: 120px;"
-                                                             class="cboxElement">
-                                                            <img width="120" height="110" alt="200x200"
-                                                                  src="static/filecatalog/images/locked.png"/>
-                                                            <a title="${var.FILENAME}">
-                                                                <div name="inner" >${var.FILENAME}</div>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </c:if>
-                                        </c:forEach>
-                                        <c:if test="${QX.cha == 0 }">
-                                            <tr>
-                                                <td colspan="100" class="center">您无权查看该文件夹内容</td>
-                                            </tr>
-                                        </c:if>
-                                    </c:when>
-                                </c:choose>
                                 <!-- 加密后的文件显示 -->
                                 <c:choose>
                                     <c:when test="${not empty list_files_ENCTYPT}">
                                         <c:forEach items="${list_files_ENCTYPT}" var="var" varStatus="vs">
                                             <c:if test="${fn:contains(var.FILE_TYPE,'image')}">
-                                                <li id="file${var.FILEMEANS_ID}" style="border:none;margin-top: 30px;margin-left: 15px">
+                                                <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
                                                         <div onclick="openByPW('${var.FILEMEANS_ID}');" <%--onclick="toSelect('${var.FILEMEANS_ID}')"--%>
                                                              style="width: 120px;"
@@ -480,7 +359,7 @@
                                                                 <img src="static/images/trash_can.png"
                                                                      style="width: 35px;height: 35px"/>
                                                             </div>
-                                                            <img  width="120" height="110";
+                                                            <img width="120" height="110";
                                                                  src="static/filecatalog/images/locked.png" alt="">
                                                             <a >
                                                                 <div  name="inner">${var.FILENAME}</div>
@@ -490,7 +369,7 @@
                                                 </li>
                                             </c:if>
                                             <c:if test="${fn:contains(var.FILE_TYPE,'pdf')}">
-                                                <li id="file${var.FILEMEANS_ID}"  style="border:none;margin-top: 30px;margin-left: 15px">
+                                                <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
                                                         <%--<div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                              class="float_div"
@@ -499,12 +378,13 @@
                                                                  style="width: 35px;height: 35px"/>
                                                         </div>--%>
                                                         <div onclick="openByPW('${var.FILEMEANS_ID}');"
-                                                             data-rel="colorbox" style="width: 120px;"
+                                                             data-rel="colorbox"
                                                              class="cboxElement">
-                                                            <img  width="120" height="110" alt="200x200"
+                                                            <img   width="120" height="110" alt="200x200"
                                                                    src="static/filecatalog/images/locked.png"/>
-                                                            <a >
-                                                                <div name="inner" >${var.FILENAME}</div>
+                                                            <a onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text"
+                                                               style="margin-top: 15px">
+                                                                <div name="inner" class="inner">${var.FILENAME}</div>
                                                             </a>
                                                         </div>
                                                             <%--<div style="width: 100%;height: 25px" align="center" >
@@ -514,7 +394,7 @@
                                                 </li>
                                             </c:if>
                                             <c:if test="${fn:contains(var.FILE_TYPE,'word')}">
-                                                <li id="file${var.FILEMEANS_ID}"  style="border:none;margin-top: 30px;margin-left: 15px">
+                                                <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
                                                         <%--<div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                              class="float_div"
@@ -523,13 +403,13 @@
                                                                  style="width: 35px;height: 35px"/>
                                                         </div>--%>
                                                         <div onclick="openByPW('${var.FILEMEANS_ID}');"
-                                                             data-rel="colorbox" style="width: 120px;"
+                                                             data-rel="colorbox"
                                                              class="cboxElement">
-                                                            <img   width="120" height="110" alt="200x200"
+                                                            <img  width="120" height="110" alt="200x200"
                                                                   src="static/filecatalog/images/locked.png"/>
-                                                            <a >
-                                                                <div name="inner" >${var.FILENAME}</div>
-                                                            </a>
+                                                            <div class="text" style="margin-top: 15px">
+                                                                <div name="inner" class="inner">${var.FILENAME}</div>
+                                                            </div>
                                                         </div>
                                                             <%--<div style="width: 100%;height: 25px" align="center" >
                                                                 <p>${var.FILE_CATALOGURL}</p>
@@ -538,7 +418,7 @@
                                                 </li>
                                             </c:if>
                                             <c:if test="${fn:contains(var.FILE_TYPE,'sheet')}">
-                                                <li id="file${var.FILEMEANS_ID}" style="border:none;margin-top: 30px;margin-left: 15px">
+                                                <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
                                                         <%--<div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
                                                              class="float_div"
@@ -547,7 +427,7 @@
                                                                  style="width: 35px;height: 35px"/>
                                                         </div>--%>
                                                         <div onclick="openByPW('${var.FILEMEANS_ID}');"
-                                                             data-rel="colorbox" style="width: 120px;"
+                                                             data-rel="colorbox"
                                                              class="cboxElement">
                                                             <img  width="120" height="110" alt="200x200"
                                                                   src="static/filecatalog/images/locked.png"/>
@@ -652,7 +532,7 @@
         diag.Width = 600;
         diag.Height = 490;
         diag.CancelEvent = function () { //关闭事件
-           // window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
+            window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
             diag.close();
         };
         diag.show();
@@ -682,113 +562,11 @@
                         FILEMEANS_ID : FILEMEANS_ID,
                         FILE_PASSWORD : password
                     },
-                    url: '<%=basePath%>filemeans/checkPassWord',
+                    url: '<%=basePath%>filemeans/writePw',
                     success: function (data) {
                         if(data.result == "ture"){
                             alert("密码正确!!");
-                            var oneFile = data.oneFile;
-                            console.log(oneFile);
-                            if(oneFile.FILE_TYPE == 'image/jpeg'){
-                                if(data.your == 'yes'){
-                                    var div = '';
-                                    div += '<div align="center"><div ondblclick="editJurisdiction(\''+oneFile.FILEMEANS_ID+'\')"' +
-                                    'onclick="toSelect(\''+oneFile.FILEMEANS_ID+'\')" style="width: 120px;" data-rel="colorbox" class="cboxElement">';
-                                    div += '<div name="'+oneFile.FILE_URL+'" id="'+oneFile.FILEMEANS_ID+'" class="float_div" style="display: none">';
-                                    div += '<img src="static/images/Smile.png" style="width: 35px;height: 35px"/></div>';
-                                    div += '<img width="120" height="110"; src="<%=basePath%>'  +oneFile.FILE_URL+   '" alt="">';
-                                    div += '<a title="" data-magnify="gallery" data-caption="Paraglider flying over Aurlandfjord,Norway by framedbythomas"' +
-                                            ' href="<%=basePath%>'  +oneFile.FILE_URL+   '">';
-                                    div += '<div style="color: red" name="inner">'+oneFile.FILENAME+'</div>';
-                                    div += '</a></div></div>';
-                                    $("#file"+FILEMEANS_ID).empty();
-                                    $("#file"+FILEMEANS_ID).html(div);
-                                }else{
-                                    var div = '';
-                                    div += '<div align="center"><div onclick="toSelect(\''+oneFile.FILEMEANS_ID+'\')" style="width: 120px;" data-rel="colorbox" class="cboxElement">';
-                                    div += '<div name="'+oneFile.FILE_URL+'" id="'+oneFile.FILEMEANS_ID+'" class="float_div" style="display: none">';
-                                    div += '<img src="static/images/Smile.png" style="width: 35px;height: 35px"/></div>';
-                                    div += '<img width="120" height="110"; src="<%=basePath%>'  +oneFile.FILE_URL+   '" alt="">';
-                                    div += '<a title="" data-magnify="gallery" data-caption="Paraglider flying over Aurlandfjord,Norway by framedbythomas"' +
-                                            ' href="<%=basePath%>'  +oneFile.FILE_URL+   '">';
-                                    div += '<div  name="inner">'+oneFile.FILENAME+'</div>';
-                                    div += '</a></div></div>';
-                                    $("#file"+FILEMEANS_ID).empty();
-                                    $("#file"+FILEMEANS_ID).html(div);
-                                }
-
-                            }else if(oneFile.FILE_TYPE == "application/pdf"){
-                                if(data.your == 'yes'){
-                                    var div = '';
-                                    div += '<div align="center">';
-                                    div += '<div ondblclick="editJurisdiction(\''+oneFile.FILEMEANS_ID+'\')"' +
-                                            'onclick="toSelect(\''+oneFile.FILEMEANS_ID+'\')" data-rel="colorbox"  style="width: 120px;" class="cboxElement">';
-                                    div += '<div name="'+oneFile.FILE_URL+'" id="'+oneFile.FILEMEANS_ID+'" class="float_div" style="display: none">';
-                                    div += '<img src="static/images/Smile.png" style="width: 35px;height: 35px"/></div>';
-                                    div += '<img   width="120" height="110" alt="200x200" src="static/filecatalog/images/application-pdf.png"/>';
-                                    div += '<a onclick=" wep_open(\'<%=basePath%>'+oneFile.FILE_URL+'\',\''+oneFile.FILENAME+'\')" class="text" style="margin-top: 15px">';
-                                    div += ' <div style="color: red" name="inner" class="inner">'+oneFile.FILENAME+'</div></a></div></div>';
-                                    $("#file"+FILEMEANS_ID).empty();
-                                    $("#file"+FILEMEANS_ID).html(div);
-                                }else{
-                                    var div = '';
-                                    div += '<div align="center">';
-                                    div += '<div onclick="toSelect(\''+oneFile.FILEMEANS_ID+'\')" data-rel="colorbox"  style="width: 120px;" class="cboxElement">';
-                                    div += '<div name="'+oneFile.FILE_URL+'" id="'+oneFile.FILEMEANS_ID+'" class="float_div" style="display: none">';
-                                    div += '<img src="static/images/Smile.png" style="width: 35px;height: 35px"/></div>';
-                                    div += '<img   width="120" height="110" alt="200x200" src="static/filecatalog/images/application-pdf.png"/>';
-                                    div += '<a onclick=" wep_open(\'<%=basePath%>'+oneFile.FILE_URL+'\',\''+oneFile.FILENAME+'\')" class="text" style="margin-top: 15px">';
-                                    div += ' <div name="inner" class="inner">'+oneFile.FILENAME+'</div></a></div></div>';
-                                    $("#file"+FILEMEANS_ID).empty();
-                                    $("#file"+FILEMEANS_ID).html(div);
-                                }
-                            }else if(oneFile.FILE_TYPE == "application/msword"){
-                                if(data.your == 'yes'){
-                                    var div = '';
-                                    div += '<div align="center">';
-                                    div += '<div ondblclick="editJurisdiction(\''+oneFile.FILEMEANS_ID+'\')"' +
-                                            'onclick="toSelect(\''+oneFile.FILEMEANS_ID+'\')" data-rel="colorbox"  style="width: 120px;" class="cboxElement">';
-                                    div += '<div name="'+oneFile.FILE_URL+'" id="'+oneFile.FILEMEANS_ID+'" class="float_div" style="display: none">';
-                                    div += '<img src="static/images/Smile.png" style="width: 35px;height: 35px"/></div>';
-                                    div += '<img  width="120" height="110" alt="200x200" src="static/filecatalog/images/file-word-icon.png"/>';
-                                    div += '<div style="color: red" name="inner" class="inner">'+oneFile.FILENAME+'</div></div></div>';
-                                    $("#file"+FILEMEANS_ID).empty();
-                                    $("#file"+FILEMEANS_ID).html(div);
-                                }else{
-                                    var div = '';
-                                    div += '<div align="center">';
-                                    div += '<div onclick="toSelect(\''+oneFile.FILEMEANS_ID+'\')" data-rel="colorbox"  style="width: 120px;" class="cboxElement">';
-                                    div += '<div name="'+oneFile.FILE_URL+'" id="'+oneFile.FILEMEANS_ID+'" class="float_div" style="display: none">';
-                                    div += '<img src="static/images/Smile.png" style="width: 35px;height: 35px"/></div>';
-                                    div += '<img  width="120" height="110" alt="200x200" src="static/filecatalog/images/file-word-icon.png"/>';
-                                    div += '<div name="inner" class="inner">'+oneFile.FILENAME+'</div></div></div>';
-                                    $("#file"+FILEMEANS_ID).empty();
-                                    $("#file"+FILEMEANS_ID).html(div);
-                                    $("#file"+FILEMEANS_ID).empty();
-                                    $("#file"+FILEMEANS_ID).html(div);
-                                }
-                            }else if(oneFile.FILE_TYPE == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
-                                if(data.your == 'yes'){
-                                    var div = '';
-                                    div += '<div align="center"><div ondblclick="editJurisdiction(\''+oneFile.FILEMEANS_ID+'\')"' +
-                                            ' onclick="toSelect(\''+oneFile.FILEMEANS_ID+'\')"data-rel="colorbox"  style="width: 120px;"class="cboxElement">';
-                                    div += '<div name="'+oneFile.FILE_URL+'" id="'+oneFile.FILEMEANS_ID+'" class="float_div" style="display: none">';
-                                    div += '<img src="static/images/Smile.png" style="width: 35px;height: 35px"/></div>';
-                                    div += '<img  width="120" height="110" alt="200x200" src="static/filecatalog/images/excel.png"/>';
-                                    div += '<div style="color: red" class="inner">'+oneFile.FILENAME+'</div></div></div>';
-                                    $("#file"+FILEMEANS_ID).empty();
-                                    $("#file"+FILEMEANS_ID).html(div);
-                                }else{
-                                    var div = '';
-                                    div += '<div align="center"><div onclick="toSelect(\''+oneFile.FILEMEANS_ID+'\')"data-rel="colorbox"  style="width: 120px;"class="cboxElement">';
-                                    div += '<div name="'+oneFile.FILE_URL+'" id="'+oneFile.FILEMEANS_ID+'" class="float_div" style="display: none">';
-                                    div += '<img src="static/images/Smile.png" style="width: 35px;height: 35px"/></div>';
-                                    div += '<img  width="120" height="110" alt="200x200" src="static/filecatalog/images/excel.png"/>';
-                                    div += '<div  class="inner">'+oneFile.FILENAME+'</div></div></div>';
-                                    $("#file"+FILEMEANS_ID).empty();
-                                    $("#file"+FILEMEANS_ID).html(div);
-                                }
-                            }
-                            //window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
+                            window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
                         }else {
                             alert("密码错误!!");
                         }
@@ -1037,11 +815,7 @@
         var file = [];
         $(".ace-thumbnails .float_div").each(function () {
             if ($(this).css("display") != "none") {
-               // alert($(this).attr("name"));
-                if($(this).attr("name") != "no"){
-                    file.push($(this).attr("name"));
-                }
-
+                file.push($(this).attr("name"));
             }
         });
         for (var index = 0; index < file.length; index++) {

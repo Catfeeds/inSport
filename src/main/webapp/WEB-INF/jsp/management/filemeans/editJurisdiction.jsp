@@ -46,8 +46,14 @@
 						<input type="hidden" name="FILE_ISPRIVATE" id="FILE_ISPRIVATE" value="${pd.FILE_ISPRIVATE}"/>
 						<input type="hidden" name="FILE_READUSERS" id="FILE_READUSERS" value="${pd.FILE_READUSERS}"/>
 						<input type="hidden" name="FILE_PASSWORD" id="FILE_PASSWORD1" value="${pd.FILE_PASSWORD}"/>
+						<input type="hidden" name="FILE_ISDOWN" id="FILE_ISDOWN" value="${pd.FILE_ISDOWN}"/>
 						<input type="hidden" name="ISCLEARS" id="ISCLEARS"/>
 					</form>
+						<label class="control-label" >是否可下载：</label>
+						<label style="margin-right: 15px">
+							<input  id="isDowns" name="isDowns" class="ace ace-switch ace-switch-5" type="checkbox">
+							<span class="lbl"></span>
+						</label>
 						<label class="control-label" >仅本人可见：</label>
 						<label style="margin-right: 15px">
 							<input onclick="toPrivate(this)" id="private" name="toPrivate" class="ace ace-switch ace-switch-5" type="checkbox">
@@ -60,11 +66,11 @@
 							<span class="lbl"></span>
 						</label>
 						<br>
-						<label id="toClear" class="control-label" >是否清空已验证用户名单：</label>
+						<%--<label id="toClear" class="control-label" >是否清空已验证用户名单：</label>
 						<label  style="margin-right: 15px">
 							<input onclick="toClear(this)" id="isClear" name="switch-field" class="ace ace-switch ace-switch-5" type="checkbox">
 							<span class="lbl"></span>
-						</label>
+						</label>--%>
 						<label id="toENCTYPT" class="control-label" >是否加密文件：</label>
 						<label id="toENCTYPTS" style="margin-right: 15px">
 							<input onclick="toENCTYPT(this)" id="isENCTYPT" name="switch-field" class="ace ace-switch ace-switch-5" type="checkbox">
@@ -150,6 +156,11 @@
 				//$("#somebodyselect").css("display","none");
 				$("#selects").css("display","none");
 			}
+			var FILE_ISDOWN = $("#FILE_ISDOWN").val();
+			//alert(FILE_ISENCTYPT);
+			if (FILE_ISDOWN == "1"){
+				$("#isDowns").attr("checked","ture");
+			}
 			//
 		}
 
@@ -214,9 +225,14 @@
 		}
 
 		function edit(){
+			var FILE_ISDOWN = '0';
+			if($("#isDowns").prop("checked")){
+				FILE_ISDOWN = '1';
+			}
+			$("#FILE_ISDOWN").val(FILE_ISDOWN);
 			$("#FILE_PASSWORD1").val($("#FILE_PASSWORD").val());
 			if($("#isSomeBody").prop("checked")){
-				FILE_READUSERS='';
+				var FILE_READUSERS='';
 				$("#somebodyselect option:selected").each(function () {
 					FILE_READUSERS += $(this).val() +",";
 				});

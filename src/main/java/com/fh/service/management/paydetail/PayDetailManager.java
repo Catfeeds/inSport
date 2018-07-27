@@ -48,6 +48,8 @@ public interface PayDetailManager{
 
 	public List<PageData> listByPayPrimaryId(PageData pd)throws Exception;
 
+	public List<PageData> listNotPayDetal(PageData pd)throws Exception;
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

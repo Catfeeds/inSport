@@ -36,26 +36,19 @@
 							<tr>
 								<td>
 									<div class="nav-search">
+										文件名称：
 										<span class="input-icon">
 											<input type="text" placeholder="这里输入关键词" class="nav-search-input" id="nav-search-input" autocomplete="off" name="keywords" value="${pd.keywords }" placeholder="这里输入关键词"/>
 											<i class="ace-icon fa fa-search nav-search-icon"></i>
 										</span>
+										文件创建人：
+										<span class="input-icon">
+											<input type="text" placeholder="这里输入创建人" class="nav-search-input" id="nav-search-input" autocomplete="off" name="FILE_CREATEUSER" value="${pd.FILE_CREATEUSER }" placeholder="这里输入创建人"/>
+											<i class="ace-icon fa fa-search nav-search-icon"></i>
+										</span>
 									</div>
 								</td>
-								<td style="padding-left:2px;"><input class="span10 date-picker" name="lastStart" id="lastStart"  value="" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" style="width:88px;" placeholder="开始日期" title="开始日期"/></td>
-								<td style="padding-left:2px;"><input class="span10 date-picker" name="lastEnd" name="lastEnd"  value="" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" style="width:88px;" placeholder="结束日期" title="结束日期"/></td>
-								<td style="vertical-align:top;padding-left:2px;">
-								 	<select class="chosen-select form-control" name="name" id="id" data-placeholder="请选择" style="vertical-align:top;width: 120px;">
-									<option value=""></option>
-									<option value="">全部</option>
-									<option value="">1</option>
-									<option value="">2</option>
-								  	</select>
-								</td>
-								<c:if test="${QX.cha == 1 }">
 								<td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="tosearch();"  title="检索"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
-								</c:if>
-								<c:if test="${QX.toExcel == 1 }"><td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="toExcel();" title="导出到EXCEL"><i id="nav-search-icon" class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td></c:if>
 							</tr>
 						</table>
 						<!-- 检索  -->
@@ -68,14 +61,9 @@
 									</th>
 									<th class="center" style="width:50px;">序号</th>
 									<th class="center">文件名称</th>
-									<th class="center">文件路径</th>
 									<th class="center">文件创建时间</th>
-									<th class="center">文件权限</th>
-									<th class="center">文件类型</th>
 									<th class="center">文件创建人员</th>
-									<th class="center">文件下载次数</th>
-									<th class="center">文件查阅次数</th>
-									<th class="center">备注</th>
+									<th class="center">文件密码</th>
 									<th class="center">操作</th>
 								</tr>
 							</thead>
@@ -92,57 +80,28 @@
 											</td>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
 											<td class='center'>${var.FILENAME}</td>
-											<td class='center'>${var.FILE_URL}</td>
 											<td class='center'>${var.FILE_CREATETIME}</td>
-											<td class='center'>${var.FILE_JURISDICTION}</td>
-											<td class='center'>${var.FILE_TYPE}</td>
-											<td class='center'>${var.FILE_CREATEUSER}</td>
-											<td class='center'>${var.FILE_DOWNLOAD}</td>
-											<td class='center'>${var.FILE_READ}</td>
-											<td class='center'>${var.FILE_REMARK}</td>
+											<td class='center'>${var.USERNAME}</td>
+											<td class='center'>
+												<c:if test="${var.FILE_PASSWORD == '' || var.FILE_PASSWORD == null}">
+													无密码
+												</c:if>
+												<c:if test="${var.FILE_PASSWORD != '' && var.FILE_PASSWORD != null}">
+													<%--${var.FILE_PASSWORD}--%>
+													***
+												</c:if>
+											</td>
 											<td class="center">
 												<c:if test="${QX.edit != 1 && QX.del != 1 }">
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
 												</c:if>
 												<div class="hidden-sm hidden-xs btn-group">
-													<c:if test="${QX.edit == 1 }">
-													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.FILEMEANS_ID}');">
-														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
-													</a>
+													<c:if test="${var.FILE_PASSWORD != '' && var.FILE_PASSWORD != null}">
+														<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.FILEMEANS_ID}');">
+															<i class="ace-icon fa fa-pencil-square-o bigger-120" title="重置密码"></i>重置密码
+														</a>
 													</c:if>
-													<c:if test="${QX.del == 1 }">
-													<a class="btn btn-xs btn-danger" onclick="del('${var.FILEMEANS_ID}');">
-														<i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
-													</a>
-													</c:if>
-												</div>
-												<div class="hidden-md hidden-lg">
-													<div class="inline pos-rel">
-														<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-															<i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-														</button>
-			
-														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-															<c:if test="${QX.edit == 1 }">
-															<li>
-																<a style="cursor:pointer;" onclick="edit('${var.FILEMEANS_ID}');" class="tooltip-success" data-rel="tooltip" title="修改">
-																	<span class="green">
-																		<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-																	</span>
-																</a>
-															</li>
-															</c:if>
-															<c:if test="${QX.del == 1 }">
-															<li>
-																<a style="cursor:pointer;" onclick="del('${var.FILEMEANS_ID}');" class="tooltip-error" data-rel="tooltip" title="删除">
-																	<span class="red">
-																		<i class="ace-icon fa fa-trash-o bigger-120"></i>
-																	</span>
-																</a>
-															</li>
-															</c:if>
-														</ul>
-													</div>
+
 												</div>
 											</td>
 										</tr>
@@ -166,14 +125,6 @@
 						<div class="page-header position-relative">
 						<table style="width:100%;">
 							<tr>
-								<td style="vertical-align:top;">
-									<c:if test="${QX.add == 1 }">
-									<a class="btn btn-mini btn-success" onclick="add();">新增</a>
-									</c:if>
-									<c:if test="${QX.del == 1 }">
-									<a class="btn btn-mini btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" title="批量删除" ><i class='ace-icon fa fa-trash-o bigger-120'></i></a>
-									</c:if>
-								</td>
 								<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
 							</tr>
 						</table>
@@ -305,23 +256,25 @@
 		
 		//修改
 		function edit(Id){
-			 top.jzts();
-			 var diag = new top.Dialog();
-			 diag.Drag=true;
-			 diag.Title ="编辑";
-			 diag.URL = '<%=basePath%>filemeans/goEdit.do?FILEMEANS_ID='+Id;
-			diag.Width =  window.innerWidth*0.7;
-			diag.Height = window.innerHeight*0.7;
-			 diag.Modal = true;				//有无遮罩窗口
-			 diag. ShowMaxButton = true;	//最大化按钮
-		     diag.ShowMinButton = true;		//最小化按钮 
-			 diag.CancelEvent = function(){ //关闭事件
-				/* if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-					 tosearch();
-				}*/
-				diag.close();
-			 };
-			 diag.show();
+			$.ajax({
+				type: "POST",
+				url: '<%=basePath%>filemeans/resetPassWord',
+				async: false,
+				data: {
+					FILEMEANS_ID : Id
+				},
+				dataType: 'json',
+				//beforeSend: validateData,
+				cache: false,
+				success: function (data) {
+					if(data.result == '1'){
+						alert("重置成功");
+					}else {
+						alert("重置失败，权限不足");
+					}
+					tosearch();
+				}
+			});
 		}
 		
 		//批量操作

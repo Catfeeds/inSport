@@ -209,9 +209,9 @@
 										<%--<input type="text" style="width: 150px" value="${pd.OPERATOR}"
 												class="input-text"  name="OPERATOR"
 												id="OPERATOR">--%>
-										<select name="OPERATOR" id="OPERATOR" class="selectpicker bla bla bli"
+										<select name="OPERATOR" id="OPERATOR" class="selectpicker bla bla bli" title="选择经办人"
 												data-style="btn-info" data-width="150px" data-height="31px" data-live-search="true"
-												style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
+												style="vertical-align:top;width: 150px;" >
 											<option value="${pd.OPERATOR}" name="${pd.OPERATOR}">${pd.OPERATOR}</option>
 											<c:forEach items="${listOperator}" var="var" varStatus="vs">
 												<option id="${var.ONAME}" value="${var.ONAME}" name="${var.ONAME}">${var.ONAME}</option>
@@ -623,10 +623,15 @@
 												<tr class="center">
 													<td style="padding-left:2px;">时间</td>
 													<td style="padding-left:2px;">总应付金额</td>
-													<%--<td style="padding-left:2px;">付款所属时间</td>--%>
 													<td style="padding-left:2px;">应付款金额</td>
+													<c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
+														<td style="padding-left:2px;">付款所属时间</td>
+													</c:if>
 													<td style="padding-left:2px;">实际付款金额</td>
 													<td style="padding-left:2px;">实际付款时间</td>
+													<c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
+														<td style="padding-left:2px;">尚未付款金额</td>
+													</c:if>
 													<td style="padding-left:2px;">备注</td>
 													<td style="padding-left:2px;">操作</td>
 												</tr>
@@ -640,14 +645,20 @@
 													<c:forEach items="${listPayDetail}" var="var1" varStatus="vs1">
 														<c:if test="${var1.PAYPRIMARY_ID == var.PAYPRIMARY_ID}">
 															<tr class="center" style="background-color: #FFFFCC" >
-																<%--<td style="padding-left:2px;">
-																	<input type="date" style="width: 150px;height: 31px" value="${var1.SHPAYTIME}"
-																		   class="input-text"  name="SHPAYTIME" id="spt${var1.PAYDETAIL_ID}"
-																	></td>--%>
+
 																<td style="padding-left:2px;">
 																	<input type="number" style="width: 150px;height: 31px" value="${var1.SHPAY}"
 																		   class="input-text"  name="SHPAY" id="sp${var1.PAYDETAIL_ID}"
 																	></td>
+																<c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
+																	<td style="padding-left:2px;">
+																		<input type="date" style="width: 150px;height: 31px" value="${var1.SHPAYTIME}"
+																			   class="input-text"  name="SHPAYTIME" id="spt${var1.PAYDETAIL_ID}"
+																		> -- <input type="date" style="width: 150px;height: 31px" value="${var1.SHPAYTIMEENT}"
+																					class="input-text"  name="SHPAYTIMEENT" id="spte${var1.PAYDETAIL_ID}"
+																	></td>
+																</c:if>
+
 																<td style="padding-left:2px;">
 																	<input type="number" style="width: 150px" value="${var1.REALITYPAY}"
 																		   class="input-text"  name="REALITYPAY" id="rp${var1.PAYDETAIL_ID}"
@@ -658,6 +669,14 @@
 																		   class="input-text"  name="REALITYPAYTIME" id="rpt${var1.PAYDETAIL_ID}"
 																	>
 																</td>
+																<c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
+																	<td style="padding-left:2px;">
+																		<input type="text" style="width: 150px;height: 31px" value="${var1.ONPAYPIC}"
+																			   class="input-text" <%-- name="ONPAYPIC" id="no${var1.PAYDETAIL_ID}"--%>
+																		>
+																	</td>
+																</c:if>
+
 																<td style="padding-left:2px;">
 																	<input type="text" style="width: 150px;height: 31px" value="${var1.FNOTE}"
 																		   class="input-text"  name="FNOTE" id="no${var1.PAYDETAIL_ID}"
@@ -770,10 +789,15 @@
 	function editPay(PAYPRIMARY_ID,PAYDETAIL_ID){
 		var PAYDETAIL_ID = PAYDETAIL_ID;
 		var SHPAYTIME = $("#spt"+PAYDETAIL_ID).val();
+		var SHPAYTIMEENT = $("#spte"+PAYDETAIL_ID).val();
 		var SHPAY = $("#sp"+PAYDETAIL_ID).val();
 		var REALITYPAYTIME = $("#rpt"+PAYDETAIL_ID).val();
 		var REALITYPAY = $("#rp"+PAYDETAIL_ID).val();
 		var FNOTE = $("#no"+PAYDETAIL_ID).val();
+		if(SHPAYTIMEENT == '' || SHPAYTIMEENT == null || SHPAYTIME ==''||SHPAYTIME==null){
+			alert("付款区间为必填项");
+			return false;
+		}
 		//alert("应付时间:"+SHPAYTIME+",应付金额:"+SHPAY+",实际付款时间:"+REALITYPAYTIME+",实际付款金额:"+REALITYPAY+"。");
 		$.ajax({
 			type: "POST",
@@ -783,6 +807,7 @@
 				PAYPRIMARY_ID : PAYPRIMARY_ID,
 				PAYDETAIL_ID : PAYDETAIL_ID,
 				SHPAYTIME : SHPAYTIME,
+				SHPAYTIMEENT : SHPAYTIMEENT,
 				SHPAY : SHPAY,
 				REALITYPAYTIME : REALITYPAYTIME,
 				FNOTE:FNOTE,
@@ -858,8 +883,15 @@
 		table += '<table id="ta'+uuid+'" class="table table-border table-bg table-bordered" style="margin-top: 10px">';
 		table += '<tbody id="tb'+uuid+'" ><tr class="center" >';
 		table += '<td style="padding-left:2px;">时间</td><td style="padding-left:2px;">总应付金额</td>';
-		table += '<td style="padding-left:2px;">应付款金额</td><td style="padding-left:2px;">实际付款金额</td>';
+		table += '<td style="padding-left:2px;">应付款金额</td>';
+		if('${pd.CONTRACTCLASSIFY}' == '固定供应商'){
+			table += '<td style="padding-left:2px;">应付款时间</td>';
+		}
+		table +=  '<td style="padding-left:2px;">实际付款金额</td>';
 		table += '<td style="padding-left:2px;">实际付款时间</td>';
+		if('${pd.CONTRACTCLASSIFY}' == '固定供应商'){
+			table += '<td style="padding-left:2px;">尚未付款金额</td>';
+		}
 		table += '<td style="padding-left:2px;">备注</td><td style="padding-left:2px;">操作</td>';
 		table += '</tr></tbody></table>';
 		table += '<div class="col-md-12"  style="padding-bottom:2em;">';
@@ -889,10 +921,20 @@
 		}
 		tr += '<td style="padding-left:2px;"><input id="sp'+uuid_var+'" type="number" style="width: 150px;height: 31px" ' +
 				' class="input-text"  name="SHPAY" ></td>';
+		if('${pd.CONTRACTCLASSIFY}' == '固定供应商'){
+			tr += '<td style="padding-left:2px;"><input id="spt'+uuid_var+'" type="date"    style="width: 150px;height: 31px" ' +
+					' class="input-text"  name="SHPAY" > -- <input id="spte'+uuid_var+'" type="date" style="width: 150px;height: 31px" ' +
+					' class="input-text"  name="SHPAYTIMEENT" ></td>';
+		}
+
 		tr += '<td style="padding-left:2px;">' +
 				'<input id="rp'+uuid_var+'" type="number" style="width: 150px" class="input-text"  name="REALITYPAY" ></td>';
 		tr += ' <td style="padding-left:2px;">' +
 				'<input id="rpt'+uuid_var+'" type="date" style="width: 150px;height: 31px" class="input-text"  name="REALITYPAYTIME" ></td>';
+		if('${pd.CONTRACTCLASSIFY}' == '固定供应商'){
+			tr += ' <td style="padding-left:2px;">' +
+					'<input  type="number" style="width: 150px;height: 31px" class="input-text"  readonly ></td>';
+		}
 		tr += '<td style="padding-left:2px;">' +
 				'<input id="no'+uuid_var+'" type="text" style="width: 150px" class="input-text"  name="FNOTE" ></td>';
 		tr += '<td style="padding-left:2px;"> ' +
@@ -916,12 +958,16 @@
 
 		var PAYPRIMARY_ID = uuid_var;
 		var CONTRACT_ID =  "${pd.CONTRACT_ID}";
-		var SHPAYTIME = $("#spt"+uuid_var).val();
 		var REALITYPAY = $("#rp"+uuid_var).val();
 		var REALITYPAYTIME = $("#rpt"+uuid_var).val();
 		var SHPAY =$("#sp"+uuid_var).val();
 		var SHPAYTIME = $("#spt"+uuid_var).val();
+		var SHPAYTIMEENT = $("#spte"+uuid_var).val();
 		var FNOTE = $("#no"+uuid_var).val();
+		if(SHPAYTIMEENT == '' || SHPAYTIMEENT == null || SHPAYTIME ==''||SHPAYTIME==null){
+			alert("付款区间为必填项");
+			return false;
+		}
 		$.ajax({
 			type: "POST",
 			url: '<%=basePath%>paydetail/saveDetail',
@@ -933,6 +979,7 @@
 				REALITYPAYTIME:REALITYPAYTIME,
 				SHPAY:SHPAY,
 				SHPAYTIME:SHPAYTIME,
+				SHPAYTIMEENT:SHPAYTIMEENT,
 				FNOTE:FNOTE
 			},
 			dataType: 'json',

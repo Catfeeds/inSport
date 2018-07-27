@@ -69,9 +69,9 @@
 						<table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">	
 							<thead>
 								<tr>
-									<th class="center" style="width:35px;">
+									<%--<th class="center" style="width:35px;">
 									<label class="pos-rel"><input type="checkbox" class="ace" id="zcheckbox" /><span class="lbl"></span></label>
-									</th>
+									</th>--%>
 									<th class="center" style="width:50px;">序号</th>
 									<th class="center">收款日期</th>
 									<th class="center">收款金额</th>
@@ -93,9 +93,9 @@
 									<c:if test="${QX.cha == 1 }">
 									<c:forEach items="${varList}" var="var" varStatus="vs">
 										<tr ondblclick="record_Show('${var.PROCEEDSRECEIPTS_ID}')">
-											<td class='center'>
+											<%--<td class='center'>
 												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.PROCEEDSRECEIPTS_ID}" class="ace" /><span class="lbl"></span></label>
-											</td>
+											</td>--%>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
 											<td class='center'>${fn:substring(var.PROCEEDSDATE, 0, 10)}</td>
 											<td class='center'>${var.PROCEEDSNUM}</td>

@@ -24,6 +24,7 @@
 		FILE_PASSWORD,
 		FILE_ISENCTYPT,
 		FILE_ISPRIVATE,
+		FILE_ISDOWN,
 		FILEMEANS_ID
 	</sql>
 
@@ -44,6 +45,7 @@
 		#{FILE_PASSWORD},
 		#{FILE_ISENCTYPT},
 		#{FILE_ISPRIVATE},
+		#{FILE_ISDOWN},
 		#{FILEMEANS_ID}
 	</sql>
 
@@ -98,12 +100,23 @@
         update
         <include refid="tableName"></include>
         set
+        FILE_ISDOWN = #{FILE_ISDOWN},
         FILE_ISENCTYPT = #{FILE_ISENCTYPT},
         FILE_READUSERS = #{FILE_READUSERS},
         FILE_PASSWORD = #{FILE_PASSWORD}
         where
         FILEMEANS_ID = #{FILEMEANS_ID}
     </update>
+
+    <update id="resetPassWord" parameterType="pd">
+        update
+        TB_FILEMEANS
+        set
+        FILE_PASSWORD = '123'
+        where
+        FILEMEANS_ID = #{FILEMEANS_ID}
+    </update>
+
     <!--修改密码后，把已经解锁的用户删除-->
     <update id="deletePassUser" parameterType="pd">
         update
@@ -146,20 +159,17 @@
 
     <!-- 列表 -->
     <select id="datalistPage" parameterType="page" resultType="pd">
-        select
-        <include refid="Field"></include>
-        from
-        <include refid="tableName"></include>
+        SELECT u.NAME AS USERNAME, f.* FROM TB_FILEMEANS f
+        LEFT JOIN sys_user u ON f.FILE_CREATEUSER = u.USERNAME
         where 1=1
-        <if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+        <if test="pd.FILE_CREATEUSER != null and pd.FILE_CREATEUSER != ''"><!-- 关键词检索 -->
             and
-            (
-            <!--	根据需求自己加检索条件
-                字段1 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
-                 or
-                字段2 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
-            -->
-            )
+            f.FILE_CREATEUSER IN
+            (SELECT USERNAME FROM sys_user WHERE NAME LIKE '%'+ #{pd.FILE_CREATEUSER} +'%')
+        </if>
+        <if test="pd.keywords != null and pd.keywords != ''"><!-- 关键词检索 -->
+            and
+            f.FILENAME LIKE '%'+ #{pd.keywords} +'%'
         </if>
     </select>
 
@@ -178,37 +188,59 @@
         AND FILE_ISENCTYPT = 0 AND FILE_READUSERS = 'ALL(所有人可见)'
         UNION ALL
         SELECT FILEMEANS_ID FROM TB_FILEMEANS WHERE FILE_CREATEUSER <![CDATA[<> ]]> #{USERNAME}
-        AND FILE_ISENCTYPT = 0 AND FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%'
-        UNION ALL
+        AND FILE_ISENCTYPT = 0 AND FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%')
+        <!-- UNION ALL
         SELECT FILEMEANS_ID FROM TB_FILEMEANS WHERE FILE_CREATEUSER <![CDATA[<> ]]> #{USERNAME}
         AND FILE_ISENCTYPT = 1 AND FILE_PASSUSER LIKE '%'+ #{FILE_READUSERS} +'%')
-        AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
+        AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID} -->
         <if test="keywords != null and keywords != ''"><!-- 关键词检索 -->
             and
             FILENAME LIKE '%' + #{keywords} + '%'
         </if>
+        AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
         ORDER BY FILE_TYPE desc, FILENAME asc
     </select>
 
-    <!-- 自己上传的文件 -->
-    <select id="listENCTYPTByYourself" parameterType="pd" resultType="pd">
+    <!-- 自己上传的加密文件 -->
+    <select id="listEnctyptByYourself" parameterType="pd" resultType="pd">
         SELECT * FROM TB_FILEMEANS WHERE FILE_CREATEUSER = #{USERNAME} AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
         <if test="keywords != null and keywords != ''"><!-- 关键词检索 -->
             and
             FILENAME LIKE '%' + #{keywords} + '%'
         </if>
+        AND FILE_ISENCTYPT = 1
+        ORDER BY FILE_TYPE desc, FILENAME asc
+    </select>
+
+    <!-- 自己上传的不加密文件 -->
+    <select id="listNot_EnctyptByYourself" parameterType="pd" resultType="pd">
+        SELECT * FROM TB_FILEMEANS WHERE FILE_CREATEUSER = #{USERNAME} AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
+        <if test="keywords != null and keywords != ''"><!-- 关键词检索 -->
+            and
+            FILENAME LIKE '%' + #{keywords} + '%'
+        </if>
+        AND FILE_ISENCTYPT = 0
         ORDER BY FILE_TYPE desc, FILENAME asc
     </select>
 
     <select id="listByFILE_CATALOGURL_ID_ENCTYPT" parameterType="pd" resultType="pd">
-        SELECT * FROM TB_FILEMEANS WHERE FILEMEANS_ID IN
+        <!--SELECT * FROM TB_FILEMEANS WHERE FILEMEANS_ID IN
         (select FILEMEANS_ID FROM TB_FILEMEANS WHERE FILE_READUSERS  LIKE '%ALL(所有人可见)%'
         OR FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%')
         AND FILEMEANS_ID NOT IN(
         SELECT FILEMEANS_ID FROM TB_FILEMEANS WHERE
         FILE_PASSUSER LIKE '%'+ #{FILE_READUSERS} +'%') AND FILE_CREATEUSER <![CDATA[<> ]]> #{USERNAME}
         AND FILE_ISENCTYPT = 1 AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
-        <if test="keywords != null and keywords != ''"><!-- 关键词检索 -->
+        <if test="keywords != null and keywords != ''">
+            and
+            FILENAME LIKE '%' + #{keywords} + '%'
+        </if>
+        ORDER BY FILE_TYPE desc, FILENAME asc -->
+        SELECT * FROM TB_FILEMEANS WHERE FILEMEANS_ID IN
+        (select FILEMEANS_ID FROM TB_FILEMEANS WHERE FILE_READUSERS  LIKE '%ALL(所有人可见)%' AND FILE_CREATEUSER <![CDATA[<> ]]> #{USERNAME}
+        OR FILE_READUSERS LIKE '%'+ #{FILE_READUSERS} +'%')
+        AND FILE_ISENCTYPT = 1 AND FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID}
+        <if test="keywords != null and keywords != ''">
             and
             FILENAME LIKE '%' + #{keywords} + '%'
         </if>

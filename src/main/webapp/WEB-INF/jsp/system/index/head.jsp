@@ -57,11 +57,17 @@
 				<!-- #section:basics/navbar.dropdown -->
 				<div class="navbar-buttons navbar-header pull-right" role="navigation">
 					<ul class="nav ace-nav">
-						<li title="待办任务"  onclick="toContract();" class="grey">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+						<li title="付款提醒"  onclick="alert('${notPayCount}')" class="grey">
+							<a data-toggle="dropdown" class="dropdown-toggle" >
+								<i class="ace-icon fa fa-tasks" ></i>
+								<span class="badge badge-grey" style="background-color: palevioletred">${notPayCount}</span>
+								付款提醒</a>
+						</li>
+						<li title="收款提醒"  onclick="toContract();" class="grey">
+							<a data-toggle="dropdown" class="dropdown-toggle" >
 								<i class="ace-icon fa fa-tasks" ></i>
 								<span class="badge badge-grey" style="background-color: palevioletred">${listTimeToContractCount}</span>
-							</a>
+								收款提醒</a>
 
 							<%--<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
 								<li class="dropdown-header">

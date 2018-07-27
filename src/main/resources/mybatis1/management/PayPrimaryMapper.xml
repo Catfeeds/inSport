@@ -13,7 +13,8 @@
 		CONTRACTPIC,	
 		STARTTIME,	
 		ENTTIME,	
-		REMARK,	
+		REMARK,
+		NOTPAY,
 		PAYPRIMARY_ID
 	</sql>
 	
@@ -23,7 +24,8 @@
 		#{CONTRACTPIC},	
 		#{STARTTIME},	
 		#{ENTTIME},	
-		#{REMARK},	
+		#{REMARK},
+		#{CONTRACTPIC},
 		#{PAYPRIMARY_ID}
 	</sql>
 	
@@ -37,6 +39,7 @@
 		STARTTIME,
 		ENTTIME,
 		REMARK,
+		NOTPAY,
 		PAYPRIMARY_ID
 		) values (
 		#{CONTRACT_ID},
@@ -44,6 +47,7 @@
 		#{STARTTIME},
 		#{ENTTIME},
 		#{REMARK},
+		#{CONTRACTPIC},
 		#{PAYPRIMARY_ID}
 		)
 	</insert>
@@ -68,6 +72,15 @@
 			REMARK = #{REMARK},
 		PAYPRIMARY_ID = PAYPRIMARY_ID
 		where 
+		PAYPRIMARY_ID = #{PAYPRIMARY_ID}
+	</update>
+
+	<update id="editNotPay" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set
+		NOTPAY = #{NOTPAY}
+		where
 		PAYPRIMARY_ID = #{PAYPRIMARY_ID}
 	</update>
 	
@@ -117,7 +130,11 @@
 		from 
 		<include refid="tableName"></include>
 	</select>
-	
+
+	<select id="listNotPay" parameterType="pd" resultType="pd">
+		SELECT  PAYPRIMARY_ID FROM TB_PAYPRIMARY WHERE CONVERT(decimal(20,2),ISNULL(NOTPAY, '0.00')) > 0
+	</select>
+
 	<!-- 批量删除 -->
 	<delete id="deleteAll" parameterType="String">
 		delete from

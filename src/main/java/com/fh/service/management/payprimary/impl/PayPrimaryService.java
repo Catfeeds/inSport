@@ -43,7 +43,11 @@ public class PayPrimaryService implements PayPrimaryManager{
 	public void edit(PageData pd)throws Exception{
 		dao.update("PayPrimaryMapper.edit", pd);
 	}
-	
+
+	public void editNotPay(PageData pd)throws Exception{
+		dao.update("PayPrimaryMapper.editNotPay", pd);
+	}
+
 	/**列表
 	 * @param page
 	 * @throws Exception
@@ -61,7 +65,11 @@ public class PayPrimaryService implements PayPrimaryManager{
 	public List<PageData> listAll(PageData pd)throws Exception{
 		return (List<PageData>)dao.findForList("PayPrimaryMapper.listAll", pd);
 	}
-	
+
+	public List<PageData> listNotPay(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("PayPrimaryMapper.listNotPay", pd);
+	}
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

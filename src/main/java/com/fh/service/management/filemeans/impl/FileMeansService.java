@@ -64,6 +64,10 @@ public class FileMeansService implements FileMeansManager{
 		dao.update("FileMeansMapper.editJurisdiction", pd);
 	}
 
+	public void resetPassWord(PageData pd)throws Exception{
+		dao.update("FileMeansMapper.resetPassWord", pd);
+	}
+
 	/**列表
 	 * @param page
 	 * @throws Exception
@@ -91,7 +95,12 @@ public class FileMeansService implements FileMeansManager{
 	}
 
 	public List<PageData> listENCTYPTByYourself(PageData pd)throws Exception{
-		return (List<PageData>)dao.findForList("FileMeansMapper.listENCTYPTByYourself", pd);
+		return (List<PageData>)dao.findForList("FileMeansMapper.listEnctyptByYourself", pd);
+	}
+
+	//自己上传的不加密文件
+	public List<PageData> listNot_EnctyptByYourself(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("FileMeansMapper.listNot_EnctyptByYourself", pd);
 	}
 
 	/**通过id获取数据

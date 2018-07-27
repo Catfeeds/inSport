@@ -10,6 +10,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.fh.service.management.contract.ContractManager;
+import com.fh.service.management.paydetail.PayDetailManager;
+import com.fh.service.management.payprimary.PayPrimaryManager;
 import com.fh.service.management.warn.WarnManager;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -77,7 +79,13 @@ public class LoginController extends BaseController {
 	private WarnManager warnService;
 	@Resource(name="contractService")
 	private ContractManager contractService;
-	
+	@Resource(name="paydetailService")
+	private PayDetailManager paydetailService;
+
+	@Resource(name="payprimaryService")
+	private PayPrimaryManager payprimaryService;
+
+
 	/**访问登录页
 	 * @return
 	 * @throws Exception
@@ -252,6 +260,38 @@ public class LoginController extends BaseController {
 			List<PageData> listTimeToContract = contractService.listTimeToContract(pd);
 			mv.addObject("listTimeToContract",listTimeToContract);
 			mv.addObject("listTimeToContractCount",listTimeToContract.size());
+			//List<PageData> listNotPay = payprimaryService.listNotPay(pd);
+			PageData pd1 = new PageData();
+			pd1.put("OPERATOR",uPd.getString("NAME"));
+			//ArrayList<String> list = new ArrayList<String>();
+			pd1.put("TODAY",dateString);
+			List<PageData> listNotPayDetal = paydetailService.listNotPayDetal(pd1);
+			//通过未付款时间区，拿到明细，对应经办人
+			/*if(listNotPay.size() > 0){
+				for (int i = 0; i < listNotPay.size(); i++) {
+					pd1.put("PAYPRIMARY_ID",listNotPay.get(i).getString("PAYPRIMARY_ID"));
+					pd1.put("TODAY",dateString);
+					listNotPayDetal = paydetailService.listNotPayDetal(pd1);
+					for (int j = 0; j < listNotPayDetal.size(); j++) {
+						if(j == 0){
+							list.add(listNotPayDetal.get(0).getString("CONTRACT_ID"));
+						}
+
+					}
+				}
+			}*/
+			//删除重复的合同id
+			/*for(int i=0;i<list.size();i++){
+				for(int j=i+1;j<list.size();j++){
+					if(list.get(j).equals(list.get(i))){
+						list.remove(j);
+						j--;
+					}
+				}
+			}*/
+			mv.addObject("notPayCount",listNotPayDetal.size());
+			//System.out.println(list.toString()+"-------->");
+			mv.addObject("listNotPayDetal",listNotPayDetal);
 		}catch (Exception e){
 
 		}

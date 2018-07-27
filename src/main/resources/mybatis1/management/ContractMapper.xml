@@ -142,6 +142,16 @@
 		</foreach>
 	</select>
 
+	<select id="listNotPayTime" parameterType="pd" resultType="pd">
+		SELECT * FROM
+		<include refid="tableName"></include>
+		where
+		CONTRACT_ID in
+		<foreach item="item" index="index" collection="#{ArrayDATA_IDS}" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
 	<select id="findMaxNo" parameterType="pd" resultType="pd">
 		SELECT MAX(CONTRACTNUM) as maxNo from TB_CONTRACT WHERE DEPTNAME = #{DEPTNAME}
 	</select>

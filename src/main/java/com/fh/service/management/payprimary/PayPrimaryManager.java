@@ -29,7 +29,9 @@ public interface PayPrimaryManager{
 	 * @throws Exception
 	 */
 	public void edit(PageData pd)throws Exception;
-	
+
+	public void editNotPay(PageData pd)throws Exception;
+
 	/**列表
 	 * @param page
 	 * @throws Exception
@@ -41,7 +43,9 @@ public interface PayPrimaryManager{
 	 * @throws Exception
 	 */
 	public List<PageData> listAll(PageData pd)throws Exception;
-	
+
+	public List<PageData> listNotPay(PageData pd)throws Exception;
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

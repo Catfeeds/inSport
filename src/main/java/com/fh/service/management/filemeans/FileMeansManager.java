@@ -40,6 +40,8 @@ public interface FileMeansManager{
 
 	public void editJurisdiction(PageData pd)throws Exception;
 
+	public void resetPassWord(PageData pd)throws Exception;
+
 	/**列表
 	 * @param page
 	 * @throws Exception
@@ -51,12 +53,14 @@ public interface FileMeansManager{
 	 * @throws Exception
 	 */
 	public List<PageData> listAll(PageData pd)throws Exception;
-	//无加密、已解密、有权限查阅的
+	//无加密、有权限查阅的
 	public List<PageData> listByFILE_CATALOGURL_ID_NotENCTYPT(PageData pd)throws Exception;
 	//加密，有权限，未加密的
 	public List<PageData> listByFILE_CATALOGURL_ID_ENCTYPT(PageData pd)throws Exception;
 	//自己加密的
 	public List<PageData> listENCTYPTByYourself(PageData pd)throws Exception;
+	//自己不加密的
+	public List<PageData> listNot_EnctyptByYourself(PageData pd)throws Exception;
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception

@@ -236,7 +236,8 @@
 					FILE_READUSERS: '${pd.FILE_READUSERS}',
 					FILE_PASSWORD: '${pd.FILE_PASSWORD}',
 					FILE_ISENCTYPT: '${pd.FILE_ISENCTYPT}',
-					FILE_ISPRIVATE: '${pd.FILE_ISPRIVATE}'
+					FILE_ISPRIVATE: '${pd.FILE_ISPRIVATE}',
+					FILE_ISDOWN : '${pd.FILE_ISDOWN}'
 				},
 				dnd: '#dndArea',
 				paste: '#uploader',

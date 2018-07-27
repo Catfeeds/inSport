@@ -220,6 +220,11 @@
                                                                onclick="show_contract('${var.CONTRACT_ID}')">
                                                                 <i class="ace-icon fa fa-laptop bigger-120" title="预览图片"></i>
                                                             </a>--%>
+                                                            <a class="btn btn-xs btn-warning" title="上传合同附件"
+                                                               onclick="selectPic('${var.CONTRACT_ID}');">
+                                                                <i class="ace-icon fa  fa-cloud-upload bigger-120"
+                                                                   title="上传合同附件"></i>
+                                                            </a>
                                                             <c:if test="${QX.edit == 1 }">
                                                                 <a class="btn btn-xs btn-success" title="编辑"
                                                                    onclick="edit('${var.CONTRACT_ID}');">
@@ -380,6 +385,21 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
+
+    function selectPic(CONTRACT_ID){
+        var diag = new top.Dialog();
+        diag.Drag=true;
+        diag.Title ="新增合同文件";
+        diag.URL = '<%=basePath%>contract/goAddPic.do?CONTRACT_ID='+CONTRACT_ID;
+        diag.Width = 800;
+        diag.Height = 490;
+        diag.CancelEvent = function(){ //关闭事件
+
+            diag.close();
+            //tosearch();
+        };
+        diag.show();
+    }
 
     //图片预览效果
     $('[data-magnify]').magnify({

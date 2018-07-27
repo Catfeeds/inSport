@@ -94,6 +94,8 @@ public class PayDetailController extends BaseController {
 			}
 
 		}
+		payprimary.put("NOTPAY",ca);
+		payprimaryService.editNotPay(payprimary); // 保存未付款金额
 		return  json;
 	}
 
@@ -126,6 +128,8 @@ public class PayDetailController extends BaseController {
 				paydetailService.editNoPay(pd1);
 			}
 		}
+		payprimary.put("NOTPAY",ca);
+		payprimaryService.editNotPay(payprimary); // 保存未付款金额
 		return  json;
 	}
 	
