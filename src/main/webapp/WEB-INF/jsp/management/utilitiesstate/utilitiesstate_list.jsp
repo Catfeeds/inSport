@@ -42,20 +42,7 @@
 										</span>
 									</div>
 								</td>
-								<td style="padding-left:2px;"><input class="span10 date-picker" name="lastStart" id="lastStart"  value="" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" style="width:88px;" placeholder="开始日期" title="开始日期"/></td>
-								<td style="padding-left:2px;"><input class="span10 date-picker" name="lastEnd" name="lastEnd"  value="" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" style="width:88px;" placeholder="结束日期" title="结束日期"/></td>
-								<td style="vertical-align:top;padding-left:2px;">
-								 	<select class="chosen-select form-control" name="name" id="id" data-placeholder="请选择" style="vertical-align:top;width: 120px;">
-									<option value=""></option>
-									<option value="">全部</option>
-									<option value="">1</option>
-									<option value="">2</option>
-								  	</select>
-								</td>
-								<c:if test="${QX.cha == 1 }">
 								<td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="tosearch();"  title="检索"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
-								</c:if>
-								<c:if test="${QX.toExcel == 1 }"><td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="toExcel();" title="导出到EXCEL"><i id="nav-search-icon" class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td></c:if>
 							</tr>
 						</table>
 						<!-- 检索  -->
@@ -70,23 +57,8 @@
 									<th class="center">付款方名称(水电费)</th>
 									<th class="center">应收款时间(水电费)</th>
 									<th class="center">应收金额(水电费)</th>
-									<th class="center">滞纳金率</th>
 									<th class="center">实际收款时间(水电费)</th>
 									<th class="center">实际收款金额(水电费)</th>
-									<th class="center">上个月总电量读数</th>
-									<th class="center">本月总电量读数</th>
-									<th class="center">本月总用电量</th>
-									<th class="center">本月电费</th>
-									<th class="center">实总价</th>
-									<th class="center">上个月水量总读数</th>
-									<th class="center">本月水量总读数</th>
-									<th class="center">本月总用水量</th>
-									<th class="center">本月水费费用</th>
-									<th class="center">本月水费总费用</th>
-									<th class="center">滞纳金</th>
-									<th class="center">合同id</th>
-									<th class="center">时间段id</th>
-									<th class="center">发票项id</th>
 									<th class="center">操作</th>
 								</tr>
 							</thead>
@@ -105,23 +77,8 @@
 											<td class='center'>${var.PAYERNAME}</td>
 											<td class='center'>${var.PAYTIME}</td>
 											<td class='center'>${var.RECEIVABLE}</td>
-											<td class='center'>${var.OVERDUE}</td>
 											<td class='center'>${var.RECEIVABL_PAYTIME}</td>
 											<td class='center'>${var.RECEIVABLE_REALITY}</td>
-											<td class='center'>${var.LASTMONTH_SUM_E}</td>
-											<td class='center'>${var.THISMONTH_SUM_E}</td>
-											<td class='center'>${var.NUMBER_SUM_E}</td>
-											<td class='center'>${var.TOTAL_SUM_E}</td>
-											<td class='center'>${var.REALITY_TOTAL_SUM_E}</td>
-											<td class='center'>${var.LASTMONTH_SUM_W}</td>
-											<td class='center'>${var.THISMONTH_SUM_W}</td>
-											<td class='center'>${var.NUMBER_SUM_W}</td>
-											<td class='center'>${var.TOTAL_SUM_W}</td>
-											<td class='center'>${var.REALITY_TOTAL_SUM_W}</td>
-											<td class='center'>${var.OVERDUENUM}</td>
-											<td class='center'>${var.CONTRACT_ID}</td>
-											<td class='center'>${var.PROCEEDSTIME_ID}</td>
-											<td class='center'>${var.INVOICE_ID}</td>
 											<td class="center">
 												<c:if test="${QX.edit != 1 && QX.del != 1 }">
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
@@ -189,12 +146,7 @@
 						<table style="width:100%;">
 							<tr>
 								<td style="vertical-align:top;">
-									<c:if test="${QX.add == 1 }">
-									<a class="btn btn-mini btn-success" onclick="add();">新增</a>
-									</c:if>
-									<c:if test="${QX.del == 1 }">
-									<a class="btn btn-mini btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" title="批量删除" ><i class='ace-icon fa fa-trash-o bigger-120'></i></a>
-									</c:if>
+									<a class="btn btn-mini btn-success" onclick="add('${pd.CONTRACT_ID}');">新增</a>
 								</td>
 								<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
 							</tr>
@@ -241,7 +193,6 @@
 			$("#Form").submit();
 		}
 		$(function() {
-		
 			//日期框
 			$('.date-picker').datepicker({
 				autoclose: true,
@@ -288,28 +239,23 @@
 		});
 		
 		//新增
-		function add(){
-			 top.jzts();
-			 var diag = new top.Dialog();
-			 diag.Drag=true;
-			 diag.Title ="新增";
-			 diag.URL = '<%=basePath%>utilitiesstate/goAdd.do';
-			 diag.Width = 450;
-			 diag.Height = 355;
-			 diag.Modal = true;				//有无遮罩窗口
-			 diag. ShowMaxButton = true;	//最大化按钮
-		     diag.ShowMinButton = true;		//最小化按钮
-			 diag.CancelEvent = function(){ //关闭事件
-				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-					 if('${page.currentPage}' == '0'){
-						 tosearch();
-					 }else{
-						 tosearch();
-					 }
-				}
+		function add(CONTRACT_ID){
+			//alert(LINVOICE_ID);
+			top.jzts();
+			var diag = new top.Dialog();
+			diag.Drag = true;
+			diag.Title = "添加水电费项";
+			diag.URL = '<%=basePath%>expense/goAdd?CONTRACT_ID='+CONTRACT_ID;
+			diag.Width = window.innerWidth * 1.3;
+			diag.Height = 1700;
+			diag.Modal = true;				//有无遮罩窗口
+			diag.ShowMaxButton = true;	//最大化按钮
+			diag.ShowMinButton = true;		//最小化按钮
+			diag.CancelEvent = function () { //关闭事件
+				window.location.reload();
 				diag.close();
-			 };
-			 diag.show();
+			};
+			diag.show();
 		}
 		
 		//删除
@@ -331,16 +277,14 @@
 			 var diag = new top.Dialog();
 			 diag.Drag=true;
 			 diag.Title ="编辑";
-			 diag.URL = '<%=basePath%>utilitiesstate/goEdit.do?UTILITIESSTATE_ID='+Id;
-			 diag.Width = 450;
-			 diag.Height = 355;
+			 diag.URL = '<%=basePath%>expense/goEdit.do?UTILITIESSTATE_ID='+Id;
+			 diag.Width = window.innerWidth * 1.3;
+			 diag.Height = 1700;
 			 diag.Modal = true;				//有无遮罩窗口
 			 diag. ShowMaxButton = true;	//最大化按钮
 		     diag.ShowMinButton = true;		//最小化按钮 
 			 diag.CancelEvent = function(){ //关闭事件
-				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-					 tosearch();
-				}
+				 window.location.reload();
 				diag.close();
 			 };
 			 diag.show();

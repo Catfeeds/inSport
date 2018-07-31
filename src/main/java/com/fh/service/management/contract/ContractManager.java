@@ -37,7 +37,9 @@ public interface ContractManager{
 	 * @throws Exception
 	 */
 	public List<PageData> list(Page page)throws Exception;
-	
+
+	public List<PageData> isEwlistPage(Page page)throws Exception;
+
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception
@@ -64,6 +66,8 @@ public interface ContractManager{
 	 * @throws Exception
 	 */
 	public List<PageData> listNotUtili(PageData pd)throws Exception;
+
+	public List<PageData> listTimeTicket(PageData pd)throws Exception;
 
 	/**
 	 * 未付款押金项

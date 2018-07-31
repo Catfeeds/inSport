@@ -110,36 +110,6 @@
 				$("#BILLER").focus();
 			return false;
 			}
-			if($("#ITEMID").val()==""){
-				$("#ITEMID").tips({
-					side:3,
-		            msg:'请输入项目',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#ITEMID").focus();
-			return false;
-			}
-			if($("#FNOTE").val()==""){
-				$("#FNOTE").tips({
-					side:3,
-		            msg:'请输入备注',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#FNOTE").focus();
-			return false;
-			}
-			if($("#CONTRACT_ID").val()==""){
-				$("#CONTRACT_ID").tips({
-					side:3,
-		            msg:'请输入合同id',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#CONTRACT_ID").focus();
-			return false;
-			}
 			$("#Form").submit();
 			$("#zhongxin").hide();
 			$("#zhongxin2").show();

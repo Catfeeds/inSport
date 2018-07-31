@@ -40,6 +40,10 @@ public class ExpenseService implements ExpenseManager{
 		dao.delete("ExpenseMapper.deleteByEWAndINvID", pd);
 	}
 
+	public void deleteByUtiliID(PageData pd)throws Exception{
+		dao.delete("ExpenseMapper.deleteByUtiliID", pd);
+	}
+
 	/**修改
 	 * @param pd
 	 * @throws Exception
@@ -74,12 +78,16 @@ public class ExpenseService implements ExpenseManager{
 		return (List<PageData>)dao.findForList("ExpenseMapper.listAll", pd);
 	}
 
-	public List<PageData> listWaByInvoiceId(PageData pd)throws Exception{
-		return (List<PageData>)dao.findForList("ExpenseMapper.listWaByInvoiceId", pd);
+	public List<PageData> listWaByUtilitiesId(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ExpenseMapper.listWaByUtilitiesId", pd);
 	}
 
-	public List<PageData> listElByInvoiceId(PageData pd)throws Exception{
-		return (List<PageData>)dao.findForList("ExpenseMapper.listElByInvoiceId", pd);
+	public List<PageData> listElByUtilitiesId(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ExpenseMapper.listElByUtilitiesId", pd);
+	}
+
+	public List<PageData> listLastExpense(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ExpenseMapper.listLastExpense", pd);
 	}
 
 	/**通过id获取数据

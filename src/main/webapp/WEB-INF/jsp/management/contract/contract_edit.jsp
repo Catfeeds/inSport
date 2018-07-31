@@ -228,10 +228,8 @@
 											</c:forEach>
 										</select>
 									</th>
-									<th  ><label>招待票：</label></th>
-									<th  ><input type="text" readonly="readonly" style="width: 150px" value="${pd.INVITATIONTICKET}"
-												 class="input-text"  name="INVITATIONTICKET"
-												 id="INVITATIONTICKET"></th>
+									<th  ></th>
+									<th  ></th>
 								</tr>
 								<tr class="active">
 									<th  ><label>合同类型：</label></th>
@@ -262,7 +260,18 @@
 												 class="input-text"  name="OVERDUE"
 												 id="OVERDUE"></th>
 								</tr>
-
+								<tr style="display:none;" id="ticket">
+									<th  ><label>招待票：</label></th>
+									<th  ><input type="number"  style="width: 150px" value="${pd.INVITATIONTICKET}"
+												 class="input-text"  name="INVITATIONTICKET"
+												 id="INVITATIONTICKET"></th>
+									<th  ><label>活动开始时间：</label></th>
+									<th  ><input type="date" style="width: 150px;height: 31px" value="${pd.SHOW_TIME}"
+												 class="input-text"  name="SHOW_TIME"
+												 id="SHOW_TIME"></th>
+									<th  ></th>
+									<th  ></th>
+								</tr>
 								</tbody>
 							</table>
 
@@ -382,9 +391,9 @@
 										<c:set var="LINVOICE_ID" value="0"/>
 									</c:if>
 									<th  colspan="2">
-										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="添加水电费项"
+										<%--<a style="margin-left: 10px" class="btn btn-xs btn-success" title="添加水电费项"
 										   onclick="addUtilities('${pd.CONTRACT_ID}','${var.PROCEEDSTIME_ID}','${var1.INVOICE_ID}','${LINVOICE_ID}','${pd.CONTRACTOFNAME}','${pd2.OVERDUE}','${var1.PAYERNAME}')">
-											<i class="ace-icon fa fa-pencil-square-o bigger-120" title="添加水电费项">查看水电费项</i></a>
+											<i class="ace-icon fa fa-pencil-square-o bigger-120" title="添加水电费项">查看水电费项</i></a>--%>
 										<a class="btn btn-xs blue" title="确认修改"
 											 onclick="editInvoice('${var1.INVOICE_ID}');">
 										<i class="ace-icon fa fa-cog bigger-120" title="确认修改">确认修改</i></a>
@@ -1651,9 +1660,9 @@
 		}
 		var FNAME = $("#CONTRACTCLASSIFY").find("option:selected").attr("name");
 		if (FNAME == "大型体育赛事场地租赁" || FNAME == "文艺演出场地租赁"){
-			$("#INVITATIONTICKET").removeAttr("readonly");
+			$("#ticket").css("display","");
 		}else {
-			$("#INVITATIONTICKET").attr("readonly","readonly");
+			$("#ticket").css("display","none");
 		}
 		var CONTRACT_ID = '${pd.CONTRACT_ID}';
 		showPic(CONTRACT_ID);
@@ -1711,9 +1720,9 @@
 	$("#CONTRACTCLASSIFY").change(function(){
 		var FNAME = $("#CONTRACTCLASSIFY").find("option:selected").attr("name");
 		if (FNAME == "大型体育赛事场地租赁" || FNAME == "文艺演出场地租赁"){
-			$("#INVITATIONTICKET").removeAttr("readonly");
+			$("#ticket").css("display","");
 		}else {
-			$("#INVITATIONTICKET").attr("readonly","readonly");
+			$("#ticket").css("display","none");
 		}
 	})
 

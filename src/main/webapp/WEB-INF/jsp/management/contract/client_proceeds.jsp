@@ -225,7 +225,7 @@
 				});
 			}
 		});
-		$("#PROCEEDSNUM").val(PROCEEDSNUM);
+		$("#PROCEEDSNUM").val(PROCEEDSNUM.toFixed(2));
 	}
 
 	function toProceeds(){

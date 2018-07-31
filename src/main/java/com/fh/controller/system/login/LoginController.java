@@ -260,6 +260,7 @@ public class LoginController extends BaseController {
 			List<PageData> listTimeToContract = contractService.listTimeToContract(pd);
 			mv.addObject("listTimeToContract",listTimeToContract);
 			mv.addObject("listTimeToContractCount",listTimeToContract.size());
+
 			//List<PageData> listNotPay = payprimaryService.listNotPay(pd);
 			PageData pd1 = new PageData();
 			pd1.put("OPERATOR",uPd.getString("NAME"));
@@ -292,6 +293,10 @@ public class LoginController extends BaseController {
 			mv.addObject("notPayCount",listNotPayDetal.size());
 			//System.out.println(list.toString()+"-------->");
 			mv.addObject("listNotPayDetal",listNotPayDetal);
+			//获取活动时间前3天的合同，提醒拿票
+			List<PageData> listTimeTicket = contractService.listTimeTicket(pd1);
+			mv.addObject("ticketCount",listTimeTicket.size());
+			mv.addObject("listTimeTicket",listTimeTicket);
 		}catch (Exception e){
 
 		}

@@ -57,6 +57,10 @@ public class ContractService implements ContractManager{
 		return (List<PageData>)dao.findForList("ContractMapper.datalistPage", page);
 	}
 
+	public List<PageData> isEwlistPage(Page page)throws Exception{
+		return (List<PageData>)dao.findForList("ContractMapper.isEwlistPage", page);
+	}
+
 	public List<PageData> datalistPageByDept(Page page)throws Exception{
 		return (List<PageData>)dao.findForList("ContractMapper.datalistPageByDept", page);
 	}
@@ -73,6 +77,10 @@ public class ContractService implements ContractManager{
 	 */
 	public List<PageData> listNotInvoice(PageData pd)throws Exception{
 		return (List<PageData>)dao.findForList("ContractMapper.listNotInvoice", pd);
+	}
+
+	public List<PageData> listTimeTicket(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ContractMapper.listTimeTicket", pd);
 	}
 
 	/**

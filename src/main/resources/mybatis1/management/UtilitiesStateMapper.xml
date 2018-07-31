@@ -146,11 +146,12 @@
 
 	<!-- 列表 -->
 	<select id="datalistPage" parameterType="page" resultType="pd">
-		select
+		select top 10000000
 		<include refid="Field"></include>
 		from 
 		<include refid="tableName"></include>
 		where 1=1
+		AND CONTRACT_ID = #{pd.CONTRACT_ID}
 		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
 			and
 				(
@@ -161,6 +162,7 @@
 				-->
 				)
 		</if>
+		ORDER BY NUM
 	</select>
 	
 	<!-- 列表(全部) -->

@@ -26,6 +26,8 @@ public interface ExpenseManager{
 
 	public void deleteByEWAndINvID(PageData pd)throws Exception;
 
+	public void deleteByUtiliID(PageData pd)throws Exception;
+
 	/**修改
 	 * @param pd
 	 * @throws Exception
@@ -48,9 +50,14 @@ public interface ExpenseManager{
 	 */
 	public List<PageData> listAll(PageData pd)throws Exception;
 
-	public List<PageData> listWaByInvoiceId(PageData pd)throws Exception;
+	public List<PageData> listWaByUtilitiesId(PageData pd)throws Exception;
 
-	public List<PageData> listElByInvoiceId(PageData pd)throws Exception;
+	public List<PageData> listElByUtilitiesId(PageData pd)throws Exception;
+
+	/*
+	通过合同id，获取最新的水电项明细
+	 */
+	public List<PageData> listLastExpense(PageData pd)throws Exception;
 
 	/**通过id获取数据
 	 * @param pd

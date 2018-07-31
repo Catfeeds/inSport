@@ -50,8 +50,8 @@ public class UtilitiesStateController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd = utilitiesstateService.findByIdWithPname(pd);	//根据ID读取
-		List<PageData> listEl = expenseService.listElByInvoiceId(pd);
-		List<PageData> listWa = expenseService.listWaByInvoiceId(pd);
+		List<PageData> listEl = expenseService.listElByUtilitiesId(pd);
+		List<PageData> listWa = expenseService.listWaByUtilitiesId(pd);
 		mv.setViewName("management/utilitiesstate/printPage");
 		mv.addObject("pd", pd);
 		mv.addObject("listWa", listWa);
@@ -114,6 +114,7 @@ public class UtilitiesStateController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		utilitiesstateService.delete(pd);
+		expenseService.deleteByUtiliID(pd);
 		out.write("success");
 		out.close();
 	}

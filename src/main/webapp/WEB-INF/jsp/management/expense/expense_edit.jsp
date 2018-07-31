@@ -54,7 +54,7 @@
 							</tr>
 							<c:if test="${not empty listEl }">
 							<c:forEach items="${listEl}" var="var" varStatus="vs">
-							<tr class="center">
+							<tr id="tr${var.EXPENSE_ID}" class="center">
 								<td style="padding-left:2px;">
 									<input type="number" style="width: 50px" value="${var.METERNUM}"
 										   class="input-text"  name="E_METERNUM"
@@ -155,7 +155,7 @@
 							</tr>
 							<c:if test="${not empty listWa }">
 							<c:forEach items="${listWa}" var="var" varStatus="vs">
-								<tr class="center">
+								<tr id="tr${var.EXPENSE_ID}" class="center">
 									<td style="padding-left:2px;">
 										<input type="number" style="width: 50px" value="${var.METERNUM}"
 											   class="input-text"  name="W_METERNUM"
@@ -235,17 +235,23 @@
 							<tbody>
 							<tr class="success">
 								<th class="center"><label>周期(水电费)：</label></th>
-								<th colspan="6"><input type="date" style="width: 150px;height: 31px" value="${pd.STARTTIME}"
-														  class="input-text"  name="STARTTIME" readonly
+								<th colspan="6"><input type="date" style="width: 150px;height: 31px" value="${utiPd.STARTTIME}"
+														  class="input-text"  name="STARTTIME"
 														  id="STARTTIME"> 至
-									<input type="date" style="width: 150px;height: 31px" value="${pd.ENDTIME}" readonly
+									<input type="date" style="width: 150px;height: 31px" value="${utiPd.ENDTIME}"
 										   class="input-text"  name="ENDTIME"
 										   id="ENDTIME">
 								</th>
 							</tr>
 							<tr class="success">
 								<th class="center"><label>付款方名称(水电费)：</label></th>
-								<th class="center"><input type="text" style="width: 150px" value="${pd.PAYERNAME}"
+								<th class="center"><input type="text" style="width: 150px"
+														<c:if test="${utiPd.PAYERNAME == ''||utiPd.PAYERNAME ==  null}">
+														  	value="${conPd.CONTRACTOFNAME}"
+														</c:if>
+														<c:if test="${utiPd.PAYERNAME != ''&& utiPd.PAYERNAME !=  null}">
+														    value="${utiPd.PAYERNAME}"
+														</c:if>
 														  class="input-text"  name="PAYERNAME"
 														  id="PAYERNAME"></th>
 
@@ -318,6 +324,8 @@
 		<script type="text/javascript">
 		$(top.hangge());
 
+		var UTILITIESSTATE_ID = '${utiPd.UTILITIESSTATE_ID}'
+
 		function print(UTILITIESSTATE_ID,INVOICE_ID){
 			window.open("<%=basePath%>/utilitiesstate/printPage.do?UTILITIESSTATE_ID="+UTILITIESSTATE_ID+"&INVOICE_ID="+INVOICE_ID, "", 'left=250,top=150,width=1150,height=700,toolbar=no,menubar=no,status=no,scrollbars=yes,resizable=yes');
 		}
@@ -374,7 +382,8 @@
 				//beforeSend: validateData,
 				cache: false,
 				success: function (data) {
-					window.location.reload();
+					alert("修改成功");
+					//window.location.reload();
 				}
 			});
 		}
@@ -433,7 +442,8 @@
 				//beforeSend: validateData,
 				cache: false,
 				success: function (data) {
-					window.location.reload();
+					alert("保存成功");
+					//window.location.reload();
 				}
 			});
 		}
@@ -558,20 +568,21 @@
 			});
 			var tr = "";
 			tr += '<tr class="success center"><td><label><input type="number" style="width: 50px;"  class="input-text" id="mn_e'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 110px;"  class="input-text" id="lm_e'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 110px;" onchange="calExpDif(\'_e'+uuid+'\')" class="input-text" id="tm_e'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 110px;"  class="input-text" name="E_LASTMONTH" id="lm_e'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 110px;" onchange="calExpDif(\'_e'+uuid+'\')"  name="E_THISMONTH"  class="input-text" id="tm_e'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 50px;"   class="input-text" id="ra_e'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 50px;"  class="input-text" id="va_e'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 100px;" onclick="calExpDif(\'_e'+uuid+'\')" class="input-text" id="nu_e'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 100px;" onclick="calExpDif(\'_e'+uuid+'\')" name="E_NUMBER"  class="input-text" id="nu_e'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 80px;"  class="input-text" id="pr_e'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 110px;"  onclick="calExpDif(\'_e'+uuid+'\')" class="input-text" id="to_e'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 110px;"  onclick="calExpDif(\'_e'+uuid+'\')" name="E_TOTAL"  class="input-text" id="to_e'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 50px;" onchange="calExpDif(\'_e'+uuid+'\')" class="input-text" id="il_e'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 110px;"  class="input-text" id="rto_e'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 110px;" name="E_REALITY_TOTAL" class="input-text" id="rto_e'+uuid+'"></td>';
 			tr += '<td> <a class="btn btn-xs btn-success" title="保存" onclick="saveEl(\''+uuid+'\');">' +
 					'<i class="ace-icon fa fa-check-square-o bigger-110" title="保存">保存</i></a></th>';
 			tr += '</tr>';
 			$("#el").before(tr);
 			tr = "";
+
 		}
 
 		//添加水费表单
@@ -592,20 +603,48 @@
 			});
 			var tr = "";
 			tr += '<tr class="success center"><td><label><input type="number" style="width: 50px;"  class="input-text" id="mn_w'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 110px;"  class="input-text" id="lm_w'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 110px;" onchange="calExpDif(\'_w'+uuid+'\')" class="input-text" id="tm_w'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 110px;" name="W_LASTMONTH" class="input-text" id="lm_w'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 110px;" onchange="calExpDif(\'_w'+uuid+'\')" name="W_THISMONTH" class="input-text" id="tm_w'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 50px;"  class="input-text" id="ra_w'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 50px;"  class="input-text" id="va_w'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 100px;" onclick="calExpDif(\'_w'+uuid+'\')" class="input-text" id="nu_w'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 100px;" onclick="calExpDif(\'_w'+uuid+'\')" name="W_NUMBER"  class="input-text" id="nu_w'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 80px;"  class="input-text" id="pr_w'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 110px;" onclick="calExpDif(\'_w'+uuid+'\')" class="input-text" id="to_w'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 110px;" onclick="calExpDif(\'_w'+uuid+'\')" name="W_TOTAL" class="input-text" id="to_w'+uuid+'"></td>';
 			tr += '<td><label><input type="number" style="width: 50px;" onchange="calExpDif(\'_w'+uuid+'\')" class="input-text" id="il_w'+uuid+'"></td>';
-			tr += '<td><label><input type="number" style="width: 110px;"  class="input-text" id="rto_w'+uuid+'"></td>';
+			tr += '<td><label><input type="number" style="width: 110px;" name="W_REALITY_TOTAL" class="input-text" id="rto_w'+uuid+'"></td>';
 			tr += '<td> <a class="btn btn-xs btn-success" title="保存" onclick="saveWa(\''+uuid+'\');">' +
 					'<i class="ace-icon fa fa-check-square-o bigger-110" title="保存">保存</i></a></th>';
 			tr += '</tr>';
 			$("#wa").before(tr);
 			tr = "";
+			/*
+			 <td style="padding-left:2px;">
+			 <input type="number" style="width: 110px" value="${var.LASTMONTH}"
+			 class="input-text"  name="W_LASTMONTH"
+			 id="lm${var.EXPENSE_ID}">
+			 </td>
+			 <td style="padding-left:2px;">
+			 <input type="number" style="width: 110px" value="${var.THISMONTH}"
+			 class="input-text"  name="W_THISMONTH"  onchange="calExpDif('${var.EXPENSE_ID}')"
+			 id="tm${var.EXPENSE_ID}">
+			 </td>
+			 <td style="padding-left:2px;">
+			 <input type="number" style="width: 100px" value="${var.NUMBER}"
+			 class="input-text"  name="W_NUMBER" onclick="calExpDif('${var.EXPENSE_ID}')"
+			 id="nu${var.EXPENSE_ID}">
+			 </td>
+			 <td style="padding-left:2px;">
+			 <input type="number" style="width: 110px" value="${var.TOTAL}"
+			 class="input-text"  name="W_TOTAL" onclick="calExpDif('${var.EXPENSE_ID}')"
+			 id="to${var.EXPENSE_ID}">
+			 </td>
+			 <td style="padding-left:2px;">
+			 <td style="padding-left:2px;">
+			 <input type="number" style="width: 110px" value="${var.REALITY_TOTAL}"
+			 class="input-text"  name="W_REALITY_TOTAL"
+			 id="rto${var.EXPENSE_ID}">
+			 </td>
+			 */
 		}
 
 		//保存电费
@@ -627,6 +666,7 @@
 				url: '<%=basePath%>expense/saveElectricity',
 				data: {
 					CONTRACT_ID: CONTRACT_ID,
+					UTILITIESSTATE_ID: UTILITIESSTATE_ID,
 					LASTMONTH: LASTMONTH,
 					THISMONTH: THISMONTH,
 					RATIO:RATIO,
@@ -643,8 +683,8 @@
 				//beforeSend: validateData,
 				cache: false,
 				success: function (data) {
-					//alert(uuid_var);
-					window.location.reload();
+					alert("保存成功");
+					//window.location.reload();
 				}
 			});
 		}
@@ -668,6 +708,7 @@
 				url: '<%=basePath%>expense/saveWater',
 				data: {
 					CONTRACT_ID: CONTRACT_ID,
+					UTILITIESSTATE_ID: UTILITIESSTATE_ID,
 					LASTMONTH: LASTMONTH,
 					THISMONTH: THISMONTH,
 					RATIO:RATIO,
@@ -684,8 +725,8 @@
 				//beforeSend: validateData,
 				cache: false,
 				success: function (data) {
-					//alert(uuid_var);
-					window.location.reload();
+					alert("保存成功");
+					//window.location.reload();
 				}
 			});
 		}
@@ -743,7 +784,8 @@
 				dataType: 'json',
 				cache: false,
 				success: function (data) {
-					window.location.reload();
+					//window.location.reload();
+					$("#tr"+EXPENSE_ID).remove();
 				}
 			});
 		}

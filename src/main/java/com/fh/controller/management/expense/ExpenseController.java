@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 
+import com.fh.service.management.contract.ContractManager;
+import com.fh.service.management.proceedscontract.ProceedsContractManager;
 import com.fh.service.management.utilitiesstate.UtilitiesStateManager;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -42,6 +44,12 @@ public class ExpenseController extends BaseController {
 
 	@Resource(name="utilitiesstateService")
 	private UtilitiesStateManager utilitiesstateService;
+
+	@Resource(name="contractService")
+	private ContractManager contractService;
+
+	@Resource(name="proceedscontractService")
+	private ProceedsContractManager proceedscontractService;
 
 	@RequestMapping(value = "/saveElectricity")
 	@ResponseBody
@@ -197,8 +205,8 @@ public class ExpenseController extends BaseController {
 			//-------修改----------
 			pd.put("ISCHANGE","1"); //0为新增，1为修改，2已经被添加到后期且无修改
 			pd.put("INVOICE_ID",LINVOICE_ID);
-			listEl = expenseService.listElByInvoiceId(pd);//搜索上个月的电费项是否有修改
-			listWa = expenseService.listWaByInvoiceId(pd);//搜索上个月的水费项是否有修改
+			listEl = expenseService.listElByUtilitiesId(pd);//搜索上个月的电费项是否有修改
+			listWa = expenseService.listWaByUtilitiesId(pd);//搜索上个月的水费项是否有修改
 			if(listWa.size() > 0) { // 水费有修改数据
 				PageData wPd = new PageData();
 				for (int i = 0; i < listWa.size(); i++) {
@@ -238,8 +246,8 @@ public class ExpenseController extends BaseController {
 			//-------新增----------
 			pd.put("ISCHANGE","0"); //0为新增，1为修改，2已经被添加到后期且无修改
 			pd.put("INVOICE_ID",LINVOICE_ID);
-			listEl = expenseService.listElByInvoiceId(pd);//搜索上个月的电费项是否新增
-			listWa = expenseService.listWaByInvoiceId(pd);//搜索上个月的水费项是否新增
+			listEl = expenseService.listElByUtilitiesId(pd);//搜索上个月的电费项是否新增
+			listWa = expenseService.listWaByUtilitiesId(pd);//搜索上个月的水费项是否新增
 			if(listEl.size() > 0){ // 上个月有新增电费数据
 				PageData ePd = new PageData();
 				for (int i = 0; i < listEl.size(); i++) {
@@ -302,15 +310,46 @@ public class ExpenseController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		List<PageData> listEl = expenseService.listElByInvoiceId(pd);
-		List<PageData> listWa = expenseService.listWaByInvoiceId(pd);
-		PageData utiPd = utilitiesstateService.findByInvoiceId(pd);
-		mv.setViewName("management/expense/expense_edit");
-		mv.addObject("msg", "save");
+		pd.put("UTILITIESSTATE_ID",this.get32UUID());
+		List<PageData> listLastExpense = expenseService.listLastExpense(pd);
+		if(listLastExpense.size() > 0){
+			PageData ewPd = new PageData();
+			for (int i = 0; i < listLastExpense.size(); i++) {
+				ewPd.put("EXPENSE_ID", this.get32UUID());
+				ewPd.put("LASTMONTH", listLastExpense.get(i).getString("THISMONTH"));
+				ewPd.put("RATIO", listLastExpense.get(i).getString("RATIO"));
+				ewPd.put("FVALUE", listLastExpense.get(i).getString("FVALUE"));
+				ewPd.put("PRICE", listLastExpense.get(i).getString("PRICE"));
+				ewPd.put("ISLOSS", Integer.parseInt(listLastExpense.get(i).get("ISLOSS").toString()));
+				ewPd.put("METERNUM", listLastExpense.get(i).getString("METERNUM"));
+				ewPd.put("ISWATER", listLastExpense.get(i).getString("ISWATER"));
+				ewPd.put("NUMBER", "0");
+				ewPd.put("TOTAL", "0");
+				ewPd.put("ISCHANGE", "0");
+				ewPd.put("REALITY_TOTAL", "0");
+				ewPd.put("ISCHANGE", "0");
+				ewPd.put("CONTRACT_ID", pd.getString("CONTRACT_ID"));
+				ewPd.put("UTILITIESSTATE_ID", pd.getString("UTILITIESSTATE_ID"));
+				expenseService.save(ewPd);
+			}
+		}
+		PageData conPd = contractService.findById(pd);
+		mv.addObject("conPd", conPd);
+		PageData proceePd = proceedscontractService.findByContractId(pd);
+		pd.put("OVERDUE",proceePd.getString("OVERDUE"));
+		pd.put("RECEIVABLE_REALITY","0.00");
+		pd.put("OVERDUENUM","0.00");
+		pd.put("PAYERNAME",conPd.getString("CONTRACTOFNAME"));
+		utilitiesstateService.save(pd);
+		PageData utiPd = utilitiesstateService.findById(pd);
+		mv.addObject("utiPd", utiPd);
+		List<PageData> listEl = expenseService.listElByUtilitiesId(pd);//搜索上个月的电费项是否有修改
+		List<PageData> listWa = expenseService.listWaByUtilitiesId(pd);//搜索上个月的水费项是否有修改
 		mv.addObject("listWa", listWa);
 		mv.addObject("listEl", listEl);
+		mv.setViewName("management/expense/expense_edit");
+		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
-		mv.addObject("utiPd", utiPd);
 		return mv;
 	}
 
@@ -319,8 +358,8 @@ public class ExpenseController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		List<PageData> listEl = expenseService.listElByInvoiceId(pd);
-		List<PageData> listWa = expenseService.listWaByInvoiceId(pd);
+		List<PageData> listEl = expenseService.listElByUtilitiesId(pd);
+		List<PageData> listWa = expenseService.listWaByUtilitiesId(pd);
 		PageData utiPd = utilitiesstateService.findByInvoiceId(pd);
 		mv.setViewName("management/expense/readUtili");
 		mv.addObject("listWa", listWa);
@@ -339,9 +378,14 @@ public class ExpenseController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd = expenseService.findById(pd);	//根据ID读取
+		PageData utiPd = utilitiesstateService.findById(pd);
+		mv.addObject("utiPd", utiPd);
+		List<PageData> listEl = expenseService.listElByUtilitiesId(pd);//搜索上个月的电费项是否有修改
+		List<PageData> listWa = expenseService.listWaByUtilitiesId(pd);//搜索上个月的水费项是否有修改
 		mv.setViewName("management/expense/expense_edit");
 		mv.addObject("msg", "edit");
+		mv.addObject("listWa", listWa);
+		mv.addObject("listEl", listEl);
 		mv.addObject("pd", pd);
 		return mv;
 	}	

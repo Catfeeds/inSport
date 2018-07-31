@@ -24,6 +24,7 @@
 		METERNUM,
 		ISCHANGE,
 		N_EXPENSE_ID,
+		UTILITIESSTATE_ID,
 		EXPENSE_ID
 	</sql>
 	
@@ -44,6 +45,7 @@
 		#{METERNUM},
 		#{ISCHANGE},
 		#{N_EXPENSE_ID},
+		#{UTILITIESSTATE_ID},
 		#{EXPENSE_ID}
 	</sql>
 
@@ -64,6 +66,13 @@
 		<include refid="tableName"></include>
 		where 
 			EXPENSE_ID = #{EXPENSE_ID}
+	</delete>
+
+	<delete id="deleteByUtiliID" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where
+		UTILITIESSTATE_ID = #{UTILITIESSTATE_ID}
 	</delete>
 
 	<delete id="deleteByEWAndINvID" parameterType="pd">
@@ -130,26 +139,32 @@
 			EXPENSE_ID = #{EXPENSE_ID}
 	</select>
 
-	<select id="listElByInvoiceId" parameterType="pd" resultType="pd">
+	<select id="listLastExpense" parameterType="pd" resultType="pd">
+		SELECT * FROM TB_EXPENSE WHERE UTILITIESSTATE_ID IN (
+		SELECT TOP 1 UTILITIESSTATE_ID FROM TB_UTILITIESSTATE WHERE CONTRACT_ID = #{CONTRACT_ID} ORDER BY NUM DESC)
+		ORDER BY NUM
+	</select>
+
+	<select id="listElByUtilitiesId" parameterType="pd" resultType="pd">
 		select
 		<include refid="Field"></include>
 		from
 		<include refid="tableName"></include>
 		where
-		INVOICE_ID = #{INVOICE_ID} AND ISWATER = '电费'
+		UTILITIESSTATE_ID = #{UTILITIESSTATE_ID} AND ISWATER = '电费'
 		<if test="ISCHANGE != null and ISCHANGE != ''">
 		AND ISCHANGE = #{ISCHANGE}
 		</if>
 		ORDER BY NUM
 	</select>
 
-	<select id="listWaByInvoiceId" parameterType="pd" resultType="pd">
+	<select id="listWaByUtilitiesId" parameterType="pd" resultType="pd">
 		select
 		<include refid="Field"></include>
 		from
 		<include refid="tableName"></include>
 		where
-		INVOICE_ID = #{INVOICE_ID} AND ISWATER = '水费'
+		UTILITIESSTATE_ID = #{UTILITIESSTATE_ID} AND ISWATER = '水费'
 		<if test="ISCHANGE != null and ISCHANGE != ''">
 			AND ISCHANGE = #{ISCHANGE}
 		</if>

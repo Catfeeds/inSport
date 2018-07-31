@@ -228,6 +228,9 @@ public class ContractController extends BaseController {
 			//pd.put("CONTRACT_ID", this.get32UUID());	//主键
 			proceedscontractService.save(pd2);
 		}
+		if ("大型体育赛事场地租赁".equals(pd.getString("CONTRACTCLASSIFY")) || "文艺演出场地租赁".equals(pd.getString("CONTRACTCLASSIFY")) ){
+			pd.put("ISTICKET","0");
+		}
 		PageData pd3 = new PageData();
 		pd3.put("WARN_ID",get32UUID());
 		pd3.put("WARNNAMEID",pd.getString("OPERATOR"));
@@ -481,6 +484,25 @@ public class ContractController extends BaseController {
 		return mv;
 	}
 
+	/**列表
+	 * @param page
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/isEwlistPage")
+	public ModelAndView isEwlistPage(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表Contract");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		page.setPd(pd);
+		List<PageData>	varList = contractService.isEwlistPage(page);
+		mv.setViewName("management/contract/contract_isEw");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
+		return mv;
+	}
 
 	@RequestMapping(value="/listNotProceeds")
 	public ModelAndView listNotProceeds(Page page) throws Exception{

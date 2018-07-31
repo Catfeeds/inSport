@@ -57,6 +57,13 @@
 				<!-- #section:basics/navbar.dropdown -->
 				<div class="navbar-buttons navbar-header pull-right" role="navigation">
 					<ul class="nav ace-nav">
+
+						<li title="招待票提醒"  onclick="alert('${ticketCount}')" class="grey">
+							<a data-toggle="dropdown" class="dropdown-toggle" >
+								<i class="ace-icon fa fa-tasks" ></i>
+								<span class="badge badge-grey" style="background-color: palevioletred">${ticketCount}</span>
+								招待票提醒</a>
+						</li>
 						<li title="付款提醒"  onclick="alert('${notPayCount}')" class="grey">
 							<a data-toggle="dropdown" class="dropdown-toggle" >
 								<i class="ace-icon fa fa-tasks" ></i>
