@@ -22,6 +22,11 @@
 <body class="no-skin">
 
 	<!-- /section:basics/navbar.layout -->
+	<div class="main-container" id="main-container">
+		<!-- /section:basics/sidebar -->
+		<div class="main-content">
+			<div class="main-content-inner">
+				<div class="page-content">
 					<div class="row" style="width: 30%;float: left;">
 						<div class="col-xs-12">
 							
@@ -93,13 +98,17 @@
 						</div>
 						<!-- /.col -->
 					</div>
-					<div id="divIframe" class="row" style="width: 67%;height:550px;float: left;margin-left: 10px">
+					<div class="row" style="width: 67%;height: 580px; float: left;margin-left: 10px">
 						<iframe
 								name="treeFrame" id="treeFrame" frameborder="0"
-								src="<%=basePath%>bill/invoPrint?INVOICE_ID=${pd.INVOICE_ID}"
+								src="<%=basePath%>bill/utiliPrint?UTILITIESSTATE_ID=${pd.UTILITIESSTATE_ID}"
 								style="margin:0 auto;width:100%;height:100%;"></iframe>
 					</div>
 					<!-- /.row -->
+				</div>
+				<!-- /.page-content -->
+			</div>
+		</div>
 		<!-- /.main-content -->
 
 		<!-- 返回顶部 -->
@@ -125,9 +134,6 @@
 	<script type="text/javascript" src="static/js/jquery.tips.js"></script>
 	<script type="text/javascript">
 		$(top.hangge());//关闭加载状态
-
-		divIframe
-
 		//检索
 		function tosearch(){
 			top.jzts();

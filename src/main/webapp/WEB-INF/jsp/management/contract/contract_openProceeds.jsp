@@ -59,9 +59,9 @@
                                     <tr class="center">
                                         <td style="padding-left:2px;">时间</td>
                                         <td style="padding-left:2px;">租金金额</td>
-                                        <td style="padding-left:2px;">水电费</td>
+                                       <%-- <td style="padding-left:2px;">水电费</td>--%>
                                         <td style="padding-left:2px;">租金滞纳金</td>
-                                        <td style="padding-left:2px;">水电费滞纳金</td>
+                                      <%--  <td style="padding-left:2px;">水电费滞纳金</td>--%>
                                         <td style="padding-left:2px;">应收款总金额</td>
                                         <td style="padding-left:2px;">实际收款总金额</td>
                                         <td style="padding-left:2px;">未收款金额</td>
@@ -84,15 +84,15 @@
                                                         </c:if>
                                                     </p>
                                                 </td>
-                                                <td style="padding-left:2px;">
+                                               <%-- <td style="padding-left:2px;">
                                                     <p> ${var1.URECEIVABLE}</p>
-                                                </td>
+                                                </td>--%>
                                                 <td style="padding-left:2px;">
                                                     <p>  ${var1.OVERDUE}</p>
                                                 </td>
-                                                <td style="padding-left:2px;">
+                                               <%-- <td style="padding-left:2px;">
                                                     <p>   ${var1.OVERDUENUM}</p>
-                                                </td>
+                                                </td>--%>
                                                 <td style="padding-left:2px;">
                                                     <p>   ${var1.SUM_IU}</p>
                                                 </td>

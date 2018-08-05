@@ -70,7 +70,7 @@
                     <div class="col-xs-12">
 
                         <!-- 检索  -->
-                        <form action="contract/listNotProceeds.do" method="post" name="Form" id="Form">
+                        <form action="contract/listTimeTicket.do" method="post" name="Form" id="Form">
                             <%--<table style="margin-top:5px;">
                                 <tr>
                                     <td>
@@ -139,7 +139,7 @@
                                     <th class="center">客户联系人姓名</th>
                                     <th class="center">联系电话</th>
                                     <th class="center">项目</th>
-                                    <th class="center">合同金额</th>
+                                    <th class="center">招待票(张)</th>
                                     <th class="center">操作</th>
                                 </tr>
                                 </thead>
@@ -161,24 +161,12 @@
                                                     <td class='center'>${var.CLIENT}</td>
                                                     <td class='center'>${var.TELEPHONE}</td>
                                                     <td class='center'>${var.PROJECT}</td>
-                                                    <td class='center'>${var.CONTRACTPIC}</td>
+                                                    <td class='center'>${var.INVITATIONTICKET}</td>
                                                     <td class="center">
-                                                            <c:if test="${var.CONTRACTTYPES == '付款合同' }">
-                                                                <a class="btn btn-xs btn-success" title="打开付款表格"
-                                                                   onclick="openPayT('${var.CONTRACT_ID}')">
-                                                                    <i class="ace-icon fa fa-calendar bigger-120" title="打开付款表格"></i>
-                                                                </a>
-                                                            </c:if>
-                                                            <c:if test="${var.CONTRACTTYPES == '收款合同' }">
-                                                                <a class="btn btn-xs" style="background-color: lightgoldenrodyellow" title="打开收款表格"
-                                                                   onclick="openOfficeT('${var.CONTRACT_ID}')">
-                                                                    <i class="ace-icon fa fa-calendar bigger-120" title="打开收款表格"></i>
-                                                                </a>
-                                                            </c:if>
-                                                            <%--<a class="btn btn-xs btn-info" title="预览图片"
-                                                               onclick="show_contract('${var.CONTRACT_ID}')">
-                                                                <i class="ace-icon fa fa-laptop bigger-120" title="预览图片"></i>
-                                                            </a>--%>
+                                                        <a class="btn btn-xs btn-danger" style="background-color: red" title="取票"
+                                                           onclick="getTicket('${var.CONTRACT_ID}')">
+                                                            <i class="ace-icon glyphicon glyphicon-tags bigger-120 " title="取票">取票</i>
+                                                        </a>
                                                     </td>
                                                 </tr>
 
@@ -248,87 +236,24 @@
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
 
-    //图片预览效果
-    $('[data-magnify]').magnify({
-        headToolbar: [
-            'close'
-        ],
-        initMaximized: true
-    });
 
-    function showAlltd(value) {
-        //$(value).prop("checked");
-        if($(value).prop("checked")){
-
-        }
-    }
-
-    function selectDate(){
-        var option = "";
-        var now = new Date();
-        var year=now.getFullYear();
-        //$("#CONTRACTCLASSIFY").find("option").remove();
-        for(var a=0;a<=15;a++){
-            option += "<option value=" + year +">" + year +"</option>";
-            //document.write("<option>"+year+"</option>");
-            year=year-1;
-
-        }
-        $("#YEAR").append(option);
-       /* for(var i=0;i < listCheClassify.length;i++){
-            option += "<option id="+listCheClassify[i].FITEMID+" value="+listCheClassify[i].FNAME+
-                    " name="+listCheClassify[i].FNAME+">"+listCheClassify[i].FNAME+"</option>";
-        }
-        $("#CONTRACTCLASSIFY").append(option);*/
-    }
-
-    selectDate();
-
-    function changeColor(CONTRACT_ID) {
-        $("#imgList").html('');
-        var tr = document.getElementsByTagName("tr");
-        for(var i = 0; i < tr.length ; i ++){ // 从第二行开始遍历，i初始为1，递增6
-            tr[i].style.backgroundColor = "";
-        }
-        $("#"+CONTRACT_ID).css("background-color","#CCCC99");
-
-    }
-
-    function list_one(CONTRACT_ID,CONTRACTTYPES,CONTRACTNAME) {
-        $("#iframe").attr("src","contract/list_one?CONTRACT_ID="+CONTRACT_ID+"&CONTRACTTYPES="+CONTRACTTYPES+"&CONTRACTNAME="+CONTRACTNAME);
-        $("#iframe").css("display","");
-    }
-
-    //图片效果
-    jQuery(function ($) {
-        var $overflow = '';
-        var colorbox_params = {
-            rel: 'colorbox',
-            reposition: true,
-            scalePhotos: true,
-            scrolling: false,
-            previous: '<i class="ace-icon fa fa-arrow-left"></i>',
-            next: '<i class="ace-icon fa fa-arrow-right"></i>',
-            close: '&times;',
-            current: '{current} of {total}',
-            maxWidth: '100%',
-            maxHeight: '100%',
-            onOpen: function () {
-                $overflow = document.body.style.overflow;
-                document.body.style.overflow = 'hidden';
-            },
-            onClosed: function () {
-                document.body.style.overflow = $overflow;
-            },
-            onComplete: function () {
-                $.colorbox.resize();
+    function getTicket(CONTRACT_ID){
+        bootbox.confirm("确定取票?", function (result) {
+            if (result) {
+                $.ajax({
+                    type: "POST",
+                    url: '<%=basePath%>contract/getTicket',
+                    data: {CONTRACT_ID: CONTRACT_ID},
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        tosearch();
+                    }
+                });
             }
-        };
+        });
 
-        $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
-        $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange fa-spin'></i>");//let's add a custom loading icon
-
-    });
+    }
 
     //检索
     function tosearch() {
@@ -381,203 +306,7 @@
         });
     });
 
-    function showPic(CONTRACT_ID) {
-        $.ajax({
-            type: "POST",
-            url: '<%=basePath%>contractpicture/listOneContractPic',
-            data: {CONTRACT_ID: CONTRACT_ID},
-            dataType: 'json',
-            cache: false,
-            success: function (data) {
-                $("#imgList").html('');
-                var count = 0;	//总数
-                var html = '';
-                var res = data.listOnePic;
-                for (var i = 0; i < res.length; i++) {
-                    html += '<li>' +
-                            '<a data-magnify="gallery"' +
-                            ' data-caption="Paraglider flying over Aurlandfjord, Norway by framedbythomas" href="<%=basePath%>' + res[i].URL_PIC + '">' +
-                            '<img width="160;" height="160";   src="<%=basePath%>' + res[i].URL_PIC + '" alt="">' +
-                            '</a>' +
-                            '<div style="width: 100%;height: 25px" align="center" >' +
-                            '<button  onclick="delPic('+"'"+res[i].CONTRACTPICTURE_ID+"','"+CONTRACT_ID+"'"+')" style="width: 45px;height: 20px;margin-top:2px" >删除</button>' +
-                            '</div>'+
-                            '</li>'+ ''
-                }
-                $("#imgList").append(html);
 
-            }
-        });
-    }
-
-    function delPic(CONTRACTPICTURE_ID, CONTRACT_ID) {
-        bootbox.confirm("确定要删除该相片吗?", function (result) {
-            if (result) {
-                $.ajax({
-                    type: "POST",
-                    url: '<%=basePath%>contractpicture/delete.do?tm=' + new Date().getTime(),
-                    data: {CONTRACTPICTURE_ID: CONTRACTPICTURE_ID},
-                    dataType: 'json',
-                    //beforeSend: validateData,
-                    cache: false,
-                    success: function (data) {
-                        showPic(CONTRACT_ID);
-                    }
-                });
-            }
-        });
-    }
-
-    function openOfficeT(CONTRACT_ID){
-        top.jzts();
-        var diag = new top.Dialog();
-        diag.Drag = true;
-        diag.Title = "写字楼收款表格";
-        diag.URL = '<%=basePath%>contract/openOfficeT?CONTRACT_ID='+CONTRACT_ID;
-        diag.Width = window.innerWidth * 1.1;
-        diag.Height = window.innerHeight;
-        diag.Modal = true;				//有无遮罩窗口
-        diag.ShowMaxButton = true;	//最大化按钮
-        diag.ShowMinButton = true;		//最小化按钮
-        diag.CancelEvent = function () { //关闭事件
-            //tosearch();
-            diag.close();
-        };
-        diag.show();
-    }
-
-    function openPayT(CONTRACT_ID){
-        top.jzts();
-        var diag = new top.Dialog();
-        diag.Drag = true;
-        diag.Title = "供应商付款表格";
-        diag.URL = '<%=basePath%>contract/openPayT?CONTRACT_ID='+CONTRACT_ID;
-        diag.Width = window.innerWidth * 0.9;
-        diag.Height = window.innerHeight;
-        diag.Modal = true;				//有无遮罩窗口
-        diag.ShowMaxButton = true;	//最大化按钮
-        diag.ShowMinButton = true;		//最小化按钮
-        diag.CancelEvent = function () { //关闭事件
-            //tosearch();
-            diag.close();
-        };
-        diag.show();
-    }
-
-    //新增
-    function add() {
-        top.jzts();
-        var diag = new top.Dialog();
-        diag.Drag = true;
-        diag.Title = "新增";
-        diag.URL = '<%=basePath%>contract/goAdd.do';
-        diag.Width = window.innerWidth * 0.9;
-        diag.Height = window.innerHeight * 0.9;
-        diag.Modal = true;				//有无遮罩窗口
-        diag.ShowMaxButton = true;	//最大化按钮
-        diag.ShowMinButton = true;		//最小化按钮
-        diag.CancelEvent = function () { //关闭事件
-            tosearch();
-            diag.close();
-        };
-        diag.show();
-    }
-
-    //删除
-    function del(Id) {
-        bootbox.confirm("确定要删除吗?", function (result) {
-            if (result) {
-                top.jzts();
-                var url = "<%=basePath%>contract/delete.do?CONTRACT_ID=" + Id + "&tm=" + new Date().getTime();
-                $.get(url, function (data) {
-                    tosearch();
-                });
-            }
-        });
-    }
-
-    //修改
-    function edit(Id) {
-        top.jzts();
-        var diag = new top.Dialog();
-        diag.Drag = true;
-        diag.Title = "编辑";
-        diag.URL = '<%=basePath%>contract/goEdit.do?CONTRACT_ID=' + Id;
-        diag.Width = window.innerWidth * 0.9;
-        diag.Height = window.innerHeight * 0.9;
-        diag.Modal = true;				//有无遮罩窗口
-        diag.ShowMaxButton = true;	//最大化按钮
-        diag.ShowMinButton = true;		//最小化按钮
-        diag.CancelEvent = function () { //关闭事件
-            tosearch();
-            diag.close();
-        };
-        diag.show();
-    }
-
-    function show_contract(CONTRACT_ID){
-        top.jzts();
-        var diag = new top.Dialog();
-        diag.Drag = true;
-        diag.Title = "查阅合同信息";
-        diag.URL = '<%=basePath%>contract/toShowContrct.do?CONTRACT_ID=' + CONTRACT_ID;
-        diag.Width = window.innerWidth * 1.2;
-        diag.Height = window.innerHeight * 1.2;
-        diag.Modal = true;				//有无遮罩窗口
-        diag.ShowMaxButton = true;	//最大化按钮
-        diag.ShowMinButton = true;		//最小化按钮
-        diag.CancelEvent = function () { //关闭事件
-           //tosearch();
-            diag.close();
-        };
-        diag.show();
-    }
-
-    //批量操作
-    function makeAll(msg) {
-        bootbox.confirm(msg, function (result) {
-            if (result) {
-                var str = '';
-                for (var i = 0; i < document.getElementsByName('ids').length; i++) {
-                    if (document.getElementsByName('ids')[i].checked) {
-                        if (str == '') str += document.getElementsByName('ids')[i].value;
-                        else str += ',' + document.getElementsByName('ids')[i].value;
-                    }
-                }
-                if (str == '') {
-                    bootbox.dialog({
-                        message: "<span class='bigger-110'>您没有选择任何内容!</span>",
-                        buttons: {"button": {"label": "确定", "className": "btn-sm btn-success"}}
-                    });
-                    $("#zcheckbox").tips({
-                        side: 1,
-                        msg: '点这里全选',
-                        bg: '#AE81FF',
-                        time: 8
-                    });
-                    return;
-                } else {
-                    if (msg == '确定要删除选中的数据吗?') {
-                        top.jzts();
-                        $.ajax({
-                            type: "POST",
-                            url: '<%=basePath%>contract/deleteAll.do?tm=' + new Date().getTime(),
-                            data: {DATA_IDS: str},
-                            dataType: 'json',
-                            //beforeSend: validateData,
-                            cache: false,
-                            success: function (data) {
-                                $.each(data.list, function (i, list) {
-                                    tosearch();
-                                });
-                            }
-                        });
-                    }
-                }
-            }
-        });
-    }
-    ;
 
     //导出excel
     function toExcel() {

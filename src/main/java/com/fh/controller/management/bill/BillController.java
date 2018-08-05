@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.fh.service.management.invoice.InvoiceManager;
+import com.fh.service.management.utilitiesstate.UtilitiesStateManager;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -42,6 +43,9 @@ public class BillController extends BaseController {
 
 	@Resource(name="invoiceService")
 	private InvoiceManager invoiceService;
+
+	@Resource(name="utilitiesstateService")
+	private UtilitiesStateManager utilitiesstateService;
 	
 	/**保存
 	 * @param
@@ -138,9 +142,49 @@ public class BillController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		List<PageData> listByItemId = billService.listByItemId(pd);
-		PageData findInv = invoiceService.findByInvoiceWithUre(pd);
+		//PageData findInv = invoiceService.findByInvoiceWithUre(pd);
 		mv.setViewName("management/bill/addWarning");
 		mv.addObject("listByItemId", listByItemId);
+		mv.addObject("pd", pd);
+		//mv.addObject("findInv", findInv);
+		return mv;
+	}
+
+	@RequestMapping(value="/invoPrint")
+	public ModelAndView invoPrint()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		PageData findInv = invoiceService.findByInvoiceWithUre(pd);
+		mv.setViewName("management/bill/invoPrint");
+		mv.addObject("pd", pd);
+		mv.addObject("findInv", findInv);
+		return mv;
+	}
+
+
+	@RequestMapping(value="/addUtiliWarn")
+	public ModelAndView addUtiliWarn()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd.put("INVOICE_ID",pd.getString("UTILITIESSTATE_ID"));//转成发票项id
+		List<PageData> listByItemId = billService.listByItemId(pd);
+		PageData findInv = utilitiesstateService.findById(pd);
+		mv.setViewName("management/bill/addUtiliWarn");
+		mv.addObject("listByItemId", listByItemId);
+		mv.addObject("pd", pd);
+		mv.addObject("findInv", findInv);
+		return mv;
+	}
+
+	@RequestMapping(value="/utiliPrint")
+	public ModelAndView utiliPrint()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		PageData findInv = utilitiesstateService.findById(pd);
+		mv.setViewName("management/bill/utiliPrint");
 		mv.addObject("pd", pd);
 		mv.addObject("findInv", findInv);
 		return mv;

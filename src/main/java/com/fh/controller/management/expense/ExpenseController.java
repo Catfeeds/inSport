@@ -388,8 +388,25 @@ public class ExpenseController extends BaseController {
 		mv.addObject("listEl", listEl);
 		mv.addObject("pd", pd);
 		return mv;
-	}	
-	
+	}
+
+
+	@RequestMapping(value="/showExpense")
+	public ModelAndView showExpense()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		PageData utiPd = utilitiesstateService.findById(pd);
+		mv.addObject("utiPd", utiPd);
+		List<PageData> listEl = expenseService.listElByUtilitiesId(pd);//搜索上个月的电费项是否有修改
+		List<PageData> listWa = expenseService.listWaByUtilitiesId(pd);//搜索上个月的水费项是否有修改
+		mv.setViewName("management/expense/showExpense");
+		mv.addObject("listWa", listWa);
+		mv.addObject("listEl", listEl);
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
 	 /**批量删除
 	 * @param
 	 * @throws Exception

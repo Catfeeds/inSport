@@ -145,7 +145,9 @@
                                 <c:choose>
                                     <c:when test="${not empty varList}">
                                             <c:forEach items="${varList}" var="var" varStatus="vs">
-                                                <tr id="${var.CONTRACT_ID}" ondblclick="show_contract('${var.CONTRACT_ID}')" onclick="changeColor('${var.CONTRACT_ID}');list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}','${var.CONTRACTNAME}')">
+                                                <tr id="${var.CONTRACT_ID}"
+                                                    <%--ondblclick="show_contract('${var.CONTRACT_ID}')" --%>
+                                                    onclick="changeColor('${var.CONTRACT_ID}');list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}','${var.CONTRACTNAME}')">
                                                     <td class='center'>
                                                         <label class="pos-rel"><input type='checkbox' name='ids'
                                                                                       value="${var.CONTRACT_ID}"

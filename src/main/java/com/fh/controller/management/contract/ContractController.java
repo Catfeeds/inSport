@@ -533,6 +533,46 @@ public class ContractController extends BaseController {
 		return mv;
 	}
 
+	@RequestMapping(value = "/getTicket")
+	@ResponseBody
+	public Map<String, Object> getTicket(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		contractService.editTicket(pd);
+		json.put("msg","取票状态更改成功！！");
+		return json;
+	}
+
+	@RequestMapping(value="/listTimeTicket")
+	public ModelAndView listTimeTicket(Page page) throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		//System.out.println("用户："+Jurisdiction.getUsername());
+		if(pd.getString("USERNAME") == null || "".equals(pd.getString("USERNAME"))){
+			pd.put("USERNAME",Jurisdiction.getUsername());
+		}
+		PageData userpd = departmentgroupService.findUserlogin(pd);
+		List<PageData>	varList = null;
+		String DNAME = null;
+		//varList = contractService.datalistPageByDept(page);	//列出Contract列表
+		//listTimeToContract
+		pd.put("USERNAME",Jurisdiction.getUsername());
+		PageData uPd = userService.findByUsername(pd);
+		pd.put("OPERATOR",uPd.getString("NAME"));
+		Date currentTime = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = formatter.format(currentTime);
+		pd.put("TODAY",dateString);
+		varList = contractService.listTimeTicket(pd);
+		mv.setViewName("management/contract/listTimeTicket");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
+
 
 	@RequestMapping(value="/toRelevance")
 	public ModelAndView toRelevance(Page page) throws Exception{

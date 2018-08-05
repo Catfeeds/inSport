@@ -263,7 +263,7 @@
 								<th class="center"><input type="number" style="width: 150px" value="${utiPd.RECEIVABLE}"
 														  class="input-text"  name="RECEIVABLE" onclick="calRece()"
 														  id="RECEIVABLE"></th>
-								<th width="20%">滞纳金率：${pd.OVERDUE}</th>
+								<th width="20%">滞纳金率：${utiPd.OVERDUE}</th>
 							</tr>
 							<tr class="success">
 								<th  class="center"><label>滞纳金:</label></th>
@@ -280,6 +280,22 @@
 														  class="input-text"  name="RECEIVABLE_REALITY" value="${utiPd.RECEIVABLE_REALITY}"
 														  id="RECEIVABLE_REALITY"></th>
 
+								<th class="center">
+
+								</th>
+							</tr>
+							<tr class="success">
+								<th  class="center"><label>发票名称:</label></th>
+								<th  class="center"><input type="text" style="width: 150px;height: 31px"
+														   class="input-text"  name="INVOICENAME" value="${utiPd.INVOICENAME}"
+														   id="INVOICENAME"></th>
+
+								<th class="center"><label>开票时间：</label></th>
+								<th class="center"><input type="date" style="width: 150px;height: 31px" value="${utiPd.INVOICETIME}"
+														  class="input-text"  name="INVOICETIME"
+														  id="INVOICETIME"></th>
+								<th class="center"></th>
+								<th class="center"></th>
 								<th class="center">
 									<c:if test="${not empty utiPd}">
 										<a class="btn btn-xs " title="打印通知单" onclick="print('${utiPd.UTILITIESSTATE_ID}','${pd.INVOICE_ID}');">
@@ -339,6 +355,8 @@
 			var PAYTIME = $("#PAYTIME").val();
 			var RECEIVABLE = $("#RECEIVABLE").val();
 			var OVERDUENUM = $("#OVERDUE").val();
+			var INVOICENAME = $("#INVOICENAME").val();
+			var INVOICETIME = $("#INVOICETIME").val();
 			var RECEIVABL_PAYTIME = $("#RECEIVABL_PAYTIME").val();
 			var LASTMONTH_SUM_E = $("#LASTMONTH_SUM_E").text();
 			var THISMONTH_SUM_E = $("#THISMONTH_SUM_E").text();
@@ -364,6 +382,8 @@
 					RECEIVABLE : RECEIVABLE,
 					OVERDUENUM : OVERDUENUM,
 					RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
+					INVOICENAME : INVOICENAME,
+					INVOICETIME : INVOICETIME,
 					LASTMONTH_SUM_E : LASTMONTH_SUM_E,
 					THISMONTH_SUM_E : THISMONTH_SUM_E,
 					NUMBER_SUM_E : NUMBER_SUM_E,
@@ -396,6 +416,8 @@
 			var PAYERNAME = $("#PAYERNAME").val();
 			var PAYTIME = $("#PAYTIME").val();
 			var RECEIVABLE = $("#RECEIVABLE").val();
+			var INVOICENAME = $("#INVOICENAME").val();
+			var INVOICETIME = $("#INVOICETIME").val();
 			var OVERDUENUM = "0.00";
 			var RECEIVABL_PAYTIME = $("#RECEIVABL_PAYTIME").val();
 			var LASTMONTH_SUM_E = $("#LASTMONTH_SUM_E").text();
@@ -421,6 +443,8 @@
 					PAYTIME : PAYTIME,
 					RECEIVABLE : RECEIVABLE,
 					OVERDUENUM : OVERDUENUM,
+					INVOICENAME : INVOICENAME,
+					INVOICETIME : INVOICETIME,
 					RECEIVABL_PAYTIME : RECEIVABL_PAYTIME,
 					LASTMONTH_SUM_E : LASTMONTH_SUM_E,
 					THISMONTH_SUM_E : THISMONTH_SUM_E,

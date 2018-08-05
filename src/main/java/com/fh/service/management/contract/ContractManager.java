@@ -32,6 +32,8 @@ public interface ContractManager{
 
 	public void editRelevance(PageData pd)throws Exception;
 
+	public void editTicket(PageData pd)throws Exception;
+
 	/**列表
 	 * @param page
 	 * @throws Exception

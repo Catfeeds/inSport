@@ -23,6 +23,26 @@
 							}
 						}*/
 						diag.close();
+						//window.location.reload();
+					};
+					diag.show();
+				}
+
+				function toTicket() {
+					//alert("弹出未收款合同");
+					top.jzts();
+					var diag = new top.Dialog();
+					diag.Drag=true;
+					diag.Title ="招待票提醒";
+					diag.URL = '<%=basePath%>contract/listTimeTicket.do';
+					diag.Width = window.innerWidth * 1.2;
+					diag.Height = window.innerHeight * 1.2;
+					diag.Modal = true;				//有无遮罩窗口
+					diag. ShowMaxButton = true;	//最大化按钮
+					diag.ShowMinButton = true;		//最小化按钮
+					diag.CancelEvent = function(){ //关闭事件
+						diag.close();
+						//window.location.reload();
 					};
 					diag.show();
 				}
@@ -58,7 +78,7 @@
 				<div class="navbar-buttons navbar-header pull-right" role="navigation">
 					<ul class="nav ace-nav">
 
-						<li title="招待票提醒"  onclick="alert('${ticketCount}')" class="grey">
+						<li title="招待票提醒"  onclick="toTicket()" class="grey">
 							<a data-toggle="dropdown" class="dropdown-toggle" >
 								<i class="ace-icon fa fa-tasks" ></i>
 								<span class="badge badge-grey" style="background-color: palevioletred">${ticketCount}</span>

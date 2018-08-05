@@ -220,7 +220,7 @@
                                                     </div>
                                                 </li>
                                             </c:if>
-                                            <c:if test="${fn:contains(var.FILE_TYPE,'sheet')}">
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'sheet') || fn:contains(var.FILE_TYPE,'excel')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
 
@@ -333,7 +333,7 @@
                                                     </div>
                                                 </li>
                                             </c:if>
-                                            <c:if test="${fn:contains(var.FILE_TYPE,'sheet')}">
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'sheet')|| fn:contains(var.FILE_TYPE,'excel')}">
                                                 <li style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
 
@@ -429,7 +429,7 @@
                                                     </div>
                                                 </li>
                                             </c:if>
-                                            <c:if test="${fn:contains(var.FILE_TYPE,'sheet')}">
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'sheet')|| fn:contains(var.FILE_TYPE,'excel')}">
                                                 <li id="file${var.FILEMEANS_ID}" style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
                                                             <%--<div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
@@ -537,7 +537,7 @@
                                                     </div>
                                                 </li>
                                             </c:if>
-                                            <c:if test="${fn:contains(var.FILE_TYPE,'sheet')}">
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'sheet')|| fn:contains(var.FILE_TYPE,'excel')}">
                                                 <li id="file${var.FILEMEANS_ID}" style="border:none;margin-top: 30px;margin-left: 15px">
                                                     <div align="center">
                                                         <%--<div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"

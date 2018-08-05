@@ -55,6 +55,7 @@
 									</th>
 									<th class="center" style="width:50px;">序号</th>
 									<th class="center">付款方名称(水电费)</th>
+									<th class="center">时间段(水电费)</th>
 									<th class="center">应收款时间(水电费)</th>
 									<th class="center">应收金额(水电费)</th>
 									<th class="center">实际收款时间(水电费)</th>
@@ -69,12 +70,13 @@
 								<c:when test="${not empty varList}">
 									<c:if test="${QX.cha == 1 }">
 									<c:forEach items="${varList}" var="var" varStatus="vs">
-										<tr>
+										<tr ondblclick="showExpense('${var.UTILITIESSTATE_ID}')">
 											<td class='center'>
 												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.UTILITIESSTATE_ID}" class="ace" /><span class="lbl"></span></label>
 											</td>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
 											<td class='center'>${var.PAYERNAME}</td>
+											<td class='center'>${var.STARTTIME} -- ${var.ENDTIME}</td>
 											<td class='center'>${var.PAYTIME}</td>
 											<td class='center'>${var.RECEIVABLE}</td>
 											<td class='center'>${var.RECEIVABL_PAYTIME}</td>
@@ -84,6 +86,12 @@
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
 												</c:if>
 												<div class="hidden-sm hidden-xs btn-group">
+													<a class="btn btn-xs btn-info" title="打印" onclick="print('${var.UTILITIESSTATE_ID}');">
+														<i class="ace-icon glyphicon glyphicon-print bigger-120" title="打印"></i>
+													</a>
+													<a class="btn btn-xs btn-warning" title="发单管理" onclick="addWarning('${var.UTILITIESSTATE_ID}','${var.CONTRACT_ID}');">
+														<i class="ace-icon fa fa fa-exclamation-circle bigger-120" title="发单管理"></i>
+													</a>
 													<c:if test="${QX.edit == 1 }">
 													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.UTILITIESSTATE_ID}');">
 														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
@@ -102,14 +110,16 @@
 														</button>
 			
 														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+															<a class="btn btn-xs btn-info" title="打印" onclick="print('${var.UTILITIESSTATE_ID}');">
+																<i class="ace-icon glyphicon glyphicon-print bigger-120" title="打印"></i>
+															</a>
+															<a class="btn btn-xs btn-warning" title="发单管理" onclick="addWarning('${var.UTILITIESSTATE_ID}','${var.CONTRACT_ID}');">
+																<i class="ace-icon fa fa fa-exclamation-circle bigger-120" title="发单管理"></i>
+															</a>
 															<c:if test="${QX.edit == 1 }">
-															<li>
-																<a style="cursor:pointer;" onclick="edit('${var.UTILITIESSTATE_ID}');" class="tooltip-success" data-rel="tooltip" title="修改">
-																	<span class="green">
-																		<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-																	</span>
+																<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.UTILITIESSTATE_ID}');">
+																	<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
 																</a>
-															</li>
 															</c:if>
 															<c:if test="${QX.del == 1 }">
 															<li>
@@ -187,6 +197,28 @@
 	<script type="text/javascript" src="static/js/jquery.tips.js"></script>
 	<script type="text/javascript">
 		$(top.hangge());//关闭加载状态
+
+		function addWarning(UTILITIESSTATE_ID,CONTRACT_ID) {
+			top.jzts();
+			var diag = new top.Dialog();
+			diag.Drag=true;
+			diag.Title ="水电费发单管理";
+			diag.URL = '<%=basePath%>bill/addUtiliWarn.do?UTILITIESSTATE_ID='+UTILITIESSTATE_ID+"&CONTRACT_ID="+CONTRACT_ID;
+			diag.Width = window.innerWidth * 0.9;
+			diag.Height = window.innerHeight * 0.9;
+			diag.Modal = true;				//有无遮罩窗口
+			diag. ShowMaxButton = true;	//最大化按钮
+			diag.ShowMinButton = true;		//最小化按钮
+			diag.CancelEvent = function(){ //关闭事件
+				diag.close();
+			};
+			diag.show();
+		}
+
+		function print(UTILITIESSTATE_ID){
+			window.open("<%=basePath%>/utilitiesstate/printPage.do?UTILITIESSTATE_ID="+UTILITIESSTATE_ID, "", 'left=250,top=150,width=1150,height=700,toolbar=no,menubar=no,status=no,scrollbars=yes,resizable=yes');
+		}
+
 		//检索
 		function tosearch(){
 			top.jzts();
@@ -289,7 +321,24 @@
 			 };
 			 diag.show();
 		}
-		
+
+		function showExpense(UTILITIESSTATE_ID){
+			top.jzts();
+			var diag = new top.Dialog();
+			diag.Drag=true;
+			diag.Title ="预览水电情况";
+			diag.URL = '<%=basePath%>expense/showExpense.do?UTILITIESSTATE_ID='+UTILITIESSTATE_ID;
+			diag.Width = window.innerWidth * 1.3;
+			diag.Height = 1700;
+			diag.Modal = true;				//有无遮罩窗口
+			diag. ShowMaxButton = true;	//最大化按钮
+			diag.ShowMinButton = true;		//最小化按钮
+			diag.CancelEvent = function(){ //关闭事件
+				diag.close();
+			};
+			diag.show();
+		}
+
 		//批量操作
 		function makeAll(msg){
 			bootbox.confirm(msg, function(result) {

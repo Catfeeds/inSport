@@ -15,6 +15,17 @@
         </sourceRoots>
       </configuration>
     </facet>
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/spring/ApplicationContext-redis.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring/ApplicationContext-main.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring/ApplicationContext-mvc.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring/ApplicationContext-dataSource.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring/ApplicationContext-shiro.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/WEB-INF/classes" />
