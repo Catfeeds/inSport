@@ -173,11 +173,9 @@
 
 	<!-- 列表 -->
 	<select id="datalistPage" parameterType="page" resultType="pd">
-		select top 100000000
-		c3.*,c1.*
-		from
-		TB_CONTRACT c1
-		LEFT JOIN TB_CLIENT c3 ON c1.CLIENT = c3.CLIENT_ID
+		SELECT TOP 10000000 c1.*,d2.* FROM TB_CONTRACT c1
+		LEFT JOIN TB_DEPARTMENTGROUP d1 ON c1.OPERATOR = d1.DNAME
+		LEFT JOIN TB_DEPARTMENTGROUP d2 ON d1.PID = d2.UID
 		where 1=1
 		<if test="pd.keywords != null and pd.keywords != ''"><!-- 关键词检索 -->
 			and
@@ -195,6 +193,10 @@
 			and
 			CONTRACTNUM LIKE '%'+ #{pd.CONTRACTNUM}+'%' OR CONTRACTNAME LIKE '%'+ #{pd.CONTRACTNUM}+'%'
 			OR CONTRACTOFNAME LIKE '%'+ #{pd.CONTRACTNUM}+'%'
+		</if>
+		<if test="pd.TYPE != null and pd.TYPE != ''"><!-- 关键词检索 -->
+			and
+			CONTRACTTYPES LIKE '%'+ #{pd.TYPE}+'%'
 		</if>
 		<if test="pd.DEPTNAME != null and pd.DEPTNAME != ''"><!-- 关键词检索 -->
 			and
@@ -291,6 +293,41 @@
 		<include refid="Field"></include>
 		from 
 		<include refid="tableName"></include>
+		WHERE 1 = 1
+		<if test="keywords != null and keywords != ''"><!-- 关键词检索 -->
+			and
+			CONTRACTCLASSIFY LIKE '%'+ #{keywords}+'%'
+		</if>
+		<if test="p_treeKey != null and p_treeKey != ''"><!-- 关键词检索 -->
+			and
+			CONTRACTTYPES LIKE '%'+ #{p_treeKey}+'%'
+		</if>
+		<if test="YEAR != null and YEAR != ''"><!-- 关键词检索 -->
+			and
+			FDATE LIKE '%'+ #{YEAR}+'%'
+		</if>
+		<if test="CONTRACTNUM != null and CONTRACTNUM != ''"><!-- 关键词检索 -->
+			and
+			CONTRACTNUM LIKE '%'+ #{CONTRACTNUM}+'%' OR CONTRACTNAME LIKE '%'+ #{CONTRACTNUM}+'%'
+			OR CONTRACTOFNAME LIKE '%'+ #{CONTRACTNUM}+'%'
+		</if>
+		<if test="TYPE != null and TYPE != ''"><!-- 关键词检索 -->
+			and
+			CONTRACTTYPES LIKE '%'+ #{TYPE}+'%'
+		</if>
+		<if test="DEPTNAME != null and DEPTNAME != ''"><!-- 关键词检索 -->
+			and
+			DEPTNAME LIKE '%'+ #{DEPTNAME}+'%'
+		</if>
+		<if test="picStart != null and picStart != ''"><!-- 关键词检索 -->
+			and
+			CONTRACTPIC <![CDATA[ >= ]]> #{picStart}
+		</if>
+		<if test="picEnd != null and picEnd != ''"><!-- 关键词检索 -->
+			and
+			CONTRACTPIC <![CDATA[ <= ]]> #{picEnd}
+		</if>
+		ORDER BY CONTRACTNUM
 	</select>
 
 	<!-- 获取现有签约的公司 -->
@@ -301,6 +338,20 @@
 		SELECT DISTINCT CONTRACT_ID FROM TB_INVOICE WHERE  cast(NOT_RECEIVABLE as  DECIMAL(18,2)) > 0
 		union
 		SELECT DISTINCT CONTRACT_ID FROM TB_DEPOSITINFO WHERE  cast(NOT_RECEIVABLE as  DECIMAL(18,2)) > 0)
+	</select>
+
+	<!-- 获取未付清应付款的公司 -->
+	<select id="listnotPay" parameterType="pd" resultType="pd">
+		SELECT DISTINCT CONTRACTOFNAME FROM TB_CONTRACT WHERE CONTRACT_ID IN (
+		SELECT DISTINCT CONTRACT_ID FROM TB_PAYDETAIL where
+		cast(REALITYPAY as  DECIMAL(18,2)) <![CDATA[<]]>  cast(SHPAY as  DECIMAL(18,2)) )
+	</select>
+
+	<!-- 通过付款方获取未付清应付款项 -->
+	<select id="listnotPayByName" parameterType="pd" resultType="pd">
+		SELECT * FROM TB_PAYDETAIL WHERE CONTRACT_ID IN (
+		SELECT CONTRACT_ID FROM TB_CONTRACT WHERE CONTRACTOFNAME = #{CONTRACTOFNAME})
+		AND cast(REALITYPAY as  DECIMAL(18,2)) <![CDATA[<]]> cast(SHPAY as  DECIMAL(18,2))  ORDER BY NUM
 	</select>
 
 	<!-- 未付款发票项 -->

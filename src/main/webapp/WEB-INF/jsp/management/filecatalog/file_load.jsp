@@ -970,9 +970,8 @@
                     editfile.push($(this).attr("name"));
                 }
             });
-            alert(editfile);
+            //alert(editfile);
             if (editfile.length == 1){
-
                 for (var index = 0; index < editfile.length; index++) {
                     top.jzts();
                     var diag = new top.Dialog();

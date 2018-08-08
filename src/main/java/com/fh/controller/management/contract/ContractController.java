@@ -484,6 +484,65 @@ public class ContractController extends BaseController {
 		return mv;
 	}
 
+
+	/**列表
+	 * @param page
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/listBook")
+	public ModelAndView listBook(Page page) throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		if(pd.getString("USERNAME") == null || "".equals(pd.getString("USERNAME"))){
+			pd.put("USERNAME",Jurisdiction.getUsername());
+		}
+		PageData userpd = departmentgroupService.findUserlogin(pd);
+
+		String DNAME = null;
+		try {
+			DNAME = userpd.getString("DNAME"); //获取部门名称
+		}catch (Exception e){
+			System.out.println("-----------该员工还没分配角色，请分配角色------------");
+			pd.put("ex","该员工还没分配角色，请分配角色");
+		}
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			keywords = URLDecoder.decode(keywords, "UTF-8");
+			pd.put("keywords", keywords.trim());
+		}
+		String TYPE = pd.getString("TYPE");				//关键词检索条件
+		if(null != TYPE && !"".equals(TYPE)){
+			pd.put("TYPE", TYPE.trim());
+		}
+		String p_treeKey = pd.getString("p_treeKey");				//关键词检索条件
+		if(null != p_treeKey && !"".equals(p_treeKey)){
+			p_treeKey = URLDecoder.decode(p_treeKey, "UTF-8");
+			pd.put("p_treeKey", p_treeKey.trim());
+		}
+		page.setPd(pd);
+		List<PageData>	varList = contractService.list(page);
+		List<PageData> listDept = deptnoService.listAll(pd);
+		mv.addObject("listDept", listDept);
+		/*try{
+			if("总经办".equals(DNAME) || "财务部".equals(DNAME) || "综管部".equals(DNAME) ){
+				varList = contractService.list(page);	//列出Contract列表
+
+				mv.addObject("isDept", 1);
+			}else {
+				varList = contractService.datalistPageByDept(page);	//列出Contract列表
+			}
+		}catch (Exception e){
+			System.out.println("-----------该员工还没分配角色，请分配角色------------");
+			pd.put("ex","该员工还没分配角色，请分配角色");
+		}*/
+		mv.setViewName("management/contract/contract_listBook");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
+		return mv;
+	}
+
 	/**列表
 	 * @param page
 	 * @throws Exception
@@ -528,6 +587,36 @@ public class ContractController extends BaseController {
 		pd.put("TODAY",dateString);
 		varList = contractService.listTimeToContract(pd);
 		mv.setViewName("management/contract/listNotProceeds");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
+
+	@RequestMapping(value="/listNotPay")
+	public ModelAndView listNotPay(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表Contract");
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		//System.out.println("用户："+Jurisdiction.getUsername());
+		if(pd.getString("USERNAME") == null || "".equals(pd.getString("USERNAME"))){
+			pd.put("USERNAME",Jurisdiction.getUsername());
+		}
+		PageData userpd = departmentgroupService.findUserlogin(pd);
+		List<PageData>	varList = null;
+		String DNAME = null;
+		//varList = contractService.datalistPageByDept(page);	//列出Contract列表
+		//listTimeToContract
+		pd.put("USERNAME",Jurisdiction.getUsername());
+		PageData uPd = userService.findByUsername(pd);
+		pd.put("OPERATOR",uPd.getString("NAME"));
+		Date currentTime = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = formatter.format(currentTime);
+		pd.put("TODAY",dateString);
+		varList = paydetailService.listNotPayDetal(pd);
+		mv.setViewName("management/contract/listNotPay");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		return mv;

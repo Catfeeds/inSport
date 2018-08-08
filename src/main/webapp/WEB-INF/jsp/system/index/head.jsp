@@ -28,6 +28,24 @@
 					diag.show();
 				}
 
+				function toNotPay() {
+					top.jzts();
+					var diag = new top.Dialog();
+					diag.Drag=true;
+					diag.Title ="未付款合同提醒";
+					diag.URL = '<%=basePath%>contract/listNotPay.do';
+					diag.Width = window.innerWidth * 1.2;
+					diag.Height = window.innerHeight * 1.2;
+					diag.Modal = true;				//有无遮罩窗口
+					diag. ShowMaxButton = true;	//最大化按钮
+					diag.ShowMinButton = true;		//最小化按钮
+					diag.CancelEvent = function(){ //关闭事件
+						diag.close();
+						//window.location.reload();
+					};
+					diag.show();
+				}
+
 				function toTicket() {
 					//alert("弹出未收款合同");
 					top.jzts();
@@ -84,7 +102,7 @@
 								<span class="badge badge-grey" style="background-color: palevioletred">${ticketCount}</span>
 								招待票提醒</a>
 						</li>
-						<li title="付款提醒"  onclick="alert('${notPayCount}')" class="grey">
+						<li title="付款提醒"  onclick="toNotPay()" class="grey">
 							<a data-toggle="dropdown" class="dropdown-toggle" >
 								<i class="ace-icon fa fa-tasks" ></i>
 								<span class="badge badge-grey" style="background-color: palevioletred">${notPayCount}</span>

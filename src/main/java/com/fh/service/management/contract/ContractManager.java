@@ -53,6 +53,16 @@ public interface ContractManager{
 	 */
 	public List<PageData> listConToName(PageData pd)throws Exception;
 
+	/*
+        获取未付清应付款的公司
+         */
+	public List<PageData> listnotPay(PageData pd)throws Exception;
+
+	/*
+            通过付款方获取未付清应付款项
+             */
+	public List<PageData> listnotPayByName(PageData pd)throws Exception;
+
 	/**
 	 * 未付款发票项
 	 * @param

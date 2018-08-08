@@ -77,6 +77,20 @@ public class ContractService implements ContractManager{
 	}
 
 	/**
+	 获取未付清应付款的公司
+	 */
+	public List<PageData> listnotPay(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ContractMapper.listnotPay", pd);
+	}
+
+	/**
+	 通过付款方获取未付清应付款项
+	 */
+	public List<PageData> listnotPayByName(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("ContractMapper.listnotPayByName", pd);
+	}
+
+	/**
 	 未付款发票项
 	 */
 	public List<PageData> listNotInvoice(PageData pd)throws Exception{

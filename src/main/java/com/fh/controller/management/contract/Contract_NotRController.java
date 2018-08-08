@@ -39,8 +39,10 @@ public class Contract_NotRController extends BaseController {
 	@Resource(name="proceedsreceiptsService")
 	private ProceedsReceiptsManager proceedsreceiptsService;
 
+
+	//客户收款controller
 	@RequestMapping(value = "/client_proceeds")
-	public ModelAndView listTree() throws Exception {
+	public ModelAndView client_proceeds() throws Exception {
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
@@ -57,6 +59,30 @@ public class Contract_NotRController extends BaseController {
 		return mv;
 	}
 
+	//付款controller
+	@RequestMapping(value = "/paytoclient")
+	public ModelAndView paytoclient() throws Exception {
+		ModelAndView mv = new ModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		List<PageData> listnotPayByName = null;
+		pd.put("CONTRACTTYPES","收款合同");
+		if(pd.getString("PROCEEDSRECEIPTS_ID") == null || "".equals(pd.getString("PROCEEDSRECEIPTS_ID")) ){
+			pd.put("PROCEEDSRECEIPTS_ID",this.get32UUID());
+		}
+		if(pd.getString("CONTRACTOFNAME") != null && !"".equals(pd.getString("CONTRACTOFNAME"))){
+			listnotPayByName = contractService.listnotPayByName(pd);
+		}
+		//List<PageData> listTop2 = proceedsreceiptsService.listTop2(pd);
+		List<PageData> listnotPay = contractService.listnotPay(pd);
+		mv.setViewName("management/contract/paytoclient");
+		mv.addObject("listnotPayByName", listnotPayByName);
+		mv.addObject("listnotPay", listnotPay);
+		//mv.addObject("listTop2", listTop2);
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
 	@RequestMapping(value="/getNotContract")
 	@ResponseBody
 	public Map<String, Object> getNotContract(Page page) throws Exception{
@@ -69,6 +95,18 @@ public class Contract_NotRController extends BaseController {
 		json.put("listNotInvoice",listNotInvoice);
 		json.put("listNotUtili",listNotUtili);
 		json.put("listNotDeposit",listNotDeposit);
+		json.put("pd",pd);
+		return  json;
+	}
+
+	@RequestMapping(value="/getNotPay")
+	@ResponseBody
+	public Map<String, Object> getNotPay(Page page) throws Exception{
+		Map<String, Object> json = new HashMap<String, Object>();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		List<PageData> listnotPayByName = contractService.listnotPayByName(pd);
+		json.put("listnotPayByName",listnotPayByName);
 		json.put("pd",pd);
 		return  json;
 	}

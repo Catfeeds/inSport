@@ -59,10 +59,16 @@
                                     <tr class="center">
                                         <td style="padding-left:2px;">时间</td>
                                         <td style="padding-left:2px;">总应付金额</td>
-                                        <%--<td style="padding-left:2px;">付款所属时间</td>--%>
+                                        <c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
+                                        <td style="padding-left:2px;">付款所属时间</td>
+                                        </c:if>
                                         <td style="padding-left:2px;">应付款金额</td>
                                         <td style="padding-left:2px;">实际付款金额</td>
                                         <td style="padding-left:2px;">实际付款时间</td>
+                                        <c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
+                                            <td style="padding-left:2px;">尚未付款金额</td>
+                                        </c:if>
+
                                         <td style="padding-left:2px;width: 250px">备注</td>
                                     </tr>
                                     <tr class="center" id="sum" >
@@ -75,9 +81,12 @@
                                         <c:forEach items="${listPayDetail}" var="var1" varStatus="vs1">
                                             <c:if test="${var1.PAYPRIMARY_ID == var.PAYPRIMARY_ID}">
                                                 <tr class="center" style="background-color: #FFFFCC" >
-                                                    <%--<td style="padding-left:2px;">
-                                                            ${var1.SHPAYTIME}
-                                                    </td>--%>
+                                                    <c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
+                                                        <td style="padding-left:2px;">
+                                                                ${var1.SHPAYTIME} -- ${var1.SHPAYTIMEENT}
+                                                        </td>
+                                                    </c:if>
+
                                                     <td style="padding-left:2px;">
                                                             ${var1.SHPAY}
                                                     </td>
@@ -87,6 +96,11 @@
                                                     <td style="padding-left:2px;">
                                                             ${var1.REALITYPAYTIME}
                                                     </td>
+                                                    <c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
+                                                        <td style="padding-left:2px;">
+                                                                ${var1.ONPAYPIC}
+                                                        </td>
+                                                    </c:if>
 
                                                     <td style="padding-left:2px;">
                                                        <p>${var1.FNOTE}</p>
