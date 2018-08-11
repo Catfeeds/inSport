@@ -130,6 +130,17 @@
 				)
 		</if>
 	</select>
+
+	<!-- 列表 -->
+	<select id="officelistPage" parameterType="page" resultType="pd">
+		SELECT top 100000000 c.CONTRACTNAME,c.CONTRACTNUM,c.CONTRACTOFNAME,  i.* FROM TB_INVOICE i
+		LEFT JOIN TB_CONTRACT c ON i.CONTRACT_ID = c.CONTRACT_ID
+		WHERE c.CONTRACTCLASSIFY = '写字楼'
+		<if test="pd.isNot != null and pd.isNot != ''"><!-- 关键词检索 -->
+			AND cast(i.NOT_RECEIVABLE as  DECIMAL(18,2)) > 0
+		</if>
+		ORDER BY c.CONTRACTNUM
+	</select>
 	
 	<!-- 列表(全部) -->
 	<select id="listAll" parameterType="pd" resultType="pd">

@@ -162,6 +162,22 @@ public class FileUpDataController extends BaseController {
 		return json;
 	}
 
+
+	@RequestMapping(value = "/checkIsYour")
+	@ResponseBody
+	public Map<String, Object> checkIsYour(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		PageData filePd = filemeansService.findByUrl(pd);
+		if(filePd.getString("FILE_CREATEUSER").equals(Jurisdiction.getUsername())){
+			json.put("msg","yes");
+		}else {
+			json.put("msg","no");
+		}
+		return json;
+	}
+
 	@RequestMapping(value="/goEditName")
 	public ModelAndView goEditName() throws Exception{
 		ModelAndView mv = this.getModelAndView();

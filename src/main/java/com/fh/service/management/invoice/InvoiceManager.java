@@ -39,7 +39,9 @@ public interface InvoiceManager{
 	 * @throws Exception
 	 */
 	public List<PageData> list(Page page)throws Exception;
-	
+
+	public List<PageData> officelistPage(Page page)throws Exception;
+
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception

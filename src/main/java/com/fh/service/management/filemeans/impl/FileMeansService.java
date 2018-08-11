@@ -110,7 +110,11 @@ public class FileMeansService implements FileMeansManager{
 	public PageData findById(PageData pd)throws Exception{
 		return (PageData)dao.findForObject("FileMeansMapper.findById", pd);
 	}
-	
+
+	public PageData findByUrl(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("FileMeansMapper.findByUrl", pd);
+	}
+
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception

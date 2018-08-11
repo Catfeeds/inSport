@@ -970,26 +970,49 @@
                     editfile.push($(this).attr("name"));
                 }
             });
+
+
             //alert(editfile);
             if (editfile.length == 1){
+                //检查是否为自己上传
                 for (var index = 0; index < editfile.length; index++) {
-                    top.jzts();
-                    var diag = new top.Dialog();
-                    diag.Drag=true;
-                    diag.Title ="修改文件名称";
-                    diag.URL = '<%=basePath%>fileupata/goEditName.do?FILE_URL='+editfile[index];
-                    diag.Width = 450;
-                    diag.Height = 255;
-                    diag.Modal = true;				//有无遮罩窗口
-                    diag. ShowMaxButton = true;	//最大化按钮
-                    diag.ShowMinButton = true;		//最小化按钮
-                    diag.CancelEvent = function(){ //关闭事件
-                        diag.close();
-                        window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
-                    };
-                    diag.show();
-
+                    $.ajax({
+                        async: false,
+                        cache: false,
+                        type: 'POST',
+                        data : {
+                            FILE_URL:editfile[index]
+                        },
+                        //dataType:"String",
+                        url: '<%=basePath%>fileupata/checkIsYour',
+                        success: function (data) {
+                            if(data.msg == 'yes'){
+                                top.jzts();
+                                var diag = new top.Dialog();
+                                diag.Drag=true;
+                                diag.Title ="修改文件名称";
+                                diag.URL = '<%=basePath%>fileupata/goEditName.do?FILE_URL='+editfile[index];
+                                diag.Width = 450;
+                                diag.Height = 255;
+                                diag.Modal = true;				//有无遮罩窗口
+                                diag. ShowMaxButton = true;	//最大化按钮
+                                diag.ShowMinButton = true;		//最小化按钮
+                                diag.CancelEvent = function(){ //关闭事件
+                                    diag.close();
+                                    window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
+                                };
+                                diag.show();
+                            }else {
+                                alert("修改文件名称仅上传人可修改");
+                            }
+                        },
+                        error: function () {
+                            alert("请求失败");
+                        }
+                    });
                 }
+            }else {
+                alert("修改文件名必须为单选");
             }
 
     }

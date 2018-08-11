@@ -170,7 +170,17 @@
 		</if>
 		ORDER BY NUM
 	</select>
-	
+
+	<select id="utilitilistPage" parameterType="page" resultType="pd">
+		SELECT top 1000000 c.CONTRACTNAME,c.CONTRACTNUM,c.CONTRACTOFNAME, u.* FROM TB_UTILITIESSTATE u
+		LEFT JOIN TB_CONTRACT c ON u.CONTRACT_ID = c.CONTRACT_ID
+		WHERE c.CONTRACTCLASSIFY = '写字楼'
+		<if test="pd.isNot != null and pd.isNot != ''"><!-- 关键词检索 -->
+			AND cast(u.NOT_RECEIVABLE as  DECIMAL(18,2)) > 0
+		</if>
+		ORDER BY c.CONTRACTNUM
+	</select>
+
 	<!-- 列表(全部) -->
 	<select id="listAll" parameterType="pd" resultType="pd">
 		select

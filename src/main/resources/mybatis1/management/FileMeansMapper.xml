@@ -157,9 +157,18 @@
         FILEMEANS_ID = #{FILEMEANS_ID}
     </select>
 
+    <select id="findByUrl" parameterType="pd" resultType="pd">
+        select
+        <include refid="Field"></include>
+        from
+        <include refid="tableName"></include>
+        where
+        FILE_URL = #{FILE_URL}
+    </select>
+
     <!-- 列表 -->
     <select id="datalistPage" parameterType="page" resultType="pd">
-        SELECT u.NAME AS USERNAME, f.* FROM TB_FILEMEANS f
+        SELECT top 10000000 u.NAME AS USERNAME, f.* FROM TB_FILEMEANS f
         LEFT JOIN sys_user u ON f.FILE_CREATEUSER = u.USERNAME
         where 1=1
         <if test="pd.FILE_CREATEUSER != null and pd.FILE_CREATEUSER != ''"><!-- 关键词检索 -->
@@ -171,6 +180,7 @@
             and
             f.FILENAME LIKE '%'+ #{pd.keywords} +'%'
         </if>
+        ORDER BY f.FILE_CREATETIME DESC
     </select>
 
     <!-- 列表(全部) -->

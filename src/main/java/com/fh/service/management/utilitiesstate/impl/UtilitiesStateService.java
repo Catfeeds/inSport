@@ -56,7 +56,11 @@ public class UtilitiesStateService implements UtilitiesStateManager{
 	public List<PageData> list(Page page)throws Exception{
 		return (List<PageData>)dao.findForList("UtilitiesStateMapper.datalistPage", page);
 	}
-	
+
+	public List<PageData> utilitilistPage(Page page)throws Exception{
+		return (List<PageData>)dao.findForList("UtilitiesStateMapper.utilitilistPage", page);
+	}
+
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception
