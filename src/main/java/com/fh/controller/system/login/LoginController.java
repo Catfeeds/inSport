@@ -121,7 +121,7 @@ public class LoginController extends BaseController {
 				sb.append(str);
 			}
 		}
-		System.out.println("本机MAC地址:"+sb.toString().toUpperCase());
+		//System.out.println("本机MAC地址:"+sb.toString().toUpperCase());
 		return  sb.toString().toUpperCase();
 	}
 	
@@ -195,8 +195,13 @@ public class LoginController extends BaseController {
 		}else{
 			errInfo = "error";	//缺少参数
 		}
-		/*String mac = getLocalMac(ia);
-		if(!"40-8D-5C-BD-4A-47".equals(getLocalMac(ia))){
+		String mac = getLocalMac(ia);
+		/*if(!"40-8D-5C-BD-4A-47".equals(getLocalMac(ia))){
+			return false;
+		}
+		Calendar date = Calendar.getInstance();
+		String year = String.valueOf(date.get(Calendar.YEAR));
+		if(!"2018".equals(year)){
 			return false;
 		}*/
 		map.put("result", errInfo);

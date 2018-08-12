@@ -127,10 +127,8 @@
 	
 	<!-- 通过ID获取数据 -->
 	<select id="findById" parameterType="pd" resultType="pd">
-		select 
-		<include refid="Field"></include>
-		from 
-		<include refid="tableName"></include>
+		SELECT c.CONTRACTNAME,c.CONTRACTOFNAME, u.* FROM TB_UTILITIESSTATE u
+		LEFT JOIN TB_CONTRACT c ON u.CONTRACT_ID = c.CONTRACT_ID
 		where 
 			UTILITIESSTATE_ID = #{UTILITIESSTATE_ID}
 	</select>

@@ -142,6 +142,7 @@ public class BillController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		List<PageData> listByItemId = billService.listByItemId(pd);
+
 		//PageData findInv = invoiceService.findByInvoiceWithUre(pd);
 		mv.setViewName("management/bill/addWarning");
 		mv.addObject("listByItemId", listByItemId);
@@ -156,6 +157,11 @@ public class BillController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		PageData findInv = invoiceService.findByInvoiceWithUre(pd);
+		SimpleDateFormat formatter =new SimpleDateFormat("yyy年MM月dd日");
+		String dateString = formatter.format(new Date());
+		String dateString3 = formatter.format(new Date().getTime() + 1000*24*60*60*3);
+		pd.put("dateString",dateString);
+		pd.put("dateString3",dateString3);
 		mv.setViewName("management/bill/invoPrint");
 		mv.addObject("pd", pd);
 		mv.addObject("findInv", findInv);
@@ -184,6 +190,11 @@ public class BillController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		PageData findInv = utilitiesstateService.findById(pd);
+		SimpleDateFormat formatter =new SimpleDateFormat("yyy年MM月dd日");
+		String dateString = formatter.format(new Date());
+		String dateString3 = formatter.format(new Date().getTime() + 1000*24*60*60*3);
+		pd.put("dateString",dateString);
+		pd.put("dateString3",dateString3);
 		mv.setViewName("management/bill/utiliPrint");
 		mv.addObject("pd", pd);
 		mv.addObject("findInv", findInv);
