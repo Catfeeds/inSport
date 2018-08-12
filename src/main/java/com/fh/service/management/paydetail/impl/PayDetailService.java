@@ -56,7 +56,11 @@ public class PayDetailService implements PayDetailManager{
 	public List<PageData> list(Page page)throws Exception{
 		return (List<PageData>)dao.findForList("PayDetailMapper.datalistPage", page);
 	}
-	
+
+	public List<PageData> paylistPage(Page page)throws Exception{
+		return (List<PageData>)dao.findForList("PayDetailMapper.paylistPage", page);
+	}
+
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception

@@ -7,6 +7,8 @@ import com.fh.service.management.contract.ContractManager;
 import com.fh.service.management.departmentgroup.DepartmentGroupManager;
 import com.fh.service.management.deptno.DeptnoManager;
 import com.fh.service.management.invoice.InvoiceManager;
+import com.fh.service.management.paydetail.PayDetailManager;
+import com.fh.service.management.payprimary.PayPrimaryManager;
 import com.fh.service.management.proceedsreceipts.ProceedsReceiptsManager;
 import com.fh.service.management.utilitiesstate.UtilitiesStateManager;
 import com.fh.util.Jurisdiction;
@@ -52,6 +54,13 @@ public class ReportsController extends BaseController {
 
 	@Resource(name="utilitiesstateService")
 	private UtilitiesStateManager utilitiesstateService;
+
+	@Resource(name="paydetailService")
+	private PayDetailManager paydetailService;
+
+	@Resource(name="payprimaryService")
+	private PayPrimaryManager payprimaryService;
+
 	/**列表
 	 * @param page
 	 * @throws Exception
@@ -197,6 +206,82 @@ public class ReportsController extends BaseController {
 			pd.put("p_treeKey", p_treeKey.trim());
 		}
 		mv.setViewName("management/reports/officelistnotproceeds");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
+
+	@RequestMapping(value="/listOtherProceeds")
+	public ModelAndView listOtherProceeds(Page page) throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			keywords = URLDecoder.decode(keywords, "UTF-8");
+			pd.put("keywords", keywords.trim());
+		}
+		page.setPd(pd);
+		List<PageData>	varList = invoiceService.otherlistPage(page);
+		mv.setViewName("management/reports/listotherproceeds");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
+	@RequestMapping(value="/listOtherNotProceeds")
+	public ModelAndView listOtherNotProceeds(Page page) throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			keywords = URLDecoder.decode(keywords, "UTF-8");
+			pd.put("keywords", keywords.trim());
+		}
+		pd.put("isNot","get"); // 随便传个值到xml，查询未收款大于0的条件
+		page.setPd(pd);
+		List<PageData>	varList = invoiceService.otherlistPage(page);
+		mv.setViewName("management/reports/listothernotproceeds");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
+	@RequestMapping(value="/listPayDetail")
+	public ModelAndView listPayDetail(Page page) throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			keywords = URLDecoder.decode(keywords, "UTF-8");
+			pd.put("keywords", keywords.trim());
+		}
+		//pd.put("isNot","get"); // 随便传个值到xml，查询未收款大于0的条件
+		page.setPd(pd);
+		List<PageData>	varList = paydetailService.paylistPage(page);
+		mv.setViewName("management/reports/listpaydetail");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
+	@RequestMapping(value="/listNotPayDetail")
+	public ModelAndView listNotPayDetail(Page page) throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			keywords = URLDecoder.decode(keywords, "UTF-8");
+			pd.put("keywords", keywords.trim());
+		}
+		pd.put("isNot","get"); // 随便传个值到xml，查询未收款大于0的条件
+		page.setPd(pd);
+		List<PageData>	varList = paydetailService.paylistPage(page);
+		mv.setViewName("management/reports/listnotpaydetail");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		return mv;

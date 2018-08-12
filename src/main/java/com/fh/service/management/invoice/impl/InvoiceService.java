@@ -65,6 +65,10 @@ public class InvoiceService implements InvoiceManager{
 		return (List<PageData>)dao.findForList("InvoiceMapper.officelistPage", page);
 	}
 
+	public List<PageData> otherlistPage(Page page)throws Exception{
+		return (List<PageData>)dao.findForList("InvoiceMapper.otherlistPage", page);
+	}
+
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception

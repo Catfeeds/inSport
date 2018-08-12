@@ -5,6 +5,8 @@ import com.fh.entity.Page;
 import com.fh.service.management.client.ClientManager;
 import com.fh.service.management.contract.ContractManager;
 import com.fh.service.management.invoice.InvoiceManager;
+import com.fh.service.management.paydetail.PayDetailManager;
+import com.fh.service.management.payprimary.PayPrimaryManager;
 import com.fh.service.management.proceedsreceipts.ProceedsReceiptsManager;
 import com.fh.service.management.utilitiesstate.UtilitiesStateManager;
 import com.fh.util.Jurisdiction;
@@ -45,6 +47,12 @@ public class ToExcelController extends BaseController {
 
 	@Resource(name="utilitiesstateService")
 	private UtilitiesStateManager utilitiesstateService;
+
+	@Resource(name="paydetailService")
+	private PayDetailManager paydetailService;
+
+	@Resource(name="payprimaryService")
+	private PayPrimaryManager payprimaryService;
 
 	/**导出到excel
 	 * @param
@@ -109,9 +117,18 @@ public class ToExcelController extends BaseController {
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
-			vpd.put("var1", varOList.get(i).getString("CONTRACTOFNAME"));	    //1
-			vpd.put("var2", varOList.get(i).getString("CONTRACTNAME"));	    //2
-			vpd.put("var3", varOList.get(i).getString("CONTRACTNUM"));	//3
+			if(i>0){
+				if(!varOList.get(i).get("CONTRACTNUM").toString().equals(varOList.get(i-1).get("CONTRACTNUM").toString())){
+					vpd.put("var1", varOList.get(i).getString("CONTRACTOFNAME"));	    //1
+					vpd.put("var2", varOList.get(i).getString("CONTRACTNAME"));	    //2
+					vpd.put("var3", varOList.get(i).getString("CONTRACTNUM"));	//3
+				}
+			}else {
+				vpd.put("var1", varOList.get(i).getString("CONTRACTOFNAME"));	    //1
+				vpd.put("var2", varOList.get(i).getString("CONTRACTNAME"));	    //2
+				vpd.put("var3", varOList.get(i).getString("CONTRACTNUM"));	//3
+			}
+
 			vpd.put("var4",varOList.get(i).get("STARTTIME").toString() + " -- " + varOList.get(i).get("ENDTIME").toString());	    //4
 			vpd.put("var5", varOList.get(i).getString("RECEIVABLE"));	    //5
 			varList.add(vpd);
@@ -167,18 +184,23 @@ public class ToExcelController extends BaseController {
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
-			vpd.put("var1", varOList.get(i).get("CONTRACTOFNAME").toString());	    //1
-			vpd.put("var2", varOList.get(i).get("CONTRACTNAME").toString());	    //2
-			vpd.put("var3", varOList.get(i).get("CONTRACTNUM").toString());	//3
+			if(i>0){
+				if(!varOList.get(i).get("CONTRACTNUM").toString().equals(varOList.get(i-1).get("CONTRACTNUM").toString())){
+					vpd.put("var1", varOList.get(i).get("CONTRACTOFNAME").toString());	    //1
+					vpd.put("var2", varOList.get(i).get("CONTRACTNAME").toString());	    //2
+					vpd.put("var3", varOList.get(i).get("CONTRACTNUM").toString());	//3
+				}
+			}else {
+				vpd.put("var1", varOList.get(i).get("CONTRACTOFNAME").toString());	    //1
+				vpd.put("var2", varOList.get(i).get("CONTRACTNAME").toString());	    //2
+				vpd.put("var3", varOList.get(i).get("CONTRACTNUM").toString());	//3
+			}
+
 			vpd.put("var4", varOList.get(i).get("STARTTIME").toString() + " -- " + varOList.get(i).get("ENDTIME").toString());	    //4
 			vpd.put("var5", varOList.get(i).get("RECEIVABLE").toString());	    //5
 			vpd.put("var6", varOList.get(i).get("RECEIVABL_PAYTIME").toString());	    //6
 			vpd.put("var7", varOList.get(i).get("RECEIVABLE_REALITY").toString());	    //7
-			if(null == TYPE || "".equals(TYPE) || "z".equals(TYPE)){
-				vpd.put("var8", varOList.get(i).get("RECEIVABLE_REALITY").toString());	    //8
-			}else {
-				vpd.put("var8", varOList.get(i).get("RECEIVABLE_REALITY").toString());	    //8
-			}
+			vpd.put("var8", varOList.get(i).get("NOT_RECEIVABLE").toString());	    //8
 			varList.add(vpd);
 		}
 		dataMap.put("varList", varList);
@@ -233,17 +255,263 @@ public class ToExcelController extends BaseController {
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
-			vpd.put("var1", varOList.get(i).get("CONTRACTOFNAME").toString());	    //1
-			vpd.put("var2", varOList.get(i).get("CONTRACTNAME").toString());	    //2
-			vpd.put("var3", varOList.get(i).get("CONTRACTNUM").toString());	//3
+			if(i>0){
+				if(!varOList.get(i).get("CONTRACTNUM").toString().equals(varOList.get(i-1).get("CONTRACTNUM").toString())){
+					vpd.put("var1", varOList.get(i).get("CONTRACTOFNAME").toString());	    //1
+					vpd.put("var2", varOList.get(i).get("CONTRACTNAME").toString());	    //2
+					vpd.put("var3", varOList.get(i).get("CONTRACTNUM").toString());	//3
+				}
+			}else {
+				vpd.put("var1", varOList.get(i).get("CONTRACTOFNAME").toString());	    //1
+				vpd.put("var2", varOList.get(i).get("CONTRACTNAME").toString());	    //2
+				vpd.put("var3", varOList.get(i).get("CONTRACTNUM").toString());	//3
+			}
+
 			vpd.put("var4", varOList.get(i).get("STARTTIME").toString() + " -- " + varOList.get(i).get("ENDTIME").toString());	    //4
 			vpd.put("var5", varOList.get(i).get("RECEIVABLE").toString());	    //5
 			vpd.put("var6", varOList.get(i).get("RECEIVABL_PAYTIME").toString());	    //6
 			vpd.put("var7", varOList.get(i).get("RECEIVABLE_REALITY").toString());	    //7
-			if(null == TYPE || "".equals(TYPE) || "z".equals(TYPE)){
-				vpd.put("var8", varOList.get(i).get("RECEIVABLE_REALITY").toString());	    //8
+			vpd.put("var8", varOList.get(i).get("NOT_RECEIVABLE").toString());	    //8
+			varList.add(vpd);
+		}
+		dataMap.put("varList", varList);
+		ObjectExcelView erv = new ObjectExcelView();
+		mv = new ModelAndView(erv,dataMap);
+		return mv;
+	}
+
+
+	//其他合同缴费情况
+	@RequestMapping(value="/excel_otherProceeds")
+	public ModelAndView excel_otherProceeds(Page page) throws Exception{
+		ModelAndView mv = new ModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		Map<String,Object> dataMap = new HashMap<String,Object>();
+		List<String> titles = new ArrayList<String>();
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			keywords = URLDecoder.decode(keywords, "UTF-8");
+			pd.put("keywords", keywords.trim());
+		}
+		page.setPd(pd);
+		page.setShowCount(1000000);
+		List<PageData> varOList = invoiceService.otherlistPage(page);
+		pd.put("TYPE","s");
+		titles.add("合同编号");	//1
+		titles.add("合同名称");	//2
+		titles.add("项目");	//3
+		titles.add("合同金额");	//4
+		titles.add("应收金额");	//5
+		titles.add("应收时间");	//6
+		titles.add("缴费时间 ");	//7
+		titles.add("缴费金额");	//8
+		titles.add("仍欠费金额");	//9
+		titles.add("开票名称");	//10
+		titles.add("开票时间");	//11
+		dataMap.put("titles", titles);
+		List<PageData> varList = new ArrayList<PageData>();
+		for(int i=0;i<varOList.size();i++){
+			PageData vpd = new PageData();
+			if(i>0){
+				if(!varOList.get(i).get("CONTRACTNUM").toString().equals(varOList.get(i-1).get("CONTRACTNUM").toString())){
+					vpd.put("var1", varOList.get(i).get("CONTRACTNUM").toString());	    //1
+					vpd.put("var2", varOList.get(i).get("CONTRACTNAME").toString());	    //2
+					vpd.put("var3", varOList.get(i).get("PROJECT").toString());	//3
+					vpd.put("var4", varOList.get(i).get("CONTRACTPIC").toString());	    //4
+				}
 			}else {
-				vpd.put("var8", varOList.get(i).get("RECEIVABLE_REALITY").toString());	    //8
+				vpd.put("var1", varOList.get(i).get("CONTRACTNUM").toString());	    //1
+				vpd.put("var2", varOList.get(i).get("CONTRACTNAME").toString());	    //2
+				vpd.put("var3", varOList.get(i).get("PROJECT").toString());	//3
+				vpd.put("var4", varOList.get(i).get("CONTRACTPIC").toString());	    //4
+			}
+
+			vpd.put("var5", varOList.get(i).get("RECEIVABLE").toString());	    //5
+			vpd.put("var6", varOList.get(i).get("PAYTIME").toString());	    //6
+			vpd.put("var7", varOList.get(i).get("RECEIVABL_PAYTIME").toString());	    //7
+			vpd.put("var8", varOList.get(i).get("RECEIVABLE_REALITY").toString());	    //8
+			vpd.put("var9", varOList.get(i).get("NOT_RECEIVABLE").toString());	    //9
+			vpd.put("var10", varOList.get(i).get("INVOICENAME").toString());	    //10
+			vpd.put("var11", varOList.get(i).get("INVOICETIME").toString());	    //11
+			varList.add(vpd);
+		}
+		dataMap.put("varList", varList);
+		ObjectExcelView erv = new ObjectExcelView();
+		mv = new ModelAndView(erv,dataMap);
+		return mv;
+	}
+
+	//其他合同缴费情况
+	@RequestMapping(value="/excel_otherNotProceeds")
+	public ModelAndView excel_otherNotProceeds(Page page) throws Exception{
+		ModelAndView mv = new ModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		Map<String,Object> dataMap = new HashMap<String,Object>();
+		List<String> titles = new ArrayList<String>();
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			keywords = URLDecoder.decode(keywords, "UTF-8");
+			pd.put("keywords", keywords.trim());
+		}
+		pd.put("isNot","get"); // 随便传个值到xml，查询未收款大于0的条件
+		page.setPd(pd);
+		page.setShowCount(1000000);
+		List<PageData> varOList = invoiceService.otherlistPage(page);
+		pd.put("TYPE","s");
+		titles.add("合同编号");	//1
+		titles.add("合同名称");	//2
+		titles.add("项目");	//3
+		titles.add("合同金额");	//4
+		titles.add("应收金额");	//5
+		titles.add("应收时间");	//6
+		titles.add("缴费时间 ");	//7
+		titles.add("缴费金额");	//8
+		titles.add("仍欠费金额");	//9
+		titles.add("开票名称");	//10
+		titles.add("开票时间");	//11
+		dataMap.put("titles", titles);
+		List<PageData> varList = new ArrayList<PageData>();
+		for(int i=0;i<varOList.size();i++){
+			PageData vpd = new PageData();
+			if(i>0){
+				if(!varOList.get(i).get("CONTRACTNUM").toString().equals(varOList.get(i-1).get("CONTRACTNUM").toString())){
+					vpd.put("var1", varOList.get(i).get("CONTRACTNUM").toString());	    //1
+					vpd.put("var2", varOList.get(i).get("CONTRACTNAME").toString());	    //2
+					vpd.put("var3", varOList.get(i).get("PROJECT").toString());	//3
+					vpd.put("var4", varOList.get(i).get("CONTRACTPIC").toString());	    //4
+				}
+			}else {
+				vpd.put("var1", varOList.get(i).get("CONTRACTNUM").toString());	    //1
+				vpd.put("var2", varOList.get(i).get("CONTRACTNAME").toString());	    //2
+				vpd.put("var3", varOList.get(i).get("PROJECT").toString());	//3
+				vpd.put("var4", varOList.get(i).get("CONTRACTPIC").toString());	    //4
+			}
+
+			vpd.put("var5", varOList.get(i).get("RECEIVABLE").toString());	    //5
+			vpd.put("var6", varOList.get(i).get("PAYTIME").toString());	    //6
+			vpd.put("var7", varOList.get(i).get("RECEIVABL_PAYTIME").toString());	    //7
+			vpd.put("var8", varOList.get(i).get("RECEIVABLE_REALITY").toString());	    //8
+			vpd.put("var9", varOList.get(i).get("NOT_RECEIVABLE").toString());	    //9
+			vpd.put("var10", varOList.get(i).get("INVOICENAME").toString());	    //10
+			vpd.put("var11", varOList.get(i).get("INVOICETIME").toString());	    //11
+			varList.add(vpd);
+		}
+		dataMap.put("varList", varList);
+		ObjectExcelView erv = new ObjectExcelView();
+		mv = new ModelAndView(erv,dataMap);
+		return mv;
+	}
+
+	//付款合同情况
+	@RequestMapping(value="/excel_Pay")
+	public ModelAndView excel_Pay(Page page) throws Exception{
+		ModelAndView mv = new ModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		Map<String,Object> dataMap = new HashMap<String,Object>();
+		List<String> titles = new ArrayList<String>();
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			keywords = URLDecoder.decode(keywords, "UTF-8");
+			pd.put("keywords", keywords.trim());
+		}
+		page.setPd(pd);
+		page.setShowCount(1000000);
+		List<PageData> varOList = paydetailService.paylistPage(page);
+		titles.add("合同编号");	//1
+		titles.add("合同名称");	//2
+		titles.add("项目");	//3
+		titles.add("合同金额");	//4
+		titles.add("应付金额");	//5
+		titles.add("应付时间");	//6
+		titles.add("付款时间");	//7
+		titles.add("付款金额");	//8
+		titles.add("未付款金额");	//9
+		dataMap.put("titles", titles);
+		List<PageData> varList = new ArrayList<PageData>();
+		for(int i=0;i<varOList.size();i++){
+			PageData vpd = new PageData();
+			if(i>0){
+				if(!varOList.get(i).get("CONTRACTNUM").toString().equals(varOList.get(i-1).get("CONTRACTNUM").toString())){
+					vpd.put("var1", varOList.get(i).get("CONTRACTNUM").toString());	    //1
+					vpd.put("var2", varOList.get(i).get("CONTRACTNAME").toString());	    //2
+					vpd.put("var3", varOList.get(i).get("PROJECT").toString());	//3
+				}
+			}else {
+				vpd.put("var1", varOList.get(i).get("CONTRACTNUM").toString());	    //1
+				vpd.put("var2", varOList.get(i).get("CONTRACTNAME").toString());	    //2
+				vpd.put("var3", varOList.get(i).get("PROJECT").toString());	//3
+			}
+			vpd.put("var4", varOList.get(i).get("CONTRACTPIC").toString());	    //4
+			vpd.put("var5", varOList.get(i).get("SHPAY").toString());	    //5
+			vpd.put("var6", varOList.get(i).get("SHPAYTIME").toString());	    //6
+			vpd.put("var7", varOList.get(i).get("REALITYPAYTIME").toString());	    //7
+			vpd.put("var8", varOList.get(i).get("REALITYPAY").toString());	    //8
+			if(varOList.get(i).get("ONPAYPIC") == null){
+				vpd.put("var9", "0.00");	    //9
+			}else {
+				vpd.put("var9", varOList.get(i).get("ONPAYPIC").toString());	    //9
+			}
+			varList.add(vpd);
+		}
+		dataMap.put("varList", varList);
+		ObjectExcelView erv = new ObjectExcelView();
+		mv = new ModelAndView(erv,dataMap);
+		return mv;
+	}
+
+	//未付款合同情况
+	@RequestMapping(value="/excel_NotPay")
+	public ModelAndView excel_NotPay(Page page) throws Exception{
+		ModelAndView mv = new ModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		Map<String,Object> dataMap = new HashMap<String,Object>();
+		List<String> titles = new ArrayList<String>();
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			keywords = URLDecoder.decode(keywords, "UTF-8");
+			pd.put("keywords", keywords.trim());
+		}
+		pd.put("isNot","get"); // 随便传个值到xml，查询未收款大于0的条件
+		page.setPd(pd);
+		page.setShowCount(1000000);
+		List<PageData> varOList = paydetailService.paylistPage(page);
+		titles.add("合同编号");	//1
+		titles.add("合同名称");	//2
+		titles.add("项目");	//3
+		titles.add("合同金额");	//4
+		titles.add("应付金额");	//5
+		titles.add("应付时间");	//6
+		titles.add("付款时间 ");	//7
+		titles.add("付款金额");	//8
+		titles.add("未付款金额");	//9
+		dataMap.put("titles", titles);
+		List<PageData> varList = new ArrayList<PageData>();
+		for(int i=0;i<varOList.size();i++){
+			PageData vpd = new PageData();
+			if(i>0){
+				if(!varOList.get(i).get("CONTRACTNUM").toString().equals(varOList.get(i-1).get("CONTRACTNUM").toString())){
+					vpd.put("var1", varOList.get(i).get("CONTRACTNUM").toString());	    //1
+					vpd.put("var2", varOList.get(i).get("CONTRACTNAME").toString());	    //2
+					vpd.put("var3", varOList.get(i).get("PROJECT").toString());	//3
+				}
+			}else {
+				vpd.put("var1", varOList.get(i).get("CONTRACTNUM").toString());	    //1
+				vpd.put("var2", varOList.get(i).get("CONTRACTNAME").toString());	    //2
+				vpd.put("var3", varOList.get(i).get("PROJECT").toString());	//3
+			}
+			vpd.put("var4", varOList.get(i).get("CONTRACTPIC").toString());	    //4
+			vpd.put("var5", varOList.get(i).get("SHPAY").toString());	    //5
+			vpd.put("var6", varOList.get(i).get("SHPAYTIME").toString());	    //6
+			vpd.put("var7", varOList.get(i).get("REALITYPAYTIME").toString());	    //7
+			vpd.put("var8", varOList.get(i).get("REALITYPAY").toString());	    //8
+			if(varOList.get(i).get("ONPAYPIC") == null){
+				vpd.put("var9", "0.00");	    //9
+			}else {
+				vpd.put("var9", varOList.get(i).get("ONPAYPIC").toString());	    //9
 			}
 			varList.add(vpd);
 		}
