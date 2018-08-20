@@ -274,467 +274,468 @@
 								</tr>
 								</tbody>
 							</table>
-
-							<div align="center" style="width: 100%;height: 30px;-moz-border-radius: 15px;-webkit-border-radius: 15px; border-radius:15px;background-color: yellow;">
-								<strong style="font-size: 18px">上传附件图片</strong>
-							</div>
-							<div style="width: 100%" align="center">
+							<c:if test="${msg == 'editInfo'}">
+								<div align="center" style="width: 100%;height: 30px;-moz-border-radius: 15px;-webkit-border-radius: 15px; border-radius:15px;background-color: yellow;">
+									<strong style="font-size: 18px">上传附件图片</strong>
+								</div>
+								<div style="width: 100%" align="center">
+									<br>
+									<p>
+										<input onclick="selectPic('${pd.CONTRACT_ID}')" style="width: 50%;" value="选择附件" class="btn btn-success btn-block"/>
+									</p>
+								</div>
+								<div align="center" style="width: 100%;height: 30px;-moz-border-radius: 10px;-webkit-border-radius: 10px; border-radius:10px;background-color: #00CCFF;">
+									<strong style="font-size: 18px">合同附件</strong>
+								</div>
 								<br>
-								<p>
-									<input onclick="selectPic('${pd.CONTRACT_ID}')" style="width: 50%;" value="选择附件" class="btn btn-success btn-block"/>
-								</p>
-							</div>
-							<div align="center" style="width: 100%;height: 30px;-moz-border-radius: 10px;-webkit-border-radius: 10px; border-radius:10px;background-color: #00CCFF;">
-								<strong style="font-size: 18px">合同附件</strong>
-							</div>
-							<br>
-							<div align="center" style="margin-left: 2%;margin-right: 2%; border:1px solid #bbe1f1;background:#eefaff" >
-								<ul align="center" class="ace-thumbnails clearfix" id="imgList">
-									<!-- #section:pages/gallery -->
-									<li style="display: none;">
-										<a href="" data-rel="colorbox">
-											<img width="150" height="150" alt="150x150" src=""/>
-										</a>
-									</li>
-								</ul>
-							</div>
+								<div align="center" style="margin-left: 2%;margin-right: 2%; border:1px solid #bbe1f1;background:#eefaff" >
+									<ul align="center" class="ace-thumbnails clearfix" id="imgList">
+										<!-- #section:pages/gallery -->
+										<li style="display: none;">
+											<a href="" data-rel="colorbox">
+												<img width="150" height="150" alt="150x150" src=""/>
+											</a>
+										</li>
+									</ul>
+								</div>
 
 
-							<br />
-							<!-- --------------------------------------------------------------------------- -->
-							<table id="proceedsContract" style="display: none;" class="table table-border table-bg table-bordered">
-								<tbody>
+								<br />
+								<!-- --------------------------------------------------------------------------- -->
+								<table id="proceedsContract" style="display: none;" class="table table-border table-bg table-bordered">
+									<tbody>
 
-								<!--  -----------------------含水电--------------------------------------->
-								<c:if test="${pd2.ISEW == '1'}">
-								<c:if test="${not empty listPTime}">
-								<c:forEach items="${listPTime}" var="var" varStatus="vs">
+									<!--  -----------------------含水电--------------------------------------->
+									<c:if test="${pd2.ISEW == '1'}">
+									<c:if test="${not empty listPTime}">
+									<c:forEach items="${listPTime}" var="var" varStatus="vs">
 
-								<tr class="warning">
-									<th width="15%"><label>时间区间：</label></th>
-									<th colspan="5"><input type="date" style="width: 150px;height: 31px" value="${var.STARTTIME}"
-																	   id="st${var.PROCEEDSTIME_ID}"  class="input-text"  >
-										--- <input type="date" style="width: 150px;height: 31px" value="${var.ENTTIME}"
-												   class="input-text" id="et${var.PROCEEDSTIME_ID}">
-										<a id="${var.PROCEEDSTIME_ID}" style="margin-left: 10px" class="btn btn-xs btn-success" title="添加明细"
-										   onclick="addTrFp('${pd.CONTRACT_ID}','${var.PROCEEDSTIME_ID}')">
-											<i class="ace-icon fa fa-pencil-square-o bigger-120" title="添加明细">添加明细</i></a>
-										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="保存修改"
-										   onclick="editTime('${var.PROCEEDSTIME_ID}')">
-											<i class="ace-icon fa fa-cog bigger-120" title="保存修改">保存修改</i></a>
-										<a style="margin-left: 10px" class="btn btn-xs btn-success" title="删除该时间区间"
-										   onclick="delTime('${var.PROCEEDSTIME_ID}')">
-											<i class="ace-icon fa fa-check-square-o bigger-120" title="删除该时间区间">删除该时间区间</i></a>
-										<label style="margin-left: 20px" class="control-label" >显示全部：</label>
-										<label style="margin-top: 5px;margin-right: 15px">
-											<input id="sw${var.PROCEEDSTIME_ID}" onclick="showDetail('${var.PROCEEDSTIME_ID}')"
-												   name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox">
-											<span class="lbl"></span>
-										</label>
-									</th>
+									<tr class="warning">
+										<th width="15%"><label>时间区间：</label></th>
+										<th colspan="5"><input type="date" style="width: 150px;height: 31px" value="${var.STARTTIME}"
+															   id="st${var.PROCEEDSTIME_ID}"  class="input-text"  >
+											--- <input type="date" style="width: 150px;height: 31px" value="${var.ENTTIME}"
+													   class="input-text" id="et${var.PROCEEDSTIME_ID}">
+											<a id="${var.PROCEEDSTIME_ID}" style="margin-left: 10px" class="btn btn-xs btn-success" title="添加明细"
+											   onclick="addTrFp('${pd.CONTRACT_ID}','${var.PROCEEDSTIME_ID}')">
+												<i class="ace-icon fa fa-pencil-square-o bigger-120" title="添加明细">添加明细</i></a>
+											<a style="margin-left: 10px" class="btn btn-xs btn-success" title="保存修改"
+											   onclick="editTime('${var.PROCEEDSTIME_ID}')">
+												<i class="ace-icon fa fa-cog bigger-120" title="保存修改">保存修改</i></a>
+											<a style="margin-left: 10px" class="btn btn-xs btn-success" title="删除该时间区间"
+											   onclick="delTime('${var.PROCEEDSTIME_ID}')">
+												<i class="ace-icon fa fa-check-square-o bigger-120" title="删除该时间区间">删除该时间区间</i></a>
+											<label style="margin-left: 20px" class="control-label" >显示全部：</label>
+											<label style="margin-top: 5px;margin-right: 15px">
+												<input id="sw${var.PROCEEDSTIME_ID}" onclick="showDetail('${var.PROCEEDSTIME_ID}')"
+													   name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox">
+												<span class="lbl"></span>
+											</label>
+										</th>
 
-								</tr>
+									</tr>
 
-								<c:if test="${not empty listInvoice }">
-								<c:forEach items="${listInvoice}" var="var1" varStatus="vs">
-								<c:if test="${var1.PROCEEDSTIME_ID == var.PROCEEDSTIME_ID}">
-								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" class="success">
-									<th width="15%"><label>客户租用周期：</label></th>
-									<th colspan="3"><input type="date" style="width: 150px;height: 31px" value="${var1.STARTTIME}"
-												class="input-text"
-												id="st${var1.INVOICE_ID}">至
-										<input type="date" style="width: 150px;height: 31px" value="${var1.ENDTIME}"
-											   class="input-text"
-											   id="et${var1.INVOICE_ID}">
-									</th>
-									<th ></th>
-									<th ></th>
-								</tr>
-								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" class="success">
-									<th width="15%"><label>应收金额：</label></th>
-									<th ><input type="number" style="width: 150px" value="${var1.RECEIVABLE}"
-														   class="input-text"  name="RECEIVABLE"
-														   id="r${var1.INVOICE_ID}"></th>
-									<th ><label>应收款时间：</label></th>
-									<th ><input type="date" style="width: 150px;height: 31px" value="${var1.PAYTIME}"
-												class="input-text"  name="PAYTIME"
-												id="pt${var1.INVOICE_ID}"></th>
-									<th width="15%"><label>付款方名称：</label></th>
-									<th width="20%"><input type="text" style="width: 150px" value="${var1.PAYERNAME}"
-														   class="input-text"  name="PAYERNAME"
-														   id="pn${var1.INVOICE_ID}"></th>
-								</tr>
-								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" class="success">
-									<th width="15%"><label>实际收款金额：</label></th>
-									<th width="20%"><input type="number" style="width: 150px" value="${var1.RECEIVABLE_REALITY}"
-														   class="input-text"  name="RECEIVABLE_REALITY" readonly
-														   id="rr${var1.INVOICE_ID}"></th>
-									<th ><label>实际收款时间：</label></th>
-									<th ><input onchange="calOD('${var1.INVOICE_ID}')" type="date" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
-												class="input-text"  name="RECEIVABL_PAYTIME" readonly
-												id="rpt${var1.INVOICE_ID}"></th>
-									<th  ><label>滞纳金：</label></th>
-									<th  ><input type="number" style="width: 150px;height: 31px" value="${var1.OVERDUE}"
-												 class="input-text" readonly
-												 id="od${var1.INVOICE_ID}"></th>
-								</tr>
-								<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" id="tr${var1.INVOICE_ID}" class="success">
-									<th ><label>发票名称：</label></th>
-									<th  ><input type="text" style="width: 150px;height: 31px" value="${var1.INVOICENAME}"
-												 class="input-text"  name="INVOICENAME"
-												 id="ivn${var1.INVOICE_ID}"></th>
-									<th  ><label>开票时间：</label></th>
-									<th  ><input type="date" style="width: 150px;height: 31px" value="${var1.INVOICETIME}"
-												 class="input-text"  name="INVOICETIME"
-												 id="ivt${var1.INVOICE_ID}" ></th>
-									<c:if test="${vs.index} == 0 || ${vs.index} == '0'">
-										<c:set var="LINVOICE_ID" value="0"/>
+									<c:if test="${not empty listInvoice }">
+									<c:forEach items="${listInvoice}" var="var1" varStatus="vs">
+									<c:if test="${var1.PROCEEDSTIME_ID == var.PROCEEDSTIME_ID}">
+									<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" class="success">
+										<th width="15%"><label>客户租用周期：</label></th>
+										<th colspan="3"><input type="date" style="width: 150px;height: 31px" value="${var1.STARTTIME}"
+															   class="input-text"
+															   id="st${var1.INVOICE_ID}">至
+											<input type="date" style="width: 150px;height: 31px" value="${var1.ENDTIME}"
+												   class="input-text"
+												   id="et${var1.INVOICE_ID}">
+										</th>
+										<th ></th>
+										<th ></th>
+									</tr>
+									<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" class="success">
+										<th width="15%"><label>应收金额：</label></th>
+										<th ><input type="number" style="width: 150px" value="${var1.RECEIVABLE}"
+													class="input-text"  name="RECEIVABLE"
+													id="r${var1.INVOICE_ID}"></th>
+										<th ><label>应收款时间：</label></th>
+										<th ><input type="date" style="width: 150px;height: 31px" value="${var1.PAYTIME}"
+													class="input-text"  name="PAYTIME"
+													id="pt${var1.INVOICE_ID}"></th>
+										<th width="15%"><label>付款方名称：</label></th>
+										<th width="20%"><input type="text" style="width: 150px" value="${var1.PAYERNAME}"
+															   class="input-text"  name="PAYERNAME"
+															   id="pn${var1.INVOICE_ID}"></th>
+									</tr>
+									<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" class="success">
+										<th width="15%"><label>实际收款金额：</label></th>
+										<th width="20%"><input type="number" style="width: 150px" value="${var1.RECEIVABLE_REALITY}"
+															   class="input-text"  name="RECEIVABLE_REALITY" readonly
+															   id="rr${var1.INVOICE_ID}"></th>
+										<th ><label>实际收款时间：</label></th>
+										<th ><input onchange="calOD('${var1.INVOICE_ID}')" type="date" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
+													class="input-text"  name="RECEIVABL_PAYTIME" readonly
+													id="rpt${var1.INVOICE_ID}"></th>
+										<th  ><label>滞纳金：</label></th>
+										<th  ><input type="number" style="width: 150px;height: 31px" value="${var1.OVERDUE}"
+													 class="input-text" readonly
+													 id="od${var1.INVOICE_ID}"></th>
+									</tr>
+									<tr style="display: none" name="tr${var.PROCEEDSTIME_ID}" id="tr${var1.INVOICE_ID}" class="success">
+										<th ><label>发票名称：</label></th>
+										<th  ><input type="text" style="width: 150px;height: 31px" value="${var1.INVOICENAME}"
+													 class="input-text"  name="INVOICENAME"
+													 id="ivn${var1.INVOICE_ID}"></th>
+										<th  ><label>开票时间：</label></th>
+										<th  ><input type="date" style="width: 150px;height: 31px" value="${var1.INVOICETIME}"
+													 class="input-text"  name="INVOICETIME"
+													 id="ivt${var1.INVOICE_ID}" ></th>
+										<c:if test="${vs.index} == 0 || ${vs.index} == '0'">
+											<c:set var="LINVOICE_ID" value="0"/>
+										</c:if>
+										<th  colspan="2">
+												<%--<a style="margin-left: 10px" class="btn btn-xs btn-success" title="添加水电费项"
+                                                   onclick="addUtilities('${pd.CONTRACT_ID}','${var.PROCEEDSTIME_ID}','${var1.INVOICE_ID}','${LINVOICE_ID}','${pd.CONTRACTOFNAME}','${pd2.OVERDUE}','${var1.PAYERNAME}')">
+                                                    <i class="ace-icon fa fa-pencil-square-o bigger-120" title="添加水电费项">查看水电费项</i></a>--%>
+											<a class="btn btn-xs blue" title="确认修改"
+											   onclick="editInvoice('${var1.INVOICE_ID}');">
+												<i class="ace-icon fa fa-cog bigger-120" title="确认修改">确认修改</i></a>
+											<a class="btn btn-mini btn-danger" title="删除该明细项"
+											   onclick="delInvoice('${var1.INVOICE_ID}');">
+												<i class="ace-icon fa fa-trash-o bigger-120" title="删除该明细项">删除该明细项</i></a>
+										</th>
+										<c:set var="LINVOICE_ID" value="${var1.INVOICE_ID}"/>
+									</tr>
+									<tr name="tr${var.PROCEEDSTIME_ID}" style="display: none;height: 3px" class="active"><th colspan="6"><label></label></th></tr>
 									</c:if>
-									<th  colspan="2">
-										<%--<a style="margin-left: 10px" class="btn btn-xs btn-success" title="添加水电费项"
-										   onclick="addUtilities('${pd.CONTRACT_ID}','${var.PROCEEDSTIME_ID}','${var1.INVOICE_ID}','${LINVOICE_ID}','${pd.CONTRACTOFNAME}','${pd2.OVERDUE}','${var1.PAYERNAME}')">
-											<i class="ace-icon fa fa-pencil-square-o bigger-120" title="添加水电费项">查看水电费项</i></a>--%>
-										<a class="btn btn-xs blue" title="确认修改"
-											 onclick="editInvoice('${var1.INVOICE_ID}');">
-										<i class="ace-icon fa fa-cog bigger-120" title="确认修改">确认修改</i></a>
-										<a class="btn btn-mini btn-danger" title="删除该明细项"
-										   onclick="delInvoice('${var1.INVOICE_ID}');">
-											<i class="ace-icon fa fa-trash-o bigger-120" title="删除该明细项">删除该明细项</i></a>
-									</th>
-									<c:set var="LINVOICE_ID" value="${var1.INVOICE_ID}"/>
-								</tr>
-								<tr name="tr${var.PROCEEDSTIME_ID}" style="display: none;height: 3px" class="active"><th colspan="6"><label></label></th></tr>
-								</c:if>
-								</c:forEach>
-								</c:if>
-								<tr id="fp${var.PROCEEDSTIME_ID}"></tr>
-								</c:forEach>
-								</c:if>
-								</c:if>
-								<!--  -----------------------含水电--------------------------------------->
-								<!--  -----------------------不含水电--------------------------------------->
-								<c:if test="${pd2.ISEW == '0'}">
-								<c:forEach items="${listInvoice}" var="var1" varStatus="vs">
-								<tr class="success">
-									<th width="15%"><label>应收金额：</label></th>
-									<th><input type="number" style="width: 150px" value="${var1.RECEIVABLE}"
-														   class="input-text"  name="RECEIVABLE"
-														   id="r${var1.INVOICE_ID}"></th>
-									<th ><label>应收款时间：</label></th>
-									<th ><input type="date" style="width: 150px;height: 31px" value="${var1.PAYTIME}"
-												class="input-text"  name="PAYTIME"
-												id="pt${var1.INVOICE_ID}"></th>
-									<th width="15%"><label>付款方名称：</label></th>
-									<th width="20%"><input type="text" style="width: 150px" value="${var1.PAYERNAME}"
-														   class="input-text"  name="PAYERNAME"
-														   id="pn${var1.INVOICE_ID}"></th>
-								</tr>
-								<tr class="success">
-									<th width="15%"><label>实际收款金额：</label></th>
-									<th width="20%"><input type="number" style="width: 150px" value="${var1.RECEIVABLE_REALITY}"
-														   class="input-text"  name="RECEIVABLE_REALITY" readonly
-														   id="rr${var1.INVOICE_ID}"></th>
-									<th ><label>实际收款时间：</label></th>
-									<th ><input onchange="calOD('${var1.INVOICE_ID}')" type="date" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
-												class="input-text"  name="RECEIVABL_PAYTIME" readonly
-												id="rpt${var1.INVOICE_ID}"></th>
-									<th  ><label>滞纳金：</label></th>
-									<th  ><input type="number" style="width: 150px;height: 31px" value="${var1.OVERDUE}"
-												 class="input-text" readonly
-												 id="od${var1.INVOICE_ID}"></th>
-								</tr>
-								<tr id="tr${var1.INVOICE_ID}" class="success">
-									<th ><label>发票名称：</label></th>
-									<th  ><input type="text" style="width: 150px;height: 31px" value="${var1.INVOICENAME}"
-												 class="input-text"  name="INVOICENAME"
-												 id="ivn${var1.INVOICE_ID}"></th>
-									<th  ><label>开票时间：</label></th>
-									<th  ><input type="date" style="width: 150px;height: 31px" value="${var1.INVOICETIME}"
-												 class="input-text"  name="INVOICETIME"
-												 id="ivt${var1.INVOICE_ID}" ></th>
-									<th  colspan="2">
-										<a class="btn btn-xs blue" title="确认修改"
-										   onclick="editInvoice('${var1.INVOICE_ID}');">
-											<i class="ace-icon fa fa-cog bigger-120" title="确认修改">确认修改</i></a>
-										<a class="btn btn-mini btn-danger" title="删除该明细项"
-										   onclick="delInvoice('${var1.INVOICE_ID}');">
-											<i class="ace-icon fa fa-trash-o bigger-120" title="删除该明细项">删除该明细项</i></a>
-									</th>
-								</tr>
-								<tr style="height: 3px" class="active"><th colspan="6"><label></label></th></tr>
-								</c:forEach>
-								</c:if>
-								<!--  -----------------------不含水电--------------------------------------->
-								<tr id="ti${pd.CONTRACT_ID}"></tr>
-								<tr id="fp"></tr>
-								<tr>
-									<c:if test="${pd2.ISEW == '0' || msg == 'save'}">
-									<th id="addTrFpNotew">
-										<div class="col-md-12"  style="padding-bottom:2em;">
-											<a onclick="addTrFpNotew('${pd.CONTRACT_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i>新增新的应收款项</a>
-										</div>
-									</th>
+									</c:forEach>
 									</c:if>
-									<c:if test="${pd2.ISEW == '1' || msg == 'save'}">
-									<th style="<c:if test="${pd2.ISEW != '1'}">display:none;</c:if>" id="addTrTime">
-										<div class="col-md-12"  style="padding-bottom:2em;" id="addTrTimeDiv">
-											<a onclick="addTrTime('${pd.CONTRACT_ID}')" class="btn btn-info" ><i class="fa fa-plus"></i> 添加明细时间区间</a>
-										</div>
-									</th>
+									<tr id="fp${var.PROCEEDSTIME_ID}"></tr>
+									</c:forEach>
 									</c:if>
-								</tr>
-								<c:if test="${not empty listDepositInfo }">
+									</c:if>
+									<!--  -----------------------含水电--------------------------------------->
+									<!--  -----------------------不含水电--------------------------------------->
+									<c:if test="${pd2.ISEW == '0'}">
+									<c:forEach items="${listInvoice}" var="var1" varStatus="vs">
+									<tr class="success">
+										<th width="15%"><label>应收金额：</label></th>
+										<th><input type="number" style="width: 150px" value="${var1.RECEIVABLE}"
+												   class="input-text"  name="RECEIVABLE"
+												   id="r${var1.INVOICE_ID}"></th>
+										<th ><label>应收款时间：</label></th>
+										<th ><input type="date" style="width: 150px;height: 31px" value="${var1.PAYTIME}"
+													class="input-text"  name="PAYTIME"
+													id="pt${var1.INVOICE_ID}"></th>
+										<th width="15%"><label>付款方名称：</label></th>
+										<th width="20%"><input type="text" style="width: 150px" value="${var1.PAYERNAME}"
+															   class="input-text"  name="PAYERNAME"
+															   id="pn${var1.INVOICE_ID}"></th>
+									</tr>
+									<tr class="success">
+										<th width="15%"><label>实际收款金额：</label></th>
+										<th width="20%"><input type="number" style="width: 150px" value="${var1.RECEIVABLE_REALITY}"
+															   class="input-text"  name="RECEIVABLE_REALITY" readonly
+															   id="rr${var1.INVOICE_ID}"></th>
+										<th ><label>实际收款时间：</label></th>
+										<th ><input onchange="calOD('${var1.INVOICE_ID}')" type="date" style="width: 150px;height: 31px" value="${var1.RECEIVABL_PAYTIME}"
+													class="input-text"  name="RECEIVABL_PAYTIME" readonly
+													id="rpt${var1.INVOICE_ID}"></th>
+										<th  ><label>滞纳金：</label></th>
+										<th  ><input type="number" style="width: 150px;height: 31px" value="${var1.OVERDUE}"
+													 class="input-text" readonly
+													 id="od${var1.INVOICE_ID}"></th>
+									</tr>
+									<tr id="tr${var1.INVOICE_ID}" class="success">
+										<th ><label>发票名称：</label></th>
+										<th  ><input type="text" style="width: 150px;height: 31px" value="${var1.INVOICENAME}"
+													 class="input-text"  name="INVOICENAME"
+													 id="ivn${var1.INVOICE_ID}"></th>
+										<th  ><label>开票时间：</label></th>
+										<th  ><input type="date" style="width: 150px;height: 31px" value="${var1.INVOICETIME}"
+													 class="input-text"  name="INVOICETIME"
+													 id="ivt${var1.INVOICE_ID}" ></th>
+										<th  colspan="2">
+											<a class="btn btn-xs blue" title="确认修改"
+											   onclick="editInvoice('${var1.INVOICE_ID}');">
+												<i class="ace-icon fa fa-cog bigger-120" title="确认修改">确认修改</i></a>
+											<a class="btn btn-mini btn-danger" title="删除该明细项"
+											   onclick="delInvoice('${var1.INVOICE_ID}');">
+												<i class="ace-icon fa fa-trash-o bigger-120" title="删除该明细项">删除该明细项</i></a>
+										</th>
+									</tr>
+									<tr style="height: 3px" class="active"><th colspan="6"><label></label></th></tr>
+									</c:forEach>
+									</c:if>
+									<!--  -----------------------不含水电--------------------------------------->
+									<tr id="ti${pd.CONTRACT_ID}"></tr>
+									<tr id="fp"></tr>
+									<tr>
+										<c:if test="${pd2.ISEW == '0' || msg == 'save'}">
+											<th id="addTrFpNotew">
+												<div class="col-md-12"  style="padding-bottom:2em;">
+													<a onclick="addTrFpNotew('${pd.CONTRACT_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i>新增新的应收款项</a>
+												</div>
+											</th>
+										</c:if>
+										<c:if test="${pd2.ISEW == '1' || msg == 'save'}">
+											<th style="<c:if test="${pd2.ISEW != '1'}">display:none;</c:if>" id="addTrTime">
+												<div class="col-md-12"  style="padding-bottom:2em;" id="addTrTimeDiv">
+													<a onclick="addTrTime('${pd.CONTRACT_ID}')" class="btn btn-info" ><i class="fa fa-plus"></i> 添加明细时间区间</a>
+												</div>
+											</th>
+										</c:if>
+									</tr>
+									<c:if test="${not empty listDepositInfo }">
 									<c:forEach items="${listDepositInfo}" var="var" varStatus="vs">
-										<tbody id="tb${var.DEPOSITINFO_ID}">
-										<tr  class="danger">
-											<th width="10%" ><label>应收押金金额：</label></th>
-											<th  ><input type="number" style="width: 150px" value="${var.DWDEPOSIT}"
-														 class="input-text"  name="DWDEPOSIT"
-														id="dd${var.DEPOSITINFO_ID}"></th>
-											<th width="15%"><label>应付款时间（押金）：</label></th>
-											<th width="10%"><input type="date" style="width: 150px;height: 31px" value="${var.DWDEPOSITTIME}"
-																   class="input-text"  name="DWDEPOSITTIME"
-																   id="ddt${var.DEPOSITINFO_ID}"></th>
-											<th  ><label></label></th>
-											<th  ></th>
-										</tr>
-										<tr class="danger">
-											<th width="15%"><label>实际收款金额（押金）：</label></th>
-											<th width="10%">
-												<input type="number" style="width: 150px" value="${var.REALITY}"
-													   class="input-text"  name="REALITY" readonly
-													   id="r${var.DEPOSITINFO_ID}">
-											</th>
-											<th  ><label>实际收款时间（押金）：</label></th>
-											<th  ><input type="date" style="width: 150px;height: 31px" value="${var.REALITYTIME}"
-														 class="input-text"  name="REALITYTIME" readonly
-														 id="rt${var.DEPOSITINFO_ID}"></th>
-											<th width="15%"><label>付款方名称（押金）：</label></th>
-											<th width="10%"><input type="text" style="width: 150px" value="${var.DEPOSITPAYER}"
-																   class="input-text"  name="DEPOSITPAYER"
-																   id="dp${var.DEPOSITINFO_ID}" ></th>
-										</tr>
-										<tr class="warning">
-											<th ><label>进场时间：</label></th>
-											<th >
-												<label>
-													<input type="date" style="width: 140px;height: 31px" value="${var.ENTERTIME}"
-														   class="input-date"  name="ENTERTIME"
-														   id="et${var.DEPOSITINFO_ID}" id="ENTERTIME">
-												</label>
-											</th>
-											<th ><label>是否已办进场手续：</label></th>
-											<th  >
-												<label style="float:left;padding-left: 12px;"><input class="ace" name="field-radio${var.DEPOSITINFO_ID}" id="ise${var.DEPOSITINFO_ID}"  <c:if test="${var.ISENTERPROCEDURE == '1' }">checked="checked"</c:if> type="radio" value="1"><span class="lbl">是</span></label>
-												<label style="float:left;padding-left: 5px;"><input class="ace" name="field-radio${var.DEPOSITINFO_ID}"  id="ise1${var.DEPOSITINFO_ID}" <c:if test="${var.ISENTERPROCEDURE == '0' }">checked="checked"</c:if> type="radio" value="0"><span class="lbl">否</span></label>
-											</th>
-											<th  ><label></label></th>
-											<th  ></th>
-										</tr>
-										<tr class="warning">
-											<th  ><label>撤场时间：</label></th>
-											<th >
-												<label>
-													<input type="date" style="width: 140px;height: 31px" value="${var.WITHDRAWALTIME}"
-														   class="input-date"  name="WITHDRAWALTIME"
-														   id="wt${var.DEPOSITINFO_ID}" >
-												</label>
-											</th>
-											<th ><label>是否已办撤场手续：</label></th>
-											<th  >
-												<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio${var.DEPOSITINFO_ID}" id="field-radio${var.DEPOSITINFO_ID}"  <c:if test="${var.ISDRAWALPROCEDURE == '1' }">checked="checked"</c:if> type="radio" value="1"><span class="lbl">是</span></label>
-												<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio${var.DEPOSITINFO_ID}" id="form-field-radio${var.DEPOSITINFO_ID}"  <c:if test="${var.ISDRAWALPROCEDURE == '0' }">checked="checked"</c:if> type="radio" value="0"><span class="lbl">否</span></label>
-											</th>
-											<th  ><label></label></th>
-											<th  ></th>
-										</tr>
-										<tr class="warning">
-											<th ><label>退押金金额：</label></th>
-											<th >
-												<label>
-													<input type="number" style="width: 140px;height: 31px" value="${var.RETURNDEPOSIT}"
-														   class="input-date"  name="RETURNDEPOSIT"
-														   id="rd${var.DEPOSITINFO_ID}">
-												</label>
-											</th>
-											<th  ><label>结转收入金额：</label></th>
-											<th >
-												<label>
-													<input type="number" style="width: 140px;height: 31px" value="${var.TRAINCOAMOUNT}"
-														   class="input-date"  name="TRAINCOAMOUNT"
-														   id="tc${var.DEPOSITINFO_ID}">
-												</label>
-											</th>
-											<th  ><label></label></th>
-											<th  ></th>
-										</tr>
-										<tr class="warning">
-											<th ><label>发票名称：</label></th>
-											<th >
-												<label>
-													<input type="text" style="width: 140px;height: 31px" value="${var.INVOICENAME}"
-														   class="input-date"  name="INVOICENAME"
-														   id="in${var.DEPOSITINFO_ID}">
-												</label>
-											</th>
-											<th ><label>开票时间：</label></th>
-											<th >
-												<label>
-													<input type="date" style="width: 140px;height: 31px" value="${var.INVOICETIME}"
-														   class="input-date"  name="INVOICETIME"
-														   id="it${var.DEPOSITINFO_ID}">
-												</label>
-											</th>
-											<th>
+									<tbody id="tb${var.DEPOSITINFO_ID}">
+									<tr  class="danger">
+										<th width="10%" ><label>应收押金金额：</label></th>
+										<th  ><input type="number" style="width: 150px" value="${var.DWDEPOSIT}"
+													 class="input-text"  name="DWDEPOSIT"
+													 id="dd${var.DEPOSITINFO_ID}"></th>
+										<th width="15%"><label>应付款时间（押金）：</label></th>
+										<th width="10%"><input type="date" style="width: 150px;height: 31px" value="${var.DWDEPOSITTIME}"
+															   class="input-text"  name="DWDEPOSITTIME"
+															   id="ddt${var.DEPOSITINFO_ID}"></th>
+										<th  ><label></label></th>
+										<th  ></th>
+									</tr>
+									<tr class="danger">
+										<th width="15%"><label>实际收款金额（押金）：</label></th>
+										<th width="10%">
+											<input type="number" style="width: 150px" value="${var.REALITY}"
+												   class="input-text"  name="REALITY" readonly
+												   id="r${var.DEPOSITINFO_ID}">
+										</th>
+										<th  ><label>实际收款时间（押金）：</label></th>
+										<th  ><input type="date" style="width: 150px;height: 31px" value="${var.REALITYTIME}"
+													 class="input-text"  name="REALITYTIME" readonly
+													 id="rt${var.DEPOSITINFO_ID}"></th>
+										<th width="15%"><label>付款方名称（押金）：</label></th>
+										<th width="10%"><input type="text" style="width: 150px" value="${var.DEPOSITPAYER}"
+															   class="input-text"  name="DEPOSITPAYER"
+															   id="dp${var.DEPOSITINFO_ID}" ></th>
+									</tr>
+									<tr class="warning">
+										<th ><label>进场时间：</label></th>
+										<th >
+											<label>
+												<input type="date" style="width: 140px;height: 31px" value="${var.ENTERTIME}"
+													   class="input-date"  name="ENTERTIME"
+													   id="et${var.DEPOSITINFO_ID}" id="ENTERTIME">
+											</label>
+										</th>
+										<th ><label>是否已办进场手续：</label></th>
+										<th  >
+											<label style="float:left;padding-left: 12px;"><input class="ace" name="field-radio${var.DEPOSITINFO_ID}" id="ise${var.DEPOSITINFO_ID}"  <c:if test="${var.ISENTERPROCEDURE == '1' }">checked="checked"</c:if> type="radio" value="1"><span class="lbl">是</span></label>
+											<label style="float:left;padding-left: 5px;"><input class="ace" name="field-radio${var.DEPOSITINFO_ID}"  id="ise1${var.DEPOSITINFO_ID}" <c:if test="${var.ISENTERPROCEDURE == '0' }">checked="checked"</c:if> type="radio" value="0"><span class="lbl">否</span></label>
+										</th>
+										<th  ><label></label></th>
+										<th  ></th>
+									</tr>
+									<tr class="warning">
+										<th  ><label>撤场时间：</label></th>
+										<th >
+											<label>
+												<input type="date" style="width: 140px;height: 31px" value="${var.WITHDRAWALTIME}"
+													   class="input-date"  name="WITHDRAWALTIME"
+													   id="wt${var.DEPOSITINFO_ID}" >
+											</label>
+										</th>
+										<th ><label>是否已办撤场手续：</label></th>
+										<th  >
+											<label style="float:left;padding-left: 12px;"><input class="ace" name="form-field-radio${var.DEPOSITINFO_ID}" id="field-radio${var.DEPOSITINFO_ID}"  <c:if test="${var.ISDRAWALPROCEDURE == '1' }">checked="checked"</c:if> type="radio" value="1"><span class="lbl">是</span></label>
+											<label style="float:left;padding-left: 5px;"><input class="ace" name="form-field-radio${var.DEPOSITINFO_ID}" id="form-field-radio${var.DEPOSITINFO_ID}"  <c:if test="${var.ISDRAWALPROCEDURE == '0' }">checked="checked"</c:if> type="radio" value="0"><span class="lbl">否</span></label>
+										</th>
+										<th  ><label></label></th>
+										<th  ></th>
+									</tr>
+									<tr class="warning">
+										<th ><label>退押金金额：</label></th>
+										<th >
+											<label>
+												<input type="number" style="width: 140px;height: 31px" value="${var.RETURNDEPOSIT}"
+													   class="input-date"  name="RETURNDEPOSIT"
+													   id="rd${var.DEPOSITINFO_ID}">
+											</label>
+										</th>
+										<th  ><label>结转收入金额：</label></th>
+										<th >
+											<label>
+												<input type="number" style="width: 140px;height: 31px" value="${var.TRAINCOAMOUNT}"
+													   class="input-date"  name="TRAINCOAMOUNT"
+													   id="tc${var.DEPOSITINFO_ID}">
+											</label>
+										</th>
+										<th  ><label></label></th>
+										<th  ></th>
+									</tr>
+									<tr class="warning">
+										<th ><label>发票名称：</label></th>
+										<th >
+											<label>
+												<input type="text" style="width: 140px;height: 31px" value="${var.INVOICENAME}"
+													   class="input-date"  name="INVOICENAME"
+													   id="in${var.DEPOSITINFO_ID}">
+											</label>
+										</th>
+										<th ><label>开票时间：</label></th>
+										<th >
+											<label>
+												<input type="date" style="width: 140px;height: 31px" value="${var.INVOICETIME}"
+													   class="input-date"  name="INVOICETIME"
+													   id="it${var.DEPOSITINFO_ID}">
+											</label>
+										</th>
+										<th>
 												<%--<a class="btn btn-xs blue" title="水电费录入"
 												   onclick="addUTILITIES('${var.DEPOSITINFO_ID}');">
 													<i class="ace-icon fa fa-pencil-square-o bigger-120" title="水电费录入"></i></a>--%>
-												<a class="btn btn-xs blue" title="确认修改"
-													 onclick="editDepositInfo('${var.DEPOSITINFO_ID}');">
+											<a class="btn btn-xs blue" title="确认修改"
+											   onclick="editDepositInfo('${var.DEPOSITINFO_ID}');">
 												<i class="ace-icon fa fa-pencil-square-o bigger-120" title="确认修改"></i>确认修改</a>
-												<a class="btn btn-mini btn-danger" title="删除该押金项"
-												   onclick="delDepositInfo('${var.DEPOSITINFO_ID}');">
-													<i class="ace-icon fa fa-trash-o bigger-120" title="删除该押金项"></i>删除该押金项</a>
-											</th>
-											<th  ></th>
-										</tr>
-										<tr style="height: 3px" class="active"><th colspan="6"><label></label></th></tr>
+											<a class="btn btn-mini btn-danger" title="删除该押金项"
+											   onclick="delDepositInfo('${var.DEPOSITINFO_ID}');">
+												<i class="ace-icon fa fa-trash-o bigger-120" title="删除该押金项"></i>删除该押金项</a>
+										</th>
+										<th  ></th>
+									</tr>
+									<tr style="height: 3px" class="active"><th colspan="6"><label></label></th></tr>
 									</tbody>
 									</c:forEach>
-								</c:if>
-								<tr id="yj${pd.CONTRACT_ID}"></tr>
-								<tr>
-									<th>
-										<div id="addTrYjDiv" class="col-md-12"  style="padding-bottom:2em;">
-											<a onclick="addTrYj('${pd.CONTRACT_ID}')" class="btn btn-info" ><i class="fa fa-plus"></i> 添加新的押金项</a>
-										</div>
-									</th>
-								</tr>
-								<tr class="info">
-									<th ><label>备注：</label></th>
-									<th colspan="5">
-										<label>
-											<input type="text" style="width: 880px;height: 31px" value="${pd2.FREMARK}"
-												   class="input-date"  name="FREMARK"
-												   id="FREMARK">
-										</label>
-									</th>
-								</tr>
-								</tbody>
-							</table>
-							<!-- -----------------------------------付款合同明细---------------------------------------- -->
-							<div id="paymentContarct" style="display: none">
-								<div >
-									<c:if test="${not empty listPayprimary}">
-										<c:forEach items="${listPayprimary}" var="var" varStatus="vs">
-											<table id="ta${var.PAYPRIMARY_ID}" class="table table-border table-bg table-bordered" style="margin-top: 10px">
-												<tbody id="tb${var.PAYPRIMARY_ID}">
-												<tr class="center">
-													<td style="padding-left:2px;">时间</td>
-													<td style="padding-left:2px;">总应付金额</td>
-													<td style="padding-left:2px;">应付款金额</td>
-													<c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
-														<td style="padding-left:2px;">付款所属时间</td>
-													</c:if>
-													<td style="padding-left:2px;">实际付款金额</td>
-													<td style="padding-left:2px;">实际付款时间</td>
-													<c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
-														<td style="padding-left:2px;">尚未付款金额</td>
-													</c:if>
-													<td style="padding-left:2px;">备注</td>
-													<td style="padding-left:2px;">操作</td>
-												</tr>
-												<tr class="center" id="sum" >
-													<td id="td1${var.PAYPRIMARY_ID}" rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${var.STARTTIME } -- ${var.ENTTIME }</td>
-													<td id="td2${var.PAYPRIMARY_ID}" rowspan="${count +1}"  style="padding-left:2px;vertical-align:middle;">
-														<p id="pic${var.PAYPRIMARY_ID}">${var.CONTRACTPIC }</p>
-													</td>
-												</tr>
-												<c:if test="${not empty listPayDetail}">
-													<c:forEach items="${listPayDetail}" var="var1" varStatus="vs1">
-														<c:if test="${var1.PAYPRIMARY_ID == var.PAYPRIMARY_ID}">
-															<tr class="center" style="background-color: #FFFFCC" >
-
-																<td style="padding-left:2px;">
-																	<input type="number" style="width: 150px;height: 31px" value="${var1.SHPAY}"
-																		   class="input-text"  name="SHPAY" id="sp${var1.PAYDETAIL_ID}"
-																	></td>
-																<c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
-																	<td style="padding-left:2px;">
-																		<input type="date" style="width: 150px;height: 31px" value="${var1.SHPAYTIME}"
-																			   class="input-text"  name="SHPAYTIME" id="spt${var1.PAYDETAIL_ID}"
-																		> -- <input type="date" style="width: 150px;height: 31px" value="${var1.SHPAYTIMEENT}"
-																					class="input-text"  name="SHPAYTIMEENT" id="spte${var1.PAYDETAIL_ID}"
-																	></td>
-																</c:if>
-
-																<td style="padding-left:2px;">
-																	<input type="number" style="width: 150px" value="${var1.REALITYPAY}"
-																		   class="input-text"  name="REALITYPAY" id="rp${var1.PAYDETAIL_ID}"
-																	>
-																</td>
-																<td style="padding-left:2px;">
-																	<input type="date" style="width: 150px;height: 31px" value="${var1.REALITYPAYTIME}"
-																		   class="input-text"  name="REALITYPAYTIME" id="rpt${var1.PAYDETAIL_ID}"
-																	>
-																</td>
-																<c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
-																	<td style="padding-left:2px;">
-																		<input type="text" style="width: 150px;height: 31px" value="${var1.ONPAYPIC}"
-																			   class="input-text" <%-- name="ONPAYPIC" id="no${var1.PAYDETAIL_ID}"--%>
-																		>
-																	</td>
-																</c:if>
-
-																<td style="padding-left:2px;">
-																	<input type="text" style="width: 150px;height: 31px" value="${var1.FNOTE}"
-																		   class="input-text"  name="FNOTE" id="no${var1.PAYDETAIL_ID}"
-																	>
-																</td>
-																<td style="padding-left:2px;">
-																	<a class="btn btn-xs btn-success" title="保存修改"
-																	   onclick="editPay('${var1.PAYPRIMARY_ID}','${var1.PAYDETAIL_ID}');">
-																		<i class="ace-icon fa fa-check-square-o bigger-120"
-																		   title="保存修改"></i>
-																	</a>
-																	<a class="btn btn-xs btn-danger" title="删除"
-																	   onclick="delPay('${var1.PAYPRIMARY_ID}','${var1.PAYDETAIL_ID}');">
-																		<i class="ace-icon fa fa-trash-o bigger-120"
-																		   title="删除"></i>
-																	</a>
-																</td>
-															</tr>
-
-														</c:if>
-													</c:forEach>
-												</c:if>
-												<tr id="${var.PAYPRIMARY_ID}"></tr>
-												</tbody>
-											</table>
-											<div class="col-md-12"  style="padding-bottom:2em;">
-												<a onclick="addTr('${var.PAYPRIMARY_ID}')" class="btn btn-info" ><i class="fa fa-plus"></i> 添加新的明细项</a>
-											</div>
-										</c:forEach>
 									</c:if>
-
-								</div>
-								<div id="divTable" class="col-md-12"  style="padding-bottom:2em;">
-									<a onclick="addTable()" class="btn btn-info" id="add"><i class="fa fa-plus"></i> 添加新的主表</a>
-								</div>
-								<table class="table table-border table-bg table-bordered">
-									<tbody>
-									<tr class="success">
-										<td width="10%" ><label>备注：</label></td>
-										<td colspan="5">
-											<textarea style="width: 95%;height: 78px" name="REMARK" id="REMARK">${pd1.REMARK}</textarea>
-											<%--<input type="text" style="width: 150px" value="${pd1.REMARK}"
-													class="input-text"  name="REMARK"
-													id="REMARK">--%>
-										</td>
+									<tr id="yj${pd.CONTRACT_ID}"></tr>
+									<tr>
+										<th>
+											<div id="addTrYjDiv" class="col-md-12"  style="padding-bottom:2em;">
+												<a onclick="addTrYj('${pd.CONTRACT_ID}')" class="btn btn-info" ><i class="fa fa-plus"></i> 添加新的押金项</a>
+											</div>
+										</th>
+									</tr>
+									<tr class="info">
+										<th ><label>备注：</label></th>
+										<th colspan="5">
+											<label>
+												<input type="text" style="width: 880px;height: 31px" value="${pd2.FREMARK}"
+													   class="input-date"  name="FREMARK"
+													   id="FREMARK">
+											</label>
+										</th>
 									</tr>
 									</tbody>
 								</table>
-							</div>
+								<!-- -----------------------------------付款合同明细---------------------------------------- -->
+								<div id="paymentContarct" style="display: none">
+									<div >
+										<c:if test="${not empty listPayprimary}">
+											<c:forEach items="${listPayprimary}" var="var" varStatus="vs">
+												<table id="ta${var.PAYPRIMARY_ID}" class="table table-border table-bg table-bordered" style="margin-top: 10px">
+													<tbody id="tb${var.PAYPRIMARY_ID}">
+													<tr class="center">
+														<td style="padding-left:2px;">时间</td>
+														<td style="padding-left:2px;">总应付金额</td>
+														<td style="padding-left:2px;">应付款金额</td>
+														<c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
+															<td style="padding-left:2px;">付款所属时间</td>
+														</c:if>
+														<td style="padding-left:2px;">实际付款金额</td>
+														<td style="padding-left:2px;">实际付款时间</td>
+														<c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
+															<td style="padding-left:2px;">尚未付款金额</td>
+														</c:if>
+														<td style="padding-left:2px;">备注</td>
+														<td style="padding-left:2px;">操作</td>
+													</tr>
+													<tr class="center" id="sum" >
+														<td id="td1${var.PAYPRIMARY_ID}" rowspan="${count +1}" style="padding-left:2px;vertical-align:middle;">${var.STARTTIME } -- ${var.ENTTIME }</td>
+														<td id="td2${var.PAYPRIMARY_ID}" rowspan="${count +1}"  style="padding-left:2px;vertical-align:middle;">
+															<p id="pic${var.PAYPRIMARY_ID}">${var.CONTRACTPIC }</p>
+														</td>
+													</tr>
+													<c:if test="${not empty listPayDetail}">
+														<c:forEach items="${listPayDetail}" var="var1" varStatus="vs1">
+															<c:if test="${var1.PAYPRIMARY_ID == var.PAYPRIMARY_ID}">
+																<tr class="center" style="background-color: #FFFFCC" >
+
+																	<td style="padding-left:2px;">
+																		<input type="number" style="width: 150px;height: 31px" value="${var1.SHPAY}"
+																			   class="input-text"  name="SHPAY" id="sp${var1.PAYDETAIL_ID}"
+																		></td>
+																	<c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
+																		<td style="padding-left:2px;">
+																			<input type="date" style="width: 150px;height: 31px" value="${var1.SHPAYTIME}"
+																				   class="input-text"  name="SHPAYTIME" id="spt${var1.PAYDETAIL_ID}"
+																			> -- <input type="date" style="width: 150px;height: 31px" value="${var1.SHPAYTIMEENT}"
+																						class="input-text"  name="SHPAYTIMEENT" id="spte${var1.PAYDETAIL_ID}"
+																		></td>
+																	</c:if>
+
+																	<td style="padding-left:2px;">
+																		<input type="number" style="width: 150px" value="${var1.REALITYPAY}"
+																			   class="input-text"  name="REALITYPAY" id="rp${var1.PAYDETAIL_ID}"
+																		>
+																	</td>
+																	<td style="padding-left:2px;">
+																		<input type="date" style="width: 150px;height: 31px" value="${var1.REALITYPAYTIME}"
+																			   class="input-text"  name="REALITYPAYTIME" id="rpt${var1.PAYDETAIL_ID}"
+																		>
+																	</td>
+																	<c:if test="${pd.CONTRACTCLASSIFY == '固定供应商'}">
+																		<td style="padding-left:2px;">
+																			<input type="text" style="width: 150px;height: 31px" value="${var1.ONPAYPIC}"
+																				   class="input-text" <%-- name="ONPAYPIC" id="no${var1.PAYDETAIL_ID}"--%>
+																			>
+																		</td>
+																	</c:if>
+
+																	<td style="padding-left:2px;">
+																		<input type="text" style="width: 150px;height: 31px" value="${var1.FNOTE}"
+																			   class="input-text"  name="FNOTE" id="no${var1.PAYDETAIL_ID}"
+																		>
+																	</td>
+																	<td style="padding-left:2px;">
+																		<a class="btn btn-xs btn-success" title="保存修改"
+																		   onclick="editPay('${var1.PAYPRIMARY_ID}','${var1.PAYDETAIL_ID}');">
+																			<i class="ace-icon fa fa-check-square-o bigger-120"
+																			   title="保存修改"></i>
+																		</a>
+																		<a class="btn btn-xs btn-danger" title="删除"
+																		   onclick="delPay('${var1.PAYPRIMARY_ID}','${var1.PAYDETAIL_ID}');">
+																			<i class="ace-icon fa fa-trash-o bigger-120"
+																			   title="删除"></i>
+																		</a>
+																	</td>
+																</tr>
+
+															</c:if>
+														</c:forEach>
+													</c:if>
+													<tr id="${var.PAYPRIMARY_ID}"></tr>
+													</tbody>
+												</table>
+												<div class="col-md-12"  style="padding-bottom:2em;">
+													<a onclick="addTr('${var.PAYPRIMARY_ID}')" class="btn btn-info" ><i class="fa fa-plus"></i> 添加新的明细项</a>
+												</div>
+											</c:forEach>
+										</c:if>
+
+									</div>
+									<div id="divTable" class="col-md-12"  style="padding-bottom:2em;">
+										<a onclick="addTable()" class="btn btn-info" id="add"><i class="fa fa-plus"></i> 添加新的主表</a>
+									</div>
+									<table class="table table-border table-bg table-bordered">
+										<tbody>
+										<tr class="success">
+											<td width="10%" ><label>备注：</label></td>
+											<td colspan="5">
+												<textarea style="width: 95%;height: 78px" name="REMARK" id="REMARK">${pd1.REMARK}</textarea>
+													<%--<input type="text" style="width: 150px" value="${pd1.REMARK}"
+                                                            class="input-text"  name="REMARK"
+                                                            id="REMARK">--%>
+											</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+							</c:if>
 						</form>
 						<!-- ------------------------------------------------------------------------------- -->
 					</div>
@@ -803,9 +804,11 @@
 		var REALITYPAYTIME = $("#rpt"+PAYDETAIL_ID).val();
 		var REALITYPAY = $("#rp"+PAYDETAIL_ID).val();
 		var FNOTE = $("#no"+PAYDETAIL_ID).val();
-		if(SHPAYTIMEENT == '' || SHPAYTIMEENT == null || SHPAYTIME ==''||SHPAYTIME==null){
-			alert("付款区间为必填项");
-			return false;
+		if('${pd.CONTRACTCLASSIFY}' == '固定供应商'){
+			if(SHPAYTIMEENT == '' || SHPAYTIMEENT == null || SHPAYTIME ==''||SHPAYTIME==null){
+				alert("付款区间为必填项");
+				return false;
+			}
 		}
 		//alert("应付时间:"+SHPAYTIME+",应付金额:"+SHPAY+",实际付款时间:"+REALITYPAYTIME+",实际付款金额:"+REALITYPAY+"。");
 		$.ajax({
@@ -894,7 +897,7 @@
 		table += '<td style="padding-left:2px;">时间</td><td style="padding-left:2px;">总应付金额</td>';
 		table += '<td style="padding-left:2px;">应付款金额</td>';
 		if('${pd.CONTRACTCLASSIFY}' == '固定供应商'){
-			table += '<td style="padding-left:2px;">应付款时间</td>';
+			table += '<td style="padding-left:2px;">付款所属时间</td>';
 		}
 		table +=  '<td style="padding-left:2px;">实际付款金额</td>';
 		table += '<td style="padding-left:2px;">实际付款时间</td>';
@@ -973,9 +976,11 @@
 		var SHPAYTIME = $("#spt"+uuid_var).val();
 		var SHPAYTIMEENT = $("#spte"+uuid_var).val();
 		var FNOTE = $("#no"+uuid_var).val();
-		if(SHPAYTIMEENT == '' || SHPAYTIMEENT == null || SHPAYTIME ==''||SHPAYTIME==null){
-			alert("付款区间为必填项");
-			return false;
+		if('${pd.CONTRACTCLASSIFY}' == '固定供应商') {
+			if (SHPAYTIMEENT == '' || SHPAYTIMEENT == null || SHPAYTIME == '' || SHPAYTIME == null) {
+				alert("付款区间为必填项");
+				return false;
+			}
 		}
 		$.ajax({
 			type: "POST",

@@ -49,29 +49,45 @@
 						<input type="hidden" name="FILE_ISDOWN" id="FILE_ISDOWN" value="${pd.FILE_ISDOWN}"/>
 						<input type="hidden" name="ISCLEARS" id="ISCLEARS"/>
 					</form>
-						<label class="control-label" >是否可下载：</label>
+						<label class="control-label" >
+							<div class="col-xs-10 label label-lg label-light arrowed-in arrowed-right">
+								<b>是否可下载：<i class="ace-icon glyphicon glyphicon-download-alt bigger-110 nav-search-icon blue"></i></b>
+							</div>
+						</label>
 						<label style="margin-right: 15px">
 							<input  id="isDowns" name="isDowns" class="ace ace-switch ace-switch-5" type="checkbox">
 							<span class="lbl"></span>
 						</label>
-						<label class="control-label" >仅本人可见：</label>
+						<label class="control-label" >
+							<div class="col-xs-10 label label-lg label-light arrowed-in arrowed-right">
+								<b>仅本人可见：<i class="ace-icon glyphicon glyphicon-user bigger-110 nav-search-icon blue"></i></b>
+							</div>
+						</label>
+
 						<label style="margin-right: 15px">
 							<input onclick="toPrivate(this)" id="private" name="toPrivate" class="ace ace-switch ace-switch-5" type="checkbox">
 							<span class="lbl"></span>
 						</label>
-
-						<label id="toSD" class="control-label" >仅部分人可见：</label>
+						<br>
+						<label id="toSD" class="control-label" >
+							<div class="col-xs-10 label label-lg label-light arrowed-in arrowed-right">
+								<b>仅部分人可见：<i class="ace-icon fa fa-users bigger-110 nav-search-icon blue"></i></b>
+							</div>
+						</label>
 						<label id="toSDS" style="margin-right: 15px">
 							<input onclick="toSomeBody(this)" id="isSomeBody" name="switch-field" class="ace ace-switch ace-switch-5" type="checkbox">
 							<span class="lbl"></span>
 						</label>
-						<br>
 						<%--<label id="toClear" class="control-label" >是否清空已验证用户名单：</label>
 						<label  style="margin-right: 15px">
 							<input onclick="toClear(this)" id="isClear" name="switch-field" class="ace ace-switch ace-switch-5" type="checkbox">
 							<span class="lbl"></span>
 						</label>--%>
-						<label id="toENCTYPT" class="control-label" >是否加密文件：</label>
+						<label id="toENCTYPT" class="control-label" >
+							<div class="col-xs-10 label label-lg label-light arrowed-in arrowed-right">
+								<b>是否加密文件：<i class="ace-icon fa fa-key bigger-110 nav-search-icon blue"></i></b>
+							</div>
+						</label>
 						<label id="toENCTYPTS" style="margin-right: 15px">
 							<input onclick="toENCTYPT(this)" id="isENCTYPT" name="switch-field" class="ace ace-switch ace-switch-5" type="checkbox">
 							<span class="lbl"></span>
@@ -136,6 +152,23 @@
 
 		function isPrivate(){
 			var FILE_ISENCTYPT = $("#FILE_ISENCTYPT").val();
+			var FILE_ISPRIVATE = $("#FILE_ISPRIVATE").val();
+			if (FILE_ISPRIVATE == "1"){
+				$("#private").attr("checked","ture");
+			}
+			if($("#private").prop("checked")){
+				$("#toSDS").css("display","none");
+				$("#toSD").css("display","none");
+				$("#toENCTYPT").css("display","none");
+				$("#toENCTYPTS").css("display","none");
+				$("#passWord").css("display","none");
+				$("#selects").css("display","none");
+			}else {
+				$("#toSDS").css("display","");
+				$("#toSD").css("display","");
+				$("#toENCTYPT").css("display","");
+				$("#toENCTYPTS").css("display","");
+			}
 			//alert(FILE_ISENCTYPT);
 			if (FILE_ISENCTYPT == "1"){
 				$("#isENCTYPT").attr("checked","ture");

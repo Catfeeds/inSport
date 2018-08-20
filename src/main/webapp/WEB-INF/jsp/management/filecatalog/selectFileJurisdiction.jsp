@@ -30,7 +30,7 @@
 				<div class="" style="text-align: left;margin-left: 10px;margin-top: 10px">
 					<!-- <td style="text-align: center;" colspan="10"> -->
 					<a  class="btn btn-success btn-xs" onclick="addFile('${pd.FITEMID}','${pd.FNAME}')">
-						<i class="ace-icon fa fa-credit-card bigger-110 nav-search-icon yellow"></i>添加上次文件
+						<i class="ace-icon fa fa-credit-card bigger-110 nav-search-icon yellow"></i>添加上传文件
 					</a>
 					<a class="btn btn-primary  btn-xs" onclick="top.Dialog.close();">
 						<i class="ace-icon fa  fa-external-link bigger-110 nav-search-icon red"></i>取消
@@ -45,24 +45,41 @@
 						<input type="hidden" name="FPARENTID" id="FPARENTID" value="${pd.FPARENTID}"/>
 						<input type="hidden" name="FILE_READUSERS" id="FILE_READUSERS"/>
 					</form>
-						<label class="control-label" >是否可下载：</label>
-						<label style="margin-right: 15px">
+						<label class="control-label" >
+							<div class="col-xs-10 label label-lg label-light arrowed-in arrowed-right">
+								<b>是否可下载：<i class="ace-icon glyphicon glyphicon-download-alt bigger-110 nav-search-icon blue"></i></b>
+							</div>
+						</label>
+						<label >
 							<input onclick="isDowns(this)" checked id="isDowns" name="isDowns" class="ace ace-switch ace-switch-5" type="checkbox">
 							<span class="lbl"></span>
 						</label>
-						<label class="control-label" >仅本人可见：</label>
-						<label style="margin-right: 15px">
+						<label class="control-label" style="margin-left: 45px">
+							<div class="col-xs-10 label label-lg label-light arrowed-in arrowed-right">
+								<b>仅本人可见：<i class="ace-icon glyphicon glyphicon-user bigger-110 nav-search-icon blue"></i></b>
+							</div>
+
+						</label>
+						<label >
 							<input onclick="toPrivate(this)" id="private" name="toPrivate" class="ace ace-switch ace-switch-5" type="checkbox">
 							<span class="lbl"></span>
 						</label>
-
-						<label id="toSD" class="control-label" >仅部分人可见：</label>
-						<label id="toSDS" style="margin-right: 15px">
+						<br>
+						<label id="toSD" class="control-label" >
+							<div class="col-xs-10 label label-lg label-light arrowed-in arrowed-right">
+								<b>仅部分人可见：<i class="ace-icon fa fa-users bigger-110 nav-search-icon blue"></i></b>
+							</div>
+						</label>
+						<label id="toSDS" >
 							<input onclick="toSomeBody(this)" id="isSomeBody" name="switch-field" class="ace ace-switch ace-switch-5" type="checkbox">
 							<span class="lbl"></span>
 						</label>
-						<label id="toENCTYPT" class="control-label" >是否加密文件：</label>
-						<label id="toENCTYPTS" style="margin-right: 15px">
+						<label id="toENCTYPT" class="control-label" style="margin-left: 35px">
+							<div class="col-xs-10 label label-lg label-light arrowed-in arrowed-right">
+								<b>是否加密文件：<i class="ace-icon fa fa-key bigger-110 nav-search-icon blue"></i></b>
+							</div>
+						</label>
+						<label id="toENCTYPTS" >
 							<input onclick="toENCTYPT(this)" id="isENCTYPT" name="switch-field" class="ace ace-switch ace-switch-5" type="checkbox">
 							<span class="lbl"></span>
 						</label>

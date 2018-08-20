@@ -143,7 +143,14 @@
 				<td><label>${vs.index+1}</label></td>
 				<td><label name="TYPE" id="ty${var.PAYDETAIL_ID}">应付款</label></td>
 				<td><label name="SHPAY" id="sp${var.PAYDETAIL_ID}">${var.SHPAY}</label></td>
-				<td><label name="SETIME" id="se${var.PAYDETAIL_ID}">(${var.SHPAYTIME}至${var.SHPAYTIMEENT})</label></td>
+				<td><label name="SETIME" id="se${var.PAYDETAIL_ID}">
+					<c:if test="${var.SHPAYTIME == null && var.SHPAYTIMEENT == null}">
+						- -:- -
+					</c:if>
+					<c:if test="${var.SHPAYTIME != null || var.SHPAYTIMEENT != null}">
+						(${var.SHPAYTIME}至${var.SHPAYTIMEENT})
+					</c:if>
+				</label></td>
 				<td><input name="REALITYPAYTIME" type="date" style="width: 150px;height: 31px"
 						   class="input-text" id="rpt${var.PAYDETAIL_ID}"></td>
 				<td><label><input name="REALITYPAY" type="number" style="width: 110px;"
