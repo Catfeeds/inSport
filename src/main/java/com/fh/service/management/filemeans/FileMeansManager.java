@@ -69,6 +69,8 @@ public interface FileMeansManager{
 
 	public PageData findByUrl(PageData pd)throws Exception;
 
+	public List<PageData> checkHave(PageData pd)throws Exception;
+
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception

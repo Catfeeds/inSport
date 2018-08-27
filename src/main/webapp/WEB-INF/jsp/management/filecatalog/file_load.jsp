@@ -30,6 +30,35 @@
             /* background-color: yellow; */
         }
 
+        .float_div11 {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            /* border: 1px solid red; */
+            /* margin-right:0px;*/
+            margin-top: 90px;
+            right: 5px;
+            /* top: -0px; */
+            float: right;
+            z-index: 100;
+            border-radius: 10px;
+            /* background-color: yellow; */
+        }
+        .float_div22 {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            /* border: 1px solid red; */
+            /* margin-right:0px;*/
+            margin-top: 90px;
+            right: 25px;
+            /* top: -0px; */
+            float: right;
+            z-index: 100;
+            border-radius: 10px;
+            /* background-color: yellow; */
+        }
+
         .delfloat_div {
             position: absolute;
             width: 40px;
@@ -151,6 +180,24 @@
                                                                 <img src="static/images/Smile.png"
                                                                      style="width: 35px;height: 35px"/>
                                                             </div>
+                                                            <c:if test="${var.FILE_ISDOWN == '1'}">
+                                                                <div  class="float_div22"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-cloud-download bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE == '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-user bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE != '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-users bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
                                                             <img width="120" height="110";
                                                                  src="<%=basePath%>${var.FILE_URL}" alt="">
                                                             <a title="${var.FILENAME}" data-magnify="gallery"
@@ -180,6 +227,24 @@
                                                                 <img src="static/images/Smile.png"
                                                                      style="width: 35px;height: 35px"/>
                                                             </div>
+                                                            <c:if test="${var.FILE_ISDOWN == '1'}">
+                                                                <div  class="float_div22"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-cloud-download bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE == '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-user bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE != '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-users bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
                                                             <img   width="120" height="110" alt="200x200"
                                                                  src="static/filecatalog/images/application-pdf.png"/>
                                                             <a onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text"
@@ -210,6 +275,24 @@
                                                                 <img src="static/images/Smile.png"
                                                                      style="width: 35px;height: 35px"/>
                                                             </div>
+                                                            <c:if test="${var.FILE_ISDOWN == '1'}">
+                                                                <div  class="float_div22"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-cloud-download bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE == '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-user bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE != '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-users bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
                                                             <img  width="120" height="110" alt="200x200"
                                                                  src="static/filecatalog/images/file-word-icon.png"/>
                                                                 <div name="inner" class="inner">${var.FILENAME}</div>
@@ -240,6 +323,24 @@
                                                                 <img src="static/images/Smile.png"
                                                                      style="width: 35px;height: 35px"/>
                                                             </div>
+                                                            <c:if test="${var.FILE_ISDOWN == '1'}">
+                                                                <div  class="float_div22"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-cloud-download bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE == '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-user bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE != '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-users bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
                                                             <img  width="120" height="110" alt="200x200"
                                                                  src="static/filecatalog/images/excel.png"/>
                                                                 <div  class="inner">${var.FILENAME}</div>
@@ -272,6 +373,24 @@
                                                                 <img src="static/images/Smile.png"
                                                                      style="width: 35px;height: 35px"/>
                                                             </div>
+                                                            <c:if test="${var.FILE_ISDOWN == '1'}">
+                                                                <div  class="float_div22"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-cloud-download bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE == '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-user bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE != '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-users bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
                                                             <img width="120" height="110";
                                                                  src="<%=basePath%>${var.FILE_URL}" alt="">
                                                             <a title="${var.FILENAME}" data-magnify="gallery"
@@ -296,6 +415,24 @@
                                                                 <img src="static/images/Smile.png"
                                                                      style="width: 35px;height: 35px"/>
                                                             </div>
+                                                            <c:if test="${var.FILE_ISDOWN == '1'}">
+                                                                <div  class="float_div22"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-cloud-download bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE == '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-user bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE != '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-users bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
                                                             <img   width="120" height="110" alt="200x200"
                                                                    src="static/filecatalog/images/application-pdf.png"/>
                                                             <a onclick=" wep_open('<%=basePath%>${var.FILE_URL}','${var.FILENAME}')" class="text"
@@ -323,6 +460,24 @@
                                                                 <img src="static/images/Smile.png"
                                                                      style="width: 35px;height: 35px"/>
                                                             </div>
+                                                            <c:if test="${var.FILE_ISDOWN == '1'}">
+                                                                <div  class="float_div22"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-cloud-download bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE == '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-user bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE != '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-users bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
                                                             <img  width="120" height="110" alt="200x200"
                                                                   src="static/filecatalog/images/file-word-icon.png"/>
                                                             <div style="color: red" name="inner" class="inner">${var.FILENAME}</div>
@@ -347,6 +502,24 @@
                                                                 <img src="static/images/Smile.png"
                                                                      style="width: 35px;height: 35px"/>
                                                             </div>
+                                                            <c:if test="${var.FILE_ISDOWN == '1'}">
+                                                                <div  class="float_div22"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-cloud-download bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE == '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-user bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE != '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-users bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
                                                             <img  width="120" height="110" alt="200x200"
                                                                   src="static/filecatalog/images/excel.png"/>
                                                             <div style="color: red" class="inner">${var.FILENAME}</div>

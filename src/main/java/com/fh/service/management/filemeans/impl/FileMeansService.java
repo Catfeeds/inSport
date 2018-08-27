@@ -115,6 +115,10 @@ public class FileMeansService implements FileMeansManager{
 		return (PageData)dao.findForObject("FileMeansMapper.findByUrl", pd);
 	}
 
+	public List<PageData> checkHave(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("FileMeansMapper.checkHave", pd);
+	}
+
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception

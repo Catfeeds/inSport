@@ -139,6 +139,8 @@ public class ReportsController extends BaseController {
 			p_treeKey = URLDecoder.decode(p_treeKey, "UTF-8");
 			pd.put("p_treeKey", p_treeKey.trim());
 		}
+		List<PageData> listDept = deptnoService.listAll(pd);
+		mv.addObject("listDept", listDept);
 		page.setPd(pd);
 		List<PageData>	varList = invoiceService.officelistPage(page);
 		mv.setViewName("management/reports/officelist");
@@ -173,6 +175,8 @@ public class ReportsController extends BaseController {
 			p_treeKey = URLDecoder.decode(p_treeKey, "UTF-8");
 			pd.put("p_treeKey", p_treeKey.trim());
 		}
+		List<PageData> listDept = deptnoService.listAll(pd);
+		mv.addObject("listDept", listDept);
 		mv.setViewName("management/reports/officelistproceeds");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
@@ -205,6 +209,8 @@ public class ReportsController extends BaseController {
 			p_treeKey = URLDecoder.decode(p_treeKey, "UTF-8");
 			pd.put("p_treeKey", p_treeKey.trim());
 		}
+		List<PageData> listDept = deptnoService.listAll(pd);
+		mv.addObject("listDept", listDept);
 		mv.setViewName("management/reports/officelistnotproceeds");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
@@ -224,6 +230,8 @@ public class ReportsController extends BaseController {
 		}
 		page.setPd(pd);
 		List<PageData>	varList = invoiceService.otherlistPage(page);
+		List<PageData> listDept = deptnoService.listAll(pd);
+		mv.addObject("listDept", listDept);
 		mv.setViewName("management/reports/listotherproceeds");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
@@ -243,6 +251,8 @@ public class ReportsController extends BaseController {
 		pd.put("isNot","get"); // 随便传个值到xml，查询未收款大于0的条件
 		page.setPd(pd);
 		List<PageData>	varList = invoiceService.otherlistPage(page);
+		List<PageData> listDept = deptnoService.listAll(pd);
+		mv.addObject("listDept", listDept);
 		mv.setViewName("management/reports/listothernotproceeds");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
@@ -262,6 +272,8 @@ public class ReportsController extends BaseController {
 		//pd.put("isNot","get"); // 随便传个值到xml，查询未收款大于0的条件
 		page.setPd(pd);
 		List<PageData>	varList = paydetailService.paylistPage(page);
+		List<PageData> listDept = deptnoService.listAll(pd);
+		mv.addObject("listDept", listDept);
 		mv.setViewName("management/reports/listpaydetail");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
@@ -281,6 +293,8 @@ public class ReportsController extends BaseController {
 		pd.put("isNot","get"); // 随便传个值到xml，查询未收款大于0的条件
 		page.setPd(pd);
 		List<PageData>	varList = paydetailService.paylistPage(page);
+		List<PageData> listDept = deptnoService.listAll(pd);
+		mv.addObject("listDept", listDept);
 		mv.setViewName("management/reports/listnotpaydetail");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);

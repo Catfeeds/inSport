@@ -12,6 +12,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 import com.fh.util.PageData;
@@ -43,6 +44,7 @@ public class ObjectExcelView extends AbstractExcelView{
 		headerStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 		headerStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 		HSSFFont headerFont = workbook.createFont();	//标题字体
+		headerStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 上下居中
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		headerFont.setFontHeightInPoints((short)11);
 		headerStyle.setFont(headerFont);
@@ -55,7 +57,7 @@ public class ObjectExcelView extends AbstractExcelView{
 			setText(cell,title);
 		}
 		sheet.getRow(0).setHeight(height);
-		
+
 		HSSFCellStyle contentStyle = workbook.createCellStyle(); //内容样式
 		contentStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 		List<PageData> varList = (List<PageData>) model.get("varList");
@@ -68,7 +70,7 @@ public class ObjectExcelView extends AbstractExcelView{
 				cell.setCellStyle(contentStyle);
 				setText(cell,varstr);
 			}
-			
+
 		}
 		
 	}

@@ -348,6 +348,7 @@
 								data: src,
 								dataType:'json'
 							}).done(function( response ) {
+								console.log(response.result);
 								if (response.result) {
 									img = $('<img src="'+response.result+'">');
 									$wrap.empty().append( img );
@@ -372,7 +373,7 @@
 
 					// 成功
 					if ( cur === 'error' || cur === 'invalid' ) {
-						console.log( file.statusText );
+						//console.log( file.statusText );
 						showError( file.statusText );
 						percentages[ file.id ][ 1 ] = 1;
 					} else if ( cur === 'interrupt' ) {
@@ -613,6 +614,17 @@
 					alert( 'Eroor: ' + code );
 				}
 			};
+
+			uploader.on( "uploadSuccess", function( file ,response) {
+				//$( "#"+file.id ).find("p.state").text("已上传");
+				console.log(file);
+				if(response.result  == "no"){
+					alert("文件："+file.name+"，重复上传，上传失败！！");
+				}
+
+			});
+
+
 
 			$upload.on('click', function() {
 				if ( $(this).hasClass( 'disabled' ) ) {

@@ -176,6 +176,27 @@
 		<if test="pd.isNot != null and pd.isNot != ''"><!-- 关键词检索 -->
 			AND cast(u.NOT_RECEIVABLE as  DECIMAL(18,2)) > 0
 		</if>
+		<if test="pd.YEAR != null and pd.YEAR != ''"><!-- 关键词检索 -->
+			and
+			c.FDATE LIKE '%'+ #{pd.YEAR}+'%'
+		</if>
+		<if test="pd.CONTRACTNUM != null and pd.CONTRACTNUM != ''"><!-- 关键词检索 -->
+			and
+			c.CONTRACTNUM LIKE '%'+ #{pd.CONTRACTNUM}+'%' OR c.CONTRACTNAME LIKE '%'+ #{pd.CONTRACTNUM}+'%'
+			OR c.CONTRACTOFNAME LIKE '%'+ #{pd.CONTRACTNUM}+'%'
+		</if>
+		<if test="pd.DEPTNAME != null and pd.DEPTNAME != ''"><!-- 关键词检索 -->
+			and
+			c.DEPTNAME LIKE '%'+ #{pd.DEPTNAME}+'%'
+		</if>
+		<if test="pd.picStart != null and pd.picStart != ''"><!-- 关键词检索 -->
+			and
+			c.CONTRACTPIC <![CDATA[ >= ]]> #{pd.picStart}
+		</if>
+		<if test="pd.picEnd != null and pd.picEnd != ''"><!-- 关键词检索 -->
+			and
+			c.CONTRACTPIC <![CDATA[ <= ]]> #{pd.picEnd}
+		</if>
 		ORDER BY c.CONTRACTNUM
 	</select>
 

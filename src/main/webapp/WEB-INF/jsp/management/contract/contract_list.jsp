@@ -118,12 +118,12 @@
                                                 id="search-icon"
                                                 class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
                                     </c:if>
-                                    <c:if test="${QX.toExcel == 1 }">
+                                    <%--<c:if test="${QX.toExcel == 1 }">
                                         <td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs"
                                                                                             onclick="toExcel();" title="导出到EXCEL"><i
                                                 id="nav-search-icon"
                                                 class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td>
-                                    </c:if>
+                                    </c:if>--%>
                                 </tr>
                             </table>
                             <!-- 检索  -->

@@ -217,12 +217,15 @@
 				$("#toENCTYPTS").css("display","none");
 				$("#passWord").css("display","none");
 				$("#selects").css("display","none");
+				$("#FILE_ISPRIVATE").val("1");
 			}else {
 				$("#toSDS").css("display","");
 				$("#toSD").css("display","");
 				$("#toENCTYPT").css("display","");
 				$("#toENCTYPTS").css("display","");
+				$("#FILE_ISPRIVATE").val("0");
 			}
+
 		}
 
 		function toENCTYPT(value){

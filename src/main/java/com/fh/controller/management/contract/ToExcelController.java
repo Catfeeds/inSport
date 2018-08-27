@@ -446,7 +446,12 @@ public class ToExcelController extends BaseController {
 			}
 			vpd.put("var4", varOList.get(i).get("CONTRACTPIC").toString());	    //4
 			vpd.put("var5", varOList.get(i).get("SHPAY").toString());	    //5
-			vpd.put("var6", varOList.get(i).get("SHPAYTIME").toString());	    //6
+			if(varOList.get(i).get("SHPAYTIME") == null){
+				vpd.put("var6", "");	    //6
+			}else {
+				vpd.put("var6", varOList.get(i).get("SHPAYTIME").toString());	    //6
+			}
+
 			vpd.put("var7", varOList.get(i).get("REALITYPAYTIME").toString());	    //7
 			vpd.put("var8", varOList.get(i).get("REALITYPAY").toString());	    //8
 			if(varOList.get(i).get("ONPAYPIC") == null){
@@ -505,7 +510,11 @@ public class ToExcelController extends BaseController {
 			}
 			vpd.put("var4", varOList.get(i).get("CONTRACTPIC").toString());	    //4
 			vpd.put("var5", varOList.get(i).get("SHPAY").toString());	    //5
-			vpd.put("var6", varOList.get(i).get("SHPAYTIME").toString());	    //6
+			if(varOList.get(i).get("SHPAYTIME") == null){
+				vpd.put("var6", "");	    //6
+			}else {
+				vpd.put("var6", varOList.get(i).get("SHPAYTIME").toString());	    //6
+			}
 			vpd.put("var7", varOList.get(i).get("REALITYPAYTIME").toString());	    //7
 			vpd.put("var8", varOList.get(i).get("REALITYPAY").toString());	    //8
 			if(varOList.get(i).get("ONPAYPIC") == null){

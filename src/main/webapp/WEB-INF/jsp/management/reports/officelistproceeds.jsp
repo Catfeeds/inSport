@@ -70,33 +70,28 @@
                     <div class="col-xs-12">
 
                         <!-- 检索  -->
-                        <form action="reports/officelistProceeds.do?keywords=${pd.keywords}" method="post" name="Form" id="Form">
+                        <form action="reports/officelistProceeds.do?CONTRACTNUM=${pd.CONTRACTNUM}" method="post" name="Form" id="Form">
                             <table style="margin-top:5px;">
                                 <tr>
-                                    <%--<td>
+                                    <td>
                                         <div class="nav-search">
 										<span class="input-icon">
 											<input type="text" placeholder="这里输入关键词" class="nav-search-input"
-                                                   id="nav-search-input" autocomplete="off" name="CONTRACTNUM"
+                                                   id="CONTRACTNUM" autocomplete="off" name="CONTRACTNUM"
                                                    value="${pd.CONTRACTNUM }" placeholder="这里输入关键词"/>
 											<i class="ace-icon fa fa-search nav-search-icon"></i>
                                             <input type="hidden" value="${pd.USERNAME}" name="USERNAME" id="USERNAME" />
 										</span>
                                         </div>
-                                    </td>--%>
+                                    </td>
                                     <td style="padding-left:12px;">
-                                        <label style="margin-top: 5px">类型:</label>
-                                        <select name="TYPE" id="TYPE" data-placeholder=""
+                                        <label style="margin-top: 5px">部门:</label>
+                                        <select name="DEPTNAME" id="DEPTNAME" data-placeholder=""
                                                 style="vertical-align:top;width: 110px;" >
-                                                <option  value="z"
-                                                        <c:if test="${pd.TYPE == 'z'}">
-                                                            selected
-                                                        </c:if> >
-                                                    租金</option>
-                                                <option  value="s" <c:if test="${pd.TYPE == 's'}">
-                                                                        selected
-                                                                    </c:if>
-                                                >水电费</option>
+                                            <option value="${pd.DEPTNAME}" name="${pd.DEPTNAME}">${pd.DEPTNAME}</option>
+                                            <c:forEach items="${listDept}" var="var" varStatus="vs">
+                                                <option  value="${var.DEPTNAME}" >${var.DEPTNAME}</option>
+                                            </c:forEach>
                                         </select>
                                     </td>
                                     <td style="padding-left:12px;">
@@ -106,14 +101,38 @@
                                             <option value="${pd.YEAR}" name="${pd.YEAR}">${pd.YEAR}</option>
                                         </select>
                                     </td>
-                                        <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs"
-                                                                                           onclick="tosearch();" title="检索"><i
-                                                id="search-icon"
-                                                class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
-                                        <td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs"
-                                                                                            onclick="toExcel();" title="导出到EXCEL"><i
-                                                id="nav-search-icon"
-                                                class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td>
+                                    <td style="padding-left:12px;">
+                                        <label>合同金额区间:</label>
+                                        <input type="number" placeholder="输入金额" style="width: 110px" class="nav-search-input"
+                                               id="picStart" autocomplete="off" name="picStart"
+                                               value="${pd.picStart }" />  -至-
+                                        <input type="number" placeholder="输入金额" style="width: 110px" class="nav-search-input"
+                                               id="picEnd" autocomplete="off" name="picEnd"
+                                               value="${pd.picEnd }" />
+                                    </td>
+                                    <td style="padding-left:12px;">
+                                        <label style="margin-top: 5px">类型:</label>
+                                        <select name="TYPE" id="TYPE" data-placeholder=""
+                                                style="vertical-align:top;width: 110px;" >
+                                            <option  value="z"
+                                                    <c:if test="${pd.TYPE == 'z'}">
+                                                        selected
+                                                    </c:if> >
+                                                租金</option>
+                                            <option  value="s" <c:if test="${pd.TYPE == 's'}">
+                                                selected
+                                            </c:if>
+                                            >水电费</option>
+                                        </select>
+                                    </td>
+                                    <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs"
+                                                                                       onclick="tosearch();" title="检索"><i
+                                            id="search-icon"
+                                            class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
+                                    <td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs"
+                                                                                        onclick="toExcel();" title="导出到EXCEL"><i
+                                            id="nav-search-icon"
+                                            class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td>
                                 </tr>
                             </table>
                             <!-- 检索  -->
@@ -146,13 +165,26 @@
                                 <!-- 开始循环 -->
                                 <c:choose>
                                     <c:when test="${not empty varList}">
+                                        <c:set value="" var="CONTRACTNUM" ></c:set>
+                                        <c:set value="0" var="count" ></c:set>
+                                        <c:forEach items="${varList}" var="var1" varStatus="vs1">
+                                            <c:if test="${vs1.index == 0 }">
+                                                <c:set value="${var1.CONTRACTNUM}" var="CONTRACTNUM" ></c:set>
+                                            </c:if>
+                                            <c:if test="${var1.CONTRACTNUM == CONTRACTNUM }">
+                                                <c:set value="${count + 1}" var="count" ></c:set>
+                                            </c:if>
+                                        </c:forEach>
+                                        <c:set value="" var="CONTRACTNUM" ></c:set>
                                         <c:forEach items="${varList}" var="var" varStatus="vs">
                                             <tr id="${var.CONTRACT_ID}" ondblclick="show_contract('${var.CONTRACT_ID}')" onclick="changeColor('${var.CONTRACT_ID}');list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}','${var.CONTRACTNAME}')">
                                                 <td class='center' style="width: 30px;">${vs.index+1}</td>
-                                                <td class='center'>${var.CONTRACTOFNAME}</td>
-                                                <td class='center'>${var.CONTRACTNAME}
-                                                </td>
-                                                <td class='center'>${var.CONTRACTNUM}</td>
+                                                <c:if test="${var.CONTRACTNUM != CONTRACTNUM }">
+                                                    <td class='center' style="vertical-align:middle;" rowspan="${count}">${var.CONTRACTOFNAME}</td>
+                                                    <td class='center' style="vertical-align:middle;" rowspan="${count}">${var.CONTRACTNAME}</td>
+                                                    <td class='center' style="vertical-align:middle;" rowspan="${count}">${var.CONTRACTNUM}</td>
+                                                </c:if>
+                                                <c:set value="${var.CONTRACTNUM}" var="CONTRACTNUM" ></c:set>
                                                 <td class='center'>${var.STARTTIME} -- ${var.ENDTIME}</td>
                                                 <td class='center'>${var.RECEIVABLE}</td>
                                                 <td class='center'>${var.RECEIVABL_PAYTIME}</td>
@@ -303,11 +335,36 @@
         });
     });
 
+    function selectDate(){
+        var option = "";
+        var now = new Date();
+        var year=now.getFullYear();
+        //$("#CONTRACTCLASSIFY").find("option").remove();
+        for(var a=0;a<=15;a++){
+            option += "<option value=" + year +">" + year +"</option>";
+            //document.write("<option>"+year+"</option>");
+            year=year-1;
 
+        }
+        $("#YEAR").append(option);
+        /* for(var i=0;i < listCheClassify.length;i++){
+         option += "<option id="+listCheClassify[i].FITEMID+" value="+listCheClassify[i].FNAME+
+         " name="+listCheClassify[i].FNAME+">"+listCheClassify[i].FNAME+"</option>";
+         }
+         $("#CONTRACTCLASSIFY").append(option);*/
+    }
+
+    selectDate();
     //导出excel
     function toExcel() {
         var TYPE = $("#TYPE").val();
-        window.location.href = '<%=basePath%>toexcel/excel_OfficeProceeds.do?TYPE='+TYPE;
+        var picStart = $("#picStart").val();
+        var picEnd = $("#picEnd").val();
+        var YEAR = $("#YEAR").val();
+        var DEPTNAME = $("#DEPTNAME").val();
+        var CONTRACTNUM = $("#CONTRACTNUM").val();
+        window.location.href = '<%=basePath%>toexcel/excel_OfficeProceeds.do?TYPE='+TYPE+'&picStart='+picStart+
+                '&picEnd='+picEnd+'&YEAR='+YEAR+'&DEPTNAME='+DEPTNAME+'&CONTRACTNUM='+CONTRACTNUM;
     }
 </script>
 

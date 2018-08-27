@@ -261,8 +261,8 @@ public class FileMeansController extends BaseController {
 
 	@RequestMapping(value="/editJurisdiction")
 	public ModelAndView editJurisdiction() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"修改FileMeans");
-		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
+		//logBefore(logger, Jurisdiction.getUsername()+"修改FileMeans");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();

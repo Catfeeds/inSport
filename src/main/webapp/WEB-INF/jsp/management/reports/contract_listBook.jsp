@@ -70,20 +70,20 @@
                     <div class="col-xs-12">
 
                         <!-- 检索  -->
-                        <form action="contract/listBook.do?keywords=${pd.keywords}" method="post" name="Form" id="Form">
+                        <form action="contract/listBook.do?CONTRACTNUM=${pd.CONTRACTNUM}" method="post" name="Form" id="Form">
                             <table style="margin-top:5px;">
                                 <tr>
-                                    <%--<td>
+                                    <td>
                                         <div class="nav-search">
 										<span class="input-icon">
 											<input type="text" placeholder="这里输入关键词" class="nav-search-input"
-                                                   id="nav-search-input" autocomplete="off" name="CONTRACTNUM"
+                                                   id="CONTRACTNUM" autocomplete="off" name="CONTRACTNUM"
                                                    value="${pd.CONTRACTNUM }" placeholder="这里输入关键词"/>
 											<i class="ace-icon fa fa-search nav-search-icon"></i>
                                             <input type="hidden" value="${pd.USERNAME}" name="USERNAME" id="USERNAME" />
 										</span>
                                         </div>
-                                    </td>--%>
+                                    </td>
                                     <td style="padding-left:12px;">
                                         <label style="margin-top: 5px">部门:</label>
                                         <select name="DEPTNAME" id="DEPTNAME" data-placeholder=""

@@ -101,6 +101,7 @@
         <include refid="tableName"></include>
         set
         FILE_ISDOWN = #{FILE_ISDOWN},
+        FILE_ISPRIVATE = #{FILE_ISPRIVATE},
         FILE_ISENCTYPT = #{FILE_ISENCTYPT},
         FILE_READUSERS = #{FILE_READUSERS},
         FILE_PASSWORD = #{FILE_PASSWORD}
@@ -155,6 +156,11 @@
         <include refid="tableName"></include>
         where
         FILEMEANS_ID = #{FILEMEANS_ID}
+    </select>
+
+    <select id="checkHave" parameterType="pd" resultType="pd">
+        SELECT * FROM TB_FILEMEANS
+         WHERE FILE_CATALOGURL_ID = #{FILE_CATALOGURL_ID} AND FILENAME = #{FILENAME}
     </select>
 
     <select id="findByUrl" parameterType="pd" resultType="pd">

@@ -78,7 +78,7 @@
 	</div>	
 	</c:if>
 	<canvas class="cavs"></canvas>
-	<div style="background: url(static/login/images/login1.jpg);background-size:100% 100%;
+	<div style="background: url(static/login/images/fs.png);background-size:100% 100%;
 	height:100%;width:100%;text-align: center;margin: 0 auto;position: absolute;">
 		<!-- 登录 -->
 		<div id="windows1">

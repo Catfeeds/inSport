@@ -81,6 +81,14 @@ public class FileUpDataController extends BaseController {
 		Map<String,String> map = new HashMap<String,String>();
 		String fileOriginalName = file.getOriginalFilename();
 		String fileType = file.getContentType();
+		PageData pd1 = new PageData();
+		pd1.put("FILE_CATALOGURL_ID",FITEMID);
+		pd1.put("FILENAME",fileOriginalName);
+		List<PageData> listHave = filemeansService.checkHave(pd1);
+		if (listHave.size() > 0){
+			map.put("result", "no");
+			return AppUtil.returnObject(pd1, map);
+		}
 		//System.out.println("---------------文件目录："+FNAME);
 		//System.out.println("原文件名字："+fileOriginalName+"，文件类别："+fileType);
 		String  ffile = DateUtil.getDays(), fileName = "";

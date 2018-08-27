@@ -92,11 +92,15 @@
 									<th width="15%"><label>合同编号：</label></th>
 									<th width="10%"><input type="text" style="width: 180px" value="${pd.CONTRACTNUM}"
 														   class="input-text"  name="CONTRACTNUM"
-														   id="CONTRACTNUM"></th>
+														   id="CONTRACTNUM">
+										<label style="color: red;font-size: 17px">  *</label>
+									</th>
 									<th width="15%"><label>合同名称：</label></th>
 									<th width="10%"><input type="text" style="width: 150px" value="${pd.CONTRACTNAME}"
 														   class="input-text"  name="CONTRACTNAME"
-														   id="CONTRACTNAME"></th>
+														   id="CONTRACTNAME">
+										<label style="color: red;font-size: 17px">  *</label>
+									</th>
 									<th  ><label></label></th>
 									<th  ></th>
 								</tr>
@@ -105,7 +109,7 @@
 									<th >
 										<input type="text" style="width: 150px" value="${pd.CONTRACTOFNAME}"
 												class="input-text"  name="CONTRACTOFNAME"
-												id="CONTRACTOFNAME">
+												id="CONTRACTOFNAME"><label style="color: red;font-size: 17px">  *</label>
 										<%--<select name="CLIENT" id="CLIENT" data-placeholder=""
 												style="vertical-align:top;width: 150px;">
 											<option value="${pd.CLIENT}" name="${pd.CLIENT}">${pd.FNAME}</option>
@@ -118,7 +122,7 @@
 									<th  >
 										<input type="text" style="width: 150px" value="${pd.PROJECT}"
 											   class="input-text"  name="PROJECT"
-											   id="PROJECT"></th>
+											   id="PROJECT"><label style="color: red;font-size: 17px">  *</label></th>
 									<th  ><label></label></th>
 									<th  ></th>
 								</tr>
@@ -127,13 +131,13 @@
 									<th >
 										<input type="text" style="width: 150px" value="${pd.CLIENT}"
 											   class="input-text"  name="CLIENT"
-											   id="CLIENT">
+											   id="CLIENT"><label style="color: red;font-size: 17px">  *</label>
 									</th>
 									<th  ><label>联系电话：</label></th>
 									<th  >
 										<input type="text" style="width: 150px" value="${pd.TELEPHONE}"
 											   class="input-text"  name="TELEPHONE"
-											   id="TELEPHONE"></th>
+											   id="TELEPHONE"><label style="color: red;font-size: 17px">  *</label></th>
 									<th  ><label></label></th>
 									<th  ></th>
 								</tr>
@@ -152,7 +156,7 @@
 												   id="FUSEDATESTART">
 											--- <input type="date" style="width: 140px;height: 31px" value="${pd.FUSEDATEENT}"
 													   class="input-date"  name="FUSEDATEENT"
-													   id="FUSEDATEENT">
+													   id="FUSEDATEENT"><label style="color: red;font-size: 17px">  *</label>
 										</label>
 									</th>
 								</tr>
@@ -169,7 +173,7 @@
 									<th ><label>签约时间：</label></th>
 									<th  ><input type="date" style="width: 150px;height: 31px" value="${pd.FDATE}"
 												 class="input-text"  name="FDATE"
-												 id="FDATE"></th>
+												 id="FDATE"><label style="color: red;font-size: 17px">  *</label></th>
 								</tr>
 								<tr>
 									<th width="15%"><label>税目：</label></th>
@@ -206,9 +210,6 @@
 								<tr class="success">
 									<th ><label>经办人：</label></th>
 									<th >
-										<%--<input type="text" style="width: 150px" value="${pd.OPERATOR}"
-												class="input-text"  name="OPERATOR"
-												id="OPERATOR">--%>
 										<select name="OPERATOR" id="OPERATOR" class="selectpicker bla bla bli" title="选择经办人"
 												data-style="btn-info" data-width="150px" data-height="31px" data-live-search="true"
 												style="vertical-align:top;width: 150px;" >
@@ -216,7 +217,7 @@
 											<c:forEach items="${listOperator}" var="var" varStatus="vs">
 												<option id="${var.ONAME}" value="${var.ONAME}" name="${var.ONAME}">${var.ONAME}</option>
 											</c:forEach>
-										</select>
+										</select><label style="color: red;font-size: 17px">  *</label>
 									</th>
 									<th width="15%"><label>方式：</label></th>
 									<th width="10%">
@@ -244,7 +245,7 @@
 										<select name="CONTRACTCLASSIFY" id="CONTRACTCLASSIFY" data-placeholder=""
 												style="vertical-align:top;width: 150px;" onchange="selectType(this.value); ">
 											<option  value="${pd.CONTRACTCLASSIFY}" name="${pd.CONTRACTCLASSIFY}">${pd.CONTRACTCLASSIFY}</option>
-										</select>
+										</select><label style="color: red;font-size: 17px">  *</label>
 										<c:if test="${pd2.ISEW == null}">
 										<label id="iswe1" style="display:none;margin-left: 20px" class="control-label" >是否有水电费：</label>
 										<label id="iswe2"  style="display:none;margin-top: 5px;margin-right: 15px">
@@ -1860,6 +1861,144 @@
 	}
 
 	function save(){
+		if($("#CONTRACTNUM").val()==""){
+			$("#CONTRACTNUM").tips({
+				side:3,
+				msg:'请填写合同编号',
+				bg:'#AE81FF',
+				time:2
+			});
+			$("#CONTRACTNUM").focus();
+			return false;
+		}
+
+		if($("#CONTRACTNAME").val()==""){
+			$("#CONTRACTNAME").tips({
+				side:3,
+				msg:'请填写合同名称',
+				bg:'#AE81FF',
+				time:2
+			});
+			$("#CONTRACTNAME").focus();
+			return false;
+		}
+
+		if($("#CONTRACTOFNAME").val()==""){
+			$("#CONTRACTOFNAME").tips({
+				side:3,
+				msg:'请填写签约方',
+				bg:'#AE81FF',
+				time:2
+			});
+			$("#CONTRACTOFNAME").focus();
+			return false;
+		}
+
+		if($("#PROJECT").val()==""){
+			$("#PROJECT").tips({
+				side:3,
+				msg:'请填写项目名',
+				bg:'#AE81FF',
+				time:2
+			});
+			$("#PROJECT").focus();
+			return false;
+		}
+
+		if($("#CLIENT").val()==""){
+			$("#CLIENT").tips({
+				side:3,
+				msg:'请填写联系人',
+				bg:'#AE81FF',
+				time:2
+			});
+			$("#CLIENT").focus();
+			return false;
+		}
+
+
+		if($("#TELEPHONE").val()==""){
+			$("#TELEPHONE").tips({
+				side:3,
+				msg:'请填写联系电话',
+				bg:'#AE81FF',
+				time:2
+			});
+			$("#TELEPHONE").focus();
+			return false;
+		}
+		if($("#CONTRACTPIC").val()==""){
+			$("#CONTRACTPIC").tips({
+				side:3,
+				msg:'请填写合同金额',
+				bg:'#AE81FF',
+				time:2
+			});
+			$("#CONTRACTPIC").focus();
+			return false;
+		}
+
+		if($("#FUSEDATESTART").val()==""){
+			$("#FUSEDATESTART").tips({
+				side:3,
+				msg:'请填写开始使用时间',
+				bg:'#AE81FF',
+				time:2
+			});
+			$("#FUSEDATESTART").focus();
+			return false;
+		}
+		if($("#FUSEDATEENT").val()==""){
+			$("#FUSEDATEENT").tips({
+				side:3,
+				msg:'请填写结束使用时间',
+				bg:'#AE81FF',
+				time:2
+			});
+			$("#FUSEDATEENT").focus();
+			return false;
+		}
+		if($("#FDATE").val()==""){
+			$("#FDATE").tips({
+				side:3,
+				msg:'请填写签约时间',
+				bg:'#AE81FF',
+				time:2
+			});
+			$("#FDATE").focus();
+			return false;
+		}
+
+		if($("#OPERATOR").val()==""){
+			$("#OPERATOR").tips({
+				side:3,
+				msg:'请选择经办人',
+				bg:'#AE81FF',
+				time:2
+			});
+			$("#OPERATOR").focus();
+			return false;
+		}
+		if($("#CONTRACTTYPES").val()==""){
+			$("#CONTRACTTYPES").tips({
+				side:3,
+				msg:'请选择合同类型',
+				bg:'#AE81FF',
+				time:2
+			});
+			$("#CONTRACTTYPES").focus();
+			return false;
+		}
+		if($("#CONTRACTCLASSIFY").val()==""){
+			$("#CONTRACTCLASSIFY").tips({
+				side:3,
+				msg:'请选择合同类型',
+				bg:'#AE81FF',
+				time:2
+			});
+			$("#CONTRACTCLASSIFY").focus();
+			return false;
+		}
 		if(addCount > 0){
 			var con = confirm("还有新增项目未保存，是否放弃保存?"); //在页面上弹出对话框
 			if(con == true){

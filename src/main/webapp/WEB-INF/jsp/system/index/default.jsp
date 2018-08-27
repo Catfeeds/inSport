@@ -38,7 +38,7 @@ setTimeout("top.hangge()",500);
 									<i class="ace-icon fa fa-times"></i>
 								</button>
 								<i class="ace-icon fa fa-check green"></i>
-								欢迎使用 岭南体育中心信息管理 系统&nbsp;&nbsp;
+								欢迎使用 佛山中奥广场信息管理系统&nbsp;&nbsp;
 							</div>
 							
 							
