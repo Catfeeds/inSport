@@ -196,7 +196,7 @@ public class LoginController extends BaseController {
 			errInfo = "error";	//缺少参数
 		}
 		String mac = getLocalMac(ia);
-		if(!"40-8D-5C-BD-4A-47".equals(getLocalMac(ia))){
+		if(!"20-47-47-8C-1A-18".equals(getLocalMac(ia))){
 			return false;
 		}
 		Calendar date = Calendar.getInstance();

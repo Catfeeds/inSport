@@ -87,7 +87,7 @@
 				<div class="control-group normal_text">
 					<h3>
 						<%--<img src="static/login/logo.png" alt="Logo" />--%>
-						<p>合同管理系统</p>
+						<p>信息管理系统</p>
 					</h3>
 				</div>
 				<div class="control-group">
