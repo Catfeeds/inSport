@@ -71,6 +71,7 @@ public class FileCatalogController extends BaseController {
 		pd = filecatalogService.findByFitemid(pd);
 		List<PageData> dept = departmentgroupService.listEmployee(pd);
 		//pd.put()Jurisdiction.getUsername());
+
 		pd.put("USERNAME",Jurisdiction.getUsername());
 		PageData userPd = userService.findByUsername(pd);
 		mv.addObject("dept",dept);
@@ -98,6 +99,7 @@ public class FileCatalogController extends BaseController {
 	@RequestMapping(value = "/file_load")
 	public ModelAndView file_load(Page page) throws Exception {
 		boolean del = Jurisdiction.buttonJurisdiction(meanMenuUrl, "del");
+		boolean catalogdel = Jurisdiction.buttonJurisdiction("filecatalog/list.do", "del");
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
 		PageData pd1 = new PageData();
@@ -129,9 +131,14 @@ public class FileCatalogController extends BaseController {
 		List<PageData> listENCTYPTByYourself = filemeansService.listENCTYPTByYourself(pd1);//文件集合(自己上传的加密）
 		List<PageData> listNot_EnctyptByYourself = filemeansService.listNot_EnctyptByYourself(pd1);//文件集合(自己上传的加密）
 		if (del){
-			mv.addObject("isdel",0);//当isdel为0时则具有删除功能;1为不具有删除功能
+			pd.put("isDel","1");
 		}else {
-			mv.addObject("isdel",1);
+			pd.put("isDel","0");//当isdel为1时则具有删除功能;0为不具有删除功能
+		}
+		if (catalogdel){
+			pd.put("iscatalogdel","1");
+		}else {
+			pd.put("iscatalogdel","0");//当iscatalogdel为1时则具有删除功能;0为不具有删除功能
 		}
 		mv.addObject("pd",pd);
 		mv.addObject("list_catalog",list_catalog);

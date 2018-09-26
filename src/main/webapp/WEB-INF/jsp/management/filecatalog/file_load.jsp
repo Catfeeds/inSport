@@ -1004,105 +1004,109 @@
 
 
     //右击菜单
-    var menuJson = [
-        {
-            name:"添加目录",
-            id:"menu1",
-            callback: function() {
-                var FPARENTID = '${pd.FPARENTID}';
-                var PNAME = '${pd.FNAME}';
-                top.jzts();
-                var diag = new top.Dialog();
-                diag.Drag=true;
-                diag.Title ="新增目录";
-                diag.URL = '<%=basePath%>filecatalog/goAdd.do?FPARENTID='+FPARENTID+"&PNAME="+PNAME;
-                diag.Width = 450;
-                diag.Height = 355;
-                diag.Modal = true;				//有无遮罩窗口
-                diag. ShowMaxButton = true;	//最大化按钮
-                diag.ShowMinButton = true;		//最小化按钮
-                diag.CancelEvent = function(){ //关闭事件
-                    $.ajax({
-                        async: false,
-                        cache: false,
-                        type: 'POST',
-                        //dataType:"String",
-                        url: '<%=basePath%>filecatalog/dateTree',
-                        success: function (data) {
-                            window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
-                        },
-                        error: function () {
-                            alert("请求失败");
-                        }
-                    });
-                    diag.close();
-                };
-                diag.show();
-            }
-        },
-        {
-            name:"修改目录名称",
-            id:"menu2",
-            callback: function() {
-                var FPARENTID = '${pd.FPARENTID}';
-                var PNAME = '${pd.FNAME}';
-                top.jzts();
-                var diag = new top.Dialog();
-                diag.Drag=true;
-                diag.Title ="修改目录名称";
-                diag.URL = '<%=basePath%>filecatalog/goEdit.do?FPARENTID='+FPARENTID+"&PNAME="+PNAME;
-                diag.Width = 450;
-                diag.Height = 355;
-                diag.Modal = true;				//有无遮罩窗口
-                diag. ShowMaxButton = true;	//最大化按钮
-                diag.ShowMinButton = true;		//最小化按钮
-                diag.CancelEvent = function(){ //关闭事件
-                    $.ajax({
-                        async: false,
-                        cache: false,
-                        type: 'POST',
-                        //dataType:"String",
-                        url: '<%=basePath%>filecatalog/dateTree',
-                        success: function (data) {
-                            window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
-                        },
-                        error: function () {
-                            alert("请求失败");
-                        }
-                    });
-                    diag.close();
-                };
-                diag.show();
-            }
-        },
-        {
-            name:"删除当前目录",
-            id:"menu-delete",
-            callback: function() {
-                var FPARENTID = '${pd.FPARENTID}';
-                var PNAME = '${pd.FNAME}';
-                bootbox.confirm("确定要删除当前吗?将会把该文件夹里文件连同删除", function (result) {
-                    if (result) {
+    if('${pd.iscatalogdel}' == '1' || '${pd.iscatalogdel}' == 1){
+        var menuJson = [
+            {
+                name:"添加目录",
+                id:"menu1",
+                callback: function() {
+                    var FPARENTID = '${pd.FPARENTID}';
+                    var PNAME = '${pd.FNAME}';
+                    top.jzts();
+                    var diag = new top.Dialog();
+                    diag.Drag=true;
+                    diag.Title ="新增目录";
+                    diag.URL = '<%=basePath%>filecatalog/goAdd.do?FPARENTID='+FPARENTID+"&PNAME="+PNAME;
+                    diag.Width = 450;
+                    diag.Height = 355;
+                    diag.Modal = true;				//有无遮罩窗口
+                    diag. ShowMaxButton = true;	//最大化按钮
+                    diag.ShowMinButton = true;		//最小化按钮
+                    diag.CancelEvent = function(){ //关闭事件
                         $.ajax({
                             async: false,
                             cache: false,
                             type: 'POST',
                             //dataType:"String",
-                            url: '<%=basePath%>fileupata/deleteFileCatalog?FITEMID='+FPARENTID+"&FNAME="+PNAME,
+                            url: '<%=basePath%>filecatalog/dateTree',
                             success: function (data) {
-                                window.location.href="<%=basePath%>filecatalog/file_load";
+                                window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
                             },
                             error: function () {
                                 alert("请求失败");
                             }
                         });
-                    }
-                })
-            }
-        },
-    ];
+                        diag.close();
+                    };
+                    diag.show();
+                }
+            },
+            {
+                name:"修改目录名称",
+                id:"menu2",
+                callback: function() {
+                    var FPARENTID = '${pd.FPARENTID}';
+                    var PNAME = '${pd.FNAME}';
+                    top.jzts();
+                    var diag = new top.Dialog();
+                    diag.Drag=true;
+                    diag.Title ="修改目录名称";
+                    diag.URL = '<%=basePath%>filecatalog/goEdit.do?FPARENTID='+FPARENTID+"&PNAME="+PNAME;
+                    diag.Width = 450;
+                    diag.Height = 355;
+                    diag.Modal = true;				//有无遮罩窗口
+                    diag. ShowMaxButton = true;	//最大化按钮
+                    diag.ShowMinButton = true;		//最小化按钮
+                    diag.CancelEvent = function(){ //关闭事件
+                        $.ajax({
+                            async: false,
+                            cache: false,
+                            type: 'POST',
+                            //dataType:"String",
+                            url: '<%=basePath%>filecatalog/dateTree',
+                            success: function (data) {
+                                window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
+                            },
+                            error: function () {
+                                alert("请求失败");
+                            }
+                        });
+                        diag.close();
+                    };
+                    diag.show();
+                }
+            },
+            {
+                name:"删除当前目录",
+                id:"menu-delete",
+                callback: function() {
+                    var FPARENTID = '${pd.FPARENTID}';
+                    var PNAME = '${pd.FNAME}';
+                    bootbox.confirm("确定要删除当前吗?将会把该文件夹里文件连同删除", function (result) {
+                        if (result) {
+                            $.ajax({
+                                async: false,
+                                cache: false,
+                                type: 'POST',
+                                //dataType:"String",
+                                url: '<%=basePath%>fileupata/deleteFileCatalog?FITEMID='+FPARENTID+"&FNAME="+PNAME,
+                                success: function (data) {
+                                    window.location.href="<%=basePath%>filecatalog/file_load";
+                                },
+                                error: function () {
+                                    alert("请求失败");
+                                }
+                            });
+                        }
+                    })
+                }
+            },
+        ];
+        ContextMenu.bind("#rightj", menuJson);
+    }
 
-    ContextMenu.bind("#rightj", menuJson);
+
+
 
     //双击打开文件夹
     function openFile(FPARENTID, FNAME) {
@@ -1274,17 +1278,22 @@
 
     //去选择上传文件  FITEMID为文件夹id  FNAME为当前文件夹名称
     function addFile(FITEMID, FNAME) {
-        var diag = new top.Dialog();
-        diag.Drag = true;
-        diag.Title = "选择文件权限";
-        diag.URL = '<%=basePath%>filecatalog/selectFileJurisdiction.do?FITEMID=' + FITEMID + '&FNAME=' + FNAME;
-        diag.Width = 600;
-        diag.Height = 490;
-        diag.CancelEvent = function () { //关闭事件
-            window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
-            diag.close();
-        };
-        diag.show();
+        if(FITEMID != null && FITEMID != '' && FNAME != null && FNAME != ''){
+            var diag = new top.Dialog();
+            diag.Drag = true;
+            diag.Title = "选择文件权限";
+            diag.URL = '<%=basePath%>filecatalog/selectFileJurisdiction.do?FITEMID=' + FITEMID + '&FNAME=' + FNAME;
+            diag.Width = 600;
+            diag.Height = 490;
+            diag.CancelEvent = function () { //关闭事件
+                window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
+                diag.close();
+            };
+            diag.show();
+        }else {
+            alert("请选择部门");
+        }
+
     }
 </script>
 

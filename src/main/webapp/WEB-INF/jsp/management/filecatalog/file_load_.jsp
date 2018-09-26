@@ -853,17 +853,23 @@
 
     //去选择上传文件  FITEMID为文件夹id  FNAME为当前文件夹名称
     function addFile(FITEMID, FNAME) {
-        var diag = new top.Dialog();
-        diag.Drag = true;
-        diag.Title = "选择文件权限";
-        diag.URL = '<%=basePath%>filecatalog/selectFileJurisdiction.do?FITEMID=' + FITEMID + '&FNAME=' + FNAME;
-        diag.Width = 600;
-        diag.Height = 490;
-        diag.CancelEvent = function () { //关闭事件
-            window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
-            diag.close();
-        };
-        diag.show();
+        alert("请选择部门");
+        if(FITEMID != null && FITEMID != '' && FNAME != null && FNAME != ''){
+            var diag = new top.Dialog();
+            diag.Drag = true;
+            diag.Title = "选择文件权限";
+            diag.URL = '<%=basePath%>filecatalog/selectFileJurisdiction.do?FITEMID=' + FITEMID + '&FNAME=' + FNAME;
+            diag.Width = 600;
+            diag.Height = 490;
+            diag.CancelEvent = function () { //关闭事件
+                window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
+                diag.close();
+            };
+            diag.show();
+        }else {
+            alert("请选择部门");
+        }
+
     }
 </script>
 
