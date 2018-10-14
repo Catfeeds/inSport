@@ -155,29 +155,34 @@ public class LoginController extends BaseController {
 					pd.put("PASSWORD", passwd);
 					pd = userService.getUserByNameAndPwd(pd);	//根据用户名和密码去读取用户信息
 					if(pd != null){
-						this.removeSession(USERNAME);//请缓存
-						pd.put("LAST_LOGIN",DateUtil.getTime().toString());
-						userService.updateLastLogin(pd);
-						User user = new User();
-						user.setUSER_ID(pd.getString("USER_ID"));
-						user.setUSERNAME(pd.getString("USERNAME"));
-						user.setPASSWORD(pd.getString("PASSWORD"));
-						user.setNAME(pd.getString("NAME"));
-						user.setRIGHTS(pd.getString("RIGHTS"));
-						user.setROLE_ID(pd.getString("ROLE_ID"));
-						user.setLAST_LOGIN(pd.getString("LAST_LOGIN"));
-						user.setIP(pd.getString("IP"));
-						user.setSTATUS(pd.getString("STATUS"));
-						session.setAttribute(Const.SESSION_USER, user);			//把用户信息放session中
-						session.removeAttribute(Const.SESSION_SECURITY_CODE);	//清除登录验证码的session
-						//shiro加入身份验证
-						Subject subject = SecurityUtils.getSubject(); 
-					    UsernamePasswordToken token = new UsernamePasswordToken(USERNAME, PASSWORD); 
-					    try { 
-					        subject.login(token); 
-					    } catch (AuthenticationException e) { 
-					    	errInfo = "身份验证失败！";
-					    }
+						if(Integer.parseInt(String.valueOf(pd.get("STATUS"))) != 0){
+							errInfo = "stopuser";
+						}else {
+							this.removeSession(USERNAME);//请缓存
+							pd.put("LAST_LOGIN",DateUtil.getTime().toString());
+							userService.updateLastLogin(pd);
+							User user = new User();
+							user.setUSER_ID(pd.getString("USER_ID"));
+							user.setUSERNAME(pd.getString("USERNAME"));
+							user.setPASSWORD(pd.getString("PASSWORD"));
+							user.setNAME(pd.getString("NAME"));
+							user.setRIGHTS(pd.getString("RIGHTS"));
+							user.setROLE_ID(pd.getString("ROLE_ID"));
+							user.setLAST_LOGIN(pd.getString("LAST_LOGIN"));
+							user.setIP(pd.getString("IP"));
+							user.setSTATUS(pd.getString("STATUS"));
+							session.setAttribute(Const.SESSION_USER, user);			//把用户信息放session中
+							session.removeAttribute(Const.SESSION_SECURITY_CODE);	//清除登录验证码的session
+							//shiro加入身份验证
+							Subject subject = SecurityUtils.getSubject();
+							UsernamePasswordToken token = new UsernamePasswordToken(USERNAME, PASSWORD);
+							try {
+								subject.login(token);
+							} catch (AuthenticationException e) {
+								errInfo = "身份验证失败！";
+							}
+						}
+
 					}else{
 						errInfo = "usererror"; 				//用户名或密码有误
 						logBefore(logger, USERNAME+"登录系统密码或用户名错误");
@@ -190,6 +195,9 @@ public class LoginController extends BaseController {
 					errInfo = "success";					//验证成功
 					logBefore(logger, USERNAME+"登录系统");
 					FHLOG.save(USERNAME, "登录系统");
+				}else if("stopuser".equals(errInfo)){
+					logBefore(logger, USERNAME+"用户已停用");
+					FHLOG.save(USERNAME, "用户已停用");
 				}
 			}
 		}else{

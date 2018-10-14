@@ -233,6 +233,7 @@
 									<th  ></th>
 								</tr>
 								<tr class="active">
+									<c:if test="${pd.CONTRACTCLASSIFY == '待确认' || pd.CONTRACTCLASSIFY == '' || pd.CONTRACTCLASSIFY == null}">
 									<th  ><label>合同类型：</label></th>
 									<th colspan="3" >
 										<select name="CONTRACTTYPES" id="CONTRACTTYPES" data-placeholder=""
@@ -256,6 +257,29 @@
 										</label>
 										</c:if>
 									</th>
+									</c:if>
+									<c:if test="${pd.CONTRACTCLASSIFY != '待确认' && pd.CONTRACTCLASSIFY != '' && pd.CONTRACTCLASSIFY != null}">
+										<th  ><label>合同类型：</label></th>
+										<th colspan="3" >
+											<select name="CONTRACTTYPES" id="CONTRACTTYPES" data-placeholder=""
+													style="vertical-align:top;width: 150px;" onchange="selectType(this.value);">
+												<option value="${pd.CONTRACTTYPES}" name="${pd.CONTRACTTYPES}">${pd.CONTRACTTYPES}</option>
+											</select> ---
+											<select name="CONTRACTCLASSIFY" id="CONTRACTCLASSIFY" data-placeholder=""
+													style="vertical-align:top;width: 150px;" onchange="selectType(this.value); ">
+												<option  value="${pd.CONTRACTCLASSIFY}" name="${pd.CONTRACTCLASSIFY}">${pd.CONTRACTCLASSIFY}</option>
+											</select><label style="color: red;font-size: 17px">  *</label>
+											<c:if test="${pd2.ISEW == null}">
+												<label id="iswe1" style="display:none;margin-left: 20px" class="control-label" >是否有水电费：</label>
+												<label id="iswe2"  style="display:none;margin-top: 5px;margin-right: 15px">
+													<input id="iswe"
+														   onclick="isWe()"
+														   name="switch-field" class="ace ace-switch ace-switch-5" type="checkbox">
+													<span class="lbl"></span>
+												</label>
+											</c:if>
+										</th>
+									</c:if>
 									<th  ><label style="display: none" id="znj">滞纳金率(%)：</label></th>
 									<th  ><input style="display: none" id="znjip" type="number" style="width: 150px;height: 31px" value="${pd2.OVERDUE}"
 												 class="input-text"  name="OVERDUE"
@@ -414,7 +438,7 @@
 									</c:if>
 									<!--  -----------------------含水电--------------------------------------->
 									<!--  -----------------------不含水电--------------------------------------->
-									<c:if test="${pd2.ISEW == '0'}">
+									<c:if test="${pd2.ISEW == '0' || pd2.ISEW == ''}">
 									<c:forEach items="${listInvoice}" var="var1" varStatus="vs">
 									<tr class="success">
 										<th width="15%"><label>应收金额：</label></th>
@@ -469,7 +493,7 @@
 									<tr id="ti${pd.CONTRACT_ID}"></tr>
 									<tr id="fp"></tr>
 									<tr>
-										<c:if test="${pd2.ISEW == '0' || msg == 'save'}">
+										<c:if test="${pd2.ISEW == '0' || pd2.ISEW == '' || msg == 'save'}">
 											<th id="addTrFpNotew">
 												<div class="col-md-12"  style="padding-bottom:2em;">
 													<a onclick="addTrFpNotew('${pd.CONTRACT_ID}')" class="btn btn-info" id=""><i class="fa fa-plus"></i>新增新的应收款项</a>
@@ -604,7 +628,7 @@
 									</c:forEach>
 									</c:if>
 									<tr id="yj${pd.CONTRACT_ID}"></tr>
-									<tr>
+									<tr id="trYjDiv">
 										<th>
 											<div id="addTrYjDiv" class="col-md-12"  style="padding-bottom:2em;">
 												<a onclick="addTrYj('${pd.CONTRACT_ID}')" class="btn btn-info" ><i class="fa fa-plus"></i> 添加新的押金项</a>
@@ -737,6 +761,18 @@
 									</table>
 								</div>
 							</c:if>
+							<table id="otherContract" style="display: none;" class="table table-border table-bg table-bordered">
+								<tr class="info">
+									<th ><label>备注：</label></th>
+									<th colspan="5">
+										<label>
+											<input type="text" style="width: 880px;height: 31px" value="${pd.FREMARK}"
+												   class="input-date"  name="FREMARK"
+												   id="FREMARK">
+										</label>
+									</th>
+								</tr>
+							</table>
 						</form>
 						<!-- ------------------------------------------------------------------------------- -->
 					</div>
@@ -774,6 +810,7 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
 	$(top.hangge());
+
 
 	var editCount = 0;
 	var addCount = 0;
@@ -1630,6 +1667,7 @@
 				}
 				var pdf = data.listOnePdf;
 				for (var i = 0; i < pdf.length; i++) {
+				    alert(pdf[i].URL_PIC);
 					html += '<li>' +
 							'<a ' +
 							' href="<%=basePath%>' + pdf[i].URL_PIC + '">' +
@@ -1637,7 +1675,7 @@
 							'</a>' +
 							'<p width="180;" class="center">'+pdf[i].NAME+'</p>'+
 							'<div style="width: 100%;height: 25px" align="center" >' +
-							'<button  onclick="delPic('+"'"+pdf[i].CONTRACTPICTURE_ID+"','"+CONTRACT_ID+"'"+')" style="width: 45px;height: 20px;margin-top:2px" >删除</button>' +
+							'<a  onclick="delPic('+"'"+pdf[i].CONTRACTPICTURE_ID+"','"+CONTRACT_ID+"'"+')" style="width: 45px;height: 20px;margin-top:2px" >删除</a>' +
 							'</div>'+
 							'</li>'+ ''
 				}
@@ -1663,7 +1701,16 @@
 			$("#znjip").css("display","");
 			$("#iswe2").css("display","");
 			$("#iswe1").css("display","");
-		}
+		}else if($("#CONTRACTTYPES").find("option:selected").attr("value") == "其他"){
+            $("#otherContract").css("display","");
+            $("#proceedsContract").css("display","none");
+            $("#paymentContarct").css("display","none");
+            $("#znj").css("display","none");
+            $("#znjip").css("display","none");
+            $("#iswe2").css("display","none");
+            $("#iswe1").css("display","none");
+        }
+
 		var FNAME = $("#CONTRACTCLASSIFY").find("option:selected").attr("name");
 		if (FNAME == "大型体育赛事场地租赁" || FNAME == "文艺演出场地租赁"){
 			$("#ticket").css("display","");
@@ -1691,6 +1738,8 @@
 			}
 		});
 	}
+
+
 
 	$("#DEPTNO").change(function(){
 		var DEPTNO = $("#DEPTNO").find("option:selected").attr("name");
@@ -1733,6 +1782,9 @@
 	})
 
 	$("#CONTRACTTYPES").change(function(){
+        $("#paymentContarct").css("display","none");
+        $("#proceedsContract").css("display","none");
+        $("#trYjDiv").css("display","none");
 		var FPARENTID = $("#CONTRACTTYPES").find("option:selected").attr("name");
 		if($("#CONTRACTTYPES").find("option:selected").attr("value") == "付款合同"){
 			$("#paymentContarct").css("display","");

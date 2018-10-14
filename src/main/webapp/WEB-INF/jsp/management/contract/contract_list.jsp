@@ -118,6 +118,10 @@
                                                 id="search-icon"
                                                 class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
                                     </c:if>
+                                    <c:if test="${QX.Jbr == 1 }">
+                                        <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="moveJbr();" title="经办人移交"><i
+                                                class="ace-icon glyphicon glyphicon-retweet bigger-110 nav-search-icon blue"></i></a></td>
+                                    </c:if>
                                     <%--<c:if test="${QX.toExcel == 1 }">
                                         <td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs"
                                                                                             onclick="toExcel();" title="导出到EXCEL"><i
@@ -385,6 +389,20 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
+
+    function moveJbr(){
+        var diag = new top.Dialog();
+        diag.Drag=true;
+        diag.Title ="经办人移交";
+        diag.URL = '<%=basePath%>contract/moveJbr.do';
+        diag.Width = 850;
+        diag.Height = 450;
+        diag.CancelEvent = function(){ //关闭事件
+            diag.close();
+            //tosearch();
+        };
+        diag.show();
+    }
 
     function selectPic(CONTRACT_ID){
         var diag = new top.Dialog();

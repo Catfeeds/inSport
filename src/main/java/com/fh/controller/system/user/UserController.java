@@ -61,6 +61,37 @@ public class UserController extends BaseController {
 	private MenuManager menuService;
 	@Resource(name="fhlogService")
 	private FHlogManager FHLOG;
+
+	/*
+	STATUS 0 :启用                 STATUS  1 ：停用
+	 */
+
+	//停用用户
+	@RequestMapping(value = "/openUser")
+	@ResponseBody
+	public Map<String, Object> openUser(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		pd.put("STATUS","0");
+		userService.editUserStatus(pd);
+		json.put("msg","用户已启用！！");
+		return json;
+	}
+
+	//停用用户
+	@RequestMapping(value = "/stopUser")
+	@ResponseBody
+	public Map<String, Object> stopUser(Page page)throws Exception {
+		PageData pd = new PageData();
+		Map<String, Object> json = new HashMap<String, Object>();
+		pd = this.getPageData();
+		pd.put("STATUS","1");
+		userService.editUserStatus(pd);
+		json.put("msg","用户已停用！！");
+		return json;
+	}
+
 	
 	/**显示用户列表
 	 * @param page

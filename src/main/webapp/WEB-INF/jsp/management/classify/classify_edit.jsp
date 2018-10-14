@@ -49,7 +49,7 @@
 									<%--<input type="number" name="FPARENTID" id="FPARENTID" value="${pd.FPARENTID}" maxlength="32" placeholder="这里输入FPARENTID" title="FPARENTID" style="width:98%;"/>--%>
 									<select name="FPARENTID" id="FPARENTID" data-placeholder=""
 											style="vertical-align:top;width: 150px;" onchange="selectType(this.value)">
-										<option value="${pd.FNAME2}" name="${pd.FPARENTID1}">${pd.FNAME2}</option>
+										<option value="${pd.FITEMID2}" name="${pd.FPARENTID1}">${pd.FNAME2}</option>
 										<c:forEach items="${listPid}" var="var" varStatus="vs">
 											<option value="${var.FITEMID}" name="${var.FPARENTID}">${var.FNAME}</option>
 										</c:forEach>

@@ -130,6 +130,16 @@
 		where 
 			USERNAME = #{USERNAME}
 	</select>
+
+	<!-- 停用用户 -->
+	<update id="editUserStatus" parameterType="pd" >
+		update
+		<include refid="tableName"></include>
+		set
+		STATUS = #{STATUS}
+		where
+		USER_ID = #{USER_ID}
+	</update>
 	
 	<!-- 存入IP -->
 	<update id="saveIP" parameterType="pd" >
@@ -157,6 +167,7 @@
 				u.PASSWORD,
 				u.LAST_LOGIN,
 				u.NAME,
+				u.STATUS,
 				u.IP,
 				u.EMAIL,
 				u.NUMBER,

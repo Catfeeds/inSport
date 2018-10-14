@@ -52,72 +52,120 @@
                             </tr>
                             </tbody>
                         </table>
-                        <c:if test="${not empty listProTime}">
-                            <c:forEach items="${listProTime}" var="var" varStatus="vs">
-                                <table id="ta" class="table table-border table-bg table-bordered" style="margin-top: 10px">
-                                    <tbody id="tb">
-                                    <tr class="center">
-                                        <td style="padding-left:2px;">时间</td>
-                                        <td style="padding-left:2px;">租金金额</td>
-                                       <%-- <td style="padding-left:2px;">水电费</td>--%>
-                                        <td style="padding-left:2px;">租金滞纳金</td>
-                                      <%--  <td style="padding-left:2px;">水电费滞纳金</td>--%>
-                                        <td style="padding-left:2px;">应收款总金额</td>
-                                        <td style="padding-left:2px;">实际收款总金额</td>
-                                        <td style="padding-left:2px;">未收款金额</td>
-                                        <td style="padding-left:2px;">新增发单记录</td>
-                                    </tr>
-                                    <tr class="center" id="sum" >
-                                        <td id="td1" rowspan="10000"
-                                            style="padding-left:2px;vertical-align:middle;">
-                                                ${var.STARTTIME } -- ${var.ENTTIME }
-                                        </td>
-                                    </tr>
-                                    <c:if test="${not empty listInvoice}">
-                                        <c:forEach items="${listInvoice}" var="var1" varStatus="vs1">
-                                            <c:if test="${var.PROCEEDSTIME_ID == var1.PROCEEDSTIME_ID}">
-                                            <tr class="center" style="vertical-align:middle;" >
-                                                <td style="padding-left:2px;">
-                                                    <p>${var1.RECEIVABLE}&emsp;&emsp;
-                                                        <c:if test="${var1.STARTTIME != null && var1.STARTTIME != ''  && var1.ENDTIME != null  && var1.ENDTIME != '' }">
-                                                            (${var1.STARTTIME} --- ${var1.ENDTIME})
-                                                        </c:if>
-                                                    </p>
-                                                </td>
-                                               <%-- <td style="padding-left:2px;">
-                                                    <p> ${var1.URECEIVABLE}</p>
-                                                </td>--%>
-                                                <td style="padding-left:2px;">
-                                                    <p>  ${var1.OVERDUE}</p>
-                                                </td>
-                                               <%-- <td style="padding-left:2px;">
-                                                    <p>   ${var1.OVERDUENUM}</p>
-                                                </td>--%>
-                                                <td style="padding-left:2px;">
-                                                    <p>   ${var1.SUM_IU}</p>
-                                                </td>
-                                                <td style="padding-left:2px;">
-                                                    <p>  ${var1.SUM_R}</p>
-                                                </td>
-                                                <td style="padding-left:2px;">
-                                                    <p>   ${var1.SUM_N}</p>
-                                                </td>
+                        <c:if test="${pd1.ISEW == '1'}">
 
-                                                <td style="padding-left:2px;">
-                                                    <a class="btn btn-xs btn-warning" title="新增发单记录"
-                                                       onclick="addWarning('${var1.INVOICE_ID}','${var1.CONTRACT_ID}');">
-                                                        <i class="ace-icon fa fa-exclamation-circle bigger-120"
-                                                           title="新增发单记录"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            </c:if>
-                                        </c:forEach>
-                                    </c:if>
-                                    <tr id="${var.PROCEEDSPRIMARY_ID}"></tr>
-                                    </tbody>
-                                </table>
-                            </c:forEach>
+                            <c:if test="${not empty listProTime}">
+                                <c:forEach items="${listProTime}" var="var" varStatus="vs">
+                                    <table id="ta" class="table table-border table-bg table-bordered" style="margin-top: 10px">
+                                        <tbody id="tb">
+                                        <tr class="center">
+                                            <td style="padding-left:2px;">时间</td>
+                                            <td style="padding-left:2px;">租金金额</td>
+                                                <%-- <td style="padding-left:2px;">水电费</td>--%>
+                                            <td style="padding-left:2px;">租金滞纳金</td>
+                                                <%--  <td style="padding-left:2px;">水电费滞纳金</td>--%>
+                                            <td style="padding-left:2px;">应收款总金额</td>
+                                            <td style="padding-left:2px;">实际收款总金额</td>
+                                            <td style="padding-left:2px;">未收款金额</td>
+                                            <td style="padding-left:2px;">新增发单记录</td>
+                                        </tr>
+                                        <tr class="center" id="sum" >
+                                            <td id="td1" rowspan="10000"
+                                                style="padding-left:2px;vertical-align:middle;">
+                                                    ${var.STARTTIME } -- ${var.ENTTIME }
+                                            </td>
+                                        </tr>
+                                        <c:if test="${not empty listInvoice}">
+                                            <c:forEach items="${listInvoice}" var="var1" varStatus="vs1">
+                                                <c:if test="${var.PROCEEDSTIME_ID == var1.PROCEEDSTIME_ID}">
+                                                    <tr class="center" style="vertical-align:middle;" >
+                                                        <td style="padding-left:2px;">
+                                                            <p>${var1.RECEIVABLE}&emsp;&emsp;
+                                                                <c:if test="${var1.STARTTIME != null && var1.STARTTIME != ''  && var1.ENDTIME != null  && var1.ENDTIME != '' }">
+                                                                    (${var1.STARTTIME} --- ${var1.ENDTIME})
+                                                                </c:if>
+                                                            </p>
+                                                        </td>
+                                                            <%-- <td style="padding-left:2px;">
+                                                                 <p> ${var1.URECEIVABLE}</p>
+                                                             </td>--%>
+                                                        <td style="padding-left:2px;">
+                                                            <p>  ${var1.OVERDUE}</p>
+                                                        </td>
+                                                            <%-- <td style="padding-left:2px;">
+                                                                 <p>   ${var1.OVERDUENUM}</p>
+                                                             </td>--%>
+                                                        <td style="padding-left:2px;">
+                                                            <p>   ${var1.SUM_IU}</p>
+                                                        </td>
+                                                        <td style="padding-left:2px;">
+                                                            <p>  ${var1.SUM_R}</p>
+                                                        </td>
+                                                        <td style="padding-left:2px;">
+                                                            <p>   ${var1.SUM_N}</p>
+                                                        </td>
+
+                                                        <td style="padding-left:2px;">
+                                                            <a class="btn btn-xs btn-warning" title="新增发单记录"
+                                                               onclick="addWarning('${var1.INVOICE_ID}','${var1.CONTRACT_ID}');">
+                                                                <i class="ace-icon fa fa-exclamation-circle bigger-120"
+                                                                   title="新增发单记录"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </c:if>
+                                            </c:forEach>
+                                        </c:if>
+                                        <tr id="${var.PROCEEDSPRIMARY_ID}"></tr>
+                                        </tbody>
+                                    </table>
+                                </c:forEach>
+                            </c:if>
+                        </c:if>
+                        <c:if test="${pd1.ISEW == '0' || pd1.ISEW == ''}">
+                        <table id="ta" class="table table-border table-bg table-bordered" style="margin-top: 10px">
+                            <tbody id="tb">
+                            <tr class="center">
+                                <td style="padding-left:2px;">应收款时间</td>
+                                <td style="padding-left:2px;">应收金额</td>
+                                    <%-- <td style="padding-left:2px;">水电费</td>--%>
+                                <td style="padding-left:2px;">滞纳金</td>
+                                    <%--  <td style="padding-left:2px;">水电费滞纳金</td>--%>
+                                <td style="padding-left:2px;">实际收款总金额</td>
+                                <td style="padding-left:2px;">未收款金额</td>
+                                <td style="padding-left:2px;">新增发单记录</td>
+                            </tr>
+                            <c:if test="${not empty listInvoice}">
+                                <c:forEach items="${listInvoice}" var="var1" varStatus="vs1">
+                                        <tr class="center" style="vertical-align:middle;" >
+                                            <td style="padding-left:2px;">
+                                                <p>  ${var1.RECEIVABLE}</p>
+                                            </td>
+                                            <td style="padding-left:2px;">
+                                                <p>  ${var1.PAYTIME}</p>
+                                            </td>
+                                            <td style="padding-left:2px;">
+                                                <p>   ${var1.OVERDUE}</p>
+                                            </td>
+                                            <td style="padding-left:2px;">
+                                                <p>  ${var1.RECEIVABLE_REALITY}</p>
+                                            </td>
+                                            <td style="padding-left:2px;">
+                                                <p>   ${var1.NOT_RECEIVABLE}</p>
+                                            </td>
+
+                                            <td style="padding-left:2px;">
+                                                <a class="btn btn-xs btn-warning" title="新增发单记录"
+                                                   onclick="addWarning('${var1.INVOICE_ID}','${var1.CONTRACT_ID}');">
+                                                    <i class="ace-icon fa fa-exclamation-circle bigger-120"
+                                                       title="新增发单记录"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                </c:forEach>
+                            </c:if>
+                            <tr id="${var.PROCEEDSPRIMARY_ID}"></tr>
+                        </table>
                         </c:if>
                     </div>
                 </div>
@@ -276,7 +324,7 @@
             //alert("否");
             return;
         }
-       if(newPROCEEDSPRIMARY_ID == null || newPROCEEDSPRIMARY_ID == ""){
+        if(newPROCEEDSPRIMARY_ID == null || newPROCEEDSPRIMARY_ID == ""){
             var PROCEEDSPRIMARY_ID = "${pd.PROCEEDSPRIMARY_ID}";
         }else {
             var PROCEEDSPRIMARY_ID = newPROCEEDSPRIMARY_ID;
@@ -341,11 +389,11 @@
         table = "";
         uuid = "";
     }
-    
+
     function addTr(uuid_var) {
         var isname = $("#td1"+uuid_var).length;
         var count =$("#ta"+uuid_var+" tr").length;
-       // alert(count);
+        // alert(count);
         $("#td1"+uuid_var).attr("rowspan",count);
         //$("#td2"+uuid_var).attr("rowspan",count);
         var tr = '';
@@ -353,41 +401,41 @@
         //alert(isname == null ||isname == undefined||isname =="");
         if(isname == 0){
             tr += '<td id="td1'+uuid_var+'"  class="center" style="padding-left:2px;">' +
-                    '<input id="st'+uuid_var+'" type="date" style="width: 110px;height: 31px" class="input-text"  name="STARTTIME" >' +
-                    ' --- <input onchange="saveTable(\''+uuid_var+'\')" id="et'+uuid_var+'" type="date" style="width: 110px;height: 31px" class="input-text"  name="ENTTIME" >' +
-                    '</td>';
-           /* tr += '<td id="td2'+uuid_var+'"  class="center" style="padding-left:2px;">' +
-                    '<input onchange="saveTable(\''+uuid_var+'\')" id="pic'+uuid_var+'" type="number" style="width: 110px" ' +
-                    'class="input-text"  name="CONTRACTPIC" ></td>';*/
+                '<input id="st'+uuid_var+'" type="date" style="width: 110px;height: 31px" class="input-text"  name="STARTTIME" >' +
+                ' --- <input onchange="saveTable(\''+uuid_var+'\')" id="et'+uuid_var+'" type="date" style="width: 110px;height: 31px" class="input-text"  name="ENTTIME" >' +
+                '</td>';
+            /* tr += '<td id="td2'+uuid_var+'"  class="center" style="padding-left:2px;">' +
+                     '<input onchange="saveTable(\''+uuid_var+'\')" id="pic'+uuid_var+'" type="number" style="width: 110px" ' +
+                     'class="input-text"  name="CONTRACTPIC" ></td>';*/
         }
         tr += '<td style="padding-left:2px;"><input id="re'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
-                'class="input-text"  name="RENT"  ></td>';
+            'class="input-text"  name="RENT"  ></td>';
         if('${pd.CONTRACTCLASSIFY}' == "写字楼"){
             tr += '<td style="padding-left:2px;"><input id="ut'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
-                    'class="input-text"  name="UTILITIES" ></td>';
+                'class="input-text"  name="UTILITIES" ></td>';
         }else {
             tr += '<td style="display: none"><input id="ut'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
-                    'class="input-text"  name="UTILITIES" ></td>';
+                'class="input-text"  name="UTILITIES" ></td>';
         }
         tr += '<td style="padding-left:2px;"><input id="od'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
-                'class="input-text"  name="OVERDUE"  ></td>';
+            'class="input-text"  name="OVERDUE"  ></td>';
 
         tr += '<td style="padding-left:2px;"><input id="r'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
-                'class="input-text"  name="RECEIVABLE" ></td>'
+            'class="input-text"  name="RECEIVABLE" ></td>'
         tr += '<td style="padding-left:2px;"><input id="pt'+uuid_var+'" type="date" style="width: 150px;height: 31px" ' +
-                ' class="input-text"  name="PAYTIME" ></td>';
+            ' class="input-text"  name="PAYTIME" ></td>';
         tr += '<td style="padding-left:2px;"><input id="rr'+uuid_var+'" type="number" style="width: 110px;height: 31px" '+
-                'class="input-text"  name="RECEIVABLE_REALITY"  ></td>'
+            'class="input-text"  name="RECEIVABLE_REALITY"  ></td>'
         tr += '<td style="padding-left:2px;"><input id="rpt'+uuid_var+'" type="date" style="width: 150px;height: 31px" '+
-                'class="input-text"  name="RECEIVABL_PAYTIME" id="" ></td>';
+            'class="input-text"  name="RECEIVABL_PAYTIME" id="" ></td>';
 
         tr += ' <td style="padding-left:2px;">' +
-                '<input id="uc'+uuid_var+'" type="number" style="width: 110px;height: 31px" class="input-text"  name="UNCOLLECTED" ></td>';
+            '<input id="uc'+uuid_var+'" type="number" style="width: 110px;height: 31px" class="input-text"  name="UNCOLLECTED" ></td>';
         tr += '<td style="padding-left:2px;"> ' +
-                '<a class="btn btn-xs btn-success" title="保存" onclick="saveDetail(\''+uuid_var+'\');">' +
-                '<i class="ace-icon fa fa-check-square-o bigger-120" title="保存"></i>' +
-                '</a> ' +
-                '</td>';
+            '<a class="btn btn-xs btn-success" title="保存" onclick="saveDetail(\''+uuid_var+'\');">' +
+            '<i class="ace-icon fa fa-check-square-o bigger-120" title="保存"></i>' +
+            '</a> ' +
+            '</td>';
         tr += '</tr>';
         if(isname == 0){
             tr += '<tr id="'+uuid_var+'"></tr>';
@@ -399,7 +447,7 @@
         }
         tr = '';
     }
-    
+
     function saveDetail(uuid_var){
         var PROCEEDSPRIMARY_ID = uuid_var;
         var CONTRACT_ID =  "${pd.CONTRACT_ID}";
@@ -425,7 +473,7 @@
                 RECEIVABL_PAYTIME:RECEIVABL_PAYTIME,
                 UNCOLLECTED:UNCOLLECTED,
                 PAYTIME:PAYTIME
-                },
+            },
             dataType: 'json',
             //beforeSend: validateData,
             cache: false,

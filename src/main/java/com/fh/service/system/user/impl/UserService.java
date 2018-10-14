@@ -151,7 +151,15 @@ public class UserService implements UserManager{
 	public void editU(PageData pd)throws Exception{
 		dao.update("UserMapper.editU", pd);
 	}
-	
+
+	/**修改用户状态
+	 * @param pd
+	 * @throws Exception
+	 */
+	public void editUserStatus(PageData pd)throws Exception{
+		dao.update("UserMapper.editUserStatus", pd);
+	}
+
 	/**删除用户
 	 * @param pd
 	 * @throws Exception

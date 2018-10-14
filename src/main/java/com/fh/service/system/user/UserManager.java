@@ -99,7 +99,13 @@ public interface UserManager {
 	 * @throws Exception
 	 */
 	public void editU(PageData pd)throws Exception;
-	
+
+	/**修改用户状态
+	 * @param pd
+	 * @throws Exception
+	 */
+	public void editUserStatus(PageData pd)throws Exception;
+
 	/**保存用户
 	 * @param pd
 	 * @throws Exception

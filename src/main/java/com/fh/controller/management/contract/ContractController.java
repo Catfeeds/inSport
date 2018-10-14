@@ -123,6 +123,31 @@ public class ContractController extends BaseController {
 
 	@Resource(name="utilitiesstateService")
 	private UtilitiesStateManager utilitiesstateService;
+
+	//执行经办人移交方法
+	@RequestMapping(value="/toDoMoveJbr")
+	public ModelAndView toDoMoveJbr(Page page) throws Exception{
+		ModelAndView mv = new ModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		contractService.edit_Jbr(pd);
+		mv.addObject("msg","success");
+		mv.setViewName("save_result");
+		return mv;
+	}
+
+	// 跳转经办人移交页面
+	@RequestMapping(value = "/moveJbr")
+	public ModelAndView moveJbr() throws Exception {
+		ModelAndView mv = new ModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		List<PageData> listOperator = operatorService.listAll(pd);
+		mv.addObject("listOperator", listOperator);
+		mv.setViewName("management/contract/moveJbr");
+		return mv;
+	}
+
 	// 树
 	@RequestMapping(value = "/listTree")
 	public ModelAndView listTree() throws Exception {
@@ -457,7 +482,7 @@ public class ContractController extends BaseController {
 		}
 		page.setPd(pd);
 		try{
-			if("总经办".equals(DNAME) || "财务部".equals(DNAME) || "综管部".equals(DNAME) ){
+			if("总经办".equals(DNAME) || "财务部".equals(DNAME) || "综管部".equals(DNAME) || "综合管理部".equals(DNAME) ){
 			/*String DEPTNAME = pd.getString("DEPTNAME");				//关键词检索条件
 			if(null != DEPTNAME && !"".equals(DEPTNAME)){
 				pd.put("DEPTNAME", DEPTNAME.trim());

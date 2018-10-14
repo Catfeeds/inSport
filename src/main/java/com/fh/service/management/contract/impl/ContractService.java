@@ -52,6 +52,14 @@ public class ContractService implements ContractManager{
 		dao.update("ContractMapper.editTicket", pd);
 	}
 
+	/**经办人移交
+	 * @param pd
+	 * @throws Exception
+	 */
+	public void edit_Jbr(PageData pd)throws Exception{
+		dao.update("ContractMapper.edit_Jbr", pd);
+	}
+
 	/**列表
 	 * @param page
 	 * @throws Exception

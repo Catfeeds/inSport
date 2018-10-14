@@ -96,8 +96,9 @@
                     <div class="col-xs-12">
                         <table style="margin-top:5px;">
                             <tr>
-                                <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" title="当前目录">当前目录:<c:if test="${pd.FNAME == null }">根目录</c:if><c:if test="${not empty pd.FNAME}">${pd.FNAME}</c:if></a></td>
-                                <td style="vertical-align:top;padding-left:5px">
+                                <td style="vertical-align:top;padding-left:2px"><a onclick="javascript:history.back(-1)" class="btn btn-light btn-xs" title="返回上一页">返回上一页</a></td>
+                                <td style="vertical-align:top;padding-left:2px"><a   class="btn btn-light btn-xs" title="当前目录">当前目录:<c:if test="${pd.FNAME == null }">根目录</c:if><c:if test="${not empty pd.FNAME}">${pd.FNAME}</c:if></a></td>
+                               <td style="vertical-align:top;padding-left:5px">
                                     <div class="nav-search">
 										<span class="input-icon">
 											<input type="text" placeholder="这里输入关键词" class="nav-search-input" id="keywords" autocomplete="off" name="keywords" value="${pd.keywords}" placeholder="这里输入关键词"/>
@@ -111,11 +112,12 @@
                                 <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="deletes();"  title="检索">删除文件<i id="nav-search-icon" class="ace-icon fa fa-cogs bigger-110 nav-search-icon red"></i></a></td>
                                 </c:if>
                                 <td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="downs();" title="下载文件">下载文件<i id="downfile" class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td>
+                                <td style="vertical-align:top;padding-left:2px"><a onclick="javascript:history.back(-1)" class="btn btn-light btn-xs" title="返回上一页">返回上一页<i class="ace-icon glyphicon glyphicon-share-alt bigger-110 nav-search-icon blue"></i></a></td>
                             </tr>
                         </table>
                         <div>
                             <ul class="ace-thumbnails clearfix" id="imgList">
-                                <li style="border:none;margin-top: 30px" id="back"
+                                <%--<li style="border:none;margin-top: 30px" id="back"
                                     style="margin-top: 30px;margin-left:35px;margin-right:80px;">
                                     <a ondblclick="javascript:history.back(-1)" data-rel="colorbox" class="cboxElement">
                                         <img width="120" height="120" alt="200x200"
@@ -124,10 +126,10 @@
                                             <div class="inner">返回上一页</div>
                                         </div>
                                     </a>
-                                    <%--<div style="width: 100%;height: 25px" align="center" >
+                                    &lt;%&ndash;<div style="width: 100%;height: 25px" align="center" >
                                         <p>${var.FNAME}</p>
-                                    </div>--%>
-                                </li>
+                                    </div>&ndash;%&gt;
+                                </li>--%>
                                 <c:choose>
                                     <c:when test="${not empty list_catalog}">
 
@@ -1058,19 +1060,7 @@
                     diag. ShowMaxButton = true;	//最大化按钮
                     diag.ShowMinButton = true;		//最小化按钮
                     diag.CancelEvent = function(){ //关闭事件
-                        $.ajax({
-                            async: false,
-                            cache: false,
-                            type: 'POST',
-                            //dataType:"String",
-                            url: '<%=basePath%>filecatalog/dateTree',
-                            success: function (data) {
-                                window.location.href="<%=basePath%>filecatalog/file_load?FPARENTID=${pd.FPARENTID}&FNAME=${pd.FNAME}";
-                            },
-                            error: function () {
-                                alert("请求失败");
-                            }
-                        });
+                        window.location.href="<%=basePath%>filecatalog/file_load";
                         diag.close();
                     };
                     diag.show();
@@ -1091,7 +1081,7 @@
                                 //dataType:"String",
                                 url: '<%=basePath%>fileupata/deleteFileCatalog?FITEMID='+FPARENTID+"&FNAME="+PNAME,
                                 success: function (data) {
-                                    window.location.href="<%=basePath%>filecatalog/file_load";
+                                    window.location.reload();
                                 },
                                 error: function () {
                                     alert("请求失败");

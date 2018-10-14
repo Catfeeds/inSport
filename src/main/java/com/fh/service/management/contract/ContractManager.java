@@ -34,6 +34,12 @@ public interface ContractManager{
 
 	public void editTicket(PageData pd)throws Exception;
 
+	/**经办人移交
+	 * @param pd
+	 * @throws Exception
+	 */
+	public void edit_Jbr(PageData pd)throws Exception;
+
 	/**列表
 	 * @param page
 	 * @throws Exception

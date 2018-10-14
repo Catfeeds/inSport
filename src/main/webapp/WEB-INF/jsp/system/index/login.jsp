@@ -262,37 +262,46 @@
 					dataType:'json',
 					cache: false,
 					success: function(data){
-						if("success" == data.result){
-							saveCookie();
-							window.location.href="main/index";
-						}else if("usererror" == data.result){
-							$("#loginname").tips({
-								side : 1,
-								msg : "用户名或密码有误",
-								bg : '#FF5080',
-								time : 15
-							});
-							showfh();
-							$("#loginname").focus();
-						}else if("codeerror" == data.result){
-							$("#code").tips({
-								side : 1,
-								msg : "验证码输入有误",
-								bg : '#FF5080',
-								time : 15
-							});
-							showfh();
-							$("#code").focus();
-						}else{
-							$("#loginname").tips({
-								side : 1,
-								msg : "缺少参数",
-								bg : '#FF5080',
-								time : 15
-							});
-							showfh();
-							$("#loginname").focus();
-						}
+                        if("success" == data.result){
+                            saveCookie();
+                            window.location.href="main/index";
+                        }else if("usererror" == data.result){
+                            $("#loginname").tips({
+                                side : 1,
+                                msg : "用户名或密码有误",
+                                bg : '#FF5080',
+                                time : 15
+                            });
+                            showfh();
+                            $("#loginname").focus();
+                        }else if("codeerror" == data.result){
+                            $("#code").tips({
+                                side : 1,
+                                msg : "验证码输入有误",
+                                bg : '#FF5080',
+                                time : 15
+                            });
+                            showfh();
+                            $("#code").focus();
+                        }else if("stopuser" == data.result){
+                            $("#loginname").tips({
+                                side : 1,
+                                msg : "此用户已停用，请与管理员联系",
+                                bg : '#FF5080',
+                                time : 15
+                            });
+                            showfh();
+                            $("#loginname").focus();
+                        }else{
+                            $("#loginname").tips({
+                                side : 1,
+                                msg : "缺少参数",
+                                bg : '#FF5080',
+                                time : 15
+                            });
+                            showfh();
+                            $("#loginname").focus();
+                        }
 					}
 				});
 			}
