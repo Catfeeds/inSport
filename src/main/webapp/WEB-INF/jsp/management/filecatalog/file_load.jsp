@@ -96,7 +96,7 @@
                     <div class="col-xs-12">
                         <table style="margin-top:5px;">
                             <tr>
-                                <td style="vertical-align:top;padding-left:2px"><a onclick="javascript:history.back(-1)" class="btn btn-light btn-xs" title="返回上一页">返回上一页</a></td>
+                                <%--<td style="vertical-align:top;padding-left:2px"><a onclick="javascript:history.back(-1)" class="btn btn-light btn-xs" title="返回上一页">返回上一页</a></td>--%>
                                 <td style="vertical-align:top;padding-left:2px"><a   class="btn btn-light btn-xs" title="当前目录">当前目录:<c:if test="${pd.FNAME == null }">根目录</c:if><c:if test="${not empty pd.FNAME}">${pd.FNAME}</c:if></a></td>
                                <td style="vertical-align:top;padding-left:5px">
                                     <div class="nav-search">
@@ -132,20 +132,31 @@
                                 </li>--%>
                                 <c:choose>
                                     <c:when test="${not empty list_catalog}">
-
                                         <c:forEach items="${list_catalog}" var="var" varStatus="vs">
                                             <li style="border:none;margin-top: 30px">
-                                                <a ondblclick="openFile('${var.FITEMID}','${var.FNAME}')" data-rel="colorbox"
+                                                <div align="center">
+                                                    <div ondblclick="openFile('${var.FITEMID}','${var.FNAME}')"
+                                                         style="width: 120px;"
+                                                         data-rel="colorbox" class="cboxElement">
+                                                        <img width="120" height="120" alt="200x200"
+                                                             src="static/filecatalog/images/fileexplorer.png"/>
+                                                        <a onclick="openFile('${var.FITEMID}','${var.FNAME}')"
+                                                           title="${var.FILENAME}" >
+                                                            <div name="inner">${var.FNAME}</div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                                <%--<a  data-rel="colorbox"
                                                    class="cboxElement">
                                                     <img width="120" height="120" alt="200x200"
                                                          src="static/filecatalog/images/fileexplorer.png"/>
-                                                    <div class="text">
-                                                        <div class="inner">双击打开</div>
-                                                    </div>
-                                                </a>
-                                                <div style="width: 100%;height: 25px" align="center">
-                                                    <p>${var.FNAME}</p>
-                                                </div>
+
+                                                </a>--%>
+                                                <%--<div style="width: 100%;height: 25px" align="center">
+                                                    <p></p>
+                                                </div>--%>
+
                                             </li>
                                         </c:forEach>
                                         <c:if test="${QX.cha == 0 }">
