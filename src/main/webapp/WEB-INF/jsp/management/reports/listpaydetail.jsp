@@ -167,6 +167,16 @@
                                             <tr id="${var.CONTRACT_ID}" ondblclick="show_contract('${var.CONTRACT_ID}')" onclick="changeColor('${var.CONTRACT_ID}');list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}','${var.CONTRACTNAME}')">
                                                 <td class='center' style="width: 30px;">${vs.index+1}</td>
                                                 <c:if test="${var.CONTRACTNUM != CONTRACTNUM }">
+                                                    <c:set value="0" var="count" ></c:set>
+                                                    <c:forEach items="${varList}" var="var2" varStatus="vs2">
+                                                            <c:set value="${var.CONTRACTNUM}" var="CONTRACTNUM" ></c:set>
+                                                        <c:if test="${var2.CONTRACTNUM == CONTRACTNUM }">
+                                                            <c:set value="${count + 1}" var="count" ></c:set>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <c:set value="" var="CONTRACTNUM" ></c:set>
+                                                </c:if>
+                                                <c:if test="${var.CONTRACTNUM != CONTRACTNUM }">
                                                     <td class='center' style="vertical-align:middle;" rowspan="${count}">${var.CONTRACTNUM}</td>
                                                     <td class='center' style="vertical-align:middle;" rowspan="${count}">${var.CONTRACTNAME}</td>
                                                     <td class='center' style="vertical-align:middle;" rowspan="${count}">${var.PROJECT}</td>
@@ -178,6 +188,7 @@
                                                 <td class='center'>${var.REALITYPAYTIME}</td>
                                                 <td class='center'>${var.REALITYPAY}</td>
                                                 <td class='center'>${var.ONPAYPIC}</td>
+
                                             </tr>
                                         </c:forEach>
                                     </c:when>
