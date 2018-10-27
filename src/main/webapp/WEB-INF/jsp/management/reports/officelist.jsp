@@ -56,6 +56,23 @@
             background-color: transparent;
         }
 
+        /* 表格容器样式，用flex布局可保证table内容能铺满剩余空间 */
+        .sti-tbl-container {
+            height : 600px;
+            overflow : hidden;
+            display : flex;
+            flex-direction: column;
+        }
+        /* 设置表格的布局方式，用于宽度对齐 */
+        .sti-tbl-body>table, .sti-tbl-header>table {
+            table-layout: fixed;
+            overflow-y : scroll;
+        }
+        /* 设置表格内容容器，用于铺满整个剩余空间 */
+        .sti-tbl-container .sti-tbl-body {
+            flex-grow : 1;
+            overflow-y : scroll;
+        }
     </style>
 </head>
 <body class="no-skin" >
@@ -101,15 +118,15 @@
                                             <option value="${pd.YEAR}" name="${pd.YEAR}">${pd.YEAR}</option>
                                         </select>
                                     </td>
-                                        <td style="padding-left:12px;">
-                                            <label>合同金额区间:</label>
-                                            <input type="number" placeholder="输入金额" style="width: 110px" class="nav-search-input"
-                                                   id="picStart" autocomplete="off" name="picStart"
-                                                   value="${pd.picStart }" />  -至-
-                                            <input type="number" placeholder="输入金额" style="width: 110px" class="nav-search-input"
-                                                   id="picEnd" autocomplete="off" name="picEnd"
-                                                   value="${pd.picEnd }" />
-                                        </td>
+                                    <td style="padding-left:12px;">
+                                        <label>合同金额区间:</label>
+                                        <input type="number" placeholder="输入金额" style="width: 110px" class="nav-search-input"
+                                               id="picStart" autocomplete="off" name="picStart"
+                                               value="${pd.picStart }" />  -至-
+                                        <input type="number" placeholder="输入金额" style="width: 110px" class="nav-search-input"
+                                               id="picEnd" autocomplete="off" name="picEnd"
+                                               value="${pd.picEnd }" />
+                                    </td>
                                     <td style="padding-left:12px;">
                                         <label style="margin-top: 5px">类型:</label>
                                         <select name="TYPE" id="TYPE" data-placeholder=""
@@ -125,90 +142,127 @@
                                             >水电费</option>
                                         </select>
                                     </td>
-                                        <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs"
-                                                                                           onclick="tosearch();" title="检索"><i
-                                                id="search-icon"
-                                                class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
-                                        <td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs"
-                                                                                            onclick="toExcel();" title="导出到EXCEL"><i
-                                                id="nav-search-icon"
-                                                class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td>
+                                    <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs"
+                                                                                       onclick="tosearch();" title="检索"><i
+                                            id="search-icon"
+                                            class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
+                                    <td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs"
+                                                                                        onclick="toExcel();" title="导出到EXCEL"><i
+                                            id="nav-search-icon"
+                                            class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td>
                                 </tr>
                             </table>
                             <!-- 检索  -->
-
-                            <table  id="tb" class="table table-striped table-bordered table-hover"
-                                   style="margin-top:5px;">
-                                <thead>
-                                <tr>
-                                    <th class="center" style="width:50px;">序号</th>
-                                    <th class="center">租户名
-                                    </th>
-                                    <th class="center">合同名称
-                                    </th>
-                                    <th class="center">合同编号
-                                    </th>
-                                    <th class="center">租金区间
-                                    </th>
-                                    <th class="center">租金
-                                    </th>
-                                    <th class="center">是否欠款
-                                    </th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                <!-- 开始循环 -->
-                                <c:choose>
-                                    <c:when test="${not empty varList}">
-                                        <c:set value="" var="CONTRACTNUM" ></c:set>
-                                        <c:set value="0" var="count" ></c:set>
-                                        <c:forEach items="${varList}" var="var1" varStatus="vs1">
-                                            <c:if test="${vs1.index == 0 }">
-                                                <c:set value="${var1.CONTRACTNUM}" var="CONTRACTNUM" ></c:set>
-                                            </c:if>
-                                            <c:if test="${var1.CONTRACTNUM == CONTRACTNUM }">
-                                             <c:set value="${count + 1}" var="count" ></c:set>
-                                            </c:if>
-                                        </c:forEach>
-                                        <c:set value="" var="CONTRACTNUM" ></c:set>
-                                        <c:forEach items="${varList}" var="var" varStatus="vs">
-                                            <tr id="${var.CONTRACT_ID}" ondblclick="show_contract('${var.CONTRACT_ID}')" onclick="changeColor('${var.CONTRACT_ID}');list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}','${var.CONTRACTNAME}')">
-                                                <td class='center' style="width: 30px;">${vs.index+1}</td>
-                                                <c:if test="${var.CONTRACTNUM != CONTRACTNUM }">
-                                                    <td class='center' style="vertical-align:middle;" rowspan="${count}">${var.CONTRACTOFNAME}</td>
-                                                    <td class='center' style="vertical-align:middle;" rowspan="${count}">${var.CONTRACTNAME}</td>
-                                                    <td class='center' style="vertical-align:middle;" rowspan="${count}">${var.CONTRACTNUM}</td>
-                                                </c:if>
-                                                <c:set value="${var.CONTRACTNUM}" var="CONTRACTNUM" ></c:set>
-                                                <td class='center'>${var.STARTTIME} -- ${var.ENDTIME}</td>
-                                                <td class='center'>${var.RECEIVABLE}</td>
-                                                <td class='center'>
-                                                   <c:if test="${var.NOT_RECEIVABLE != '0' && var.NOT_RECEIVABLE != '0.00' && var.NOT_RECEIVABLE != '0.0' }">
-                                                        是
-                                                    </c:if>
-                                                    <c:if test="${var.NOT_RECEIVABLE == '0' || var.NOT_RECEIVABLE == '0.00' || var.NOT_RECEIVABLE == '0.0' }">
-                                                        否
-                                                    </c:if>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <tr class="main_info">
-                                            <td colspan="100" class="center">没有相关数据</td>
+                            <div class="sti-tbl-container">
+                                <div class="sti-tbl-header" style="padding-right:17px;">
+                                    <table class="table table-bordered" style="margin-bottom: 0px;border-bottom-style: none;">
+                                        <tr style="background-color: #99CCCC">
+                                            <th class="center" style="width:5%;">序号</th>
+                                            <th style="width:20%;" class="center">租户名
+                                            </th>
+                                            <th style="width:20%;" class="center">合同名称
+                                            </th>
+                                            <th style="width:15%;" class="center">合同编号
+                                            </th>
+                                            <th style="width:10%;" class="center">租金区间
+                                            </th>
+                                            <th style="width:10%;" class="center">租金
+                                            </th>
+                                            <th style="width:5%;" class="center">是否欠款
+                                            </th>
                                         </tr>
-                                        <c:if test="${pd.ex != null }">
-                                            <tr>
-                                                <td colspan="100" class="center">${pd.ex}</td>
-                                            </tr>
-                                        </c:if>
-                                    </c:otherwise>
-                                </c:choose>
+                                    </table>
+                                </div>
+                                <div class="sti-tbl-body">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                        <c:choose>
+                                            <c:when test="${not empty varList}">
+                                                <c:set value="" var="CONTRACTNUM" ></c:set>
+                                                <c:set value="0" var="count" ></c:set>
+                                                <c:forEach items="${varList}" var="var1" varStatus="vs1">
+                                                    <c:if test="${vs1.index == 0 }">
+                                                        <c:set value="${var1.CONTRACTNUM}" var="CONTRACTNUM" ></c:set>
+                                                    </c:if>
+                                                    <c:if test="${var1.CONTRACTNUM == CONTRACTNUM }">
+                                                        <c:set value="${count + 1}" var="count" ></c:set>
+                                                    </c:if>
+                                                </c:forEach>
+                                                <c:set value="" var="CONTRACTNUM" ></c:set>
+                                                <c:forEach items="${varList}" var="var" varStatus="vs">
+                                                    <tr id="${var.CONTRACT_ID}" ondblclick="show_contract('${var.CONTRACT_ID}')" onclick="changeColor('${var.CONTRACT_ID}');list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}','${var.CONTRACTNAME}')">
+                                                        <td class='center' style="width:5%;">${vs.index+1}</td>
+                                                        <c:if test="${var.CONTRACTNUM != CONTRACTNUM }">
+                                                            <c:set value="0" var="count" ></c:set>
+                                                            <c:forEach items="${varList}" var="var2" varStatus="vs2">
+                                                                <c:set value="${var.CONTRACTNUM}" var="CONTRACTNUM" ></c:set>
+                                                                <c:if test="${var2.CONTRACTNUM == CONTRACTNUM }">
+                                                                    <c:set value="${count + 1}" var="count" ></c:set>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                            <c:set value="" var="CONTRACTNUM" ></c:set>
+                                                        </c:if>
+                                                        <c:if test="${var.CONTRACTNUM != CONTRACTNUM }">
+                                                            <td class='center' style="vertical-align:middle;width:20%;" rowspan="${count}">${var.CONTRACTOFNAME}</td>
+                                                            <td class='center' style="vertical-align:middle;width:20%;" rowspan="${count}">${var.CONTRACTNAME}</td>
+                                                            <td class='center' style="vertical-align:middle;width:15%;" rowspan="${count}">${var.CONTRACTNUM}</td>
+                                                        </c:if>
+                                                        <c:set value="${var.CONTRACTNUM}" var="CONTRACTNUM" ></c:set>
+                                                        <td style="width:10%;" class='center'>${var.STARTTIME} -- ${var.ENDTIME}</td>
+                                                        <td style="width:10%;" class='center'>${var.RECEIVABLE}</td>
+                                                        <td style="width:5%;" class='center'>
+                                                            <c:if test="${var.NOT_RECEIVABLE != '0' && var.NOT_RECEIVABLE != '0.00' && var.NOT_RECEIVABLE != '0.0' }">
+                                                                是
+                                                            </c:if>
+                                                            <c:if test="${var.NOT_RECEIVABLE == '0' || var.NOT_RECEIVABLE == '0.00' || var.NOT_RECEIVABLE == '0.0' }">
+                                                                否
+                                                            </c:if>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <tr class="main_info">
+                                                    <td colspan="100" class="center">没有相关数据</td>
+                                                </tr>
+                                                <c:if test="${pd.ex != null }">
+                                                    <tr>
+                                                        <td colspan="100" class="center">${pd.ex}</td>
+                                                    </tr>
+                                                </c:if>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <%--<table  id="tb" class="table table-striped table-bordered table-hover"
+                                        style="margin-top:5px;">
+                                    <thead>
+                                    <tr>
+                                        <th style="width:5%;" class="center" style="width:50px;">序号</th>
+                                        <th style="width:20%;" class="center">租户名
+                                        </th>
+                                        <th style="width:20%;" class="center">合同名称
+                                        </th>
+                                        <th style="width:10%;" class="center">合同编号
+                                        </th>
+                                        <th style="width:10%;" class="center">租金区间
+                                        </th>
+                                        <th style="width:10%;" class="center">租金
+                                        </th>
+                                        <th style="width:10%;" class="center">是否欠款
+                                        </th>
+                                    </tr>
+                                    </thead>
 
-                                </tbody>
+                                    <tbody>
+                                    <!-- 开始循环 -->
 
-                            </table>
+
+                                    </tbody>
+
+                                </table>--%>
+                            </div>
                             <div class="page-header position-relative">
                                 <table style="width:100%;">
                                     <tr>
@@ -290,13 +344,13 @@
         if (!ace.vars['touch']) {
             $('.chosen-select').chosen({allow_single_deselect: true});
             $(window)
-                    .off('resize.chosen')
-                    .on('resize.chosen', function () {
-                        $('.chosen-select').each(function () {
-                            var $this = $(this);
-                            $this.next().css({'width': $this.parent().width()});
-                        });
-                    }).trigger('resize.chosen');
+                .off('resize.chosen')
+                .on('resize.chosen', function () {
+                    $('.chosen-select').each(function () {
+                        var $this = $(this);
+                        $this.next().css({'width': $this.parent().width()});
+                    });
+                }).trigger('resize.chosen');
             $(document).on('settings.ace.chosen', function (e, event_name, event_val) {
                 if (event_name != 'sidebar_collapsed') return;
                 $('.chosen-select').each(function () {
@@ -354,7 +408,7 @@
         var DEPTNAME = $("#DEPTNAME").val();
         var CONTRACTNUM = $("#CONTRACTNUM").val();
         window.location.href = '<%=basePath%>toexcel/excel_Office.do?picStart='+picStart+'&picEnd='+picEnd+'&YEAR='+YEAR+'&DEPTNAME='+DEPTNAME+
-        '&CONTRACTNUM='+CONTRACTNUM;
+            '&CONTRACTNUM='+CONTRACTNUM;
     }
 </script>
 

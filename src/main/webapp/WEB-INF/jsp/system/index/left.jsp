@@ -1,46 +1,48 @@
-﻿<div id="sidebar" class="sidebar                  responsive">
+﻿<style>
+	::-webkit-scrollbar {
+		width: 0px;
+		height: 13px;
+	}
+</style>
+<div id="sidebar" class="sidebar                  responsive">
 				<script type="text/javascript">
 					try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+					//$("#main-container").css("height");overflow:auto
+					$(function () {
+						$("#sidebar").css("max-height",$("#main-container").css("height"));
+						$("#sidebar").css("overflow","auto");
+					});
 				</script>
-
 				<%--<div class="sidebar-shortcuts" id="sidebar-shortcuts">
 					&lt;%&ndash;<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-
-						<button class="btn btn-info" onclick="changeMenus();" title="切换菜单">
+						<button class="btn btn-info" onclick="changeMenus('index');" title="业务菜单">
 							<i class="ace-icon fa fa-pencil"></i>
 						</button>
-						
-						<button class="btn btn-success" title="UI实例" onclick="window.open('static/html_UI/html');">
+						<button class="btn btn-success" onclick="changeMenus('2');" title="系统菜单">
 							<i class="ace-icon fa fa-signal"></i>
 						</button>
-
 						<!-- #section:basics/sidebar.layout.shortcuts -->
-						<button class="btn btn-warning" title="" id="adminzidian">
+						&lt;%&ndash;<button class="btn btn-warning" onclick="changeMenus('3');" title="菜单(类型三)">
 							<i class="ace-icon fa fa-book"></i>
 						</button>
-
-						<button class="btn btn-danger">
+						<button class="btn btn-danger" onclick="changeMenus('4');" title="菜单(类型四)">
 							<i class="ace-icon fa fa-cogs"></i>
-						</button>
-
+						</button>&ndash;%&gt;
+						<!-- /section:basics/sidebar.layout.shortcuts -->
 					</div>&ndash;%&gt;
-
 					<div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
 						<span class="btn btn-success"></span>
-
 						<span class="btn btn-info"></span>
-
 						<span class="btn btn-warning"></span>
-
 						<span class="btn btn-danger"></span>
 					</div>
-				</div>--%>
+				</div>--%><!-- /.sidebar-shortcuts -->
 
 				<ul class="nav nav-list">
 					<li class="">
 						<a href="main/index">
 							<i class="menu-icon fa fa-tachometer"></i>
-							<span class="menu-text">后台首页</span>
+							<span class="menu-text">首页</span>
 						</a>
 						<b class="arrow"></b>
 					</li>

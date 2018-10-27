@@ -56,6 +56,24 @@
             background-color: transparent;
         }
 
+        /* 表格容器样式，用flex布局可保证table内容能铺满剩余空间 */
+        .sti-tbl-container {
+            height : 600px;
+            overflow : hidden;
+            display : flex;
+            flex-direction: column;
+        }
+        /* 设置表格的布局方式，用于宽度对齐 */
+        .sti-tbl-body>table, .sti-tbl-header>table {
+            table-layout: fixed;
+            overflow-y : scroll;
+        }
+        /* 设置表格内容容器，用于铺满整个剩余空间 */
+        .sti-tbl-container .sti-tbl-body {
+            flex-grow : 1;
+            overflow-y : scroll;
+        }
+
     </style>
 </head>
 <body class="no-skin">
@@ -122,7 +140,104 @@
                             </table>
                             <!-- 检索  -->
 
-                            <table id="simple-table" class="table table-striped table-bordered table-hover"
+                            <div class="sti-tbl-container">
+                                <div class="sti-tbl-header" style="padding-right:17px;">
+                                    <table class="table table-bordered" style="margin-bottom: 0px;border-bottom-style: none;">
+                                        <tr style="background-color: #99CCCC">
+                                            <th class="center" style="width:5%;">序号</th>
+                                            <th style="width:15%;" class="center">合同编号
+                                            </th>
+                                            <th style="width:10%;" class="center">合同名称
+                                            </th>
+                                            <th style="width:35%;" class="center">项目
+                                            </th>
+                                            <th style="width:10%;" class="center">合同金额
+                                            </th>
+                                            <th style="width:10%;" class="center">应收金额
+                                            </th>
+                                            <th style="width:10%;" class="center">应收时间
+                                            </th>
+                                            <th style="width:10%;" class="center">缴费时间
+                                            </th>
+                                            <th style="width:10%;" class="center">缴费金额
+                                            </th>
+                                            <th style="width:10%;" class="center">仍欠费金额
+                                            </th>
+                                            <%--<th style="width:15%;" class="center">开票名称
+                                            </th>
+                                            <th style="width:10%;" class="center">开票时间
+                                            </th>--%>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="sti-tbl-body">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                        <c:choose>
+                                            <c:when test="${not empty varList}">
+                                                <c:set value="" var="CONTRACTNUM" ></c:set>
+                                                <c:set value="0" var="count" ></c:set>
+                                                <c:forEach items="${varList}" var="var1" varStatus="vs1">
+                                                    <c:if test="${vs1.index == 0 }">
+                                                        <c:set value="${var1.CONTRACTNUM}" var="CONTRACTNUM" ></c:set>
+                                                    </c:if>
+                                                    <c:if test="${var1.CONTRACTNUM == CONTRACTNUM }">
+                                                        <c:set value="${count + 1}" var="count" ></c:set>
+                                                    </c:if>
+                                                </c:forEach>
+                                                <c:set value="" var="CONTRACTNUM" ></c:set>
+                                                <c:forEach items="${varList}" var="var" varStatus="vs">
+                                                    <tr id="${var.CONTRACT_ID}" ondblclick="show_contract('${var.CONTRACT_ID}')" onclick="changeColor('${var.CONTRACT_ID}');list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}','${var.CONTRACTNAME}')">
+                                                        <td class='center' style="width: 5%;">${vs.index+1}</td>
+                                                        <c:if test="${var.CONTRACTNUM != CONTRACTNUM }">
+                                                            <c:set value="0" var="count" ></c:set>
+                                                            <c:forEach items="${varList}" var="var2" varStatus="vs2">
+                                                                <c:set value="${var.CONTRACTNUM}" var="CONTRACTNUM" ></c:set>
+                                                                <c:if test="${var2.CONTRACTNUM == CONTRACTNUM }">
+                                                                    <c:set value="${count + 1}" var="count" ></c:set>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                            <c:set value="" var="CONTRACTNUM" ></c:set>
+                                                        </c:if>
+                                                        <c:if test="${var.CONTRACTNUM != CONTRACTNUM }">
+                                                            <td class='center' style="vertical-align:middle;width:15%;" rowspan="${count}">${var.CONTRACTNUM}</td>
+                                                            <td class='center' style="vertical-align:middle;width:10%;" rowspan="${count}">${var.CONTRACTNAME}</td>
+                                                            <td class='center' style="vertical-align:middle;width:35%;" rowspan="${count}">${var.PROJECT}</td>
+                                                            <td class='center' style="vertical-align:middle;width:10%;" rowspan="${count}">${var.CONTRACTPIC}</td>
+                                                        </c:if>
+                                                        <c:set value="${var.CONTRACTNUM}" var="CONTRACTNUM" ></c:set>
+                                                            <%--<td class='center'>${var.CONTRACTNUM}</td>
+                                                            <td class='center'>${var.CONTRACTNAME}
+                                                            </td>
+                                                            <td class='center'>${var.PROJECT}</td>
+                                                            <td class='center'>${var.CONTRACTPIC}</td>--%>
+                                                        <td style="width:10%;" class='center'>${var.RECEIVABLE}</td>
+                                                        <td style="width:10%;" class='center'>${var.PAYTIME}</td>
+                                                        <td style="width:10%;" class='center'>${var.RECEIVABL_PAYTIME}</td>
+                                                        <td style="width:10%;" class='center'>${var.RECEIVABLE_REALITY}</td>
+                                                        <td style="width:10%;" class='center'>${var.NOT_RECEIVABLE}</td>
+                                                        <%--<td style="width:15%;" class='center'>${var.INVOICENAME}</td>
+                                                        <td style="width:10%;" class='center'>${var.INVOICETIME}</td>--%>
+                                                    </tr>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <tr class="main_info">
+                                                    <td colspan="100" class="center">没有相关数据</td>
+                                                </tr>
+                                                <c:if test="${pd.ex != null }">
+                                                    <tr>
+                                                        <td colspan="100" class="center">${pd.ex}</td>
+                                                    </tr>
+                                                </c:if>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <%--<table id="simple-table" class="table table-striped table-bordered table-hover"
                                    style="margin-top:5px;">
                                 <thead>
                                 <tr>
@@ -145,10 +260,10 @@
                                     </th>
                                     <th class="center">仍欠费金额
                                     </th>
-                                    <%--<th class="center">开票名称
+                                    &lt;%&ndash;<th class="center">开票名称
                                     </th>
                                     <th class="center">开票时间
-                                    </th>--%>
+                                    </th>&ndash;%&gt;
                                 </tr>
                                 </thead>
 
@@ -182,8 +297,8 @@
                                                 <td class='center'>${var.RECEIVABL_PAYTIME}</td>
                                                 <td class='center'>${var.RECEIVABLE_REALITY}</td>
                                                 <td class='center'>${var.NOT_RECEIVABLE}</td>
-                                               <%-- <td class='center'>${var.INVOICENAME}</td>
-                                                <td class='center'>${var.INVOICETIME}</td>--%>
+                                               &lt;%&ndash; <td class='center'>${var.INVOICENAME}</td>
+                                                <td class='center'>${var.INVOICETIME}</td>&ndash;%&gt;
                                             </tr>
                                         </c:forEach>
                                     </c:when>
@@ -201,7 +316,7 @@
 
                                 </tbody>
 
-                            </table>
+                            </table>--%>
                             <div class="page-header position-relative">
                                 <table style="width:100%;">
                                     <tr>

@@ -56,6 +56,24 @@
             background-color: transparent;
         }
 
+        /* 表格容器样式，用flex布局可保证table内容能铺满剩余空间 */
+        .sti-tbl-container {
+            height : 600px;
+            overflow : hidden;
+            display : flex;
+            flex-direction: column;
+        }
+        /* 设置表格的布局方式，用于宽度对齐 */
+        .sti-tbl-body>table, .sti-tbl-header>table {
+            table-layout: fixed;
+            overflow-y : scroll;
+        }
+        /* 设置表格内容容器，用于铺满整个剩余空间 */
+        .sti-tbl-container .sti-tbl-body {
+            flex-grow : 1;
+            overflow-y : scroll;
+        }
+
     </style>
 </head>
 <body class="no-skin">
@@ -131,182 +149,225 @@
                                 </tr>
                             </table>
                             <!-- 检索  -->
+                            <div class="sti-tbl-container">
+                                <div class="sti-tbl-header" style="padding-right:17px;">
+                                    <table class="table table-bordered" style="margin-bottom: 0px;border-bottom-style: none;">
+                                        <tr style="background-color: #99CCCC">
+                                            <th class="center" style="width:3%;">
+                                                <label class="pos-rel"><input type="checkbox" class="ace" id="zcheckbox"/><span
+                                                        class="lbl"></span></label>
+                                            </th>
+                                            <th class="center" style="width:5%;">序号</th>
+                                            <th style="width:15%;" class="center">合同名称</th>
+                                            <th style="width:15%;" class="center">合同编号</th>
+                                            <th style="width:15%;" class="center">签约方</th>
+                                            <th style="width:10%;" class="center">客户联系人姓名</th>
+                                            <th style="width:10%;" class="center">联系电话</th>
+                                            <th style="width:35%;" class="center">项目</th>
+                                            <th style="width:10%;" class="center">合同金额</th>
+                                            <%-- <th class="center">押金</th>
+                                             <th class="center">合同签订使用时间</th>
+                                             <th class="center">签约时间</th>
+                                             <th class="center">经办人</th>
+                                             <th class="center">印花税</th>
+                                             <th class="center">印花税计提月份</th>
+                                             <th class="center">税目</th>
+                                             <th class="center">方式</th>
+                                             <th class="center">合同类型</th>
+                                             <th class="center">招待票</th>--%>
+                                            <th style="width:15%;" class="center">操作</th>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="sti-tbl-body">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                        <c:choose>
+                                            <c:when test="${not empty varList}">
+                                                <c:if test="${QX.cha == 1 }">
+                                                    <c:forEach items="${varList}" var="var" varStatus="vs">
+                                                        <tr id="${var.CONTRACT_ID}" ondblclick="show_contract('${var.CONTRACT_ID}')" onclick="changeColor('${var.CONTRACT_ID}');list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}','${var.CONTRACTNAME}')">
+                                                            <td style="width:3%;" class='center'>
+                                                                <label class="pos-rel"><input type='checkbox' name='ids'
+                                                                                              value="${var.CONTRACT_ID}"
+                                                                                              class="ace"/><span
+                                                                        class="lbl"></span></label>
+                                                            </td>
+                                                            <td class='center' style="width:5%;">${vs.index+1}</td>
+                                                            <td style="width:15%;" class='center'>${var.CONTRACTNAME}</td>
+                                                            <td style="width:15%;" class='center'>${var.CONTRACTNUM}
+                                                                <c:if test="${var.RELEVANCE_ID != '' && var.RELEVANCE_ID != null}">
+                                                                    <span style="margin-left: 20px" class="red"><i class="ace-icon fa fa-exchange bigger-50"></i></span>
+                                                                </c:if>
+                                                            </td>
+                                                            <td style="width:15%;" class='center'>${var.CONTRACTOFNAME}</td>
+                                                            <td style="width:10%;" class='center'>${var.CLIENT}</td>
+                                                            <td style="width:10%;" class='center'>${var.TELEPHONE}</td>
+                                                            <td style="width:35%;" class='center'>${var.PROJECT}</td>
+                                                            <td style="width:10%;" class='center'>${var.CONTRACTPIC}</td>
+                                                                <%-- <c:if test="${var.ISSTAMPDUTY == 1 }">
+                                                                     <td class='center'>${var.DEPOSIT}</td>
+                                                                 </c:if>
+                                                                 <c:if test="${var.ISSTAMPDUTY ==  0}">
+                                                                     <td class='center'>没有押金</td>
+                                                                 </c:if>
+                                                                 <td class='center'>${var.FUSEDATESTART} - ${var.FUSEDATEENT}</td>
+                                                                 <td class='center'>${var.FDATE}</td>
+                                                                 <td class='center'>${var.OPERATOR}</td>
+                                                                 <td class='center'>${var.STAMPDUTY}</td>
+                                                                 <td class='center'>${var.STAMPDUTYMONTH}</td>
+                                                                 <td class='center'>${var.TAXITEMS}</td>
+                                                                 <td class='center'>${var.MODE}</td>
+                                                                 <td class='center'>${var.CONTRACTTYPES}</td>
+                                                                 <td class='center'>${var.INVITATIONTICKET}</td>--%>
+                                                            <td style="width:15%;" class="center">
+                                                                <c:if test="${QX.edit != 1 && QX.del != 1 }">
+                                                            <span class="label label-large label-grey arrowed-in-right arrowed-in"><i
+                                                                    class="ace-icon fa fa-lock" title="无权限"></i></span>
+                                                                </c:if>
+                                                                    <%-- <div class="hidden-sm hidden-xs btn-group">--%>
+                                                                <c:if test="${var.CONTRACTTYPES == '付款合同' }">
+                                                                    <a class="btn btn-xs btn-info" title="打开付款表格"
+                                                                       onclick="openPayT('${var.CONTRACT_ID}')">
+                                                                        <i class="ace-icon fa fa-credit-card bigger-120" title="打开付款表格"></i>
+                                                                    </a>
+                                                                </c:if>
+                                                                <c:if test="${var.CONTRACTTYPES == '收款合同' }">
+                                                                    <a class="btn btn-xs" style="background-color: lightgoldenrodyellow" title="打开收款表格"
+                                                                       onclick="openOfficeT('${var.CONTRACT_ID}')">
+                                                                        <i class="ace-icon fa fa-calendar bigger-120" title="打开收款表格"></i>
+                                                                    </a>
+                                                                </c:if>
+                                                                    <%--<a class="btn btn-xs btn-info" title="预览图片"
+                                                                       onclick="show_contract('${var.CONTRACT_ID}')">
+                                                                        <i class="ace-icon fa fa-laptop bigger-120" title="预览图片"></i>
+                                                                    </a>--%>
+                                                                <a class="btn btn-xs btn-warning" title="上传合同附件"
+                                                                   onclick="selectPic('${var.CONTRACT_ID}');">
+                                                                    <i class="ace-icon fa  fa-cloud-upload bigger-120"
+                                                                       title="上传合同附件"></i>
+                                                                </a>
+                                                                <c:if test="${QX.edit == 1 }">
+                                                                    <a class="btn btn-xs btn-success" title="编辑"
+                                                                       onclick="edit('${var.CONTRACT_ID}');">
+                                                                        <i class="ace-icon fa fa-pencil-square-o bigger-120"
+                                                                           title="编辑"></i>
+                                                                    </a>
+                                                                </c:if>
+                                                                <c:if test="${QX.del == 1 }">
+                                                                    <a class="btn btn-xs btn-danger"
+                                                                       onclick="del('${var.CONTRACT_ID}');">
+                                                                        <i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
+                                                                    </a>
+                                                                </c:if>
+                                                                    <%-- </div>--%>
+                                                                    <%-- <div class="hidden-md hidden-lg">
+                                                                         <div class="inline pos-rel">
+                                                                             <button class="btn btn-minier btn-primary dropdown-toggle"
+                                                                                     data-toggle="dropdown" data-position="auto">
+                                                                                 <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+                                                                             </button>
+
+                                                                             <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                                                                                 <c:if test="${var.CONTRACTTYPES == '付款合同' }">
+                                                                                     <a class="btn btn-xs btn-success" title="打开付款表格"
+                                                                                        onclick="openPayT('${var.CONTRACT_ID}')">
+                                                                                         <i class="ace-icon fa fa-calendar bigger-120" title="打开付款表格"></i>
+                                                                                     </a>
+                                                                                 </c:if>
+                                                                                 <c:if test="${var.CONTRACTCLASSIFY == '写字楼' }">
+                                                                                     <a class="btn btn-xs btn-success" title="打开写字楼表格"
+                                                                                        onclick="openOfficeT('${var.CONTRACT_ID}')">
+                                                                                         <i class="ace-icon fa fa-calendar bigger-120" title="打开写字楼表格"></i>
+                                                                                     </a>
+                                                                                 </c:if>
+                                                                                 <a class="btn btn-xs btn-info" title="预览图片"
+                                                                                    onclick="showPic('${var.CONTRACT_ID}')">
+                                                                                     <i class="ace-icon fa fa-laptop bigger-120" title="预览图片"></i>
+                                                                                 </a>
+                                                                                 <c:if test="${QX.edit == 1 }">
+                                                                                     <a class="btn btn-xs btn-success" title="编辑"
+                                                                                        onclick="edit('${var.CONTRACT_ID}');">
+                                                                                         <i class="ace-icon fa fa-pencil-square-o bigger-120"
+                                                                                            title="编辑"></i>
+                                                                                     </a>
+                                                                                 </c:if>
+                                                                                 <c:if test="${QX.del == 1 }">
+                                                                                     <a class="btn btn-xs btn-danger"
+                                                                                        onclick="del('${var.CONTRACT_ID}');">
+                                                                                         <i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
+                                                                                     </a>
+                                                                                 </c:if>
+                                                                             </ul>
+                                                                         </div>
+                                                                     </div>--%>
+                                                            </td>
+                                                        </tr>
+
+                                                    </c:forEach>
+                                                </c:if>
+                                                <c:if test="${QX.cha == 0 }">
+                                                    <tr>
+                                                        <td colspan="100" class="center">您无权查看</td>
+                                                    </tr>
+                                                </c:if>
+
+
+                                            </c:when>
+                                            <c:otherwise>
+                                                <tr class="main_info">
+                                                    <td colspan="100" class="center">没有相关数据</td>
+                                                </tr>
+                                                <c:if test="${pd.ex != null }">
+                                                    <tr>
+                                                        <td colspan="100" class="center">${pd.ex}</td>
+                                                    </tr>
+                                                </c:if>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <%--<table  id="tb" class="table table-striped table-bordered table-hover"
+                                        style="margin-top:5px;">
+                                    <thead>
+                                    <tr>
+                                        <th style="width:5%;" class="center" style="width:50px;">序号</th>
+                                        <th style="width:20%;" class="center">租户名
+                                        </th>
+                                        <th style="width:20%;" class="center">合同名称
+                                        </th>
+                                        <th style="width:10%;" class="center">合同编号
+                                        </th>
+                                        <th style="width:10%;" class="center">租金区间
+                                        </th>
+                                        <th style="width:10%;" class="center">租金
+                                        </th>
+                                        <th style="width:10%;" class="center">是否欠款
+                                        </th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <!-- 开始循环 -->
+
+
+                                    </tbody>
+
+                                </table>--%>
+                            </div>
 
                             <table id="simple-table" class="table table-striped table-bordered table-hover"
                                    style="margin-top:5px;">
                                 <thead>
                                 <tr>
-                                    <th class="center" style="width:35px;">
-                                        <label class="pos-rel"><input type="checkbox" class="ace" id="zcheckbox"/><span
-                                                class="lbl"></span></label>
-                                    </th>
-                                    <th class="center" style="width:50px;">序号</th>
-                                    <th class="center">合同名称</th>
-                                    <th class="center">合同编号</th>
-                                    <th class="center">签约方</th>
-                                    <th class="center">客户联系人姓名</th>
-                                    <th class="center">联系电话</th>
-                                    <th class="center">项目</th>
-                                    <th class="center">合同金额</th>
-                                   <%-- <th class="center">押金</th>
-                                    <th class="center">合同签订使用时间</th>
-                                    <th class="center">签约时间</th>
-                                    <th class="center">经办人</th>
-                                    <th class="center">印花税</th>
-                                    <th class="center">印花税计提月份</th>
-                                    <th class="center">税目</th>
-                                    <th class="center">方式</th>
-                                    <th class="center">合同类型</th>
-                                    <th class="center">招待票</th>--%>
-                                    <th class="center">操作</th>
+
                                 </tr>
                                 </thead>
 
                                 <tbody>
                                 <!-- 开始循环 -->
-                                <c:choose>
-                                    <c:when test="${not empty varList}">
-                                        <c:if test="${QX.cha == 1 }">
-                                            <c:forEach items="${varList}" var="var" varStatus="vs">
-                                                <tr id="${var.CONTRACT_ID}" ondblclick="show_contract('${var.CONTRACT_ID}')" onclick="changeColor('${var.CONTRACT_ID}');list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}','${var.CONTRACTNAME}')">
-                                                    <td class='center'>
-                                                        <label class="pos-rel"><input type='checkbox' name='ids'
-                                                                                      value="${var.CONTRACT_ID}"
-                                                                                      class="ace"/><span
-                                                                class="lbl"></span></label>
-                                                    </td>
-                                                    <td class='center' style="width: 30px;">${vs.index+1}</td>
-                                                    <td class='center'>${var.CONTRACTNAME}</td>
-                                                    <td class='center'>${var.CONTRACTNUM}
-                                                        <c:if test="${var.RELEVANCE_ID != '' && var.RELEVANCE_ID != null}">
-                                                            <span style="margin-left: 20px" class="red"><i class="ace-icon fa fa-exchange bigger-50"></i></span>
-                                                        </c:if>
-                                                    </td>
-                                                    <td class='center'>${var.CONTRACTOFNAME}</td>
-                                                    <td class='center'>${var.CLIENT}</td>
-                                                    <td class='center'>${var.TELEPHONE}</td>
-                                                    <td class='center'>${var.PROJECT}</td>
-                                                    <td class='center'>${var.CONTRACTPIC}</td>
-                                                   <%-- <c:if test="${var.ISSTAMPDUTY == 1 }">
-                                                        <td class='center'>${var.DEPOSIT}</td>
-                                                    </c:if>
-                                                    <c:if test="${var.ISSTAMPDUTY ==  0}">
-                                                        <td class='center'>没有押金</td>
-                                                    </c:if>
-                                                    <td class='center'>${var.FUSEDATESTART} - ${var.FUSEDATEENT}</td>
-                                                    <td class='center'>${var.FDATE}</td>
-                                                    <td class='center'>${var.OPERATOR}</td>
-                                                    <td class='center'>${var.STAMPDUTY}</td>
-                                                    <td class='center'>${var.STAMPDUTYMONTH}</td>
-                                                    <td class='center'>${var.TAXITEMS}</td>
-                                                    <td class='center'>${var.MODE}</td>
-                                                    <td class='center'>${var.CONTRACTTYPES}</td>
-                                                    <td class='center'>${var.INVITATIONTICKET}</td>--%>
-                                                    <td class="center">
-                                                        <c:if test="${QX.edit != 1 && QX.del != 1 }">
-                                                            <span class="label label-large label-grey arrowed-in-right arrowed-in"><i
-                                                                    class="ace-icon fa fa-lock" title="无权限"></i></span>
-                                                        </c:if>
-                                                       <%-- <div class="hidden-sm hidden-xs btn-group">--%>
-                                                            <c:if test="${var.CONTRACTTYPES == '付款合同' }">
-                                                                <a class="btn btn-xs btn-info" title="打开付款表格"
-                                                                   onclick="openPayT('${var.CONTRACT_ID}')">
-                                                                    <i class="ace-icon fa fa-credit-card bigger-120" title="打开付款表格"></i>
-                                                                </a>
-                                                            </c:if>
-                                                            <c:if test="${var.CONTRACTTYPES == '收款合同' }">
-                                                                <a class="btn btn-xs" style="background-color: lightgoldenrodyellow" title="打开收款表格"
-                                                                   onclick="openOfficeT('${var.CONTRACT_ID}')">
-                                                                    <i class="ace-icon fa fa-calendar bigger-120" title="打开收款表格"></i>
-                                                                </a>
-                                                            </c:if>
-                                                            <%--<a class="btn btn-xs btn-info" title="预览图片"
-                                                               onclick="show_contract('${var.CONTRACT_ID}')">
-                                                                <i class="ace-icon fa fa-laptop bigger-120" title="预览图片"></i>
-                                                            </a>--%>
-                                                            <a class="btn btn-xs btn-warning" title="上传合同附件"
-                                                               onclick="selectPic('${var.CONTRACT_ID}');">
-                                                                <i class="ace-icon fa  fa-cloud-upload bigger-120"
-                                                                   title="上传合同附件"></i>
-                                                            </a>
-                                                            <c:if test="${QX.edit == 1 }">
-                                                                <a class="btn btn-xs btn-success" title="编辑"
-                                                                   onclick="edit('${var.CONTRACT_ID}');">
-                                                                    <i class="ace-icon fa fa-pencil-square-o bigger-120"
-                                                                       title="编辑"></i>
-                                                                </a>
-                                                            </c:if>
-                                                            <c:if test="${QX.del == 1 }">
-                                                                <a class="btn btn-xs btn-danger"
-                                                                   onclick="del('${var.CONTRACT_ID}');">
-                                                                    <i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
-                                                                </a>
-                                                            </c:if>
-                                                       <%-- </div>--%>
-                                                       <%-- <div class="hidden-md hidden-lg">
-                                                            <div class="inline pos-rel">
-                                                                <button class="btn btn-minier btn-primary dropdown-toggle"
-                                                                        data-toggle="dropdown" data-position="auto">
-                                                                    <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-                                                                </button>
 
-                                                                <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                                                                    <c:if test="${var.CONTRACTTYPES == '付款合同' }">
-                                                                        <a class="btn btn-xs btn-success" title="打开付款表格"
-                                                                           onclick="openPayT('${var.CONTRACT_ID}')">
-                                                                            <i class="ace-icon fa fa-calendar bigger-120" title="打开付款表格"></i>
-                                                                        </a>
-                                                                    </c:if>
-                                                                    <c:if test="${var.CONTRACTCLASSIFY == '写字楼' }">
-                                                                        <a class="btn btn-xs btn-success" title="打开写字楼表格"
-                                                                           onclick="openOfficeT('${var.CONTRACT_ID}')">
-                                                                            <i class="ace-icon fa fa-calendar bigger-120" title="打开写字楼表格"></i>
-                                                                        </a>
-                                                                    </c:if>
-                                                                    <a class="btn btn-xs btn-info" title="预览图片"
-                                                                       onclick="showPic('${var.CONTRACT_ID}')">
-                                                                        <i class="ace-icon fa fa-laptop bigger-120" title="预览图片"></i>
-                                                                    </a>
-                                                                    <c:if test="${QX.edit == 1 }">
-                                                                        <a class="btn btn-xs btn-success" title="编辑"
-                                                                           onclick="edit('${var.CONTRACT_ID}');">
-                                                                            <i class="ace-icon fa fa-pencil-square-o bigger-120"
-                                                                               title="编辑"></i>
-                                                                        </a>
-                                                                    </c:if>
-                                                                    <c:if test="${QX.del == 1 }">
-                                                                        <a class="btn btn-xs btn-danger"
-                                                                           onclick="del('${var.CONTRACT_ID}');">
-                                                                            <i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
-                                                                        </a>
-                                                                    </c:if>
-                                                                </ul>
-                                                            </div>
-                                                        </div>--%>
-                                                    </td>
-                                                </tr>
-
-                                            </c:forEach>
-                                        </c:if>
-                                        <c:if test="${QX.cha == 0 }">
-                                            <tr>
-                                                <td colspan="100" class="center">您无权查看</td>
-                                            </tr>
-                                        </c:if>
-
-
-                                    </c:when>
-                                    <c:otherwise>
-                                        <tr class="main_info">
-                                            <td colspan="100" class="center">没有相关数据</td>
-                                        </tr>
-                                        <c:if test="${pd.ex != null }">
-                                            <tr>
-                                                <td colspan="100" class="center">${pd.ex}</td>
-                                            </tr>
-                                        </c:if>
-                                    </c:otherwise>
-                                </c:choose>
 
                                 </tbody>
 

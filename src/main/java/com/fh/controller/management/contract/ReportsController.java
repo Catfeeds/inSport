@@ -96,6 +96,7 @@ public class ReportsController extends BaseController {
 			p_treeKey = URLDecoder.decode(p_treeKey, "UTF-8");
 			pd.put("p_treeKey", p_treeKey.trim());
 		}
+		//page.setShowCount(20);
 		page.setPd(pd);
 		List<PageData>	varList = contractService.list(page);
 		List<PageData> listDept = deptnoService.listAll(pd);
@@ -141,6 +142,7 @@ public class ReportsController extends BaseController {
 		}
 		List<PageData> listDept = deptnoService.listAll(pd);
 		mv.addObject("listDept", listDept);
+		//page.setShowCount(20);
 		page.setPd(pd);
 		List<PageData>	varList = invoiceService.officelistPage(page);
 		mv.setViewName("management/reports/officelist");
@@ -157,6 +159,7 @@ public class ReportsController extends BaseController {
 		pd = this.getPageData();
 		String keywords = pd.getString("keywords");				//关键词检索条件
 		List<PageData>	varList = null;
+		//page.setShowCount(20);
 		page.setPd(pd);
 		if(null != keywords && !"".equals(keywords)){
 			keywords = URLDecoder.decode(keywords, "UTF-8");
@@ -191,6 +194,7 @@ public class ReportsController extends BaseController {
 		String keywords = pd.getString("keywords");				//关键词检索条件
 		List<PageData>	varList = null;
 		pd.put("isNot","get"); // 随便传个值到xml，查询未收款大于0的条件
+		//page.setShowCount(20);
 		page.setPd(pd);
 		if(null != keywords && !"".equals(keywords)){
 			keywords = URLDecoder.decode(keywords, "UTF-8");
@@ -228,6 +232,7 @@ public class ReportsController extends BaseController {
 			keywords = URLDecoder.decode(keywords, "UTF-8");
 			pd.put("keywords", keywords.trim());
 		}
+		//page.setShowCount(20);
 		page.setPd(pd);
 		List<PageData>	varList = invoiceService.otherlistPage(page);
 		List<PageData> listDept = deptnoService.listAll(pd);
@@ -249,6 +254,7 @@ public class ReportsController extends BaseController {
 			pd.put("keywords", keywords.trim());
 		}
 		pd.put("isNot","get"); // 随便传个值到xml，查询未收款大于0的条件
+		//page.setShowCount(20);
 		page.setPd(pd);
 		List<PageData>	varList = invoiceService.otherlistPage(page);
 		List<PageData> listDept = deptnoService.listAll(pd);
@@ -269,6 +275,7 @@ public class ReportsController extends BaseController {
 			keywords = URLDecoder.decode(keywords, "UTF-8");
 			pd.put("keywords", keywords.trim());
 		}
+		//page.setShowCount(20);
 		//pd.put("isNot","get"); // 随便传个值到xml，查询未收款大于0的条件
 		page.setPd(pd);
 		List<PageData>	varList = paydetailService.paylistPage(page);
@@ -291,6 +298,7 @@ public class ReportsController extends BaseController {
 			pd.put("keywords", keywords.trim());
 		}
 		pd.put("isNot","get"); // 随便传个值到xml，查询未收款大于0的条件
+		//page.setShowCount(20);
 		page.setPd(pd);
 		List<PageData>	varList = paydetailService.paylistPage(page);
 		List<PageData> listDept = deptnoService.listAll(pd);

@@ -56,6 +56,23 @@
             background-color: transparent;
         }
 
+        /* 表格容器样式，用flex布局可保证table内容能铺满剩余空间 */
+        .sti-tbl-container {
+            height : 600px;
+            overflow : hidden;
+            display : flex;
+            flex-direction: column;
+        }
+        /* 设置表格的布局方式，用于宽度对齐 */
+        .sti-tbl-body>table, .sti-tbl-header>table {
+            table-layout: fixed;
+            overflow-y : scroll;
+        }
+        /* 设置表格内容容器，用于铺满整个剩余空间 */
+        .sti-tbl-container .sti-tbl-body {
+            flex-grow : 1;
+            overflow-y : scroll;
+        }
     </style>
 </head>
 <body class="no-skin">
@@ -70,7 +87,7 @@
                     <div class="col-xs-12">
 
                         <!-- 检索  -->
-                        <form action="contract/listBook.do?CONTRACTNUM=${pd.CONTRACTNUM}" method="post" name="Form" id="Form">
+                        <form action="reports/listBook.do?CONTRACTNUM=${pd.CONTRACTNUM}" method="post" name="Form" id="Form">
                             <table style="margin-top:5px;">
                                 <tr>
                                     <td>
@@ -143,91 +160,92 @@
                             </table>
                             <!-- 检索  -->
 
-                            <table id="simple-table" class="table table-striped table-bordered table-hover"
-                                   style="margin-top:5px;">
-                                <thead>
-                                <tr>
-                                    <th class="center" style="width:50px;">序号</th>
-                                    <th class="center">经办部门</th>
-                                    <th class="center">合同编号</th>
-                                    <th class="center">客户名称</th>
-                                    <th class="center">项目</th>
-                                    <th class="center">合同金额</th>
-                                    <th class="center">客户联系人</th>
-                                    <th class="center">联系电话</th>
-                                    <th class="center">经办人</th>
-                                   <%-- <th class="center">押金</th>
-                                    <th class="center">合同签订使用时间</th>
-                                    <th class="center">签约时间</th>
-                                    <th class="center">经办人</th>
-                                    <th class="center">印花税</th>
-                                    <th class="center">印花税计提月份</th>
-                                    <th class="center">税目</th>
-                                    <th class="center">方式</th>
-                                    <th class="center">合同类型</th>
-                                    <th class="center">招待票</th>--%>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                <!-- 开始循环 -->
-                                <c:choose>
-                                    <c:when test="${not empty varList}">
-                                        <c:if test="${QX.cha == 1 }">
-                                            <c:forEach items="${varList}" var="var" varStatus="vs">
-                                                <tr id="${var.CONTRACT_ID}" ondblclick="show_contract('${var.CONTRACT_ID}')" onclick="changeColor('${var.CONTRACT_ID}');list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}','${var.CONTRACTNAME}')">
-                                                    <td class='center' style="width: 30px;">${vs.index+1}</td>
-                                                    <td class='center'>${var.DEPTNAME}</td>
-                                                    <td class='center'>${var.CONTRACTNUM}
-                                                    </td>
-                                                    <td class='center'>${var.CONTRACTOFNAME}</td>
-                                                    <td class='center'>${var.PROJECT}</td>
-                                                    <td class='center'>${var.CONTRACTPIC}</td>
-                                                    <td class='center'>${var.CLIENT}</td>
-                                                    <td class='center'>${var.TELEPHONE}</td>
-                                                    <td class='center'>${var.OPERATOR}</td>
-                                                   <%-- <c:if test="${var.ISSTAMPDUTY == 1 }">
-                                                        <td class='center'>${var.DEPOSIT}</td>
-                                                    </c:if>
-                                                    <c:if test="${var.ISSTAMPDUTY ==  0}">
-                                                        <td class='center'>没有押金</td>
-                                                    </c:if>
-                                                    <td class='center'>${var.FUSEDATESTART} - ${var.FUSEDATEENT}</td>
-                                                    <td class='center'>${var.FDATE}</td>
-                                                    <td class='center'>${var.OPERATOR}</td>
-                                                    <td class='center'>${var.STAMPDUTY}</td>
-                                                    <td class='center'>${var.STAMPDUTYMONTH}</td>
-                                                    <td class='center'>${var.TAXITEMS}</td>
-                                                    <td class='center'>${var.MODE}</td>
-                                                    <td class='center'>${var.CONTRACTTYPES}</td>
-                                                    <td class='center'>${var.INVITATIONTICKET}</td>--%>
-                                                </tr>
-
-                                            </c:forEach>
-                                        </c:if>
-                                        <c:if test="${QX.cha == 0 }">
-                                            <tr>
-                                                <td colspan="100" class="center">您无权查看</td>
-                                            </tr>
-                                        </c:if>
-
-
-                                    </c:when>
-                                    <c:otherwise>
-                                        <tr class="main_info">
-                                            <td colspan="100" class="center">没有相关数据</td>
+                            <div class="sti-tbl-container">
+                                <div class="sti-tbl-header" style="padding-right:17px;">
+                                    <table class="table table-bordered" style="margin-bottom: 0px;border-bottom-style: none;">
+                                        <tr style="background-color: #99CCCC">
+                                            <th class="center" style="width:5%;">序号</th>
+                                            <th style="width:10%;" class="center">经办部门</th>
+                                            <th style="width:15%;" class="center">合同编号</th>
+                                            <th style="width:25%;" class="center">客户名称</th>
+                                            <th style="width:35%;" class="center">项目</th>
+                                            <th style="width:10%;" class="center">合同金额</th>
+                                            <th style="width:10%;" class="center">客户联系人</th>
+                                            <th style="width:10%;" class="center">联系电话</th>
+                                            <th style="width:10%;" class="center">经办人</th>
+                                            <%-- <th class="center">押金</th>
+                                             <th class="center">合同签订使用时间</th>
+                                             <th class="center">签约时间</th>
+                                             <th class="center">经办人</th>
+                                             <th class="center">印花税</th>
+                                             <th class="center">印花税计提月份</th>
+                                             <th class="center">税目</th>
+                                             <th class="center">方式</th>
+                                             <th class="center">合同类型</th>
+                                             <th class="center">招待票</th>--%>
                                         </tr>
-                                        <c:if test="${pd.ex != null }">
-                                            <tr>
-                                                <td colspan="100" class="center">${pd.ex}</td>
-                                            </tr>
-                                        </c:if>
-                                    </c:otherwise>
-                                </c:choose>
+                                    </table>
+                                </div>
+                                <div class="sti-tbl-body">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                        <c:choose>
+                                            <c:when test="${not empty varList}">
+                                                <c:if test="${QX.cha == 1 }">
+                                                    <c:forEach items="${varList}" var="var" varStatus="vs">
+                                                        <tr id="${var.CONTRACT_ID}" ondblclick="show_contract('${var.CONTRACT_ID}')" onclick="changeColor('${var.CONTRACT_ID}');list_one('${var.CONTRACT_ID}','${var.CONTRACTTYPES}','${var.CONTRACTNAME}')">
+                                                            <td class='center' style="width: 5%;">${vs.index+1}</td>
+                                                            <td style="width: 10%;" class='center'>${var.DEPTNAME}</td>
+                                                            <td style="width: 15%;" class='center'>${var.CONTRACTNUM}
+                                                            </td>
+                                                            <td style="width: 25%;" class='center'>${var.CONTRACTOFNAME}</td>
+                                                            <td style="width: 35%;" class='center'>${var.PROJECT}</td>
+                                                            <td style="width: 10%;" class='center'>${var.CONTRACTPIC}</td>
+                                                            <td style="width: 10%;" class='center'>${var.CLIENT}</td>
+                                                            <td style="width: 10%;" class='center'>${var.TELEPHONE}</td>
+                                                            <td style="width: 10%;" class='center'>${var.OPERATOR}</td>
+                                                                <%-- <c:if test="${var.ISSTAMPDUTY == 1 }">
+                                                                     <td class='center'>${var.DEPOSIT}</td>
+                                                                 </c:if>
+                                                                 <c:if test="${var.ISSTAMPDUTY ==  0}">
+                                                                     <td class='center'>没有押金</td>
+                                                                 </c:if>
+                                                                 <td class='center'>${var.FUSEDATESTART} - ${var.FUSEDATEENT}</td>
+                                                                 <td class='center'>${var.FDATE}</td>
+                                                                 <td class='center'>${var.OPERATOR}</td>
+                                                                 <td class='center'>${var.STAMPDUTY}</td>
+                                                                 <td class='center'>${var.STAMPDUTYMONTH}</td>
+                                                                 <td class='center'>${var.TAXITEMS}</td>
+                                                                 <td class='center'>${var.MODE}</td>
+                                                                 <td class='center'>${var.CONTRACTTYPES}</td>
+                                                                 <td class='center'>${var.INVITATIONTICKET}</td>--%>
+                                                        </tr>
 
-                                </tbody>
+                                                    </c:forEach>
+                                                </c:if>
+                                                <c:if test="${QX.cha == 0 }">
+                                                    <tr>
+                                                        <td colspan="100" class="center">您无权查看</td>
+                                                    </tr>
+                                                </c:if>
 
-                            </table>
+
+                                            </c:when>
+                                            <c:otherwise>
+                                                <tr class="main_info">
+                                                    <td colspan="100" class="center">没有相关数据</td>
+                                                </tr>
+                                                <c:if test="${pd.ex != null }">
+                                                    <tr>
+                                                        <td colspan="100" class="center">${pd.ex}</td>
+                                                    </tr>
+                                                </c:if>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                             <div class="page-header position-relative">
                                 <table style="width:100%;">
                                     <tr>
