@@ -475,6 +475,11 @@ public class ContractController extends BaseController {
 			keywords = URLDecoder.decode(keywords, "UTF-8");
 			pd.put("keywords", keywords.trim());
 		}
+		String STAMPDUTYMONTH = pd.getString("STAMPDUTYMONTH");				//关键词检索条件
+		if(null != STAMPDUTYMONTH && !"".equals(STAMPDUTYMONTH)){
+			STAMPDUTYMONTH = URLDecoder.decode(STAMPDUTYMONTH, "UTF-8");
+			pd.put("STAMPDUTYMONTH", STAMPDUTYMONTH.trim());
+		}
 		String p_treeKey = pd.getString("p_treeKey");				//关键词检索条件
 		if(null != p_treeKey && !"".equals(p_treeKey)){
 			p_treeKey = URLDecoder.decode(p_treeKey, "UTF-8");
@@ -957,47 +962,66 @@ public class ContractController extends BaseController {
 	@RequestMapping(value="/excel")
 	public ModelAndView exportExcel() throws Exception{
 		logBefore(logger, Jurisdiction.getUsername()+"导出Contract到excel");
-		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
 		ModelAndView mv = new ModelAndView();
-		PageData pd = new PageData();
-		pd = this.getPageData();
+		PageData pd = this.getPageData();
+		String DNAME = null;
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			keywords = URLDecoder.decode(keywords, "UTF-8");
+			pd.put("keywords", keywords.trim());
+		}
+		String STAMPDUTYMONTH = pd.getString("STAMPDUTYMONTH");				//关键词检索条件
+		if(null != STAMPDUTYMONTH && !"".equals(STAMPDUTYMONTH)){
+			STAMPDUTYMONTH = URLDecoder.decode(STAMPDUTYMONTH, "UTF-8");
+			pd.put("STAMPDUTYMONTH", STAMPDUTYMONTH.trim());
+		}
+		String p_treeKey = pd.getString("p_treeKey");				//关键词检索条件
+		if(null != p_treeKey && !"".equals(p_treeKey)){
+			p_treeKey = URLDecoder.decode(p_treeKey, "UTF-8");
+			pd.put("p_treeKey", p_treeKey.trim());
+		}
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		List<String> titles = new ArrayList<String>();
-		titles.add("合同名称");	//1
 		titles.add("合同编号");	//2
-		titles.add("合同金额");	//3
+		titles.add("合同名称");	//1
 		titles.add("签约方");	//4
-		titles.add("合同签订使用时间");	//5
 		titles.add("项目");	//6
-		titles.add("签约时间");	//7
+		titles.add("合同金额");	//3
 		titles.add("押金");	//8
+		titles.add("合同签订使用时间");	//5
+		titles.add("签约时间");	//7
 		titles.add("印花税");	//9
 		titles.add("印花税计提月份");	//10
 		titles.add("税目");	//11
 		titles.add("方式");	//12
+		titles.add("客户联系人");	//12
+		titles.add("联系电话");	//12
 		titles.add("经办人");	//13
-		titles.add("合同类型");	//14
-		titles.add("招待票");	//15
+		//titles.add("合同类型");	//14
+		//titles.add("招待票");	//15
 		dataMap.put("titles", titles);
 		List<PageData> varOList = contractService.listAll(pd);
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
-			vpd.put("var1", varOList.get(i).getString("CONTRACTNAME"));	    //1
-			vpd.put("var2", varOList.get(i).getString("CONTRACTNUM"));	    //2
-			vpd.put("var3", varOList.get(i).get("CONTRACTPIC").toString());	//3
-			vpd.put("var4", varOList.get(i).getString("CONTRACTOFNAME"));	    //4
-			vpd.put("var5", varOList.get(i).getString("FUSEDATE"));	    //5
-			vpd.put("var6", varOList.get(i).getString("PROJECT"));	    //6
-			vpd.put("var7", varOList.get(i).getString("FDATE"));	    //7
-			vpd.put("var8", varOList.get(i).get("DEPOSIT").toString());	//8
+			vpd.put("var1", varOList.get(i).getString("CONTRACTNUM"));	    //2
+			vpd.put("var2", varOList.get(i).getString("CONTRACTNAME"));	    //1
+			vpd.put("var3", varOList.get(i).getString("CONTRACTOFNAME"));	    //4
+			vpd.put("var4", varOList.get(i).getString("PROJECT"));	    //6
+			vpd.put("var5", varOList.get(i).get("CONTRACTPIC").toString());	//3
+			vpd.put("var6", varOList.get(i).get("DEPOSIT").toString());	//8
+			vpd.put("var7", varOList.get(i).getString("FUSEDATESTART") +" --- "+varOList.get(i).getString("FUSEDATEENT"));	    //5
+			vpd.put("var8", varOList.get(i).getString("FDATE"));	    //7
 			vpd.put("var9", varOList.get(i).get("STAMPDUTY").toString());	//9
 			vpd.put("var10", varOList.get(i).getString("STAMPDUTYMONTH"));	    //10
 			vpd.put("var11", varOList.get(i).getString("TAXITEMS"));	    //11
 			vpd.put("var12", varOList.get(i).getString("MODE"));	    //12
-			vpd.put("var13", varOList.get(i).getString("OPERATOR"));	    //13
-			vpd.put("var14", varOList.get(i).getString("CONTRACTTYPES"));	    //14
-			vpd.put("var15", varOList.get(i).getString("INVITATIONTICKET"));	    //15
+			vpd.put("var13", varOList.get(i).getString("CLIENT"));	    //12
+			vpd.put("var14", varOList.get(i).getString("TELEPHONE"));	    //12
+			vpd.put("var15", varOList.get(i).getString("OPERATOR"));	    //13
+			//vpd.put("var14", varOList.get(i).getString("CONTRACTTYPES"));	    //14
+			//vpd.put("var15", varOList.get(i).getString("INVITATIONTICKET"));	    //15
 			varList.add(vpd);
 		}
 		dataMap.put("varList", varList);

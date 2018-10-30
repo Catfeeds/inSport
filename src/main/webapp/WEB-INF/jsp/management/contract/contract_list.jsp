@@ -2,6 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://"
@@ -122,6 +123,13 @@
                                         </select>
                                     </td>
                                     <td style="padding-left:12px;">
+                                        <label style="margin-top: 5px">印花税计提月:</label>
+                                        <input type="month" style="width: 150px;height: 31px" value="${pd.STAMPDUTYMONTH}"
+                                               class="input-text"  name="STAMPDUTYMONTH"
+                                               id="STAMPDUTYMONTH">
+                                    </td>
+
+                                    <td style="padding-left:12px;">
                                         <label>合同金额区间:</label>
                                         <input type="number" placeholder="输入金额" style="width: 110px" class="nav-search-input"
                                                id="picStart" autocomplete="off" name="picStart"
@@ -140,12 +148,12 @@
                                         <td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="moveJbr();" title="经办人移交"><i
                                                 class="ace-icon glyphicon glyphicon-retweet bigger-110 nav-search-icon blue"></i></a></td>
                                     </c:if>
-                                    <%--<c:if test="${QX.toExcel == 1 }">
+                                    <c:if test="${QX.CwtoExcel == 1 }">
                                         <td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs"
                                                                                             onclick="toExcel();" title="导出到EXCEL"><i
                                                 id="nav-search-icon"
                                                 class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td>
-                                    </c:if>--%>
+                                    </c:if>
                                 </tr>
                             </table>
                             <!-- 检索  -->
@@ -158,11 +166,11 @@
                                                         class="lbl"></span></label>
                                             </th>
                                             <th class="center" style="width:5%;">序号</th>
-                                            <th style="width:15%;" class="center">合同名称</th>
-                                            <th style="width:15%;" class="center">合同编号</th>
-                                            <th style="width:15%;" class="center">签约方</th>
-                                            <th style="width:10%;" class="center">客户联系人姓名</th>
-                                            <th style="width:10%;" class="center">联系电话</th>
+                                            <th style="width:10%;" class="center">合同名称</th>
+                                            <th style="width:20%;" class="center">合同编号</th>
+                                            <th style="width:35%;" class="center">签约方</th>
+                                            <th style="width:10%;" class="center">客户联系人</th>
+                                            <th style="width:20%;" class="center">联系电话</th>
                                             <th style="width:35%;" class="center">项目</th>
                                             <th style="width:10%;" class="center">合同金额</th>
                                             <%-- <th class="center">押金</th>
@@ -194,15 +202,19 @@
                                                                         class="lbl"></span></label>
                                                             </td>
                                                             <td class='center' style="width:5%;">${vs.index+1}</td>
-                                                            <td style="width:15%;" class='center'>${var.CONTRACTNAME}</td>
-                                                            <td style="width:15%;" class='center'>${var.CONTRACTNUM}
+                                                            <td style="width:10%;" class='center'>${var.CONTRACTNAME}</td>
+                                                            <td style="width:20%;" class='center'>${var.CONTRACTNUM}
                                                                 <c:if test="${var.RELEVANCE_ID != '' && var.RELEVANCE_ID != null}">
                                                                     <span style="margin-left: 20px" class="red"><i class="ace-icon fa fa-exchange bigger-50"></i></span>
                                                                 </c:if>
                                                             </td>
-                                                            <td style="width:15%;" class='center'>${var.CONTRACTOFNAME}</td>
+                                                            <td style="width:35%;" class='center'>
+                                                               <%-- <c:if test="${fn:length(var.CONTRACTOFNAME)>12 }">--%>
+                                                                    ${var.CONTRACTOFNAME}
+                                                               <%-- </c:if>--%>
+                                                            </td>
                                                             <td style="width:10%;" class='center'>${var.CLIENT}</td>
-                                                            <td style="width:10%;" class='center'>${var.TELEPHONE}</td>
+                                                            <td style="width:20%;" class='center'>${var.TELEPHONE}</td>
                                                             <td style="width:35%;" class='center'>${var.PROJECT}</td>
                                                             <td style="width:10%;" class='center'>${var.CONTRACTPIC}</td>
                                                                 <%-- <c:if test="${var.ISSTAMPDUTY == 1 }">
@@ -812,8 +824,39 @@
     ;
 
     //导出excel
+
     function toExcel() {
-        window.location.href = '<%=basePath%>contract/excel.do';
+        var keywords = $("#keywords").val();
+        if(keywords == null){
+            keywords = '';
+        }
+        var STAMPDUTYMONTH = $("#STAMPDUTYMONTH").val();
+        if(STAMPDUTYMONTH == null){
+            STAMPDUTYMONTH = '';
+        }
+        var p_treeKey = $("#p_treeKey").val();
+        if(p_treeKey == null){
+            p_treeKey = '';
+        }
+        var picStart = $("#picStart").val();
+        if(picStart == null){
+            picStart = '';
+        }
+        var picEnd = $("#picEnd").val();
+        if(picEnd == null){
+            picEnd = '';
+        }
+        var YEAR = $("#YEAR").val();
+        if(YEAR == null){
+            YEAR = '';
+        }
+        var DEPTNAME = $("#DEPTNAME").val();
+        if(DEPTNAME == null){
+            DEPTNAME = '';
+        }
+        window.location.href = '<%=basePath%>contract/excel.do?keywords='+keywords+
+            '&STAMPDUTYMONTH='+STAMPDUTYMONTH+'&p_treeKey='+p_treeKey+'&picStart='+picStart+
+            '&picEnd='+picEnd+'&YEAR='+YEAR+'&DEPTNAME='+DEPTNAME;
     }
 </script>
 

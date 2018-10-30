@@ -10641,7 +10641,7 @@ td,
 th.center,
 td.center {
   text-align: center;
-  white-space: nowrap;
+  /*white-space: nowrap;*/
 }
 th .lbl,
 td .lbl {

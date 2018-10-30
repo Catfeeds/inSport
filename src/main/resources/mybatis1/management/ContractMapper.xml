@@ -190,6 +190,11 @@
 			and
 			CONTRACTTYPES LIKE '%'+ #{pd.p_treeKey}+'%'
 		</if>
+		<if test="pd.STAMPDUTYMONTH != null and pd.STAMPDUTYMONTH != ''"><!-- 关键词检索 -->
+			and
+			STAMPDUTYMONTH LIKE '%'+ #{pd.STAMPDUTYMONTH}+'%'
+		</if>
+
 		<if test="pd.YEAR != null and pd.YEAR != ''"><!-- 关键词检索 -->
 			and
 			FDATE LIKE '%'+ #{pd.YEAR}+'%'
@@ -331,6 +336,10 @@
 		<if test="picEnd != null and picEnd != ''"><!-- 关键词检索 -->
 			and
 			CONTRACTPIC <![CDATA[ <= ]]> #{picEnd}
+		</if>
+		<if test="STAMPDUTYMONTH != null and STAMPDUTYMONTH != ''"><!-- 关键词检索 -->
+			and
+			STAMPDUTYMONTH = #{STAMPDUTYMONTH}
 		</if>
 		ORDER BY CONTRACTNUM
 	</select>
