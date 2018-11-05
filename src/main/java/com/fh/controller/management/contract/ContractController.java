@@ -900,10 +900,10 @@ public class ContractController extends BaseController {
 		PageData maxNo = contractService.findMaxNo(pd);
 		//System.out.println(maxNo);
 		if(maxNo != null && !"".equals(maxNo)){
-			DecimalFormat dften = new DecimalFormat("0000");
+			DecimalFormat dften = new DecimalFormat("000");
 			String maxStr = maxNo.getString("maxNo");
-			int max = Integer.parseInt(maxStr.substring(maxStr.length()-4,maxStr.length())) + 1;
-			//System.out.println("输出最大数:"+dften.format(max));
+			int max = Integer.parseInt(maxStr.substring(maxStr.length()-3,maxStr.length())) + 1;
+			System.out.println("输出最大数:"+dften.format(max));
 			json.put("maxNo",dften.format(max));
 		}else {
 			json.put("maxNo","001");
