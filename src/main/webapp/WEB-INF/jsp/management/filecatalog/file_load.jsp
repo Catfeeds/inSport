@@ -361,6 +361,52 @@
                                                     </div>
                                                 </li>
                                             </c:if>
+
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'ppt') || fn:contains(var.FILE_TYPE,'application/octet-stream') || fn:contains(var.FILE_TYPE,'application/vnd.openxmlformats-officedocument.presentationml.presentation')}">
+                                                <li style="border:none;margin-top: 30px;margin-left: 15px">
+                                                    <div align="center">
+
+                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                             data-rel="colorbox"  style="width: 120px;"
+                                                             class="cboxElement">
+                                                            <div
+                                                                    <c:if test="${var.FILE_ISDOWN == '1'}">
+                                                                        name="${var.FILE_URL}"
+                                                                    </c:if>
+                                                                    <c:if test="${var.FILE_ISDOWN != '1'}">
+                                                                        name="no"
+                                                                    </c:if>
+                                                                    id="${var.FILEMEANS_ID }"
+                                                                    class="float_div"
+                                                                    style="display: none">
+                                                                <img src="static/images/Smile.png"
+                                                                     style="width: 35px;height: 35px"/>
+                                                            </div>
+                                                            <c:if test="${var.FILE_ISDOWN == '1'}">
+                                                                <div  class="float_div22"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-cloud-download bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE == '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-user bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE != '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-users bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <img  width="120" height="110" alt="200x200"
+                                                                  src="static/filecatalog/images/pptx_win.png"/>
+                                                            <div  class="inner">${var.FILENAME}</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </c:if>
                                         </c:forEach>
                                         <c:if test="${QX.cha == 0 }">
                                             <tr>
@@ -540,6 +586,45 @@
                                                     </div>
                                                 </li>
                                             </c:if>
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'ppt') || fn:contains(var.FILE_TYPE,'application/octet-stream') || fn:contains(var.FILE_TYPE,'application/vnd.openxmlformats-officedocument.presentationml.presentation')}">
+                                                <li style="border:none;margin-top: 30px;margin-left: 15px">
+                                                    <div align="center">
+
+                                                        <div onclick="toSelect('${var.FILEMEANS_ID}')"
+                                                             ondblclick="editJurisdiction('${var.FILEMEANS_ID}')"
+                                                             data-rel="colorbox"  style="width: 120px;"
+                                                             class="cboxElement">
+                                                            <div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                                 class="float_div"
+                                                                 style="display: none">
+                                                                <img src="static/images/Smile.png"
+                                                                     style="width: 35px;height: 35px"/>
+                                                            </div>
+                                                            <c:if test="${var.FILE_ISDOWN == '1'}">
+                                                                <div  class="float_div22"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-cloud-download bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE == '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-user bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <c:if test="${var.FILE_ISPRIVATE != '1'}">
+                                                                <div  class="float_div11"
+                                                                      style="">
+                                                                    <i class="ace-icon fa fa-users bigger-120 nav-search-icon"></i>
+                                                                </div>
+                                                            </c:if>
+                                                            <img  width="120" height="110" alt="200x200"
+                                                                  src="static/filecatalog/images/pptx_win.png"/>
+                                                            <div style="color: red" class="inner">${var.FILENAME}</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </c:if>
                                         </c:forEach>
                                         <c:if test="${QX.cha == 0 }">
                                             <tr>
@@ -629,6 +714,27 @@
                                                              class="cboxElement">
                                                             <img width="120" height="110" alt="200x200"
                                                                   src="static/filecatalog/images/locked.png"/>
+                                                            <a title="${var.FILENAME}">
+                                                                <div name="inner" >${var.FILENAME}</div>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'ppt') || fn:contains(var.FILE_TYPE,'application/octet-stream') || fn:contains(var.FILE_TYPE,'application/vnd.openxmlformats-officedocument.presentationml.presentation')}">
+                                                <li id="file${var.FILEMEANS_ID}" style="border:none;margin-top: 30px;margin-left: 15px">
+                                                    <div align="center">
+                                                            <%--<div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                                 class="float_div"
+                                                                 style="display: none">
+                                                                <img src="static/images/Smile.png"
+                                                                     style="width: 35px;height: 35px"/>
+                                                            </div>--%>
+                                                        <div onclick="openByPW('${var.FILEMEANS_ID}');"
+                                                             data-rel="colorbox" style="width: 120px;"
+                                                             class="cboxElement">
+                                                            <img width="120" height="110" alt="200x200"
+                                                                 src="static/filecatalog/images/locked.png"/>
                                                             <a title="${var.FILENAME}">
                                                                 <div name="inner" >${var.FILENAME}</div>
                                                             </a>
@@ -732,6 +838,27 @@
                                                             <img src="static/images/Smile.png"
                                                                  style="width: 35px;height: 35px"/>
                                                         </div>--%>
+                                                        <div onclick="openByPW('${var.FILEMEANS_ID}');"
+                                                             data-rel="colorbox" style="width: 120px;"
+                                                             class="cboxElement">
+                                                            <img  width="120" height="110" alt="200x200"
+                                                                  src="static/filecatalog/images/locked.png"/>
+                                                            <a title="${var.FILENAME}" class="text">
+                                                                <div name="inner" class="inner">${var.FILENAME}</div>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${fn:contains(var.FILE_TYPE,'ppt') || fn:contains(var.FILE_TYPE,'application/octet-stream') || fn:contains(var.FILE_TYPE,'application/vnd.openxmlformats-officedocument.presentationml.presentation')}">
+                                                <li id="file${var.FILEMEANS_ID}" style="border:none;margin-top: 30px;margin-left: 15px">
+                                                    <div align="center">
+                                                            <%--<div name="${var.FILE_URL}" id="${var.FILEMEANS_ID }"
+                                                                 class="float_div"
+                                                                 style="display: none">
+                                                                <img src="static/images/Smile.png"
+                                                                     style="width: 35px;height: 35px"/>
+                                                            </div>--%>
                                                         <div onclick="openByPW('${var.FILEMEANS_ID}');"
                                                              data-rel="colorbox" style="width: 120px;"
                                                              class="cboxElement">

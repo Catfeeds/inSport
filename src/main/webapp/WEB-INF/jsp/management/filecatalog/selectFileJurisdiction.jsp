@@ -204,6 +204,10 @@
 			if($("#isENCTYPT").prop("checked")){
 				FILE_ISENCTYPT = '1';
 				FILE_PASSWORD = $("#FILE_PASSWORD").val();
+                if(FILE_PASSWORD == null || FILE_PASSWORD == ""){
+                    alert("密码不能为空！！");
+                    return false;
+				}
 			}else {
 				FILE_ISENCTYPT = '0';
 			}

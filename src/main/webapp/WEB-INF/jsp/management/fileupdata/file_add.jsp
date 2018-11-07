@@ -250,9 +250,10 @@
 
 				accept: {
 					title: 'myself',
-					extensions: 'gif,jpg,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,xlm',
+					extensions: 'gif,jpg,jpeg,bmp,png,pdf,doc,docx,p*,xls,xlsx,xlm',
 					mimeTypes: 'image/*,application/pdf,application/msword,' +
 					'.xls,.xlsx,application/xls,application/xlsx,application/vnd.ms-excel,application/x-excel,application/excel,application/x-msexcel'
+                    +',application/vnd.ms-powerpoint,application/*'
 				},
 
 				// 禁掉全局的拖拽功能。这样不会出现图片拖进页面的时候，把图片打开。
