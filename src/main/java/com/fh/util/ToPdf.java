@@ -56,9 +56,10 @@ public class ToPdf {
 //转换不全
     @Test
     public void excel2pdf() {
-        String source = "C:/Users/Administrator/Desktop/岭南/手册/20180518合同管理软件修改及疑问.xlsx";
+        String source = "C:/Users/Administrator/Desktop/岭南/手册/33333.xlsx.AB9489A8C136881C64BB95F89F4E41C3.20180514222325970.et";
         String target = "C:/Users/Administrator/Desktop/岭南/手册/222.pdf";
         System.out.println("启动Excel");
+        //System.out.println("F F 9 A 3 F 0 3 - 5 6 E F - 4 6 1 3 - B D D 5 - 5 A 4 1 C 1 D 0 7 2 4 6".trim());
         ActiveXComponent activeXComponent = new ActiveXComponent("Excel.Application");
         activeXComponent.setProperty("Visible", false);
 
