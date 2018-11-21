@@ -998,6 +998,7 @@ public class ContractController extends BaseController {
 		titles.add("客户联系人");	//12
 		titles.add("联系电话");	//12
 		titles.add("经办人");	//13
+		//titles.add("租赁地点");	//16
 		//titles.add("合同类型");	//14
 		//titles.add("招待票");	//15
 		dataMap.put("titles", titles);
@@ -1020,6 +1021,7 @@ public class ContractController extends BaseController {
 			vpd.put("var13", varOList.get(i).getString("CLIENT"));	    //12
 			vpd.put("var14", varOList.get(i).getString("TELEPHONE"));	    //12
 			vpd.put("var15", varOList.get(i).getString("OPERATOR"));	    //13
+			//vpd.put("var16", varOList.get(i).getString("RENTADDRESS"));	    //16
 			//vpd.put("var14", varOList.get(i).getString("CONTRACTTYPES"));	    //14
 			//vpd.put("var15", varOList.get(i).getString("INVITATIONTICKET"));	    //15
 			varList.add(vpd);

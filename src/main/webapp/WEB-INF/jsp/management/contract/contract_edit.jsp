@@ -101,8 +101,11 @@
 														   id="CONTRACTNAME">
 										<label style="color: red;font-size: 17px">  *</label>
 									</th>
-									<th  ><label></label></th>
-									<th  ></th>
+									<th width="15%"><label>租赁地点：</label></th>
+									<th width="10%"><input type="text" style="width: 150px" value="${pd.RENTADDRESS}"
+														   class="input-text"  name="RENTADDRESS"
+														   id="RENTADDRESS">
+									</th>
 								</tr>
 								<tr class="active">
 									<th ><label>签约方：</label></th>
